@@ -1,6 +1,6 @@
 Name = "Soup.Cpp.Compiler.MSVC"
-Language = "C#"
-Version = "0.3.0"
+Language = "C#|0.1"
+Version = "0.3.1"
 Source = [
 	"ArgumentBuilder.cs",
 	"Compiler.cs",
@@ -9,7 +9,7 @@ Source = [
 [Dependencies]
 Runtime = [
 	"Opal@1.0.3",
-	"Soup.Cpp.Compiler@0.3.0",
+	"Soup.Cpp.Compiler@0.3.1",
 	"Soup.Build.Extensions@0.2.0",
 	"Soup.Build.Extensions.Utilities@0.1.0",
 ]
