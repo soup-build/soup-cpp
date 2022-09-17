@@ -14,12 +14,12 @@ Build: "Build0"
 }
 {
 Name: "Soup.Build.Extensions"
-Version: "0.3.0"
+Version: "0.4.0"
 Build: "Build0"
 }
 {
 Name: "Soup.Build.Extensions.Utilities"
-Version: "0.3.0"
+Version: "0.4.0"
 Build: "Build0"
 }
 {
