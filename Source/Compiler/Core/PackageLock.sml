@@ -1,40 +1,17 @@
-Version: 2
+Version: 3
 Closures: {
-Root: {
-C#: [
-{
-Name: "Opal"
-Version: "1.1.0"
-Build: "Build0"
-}
-{
-Name: "Soup.Build"
-Version: "0.2.0"
-Build: "Build0"
-}
-{
-Name: "Soup.Build.Extensions"
-Version: "0.4.0"
-Build: "Build0"
-}
-{
-Name: "Soup.Build.Extensions.Utilities"
-Version: "0.4.0"
-Build: "Build0"
-}
-{
-Name: "Soup.Cpp.Compiler"
-Version: "../Core"
-Build: "Build0"
-}
-]
-}
-Build0: {
-C#: [
-{
-Name: "C#"
-Version: "0.1.0"
-}
-]
-}
+	Root: {
+		CSharp: [
+			{ Name: "Opal", Version: "1.2.0", Build: "Build0" }
+			{ Name: "Soup.Build", Version: "0.2.1", Build: "Build0" }
+			{ Name: "Soup.Build.Extensions", Version: "0.4.1", Build: "Build0" }
+			{ Name: "Soup.Build.Extensions.Utilities", Version: "0.4.1", Build: "Build0" }
+			{ Name: "Soup.Cpp.Compiler", Version: "./", Build: "Build0" }
+		]
+	}
+	Build0: {
+		CSharp: [
+			{ Name: "Soup.CSharp", Version: "0.7.0" }
+		]
+	}
 }
