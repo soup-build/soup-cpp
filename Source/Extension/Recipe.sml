@@ -1,6 +1,6 @@
 Name: "Soup.Cpp"
 Language: "C#|0.1"
-Version: "0.4.1"
+Version: "0.4.2"
 Source: [
 	"Tasks/BuildTask.cs"
 	"Tasks/RecipeBuildTask.cs"

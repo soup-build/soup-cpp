@@ -241,7 +241,7 @@ namespace Soup.Build.Cpp
 			{
 				sharedBuildTable["TargetFile"] = this.factory.Create(buildResult.TargetFile.ToString());
 				sharedBuildTable["RunExecutable"] = this.factory.Create(buildResult.TargetFile.ToString());
-				sharedBuildTable["RunArguments"] = this.factory.Create("");
+				sharedBuildTable.EnsureValueList(this.factory, "RunArguments").SetAll(this.factory, new List<string>() { });
 			}
 
 			// Register the build operations
