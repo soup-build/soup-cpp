@@ -73,9 +73,9 @@ namespace Soup.Build.Cpp
 
 			// Calculate the windows kits directory
 			var windows10KitPath = new Path(windowsSDKProperties["RootPath"].AsString());
-			var windows10KitIncludePath = windows10KitPath + new Path("/include/");
-			var windows10KitBinPath = windows10KitPath + new Path("/bin/");
-			var windows10KitLibPath = windows10KitPath + new Path("/Lib/");
+			var windows10KitIncludePath = windows10KitPath + new Path("./include/");
+			var windows10KitBinPath = windows10KitPath + new Path("./bin/");
+			var windows10KitLibPath = windows10KitPath + new Path("./Lib/");
 
 			var windowsKitVersion = windowsSDKProperties["Version"].AsString();
 
@@ -89,12 +89,12 @@ namespace Soup.Build.Cpp
 			Path windosKitsBinaryFolder;
 			if (architectureName == "x64")
 			{
-				vcToolsBinaryFolder = visualCompilerVersionFolder + new Path("/bin/Hostx64/x64/");
+				vcToolsBinaryFolder = visualCompilerVersionFolder + new Path("./bin/Hostx64/x64/");
 				windosKitsBinaryFolder = windows10KitVersionBinPath + new Path("x64/");
 			}
 			else if (architectureName == "x86")
 			{
-				vcToolsBinaryFolder = visualCompilerVersionFolder + new Path("/bin/Hostx64/x86/");
+				vcToolsBinaryFolder = visualCompilerVersionFolder + new Path("./bin/Hostx64/x86/");
 				windosKitsBinaryFolder = windows10KitVersionBinPath + new Path("x86/");
 			}
 			else
@@ -128,11 +128,11 @@ namespace Soup.Build.Cpp
 			{
 				platformIncludePaths = new List<Path>()
 				{
-					visualCompilerVersionFolder + new Path("/include/"),
-					windows10KitVersionIncludePath + new Path("/ucrt/"),
-					windows10KitVersionIncludePath + new Path("/um/"),
-					windows10KitVersionIncludePath + new Path("/winrt/"),
-					windows10KitVersionIncludePath + new Path("/shared/"),
+					visualCompilerVersionFolder + new Path("./include/"),
+					windows10KitVersionIncludePath + new Path("./ucrt/"),
+					windows10KitVersionIncludePath + new Path("./um/"),
+					windows10KitVersionIncludePath + new Path("./winrt/"),
+					windows10KitVersionIncludePath + new Path("./shared/"),
 				};
 			}
 
@@ -142,17 +142,17 @@ namespace Soup.Build.Cpp
 			{
 				if (architectureName == "x64")
 				{
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("/ucrt/x64/"));
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("/um/x64/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("/atlmfc/lib/x64/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("/lib/x64/"));
+					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./ucrt/x64/"));
+					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./um/x64/"));
+					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./atlmfc/lib/x64/"));
+					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./lib/x64/"));
 				}
 				else if (architectureName == "x86")
 				{
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("/ucrt/x86/"));
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("/um/x86/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("/atlmfc/lib/x86/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("/lib/x86/"));
+					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./ucrt/x86/"));
+					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./um/x86/"));
+					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./atlmfc/lib/x86/"));
+					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./lib/x86/"));
 				}
 			}
 
