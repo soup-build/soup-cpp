@@ -25,7 +25,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -206,7 +206,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -396,7 +396,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -577,7 +577,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -827,7 +827,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -1125,7 +1125,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -1475,7 +1475,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();
@@ -1840,7 +1840,7 @@ namespace Soup.Build.Cpp.Compiler.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Register the mock compiler
 				var compiler = new Mock.Compiler();

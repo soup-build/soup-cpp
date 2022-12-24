@@ -21,7 +21,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test process manager
 			var processManager = new MockProcessManager();
 
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				var buildState = new MockBuildState();
 				var factory = new ValueFactory();
@@ -38,7 +38,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Setup the input build state
 				var buildState = new MockBuildState();
@@ -206,7 +206,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Setup the input build state
 				var buildState = new MockBuildState();
@@ -374,7 +374,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Setup the input build state
 				var buildState = new MockBuildState();
@@ -605,7 +605,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Setup the input build state
 				var buildState = new MockBuildState();
@@ -882,7 +882,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Setup the input build state
 				var buildState = new MockBuildState();
@@ -1206,7 +1206,7 @@ namespace Soup.Build.Cpp.UnitTests
 			// Register the test listener
 			var testListener = new TestTraceListener();
 			using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
-			using (var scopedProcesManager = new ScopedSingleton<IProcessManager>(processManager))
+			using (var scopedProcessManager = new ScopedSingleton<IProcessManager>(processManager))
 			{
 				// Setup the input build state
 				var buildState = new MockBuildState();
