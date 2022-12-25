@@ -5,8 +5,7 @@
 /// <summary>
 /// The compiler interface definition
 /// </summary>
-class ICompiler
-{
+class ICompiler {
 	/// <summary>
 	/// Gets the unique name for the compiler
 	/// </summary>

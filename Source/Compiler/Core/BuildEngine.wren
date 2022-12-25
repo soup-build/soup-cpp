@@ -2,194 +2,177 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+import "./BuildResult" for BuildResult
+import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
+import "./LinkArguments" for LinkArguments, LinkTarget
+import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "../../IBuildState" for TraceLevel
+import "../../Path" for Path
+import "../../Set" for Set
+import "../../SharedOperations" for SharedOperations
+
 /// <summary>
 /// The build engine
 /// </summary>
-class BuildEngine
-{
-	_compiler
-
-	construct new(compiler)
-	{
-		_compiler = compiler;
+class BuildEngine {
+	construct new(compiler) {
+		_compiler = compiler
 	}
 
 	/// <summary>
 	/// Generate the required build operations for the requested build
 	/// </summary>
-	Execute(
-		IBuildState buildState,
-		BuildArguments arguments)
-	{
-		var result = new BuildResult();
+	Execute(buildState, arguments) {
+		var result = BuildResult.new()
 
 		// All dependencies must include the entire interface dependency closure
-		result.ModuleDependencies = new List<Path>(arguments.ModuleDependencies);
+		result.ModuleDependencies = []
+		result.ModuleDependencies = result.ModuleDependencies + arguments.ModuleDependencies
 
 		// Ensure the output directories exists as the first step
 		result.BuildOperations.Add(
 			SharedOperations.CreateCreateDirectoryOperation(
 				arguments.TargetRootDirectory,
-				arguments.ObjectDirectory));
+				arguments.ObjectDirectory))
 		result.BuildOperations.Add(
 			SharedOperations.CreateCreateDirectoryOperation(
 				arguments.TargetRootDirectory,
-				arguments.BinaryDirectory));
+				arguments.BinaryDirectory))
 
 		// Perform the core compilation of the source files
-		CoreCompile(buildState, arguments, result);
+		this.CoreCompile(buildState, arguments, result)
 
 		// Link the final target after all of the compile graph is done
-		CoreLink(buildState, arguments, result);
+		this.CoreLink(buildState, arguments, result)
 
 		// Copy previous runtime dependencies after linking has completed
-		CopyRuntimeDependencies(arguments, result);
+		this.CopyRuntimeDependencies(arguments, result)
 
-		return result;
+		return result
 	}
 
 	/// <summary>
 	/// Compile the module and source files
 	/// </summary>
-	CoreCompile(
-		IBuildState buildState,
-		BuildArguments arguments,
-		BuildResult result)
-	{
+	CoreCompile(buildState, arguments, result) {
 		// Ensure there are actually files to build
 		if (arguments.ModuleInterfacePartitionSourceFiles.Count != 0 ||
 			!arguments.ModuleInterfaceSourceFile.IsEmpty ||
 			arguments.SourceFiles.Count != 0 ||
-			arguments.AssemblySourceFiles.Count != 0)
-		{
+			arguments.AssemblySourceFiles.Count != 0) {
 			// Setup the shared properties
-			var compileArguments = new SharedCompileArguments()
-			{
-				Standard = arguments.LanguageStandard,
-				Optimize = Convert(arguments.OptimizationLevel),
-				SourceRootDirectory = arguments.SourceRootDirectory,
-				TargetRootDirectory = arguments.TargetRootDirectory,
-				ObjectDirectory = arguments.ObjectDirectory,
-				IncludeDirectories = arguments.IncludeDirectories,
-				IncludeModules = arguments.ModuleDependencies,
-				PreprocessorDefinitions = arguments.PreprocessorDefinitions,
-				GenerateSourceDebugInfo = arguments.GenerateSourceDebugInfo,
-				EnableWarningsAsErrors = arguments.EnableWarningsAsErrors,
-				DisabledWarnings = arguments.DisabledWarnings,
-				EnabledWarnings = arguments.EnabledWarnings,
-				CustomProperties = arguments.CustomProperties,
-			};
+			var compileArguments = SharedCompileArguments.new(
+				arguments.LanguageStandard,
+				this.ConvertBuildOptimizationLevel(arguments.OptimizationLevel),
+				arguments.SourceRootDirectory,
+				arguments.TargetRootDirectory,
+				arguments.ObjectDirectory,
+				arguments.IncludeDirectories,
+				arguments.ModuleDependencies,
+				arguments.PreprocessorDefinitions,
+				arguments.GenerateSourceDebugInfo,
+				arguments.EnableWarningsAsErrors,
+				arguments.DisabledWarnings,
+				arguments.EnabledWarnings,
+				arguments.CustomProperties)
 
 			// Compile the resource file if present
-			if (!arguments.ResourceFile.IsEmpty)
-			{
-				buildState.LogTrace(TraceLevel.Information, "Generate Resource File Compile: " + arguments.ResourceFile.ToString());
+			if (!arguments.ResourceFile.IsEmpty) {
+				buildState.LogTrace(TraceLevel.Information, "Generate Resource File Compile: " + arguments.ResourceFile.ToString())
 
 				var compiledResourceFile =
 					arguments.ObjectDirectory +
-					new Path(arguments.ResourceFile.GetFileName());
-				compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension);
+					Path.new(arguments.ResourceFile.GetFileName())
+				compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension)
 
-				var compileResourceFileArguments = new ResourceCompileArguments()
-				{
-					SourceFile = arguments.ResourceFile,
-					TargetFile = compiledResourceFile,
-				};
+				var compileResourceFileArguments = ResourceCompileArguments.new(
+					arguments.ResourceFile,
+					compiledResourceFile)
 
 				// Add the resource file arguments to the shared build definition
-				compileArguments.ResourceFile = compileResourceFileArguments;
+				compileArguments.ResourceFile = compileResourceFileArguments
 			}
 
 			// Build up the entire Interface Dependency Closure for each file
-			var partitionInterfaceDependencyLookup = new Dictionary<Path, IReadOnlyList<Path>>();
-			foreach (var file in arguments.ModuleInterfacePartitionSourceFiles)
-			{
-				partitionInterfaceDependencyLookup.Add(file.File, file.Imports);
+			var partitionInterfaceDependencyLookup = {}
+			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
+				partitionInterfaceDependencyLookup.Add(file.File, file.Imports)
 			}
 
 			// Compile the individual module interface partition translation units
-			var compileInterfacePartitionUnits = new List<InterfaceUnitCompileArguments>();
-			var allPartitionInterfaces = new List<Path>();
-			foreach (var file in arguments.ModuleInterfacePartitionSourceFiles)
-			{
-				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Partition Compile Operation: " + file.File.ToString());
+			var compileInterfacePartitionUnits = []
+			var allPartitionInterfaces = []
+			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
+				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Partition Compile Operation: " + file.File.ToString())
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
-					new Path(file.File.GetFileName());
-				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension);
+					Path.new(file.File.GetFileName())
+				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension)
 
-				var interfaceDependencyClosure = new HashSet<Path>();
-				BuildClosure(interfaceDependencyClosure, file.File, partitionInterfaceDependencyLookup);
-				if (interfaceDependencyClosure.Contains(file.File))
-				{
-					throw new InvalidOperationException($"Circular partition references in: {file.File}");
+				var interfaceDependencyClosure = Set.new()
+				this.BuildClosure(interfaceDependencyClosure, file.File, partitionInterfaceDependencyLookup)
+				if (interfaceDependencyClosure.Contains(file.File)) {
+					Fiber.abort("Circular partition references in: %(file.File)")
 				}
 
-				var partitionImports = new List<Path>();
-				foreach (var import in interfaceDependencyClosure)
-				{
-					var importInterface = arguments.ObjectDirectory + new Path(import.GetFileName());
-					importInterface.SetFileExtension(_compiler.ModuleFileExtension);
-					partitionImports.Add(arguments.TargetRootDirectory + importInterface);
+				var partitionImports = []
+				for (dependency in interfaceDependencyClosure) {
+					var importInterface = arguments.ObjectDirectory + Path.new(dependency.GetFileName())
+					importInterface.SetFileExtension(_compiler.ModuleFileExtension)
+					partitionImports.Add(arguments.TargetRootDirectory + importInterface)
 				}
 
-				var compileFileArguments = new InterfaceUnitCompileArguments()
-				{
-					SourceFile = file.File,
-					TargetFile = arguments.ObjectDirectory + new Path(file.File.GetFileName()),
-					IncludeModules = partitionImports,
-					ModuleInterfaceTarget = objectModuleInterfaceFile,
-				};
+				var compileFileArguments = InterfaceUnitCompileArguments.new(
+					file.File,
+					arguments.ObjectDirectory + Path.new(file.File.GetFileName()),
+					partitionImports,
+					objectModuleInterfaceFile)
 
-				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension);
+				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				compileInterfacePartitionUnits.Add(compileFileArguments);
-				allPartitionInterfaces.Add(arguments.TargetRootDirectory + objectModuleInterfaceFile);
+				compileInterfacePartitionUnits.Add(compileFileArguments)
+				allPartitionInterfaces.Add(arguments.TargetRootDirectory + objectModuleInterfaceFile)
 			}
 
 			// Add all partition unit interface files as module dependencies since MSVC does not
 			// combine the interfaces into the final interface unit
-			foreach (var module in allPartitionInterfaces)
-			{
-				result.ModuleDependencies.Add(module);
+			for (module in allPartitionInterfaces) {
+				result.ModuleDependencies.Add(module)
 			}
 
-			compileArguments.InterfacePartitionUnits = compileInterfacePartitionUnits;
+			compileArguments.InterfacePartitionUnits = compileInterfacePartitionUnits
 
 			// Compile the module interface unit if present
-			if (!arguments.ModuleInterfaceSourceFile.IsEmpty)
-			{
-				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: " + arguments.ModuleInterfaceSourceFile.ToString());
+			if (!arguments.ModuleInterfaceSourceFile.IsEmpty) {
+				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: " + arguments.ModuleInterfaceSourceFile.ToString())
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
-					new Path(arguments.ModuleInterfaceSourceFile.GetFileName());
-				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension);
+					Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
+				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension)
 				var binaryOutputModuleInterfaceFile =
 					arguments.BinaryDirectory +
-					new Path(arguments.TargetName + "." + _compiler.ModuleFileExtension);
+					Path.new(arguments.TargetName + "." + _compiler.ModuleFileExtension)
 
-				var compileModuleFileArguments = new InterfaceUnitCompileArguments()
-				{
-					SourceFile = arguments.ModuleInterfaceSourceFile,
-					TargetFile = arguments.ObjectDirectory + new Path(arguments.ModuleInterfaceSourceFile.GetFileName()),
-					IncludeModules = allPartitionInterfaces,
-					ModuleInterfaceTarget = objectModuleInterfaceFile,
-				};
+				var compileModuleFileArguments = InterfaceUnitCompileArguments.new(
+					arguments.ModuleInterfaceSourceFile,
+					arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName()),
+					allPartitionInterfaces,
+					objectModuleInterfaceFile)
 
-				compileModuleFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension);
+				compileModuleFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
 				// Add the interface unit arguments to the shared build definition
-				compileArguments.InterfaceUnit = compileModuleFileArguments;
+				compileArguments.InterfaceUnit = compileModuleFileArguments
 
 				// Copy the binary module interface to the binary directory after compiling
 				var copyInterfaceOperation =
 					SharedOperations.CreateCopyFileOperation(
 						arguments.TargetRootDirectory,
 						objectModuleInterfaceFile,
-						binaryOutputModuleInterfaceFile);
-				result.BuildOperations.Add(copyInterfaceOperation);
+						binaryOutputModuleInterfaceFile)
+				result.BuildOperations.Add(copyInterfaceOperation)
 
 				// Add output module interface to the parent set of modules
 				// This will allow the module implementation units access as well as downstream
@@ -197,45 +180,44 @@ class BuildEngine
 				result.ModuleDependencies.Add(
 					binaryOutputModuleInterfaceFile.HasRoot ?
 						binaryOutputModuleInterfaceFile :
-						arguments.TargetRootDirectory + binaryOutputModuleInterfaceFile);
+						arguments.TargetRootDirectory + binaryOutputModuleInterfaceFile)
 			}
 
 			// Compile the individual translation units
-			var compileImplementationUnits = new List<TranslationUnitCompileArguments>();
-			foreach (var file in arguments.SourceFiles)
-			{
-				buildState.LogTrace(TraceLevel.Information, "Generate Compile Operation: " + file.ToString());
+			var compileImplementationUnits = []
+			for (file in arguments.SourceFiles) {
+				buildState.LogTrace(TraceLevel.Information, "Generate Compile Operation: " + file.ToString())
 
-				var compileFileArguments = new TranslationUnitCompileArguments();
-				compileFileArguments.SourceFile = file;
-				compileFileArguments.TargetFile = arguments.ObjectDirectory + new Path(file.GetFileName());
-				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension);
+				var compileFileArguments = TranslationUnitCompileArguments.new()
+				compileFileArguments.SourceFile = file
+				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.GetFileName())
+				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				compileImplementationUnits.Add(compileFileArguments);
+				compileImplementationUnits.Add(compileFileArguments)
 			}
 
-			compileArguments.ImplementationUnits = compileImplementationUnits;
+			compileArguments.ImplementationUnits = compileImplementationUnits
 
 			// Compile the individual assembly units
-			var compileAssemblyUnits = new List<TranslationUnitCompileArguments>();
-			foreach (var file in arguments.AssemblySourceFiles)
-			{
-				buildState.LogTrace(TraceLevel.Information, "Generate Compile Assembly Operation: " + file.ToString());
+			var compileAssemblyUnits = []
+			for (file in arguments.AssemblySourceFiles) {
+				buildState.LogTrace(TraceLevel.Information, "Generate Compile Assembly Operation: " + file.ToString())
 
-				var compileFileArguments = new TranslationUnitCompileArguments();
-				compileFileArguments.SourceFile = file;
-				compileFileArguments.TargetFile = arguments.ObjectDirectory + new Path(file.GetFileName());
-				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension);
+				var compileFileArguments = TranslationUnitCompileArguments.new()
+				compileFileArguments.SourceFile = file
+				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.GetFileName())
+				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				compileAssemblyUnits.Add(compileFileArguments);
+				compileAssemblyUnits.Add(compileFileArguments)
 			}
 
-			compileArguments.AssemblyUnits = compileAssemblyUnits;
+			compileArguments.AssemblyUnits = compileAssemblyUnits
 
 			// Compile all source files as a single call
-			var compileOperations = _compiler.CreateCompileOperations(compileArguments);
-			foreach (var operation in compileOperations)
-				result.BuildOperations.Add(operation);
+			var compileOperations = _compiler.CreateCompileOperations(compileArguments)
+			for (operation in compileOperations) {
+				result.BuildOperations.Add(operation)
+			}
 		}
 	}
 
@@ -243,242 +225,193 @@ class BuildEngine
 	/// Link the library
 	/// </summary>
 	CoreLink(
-		IBuildState buildState,
-		BuildArguments arguments,
-		BuildResult result)
-	{
-		buildState.LogTrace(TraceLevel.Information, "CoreLink");
+		buildState,
+		arguments,
+		result) {
+		buildState.LogTrace(TraceLevel.Information, "CoreLink")
 
-		Path targetFile;
-		var implementationFile = new Path();
-		switch (arguments.TargetType)
-		{
-			case BuildTargetType.StaticLibrary:
-				targetFile = 
-					arguments.BinaryDirectory + 
-					new Path(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension);
-				break;
-			case BuildTargetType.DynamicLibrary:
-				targetFile = 
-					arguments.BinaryDirectory +
-					new Path(arguments.TargetName + "." + _compiler.DynamicLibraryFileExtension);
-				implementationFile = 
-					arguments.BinaryDirectory +
-					new Path(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension);
-				break;
-			case BuildTargetType.Executable:
-			case BuildTargetType.WindowsApplication:
-				targetFile = 
-					arguments.BinaryDirectory + 
-					new Path(arguments.TargetName + ".exe");
-				break;
-			default:
-				throw new InvalidOperationException("Unknown build target type.");
+		var targetFile
+		var implementationFile = Path.new()
+		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
+			targetFile = arguments.BinaryDirectory +
+				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
+		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
+			targetFile = arguments.BinaryDirectory +
+				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryFileExtension)
+			implementationFile = arguments.BinaryDirectory +
+				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
+		} else if (arguments.TargetType == BuildTargetType.Executable ||
+			arguments.TargetType == BuildTargetType.WindowsApplication) {
+			targetFile = arguments.BinaryDirectory + 
+				Path.new(arguments.TargetName + ".exe")
+		} else {
+			Fiber.abort("Unknown build target type.")
 		}
 
-		buildState.LogTrace(TraceLevel.Information, "Linking target");
+		buildState.LogTrace(TraceLevel.Information, "Linking target")
 
-		var linkArguments = new LinkArguments()
-		{
-			TargetFile = targetFile,
-			TargetArchitecture = arguments.TargetArchitecture,
-			ImplementationFile = implementationFile,
-			TargetRootDirectory = arguments.TargetRootDirectory,
-			LibraryPaths = arguments.LibraryPaths,
-			GenerateSourceDebugInfo = arguments.GenerateSourceDebugInfo,
-		};
+		var linkArguments = LinkArguments.new(
+			targetFile,
+			arguments.TargetArchitecture,
+			implementationFile,
+			arguments.TargetRootDirectory,
+			arguments.LibraryPaths,
+			arguments.GenerateSourceDebugInfo)
 
 		// Only resolve link libraries if not a library ourself
-		if (arguments.TargetType != BuildTargetType.StaticLibrary)
-		{
-			linkArguments.ExternalLibraryFiles = arguments.PlatformLinkDependencies;
-			linkArguments.LibraryFiles = arguments.LinkDependencies;
+		if (arguments.TargetType != BuildTargetType.StaticLibrary) {
+			linkArguments.ExternalLibraryFiles = arguments.PlatformLinkDependencies
+			linkArguments.LibraryFiles = arguments.LinkDependencies
 		}
 
 		// Translate the target type into the link target
 		// and determine what dependencies to inject into downstream builds
 
-		switch (arguments.TargetType)
-		{
-			case BuildTargetType.StaticLibrary:
-			{
-				linkArguments.TargetType = LinkTarget.StaticLibrary;
-				
-				// Add the library as a link dependency and all recursive libraries
-				result.LinkDependencies = new List<Path>(arguments.LinkDependencies);
-				var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile;
-				result.LinkDependencies.Add(absoluteTargetFile);
-				break;
-			}
-			case BuildTargetType.DynamicLibrary:
-			{
-				linkArguments.TargetType = LinkTarget.DynamicLibrary;
+		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
+			linkArguments.TargetType = LinkTarget.StaticLibrary
+			
+			// Add the library as a link dependency and all recursive libraries
+			result.LinkDependencies = []
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.LinkDependencies.Add(absoluteTargetFile)
+		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
+			linkArguments.TargetType = LinkTarget.DynamicLibrary
 
-				// Add the DLL as a runtime dependency
-				var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile;
-				result.RuntimeDependencies.Add(absoluteTargetFile);
+			// Add the DLL as a runtime dependency
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.RuntimeDependencies.Add(absoluteTargetFile)
 
-				// Clear out all previous link dependencies and replace with the 
-				// single implementation library for the DLL
-				var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ? linkArguments.ImplementationFile : linkArguments.TargetRootDirectory + linkArguments.ImplementationFile;
-				result.LinkDependencies.Add(absoluteImplementationFile);
+			// Clear out all previous link dependencies and replace with the 
+			// single implementation library for the DLL
+			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ? linkArguments.ImplementationFile : linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
+			result.LinkDependencies.Add(absoluteImplementationFile)
 
-				// Set the targe file
-				result.TargetFile = absoluteTargetFile;
+			// Set the targe file
+			result.TargetFile = absoluteTargetFile
+		} else if (arguments.TargetType == BuildTargetType.Executable) {
+			linkArguments.TargetType = LinkTarget.Executable
 
-				break;
-			}
-			case BuildTargetType.Executable:
-			{
-				linkArguments.TargetType = LinkTarget.Executable;
+			// Add the Executable as a runtime dependency
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.RuntimeDependencies.Add(absoluteTargetFile)
 
-				// Add the Executable as a runtime dependency
-				var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile;
-				result.RuntimeDependencies.Add(absoluteTargetFile);
+			// All link dependencies stop here.
 
-				// All link dependencies stop here.
+			// Set the targe file
+			result.TargetFile = absoluteTargetFile
+		} else if (arguments.TargetType == BuildTargetType.WindowsApplication) {
+			linkArguments.TargetType = LinkTarget.WindowsApplication
 
-				// Set the targe file
-				result.TargetFile = absoluteTargetFile;
-				break;
-			}
-			case BuildTargetType.WindowsApplication:
-			{
-				linkArguments.TargetType = LinkTarget.WindowsApplication;
+			// Add the Executable as a runtime dependency
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.RuntimeDependencies.Add(absoluteTargetFile)
 
-				// Add the Executable as a runtime dependency
-				var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile;
-				result.RuntimeDependencies.Add(absoluteTargetFile);
+			// All link dependencies stop here.
 
-				// All link dependencies stop here.
-
-				// Set the targe file
-				result.TargetFile = absoluteTargetFile;
-				break;
-			}
-			default:
-			{
-				throw new InvalidOperationException("Unknown build target type.");
-			}
+			// Set the targe file
+			result.TargetFile = absoluteTargetFile
+		} else {
+			Fiber.abort("Unknown build target type.")
 		}
 
 		// Build up the set of object files
-		var objectFiles = new List<Path>();
+		var objectFiles = []
 
 		// Add the resource file if present
-		if (!arguments.ResourceFile.IsEmpty)
-		{
+		if (!arguments.ResourceFile.IsEmpty) {
 			var compiledResourceFile =
 				arguments.ObjectDirectory +
-				new Path(arguments.ResourceFile.GetFileName());
-			compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension);
+				Path.new(arguments.ResourceFile.GetFileName())
+			compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension)
 
-			objectFiles.Add(compiledResourceFile);
+			objectFiles.Add(compiledResourceFile)
 		}
 
 		// Add the partition object files
-		foreach (var sourceFile in arguments.ModuleInterfacePartitionSourceFiles)
-		{
-			var objectFile = arguments.ObjectDirectory + new Path(sourceFile.File.GetFileName());
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension);
-			objectFiles.Add(objectFile);
+		for (sourceFile in arguments.ModuleInterfacePartitionSourceFiles) {
+			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.File.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.Add(objectFile)
 		}
 
 		// Add the module interface object file if present
-		if (!arguments.ModuleInterfaceSourceFile.IsEmpty)
-		{
-			var objectFile = arguments.ObjectDirectory + new Path(arguments.ModuleInterfaceSourceFile.GetFileName());
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension);
-			objectFiles.Add(objectFile);
+		if (!arguments.ModuleInterfaceSourceFile.IsEmpty) {
+			var objectFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.Add(objectFile)
 		}
 
 		// Add the implementation unit object files
-		foreach (var sourceFile in arguments.SourceFiles)
-		{
-			var objectFile = arguments.ObjectDirectory + new Path(sourceFile.GetFileName());
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension);
-			objectFiles.Add(objectFile);
+		for (sourceFile in arguments.SourceFiles) {
+			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.Add(objectFile)
 		}
 
 		// Add the assembly unit object files
-		foreach (var sourceFile in arguments.AssemblySourceFiles)
-		{
-			var objectFile = arguments.ObjectDirectory + new Path(sourceFile.GetFileName());
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension);
-			objectFiles.Add(objectFile);
+		for (sourceFile in arguments.AssemblySourceFiles) {
+			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.Add(objectFile)
 		}
 
-		linkArguments.ObjectFiles = objectFiles;
+		linkArguments.ObjectFiles = objectFiles
 
 		// Perform the link
-		buildState.LogTrace(TraceLevel.Information, "Generate Link Operation: " + linkArguments.TargetFile.ToString());
-		var linkOperation = _compiler.CreateLinkOperation(linkArguments);
-		result.BuildOperations.Add(linkOperation);
+		buildState.LogTrace(TraceLevel.Information, "Generate Link Operation: " + linkArguments.TargetFile.ToString())
+		var linkOperation = _compiler.CreateLinkOperation(linkArguments)
+		result.BuildOperations.Add(linkOperation)
 
 		// Pass along the link arguments for internal access
-		result.InternalLinkDependencies = new List<Path>(arguments.LinkDependencies);
-		foreach (var file in linkArguments.ObjectFiles)
-			result.InternalLinkDependencies.Add(file);
+		result.InternalLinkDependencies = []
+		result.InternalLinkDependencies = result.InternalLinkDependencies + arguments.LinkDependencies
+		for (file in linkArguments.ObjectFiles) {
+			result.InternalLinkDependencies.Add(file)
+		}
 	}
 
 	/// <summary>
 	/// Copy runtime dependencies
 	/// </summary>
-	private void CopyRuntimeDependencies(
-		BuildArguments arguments,
-		BuildResult result)
-	{
+	CopyRuntimeDependencies(arguments, result) {
 		if (arguments.TargetType == BuildTargetType.Executable ||
 			arguments.TargetType == BuildTargetType.WindowsApplication ||
-			arguments.TargetType == BuildTargetType.DynamicLibrary)
-		{
-			foreach (var source in arguments.RuntimeDependencies)
-			{
-				var target = arguments.BinaryDirectory + new Path(source.GetFileName());
+			arguments.TargetType == BuildTargetType.DynamicLibrary) {
+			for (source in arguments.RuntimeDependencies) {
+				var target = arguments.BinaryDirectory + Path.new(source.GetFileName())
 				var operation = SharedOperations.CreateCopyFileOperation(
 					arguments.TargetRootDirectory,
 					source,
-					target);
-				result.BuildOperations.Add(operation);
+					target)
+				result.BuildOperations.Add(operation)
 
 				// Add the copied file as the new runtime dependency
-				result.RuntimeDependencies.Add(target);
+				result.RuntimeDependencies.Add(target)
 			}
-		}
-		else
-		{
+		} else {
 			// Pass along all runtime dependencies in their original location
-			foreach (var source in arguments.RuntimeDependencies)
-			{
-				result.RuntimeDependencies.Add(source);
+			for (source in arguments.RuntimeDependencies) {
+				result.RuntimeDependencies.Add(source)
 			}
 		}
 	}
 
-	private void BuildClosure(
-		ISet<Path> closure,
-		Path file,
-		IDictionary<Path, IReadOnlyList<Path>> partitionInterfaceDependencyLookup)
-	{
-		foreach (var childFile in partitionInterfaceDependencyLookup[file])
-		{
-			closure.Add(childFile);
-			BuildClosure(closure, childFile, partitionInterfaceDependencyLookup);
+	BuildClosure(closure, file, partitionInterfaceDependencyLookup) {
+		for (childFile in partitionInterfaceDependencyLookup[file]) {
+			closure.Add(childFile)
+			this.BuildClosure(closure, childFile, partitionInterfaceDependencyLookup)
 		}
 	}
 
-	private OptimizationLevel Convert(BuildOptimizationLevel value)
-	{
-		switch (value)
-		{
-			case BuildOptimizationLevel.None:
-				return OptimizationLevel.None;
-			case BuildOptimizationLevel.Speed:
-				return OptimizationLevel.Speed;
-			case BuildOptimizationLevel.Size:
-				return OptimizationLevel.Size;
-			default:
-				throw new InvalidOperationException("Unknown BuildOptimizationLevel.");
+	ConvertBuildOptimizationLevel(value) {
+		if (value == BuildOptimizationLevel.None) {
+			return OptimizationLevel.None
+		} else if (value == BuildOptimizationLevel.Speed) {
+			return OptimizationLevel.Speed
+		} else if (value == BuildOptimizationLevel.Size) {
+			return OptimizationLevel.Size
+		} else {
+			Fiber.abort("Unknown BuildOptimizationLevel.")
 		}
 	}
 }

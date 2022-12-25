@@ -5,8 +5,7 @@
 /// <summary>
 /// The enumeration of build optimization levels
 /// </summary>
-class BuildOptimizationLevel
-{
+class BuildOptimizationLevel {
 	/// <summary>
 	/// Debug
 	/// </summary>
@@ -26,8 +25,7 @@ class BuildOptimizationLevel
 /// <summary>
 /// The enumeration of target types
 /// </summary>
-class BuildTargetType
-{
+class BuildTargetType {
 	/// <summary>
 	/// Windows Application
 	/// </summary>
@@ -52,8 +50,7 @@ class BuildTargetType
 /// <summary>
 /// The source file definition
 /// </summary>
-class SourceFile
-{
+class SourceFile {
 	File {}
 	IsModule {}
 }
@@ -61,8 +58,7 @@ class SourceFile
 /// <summary>
 /// The partition source file definition
 /// </summary>
-class PartitionSourceFile
-{
+class PartitionSourceFile {
 	File {}
 	Imports {}
 }
@@ -70,8 +66,7 @@ class PartitionSourceFile
 /// <summary>
 /// The set of build arguments
 /// </summary>
-class BuildArguments
-{
+class BuildArguments {
 	/// <summary>
 	/// Gets or sets the target name
 	/// </summary>

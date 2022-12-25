@@ -5,8 +5,7 @@
 /// <summary>
 /// The build result
 /// </summary>
-class BuildResult
-{
+class BuildResult {
 	/// <summary>
 	/// Gets or sets the resulting root build operations
 	/// </summary>
