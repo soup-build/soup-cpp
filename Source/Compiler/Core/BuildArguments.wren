@@ -29,22 +29,22 @@ class BuildTargetType {
 	/// <summary>
 	/// Windows Application
 	/// </summary>
-	WindowsApplication { "WindowsApplication" }
+	static WindowsApplication { "WindowsApplication" }
 
 	/// <summary>
 	/// Executable
 	/// </summary>
-	Executable { "Executable" }
+	static Executable { "Executable" }
 
 	/// <summary>
 	/// Static Library
 	/// </summary>
-	StaticLibrary { "StaticLibrary" }
+	static StaticLibrary { "StaticLibrary" }
 
 	/// <summary>
 	/// Dynamic Library
 	/// </summary>
-	DynamicLibrary { "DynamicLibrary" }
+	static DynamicLibrary { "DynamicLibrary" }
 }
 
 /// <summary>
@@ -67,20 +67,38 @@ class PartitionSourceFile {
 /// The set of build arguments
 /// </summary>
 class BuildArguments {
+	construct new(
+		targetName,
+		targetArchitecture,
+		targetType,
+		sourceRootDirectory,
+		targetRootDirectory,
+		objectDirectory,
+		binaryDirectory) {
+		_targetName = targetName
+		_targetArchitecture = targetArchitecture
+		_targetType = targetType
+		_sourceRootDirectory = sourceRootDirectory
+		_targetRootDirectory = targetRootDirectory
+		_objectDirectory = objectDirectory
+		_binaryDirectory = binaryDirectory
+		_moduleDependencies = []
+	}
+
 	/// <summary>
 	/// Gets or sets the target name
 	/// </summary>
-	TargetName {}
+	TargetName { _targetName }
 
 	/// <summary>
 	/// Gets or sets the target architecture
 	/// </summary>
-	TargetArchitecture {}
+	TargetArchitecture { _targetArchitecture }
 
 	/// <summary>
 	/// Gets or sets the target type
 	/// </summary>
-	TargetType {}
+	TargetType { _targetType }
 
 	/// <summary>
 	/// Gets or sets the language standard
@@ -90,22 +108,22 @@ class BuildArguments {
 	/// <summary>
 	/// Gets or sets the source directory
 	/// </summary>
-	SourceRootDirectory {}
+	SourceRootDirectory { _sourceRootDirectory }
 
 	/// <summary>
 	/// Gets or sets the target directory
 	/// </summary>
-	TargetRootDirectory {}
+	TargetRootDirectory { _targetRootDirectory }
 
 	/// <summary>
 	/// Gets or sets the output object directory
 	/// </summary>
-	ObjectDirectory {}
+	ObjectDirectory { _objectDirectory }
 
 	/// <summary>
 	/// Gets or sets the output binary directory
 	/// </summary>
-	BinaryDirectory {}
+	BinaryDirectory { _binaryDirectory }
 
 	/// <summary>
 	/// Gets or sets the list of module interface partition source files
@@ -145,7 +163,7 @@ class BuildArguments {
 	/// <summary>
 	/// Gets or sets the list of module dependencies
 	/// </summary>
-	ModuleDependencies {}
+	ModuleDependencies { _moduleDependencies }
 
 	/// <summary>
 	/// Gets or sets the list of platform link libraries

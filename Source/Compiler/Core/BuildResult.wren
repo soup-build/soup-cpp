@@ -6,6 +6,9 @@
 /// The build result
 /// </summary>
 class BuildResult {
+	construct new() {
+	}
+
 	/// <summary>
 	/// Gets or sets the resulting root build operations
 	/// </summary>
@@ -14,7 +17,8 @@ class BuildResult {
 	/// <summary>
 	/// Gets or sets the list of module dependencies
 	/// </summary>
-	ModuleDependencies {}
+	ModuleDependencies { _moduleDependencies }
+	ModuleDependencies=(value) { _moduleDependencies = value }
 
 	/// <summary>
 	/// Gets or sets the list of link libraries that downstream builds should use when linking
