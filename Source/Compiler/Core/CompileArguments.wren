@@ -9,22 +9,22 @@ class LanguageStandard {
 	/// <summary>
 	/// C++ 11
 	/// </summary>
-	CPP11 { "CPP11" }
+	static CPP11 { "CPP11" }
 
 	/// <summary>
 	/// C++ 14
 	/// </summary>
-	CPP14 { "CPP14" }
+	static CPP14 { "CPP14" }
 
 	/// <summary>
 	/// C++ 17
 	/// </summary>
-	CPP17 { "CPP17" }
+	static CPP17 { "CPP17" }
 
 	/// <summary>
 	/// C++ 20
 	/// </summary>
-	CPP20 { "CPP20" }
+	static CPP20 { "CPP20" }
 }
 
 /// <summary>
@@ -34,17 +34,17 @@ class OptimizationLevel {
 	/// <summary>
 	/// Disable all optimization for build speed and debugability
 	/// </summary>
-	None { "None" }
+	static None { "None" }
 
 	/// <summary>
 	/// Optimize for speed
 	/// </summary>
-	Speed { "Speed" }
+	static Speed { "Speed" }
 
 	/// <summary>
 	/// Optimize for size
 	/// </summary>
-	Size { "Size" }
+	static Size { "Size" }
 }
 
 /// <summary>

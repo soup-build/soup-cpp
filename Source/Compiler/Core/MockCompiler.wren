@@ -2,14 +2,15 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+import "../../BuildOperation" for BuildOperation
+import "../../Path" for Path
 import "./ICompiler" for ICompiler
 
 /// <summary>
 /// A mock compiler interface implementation
 /// TODO: Move into test projects
 /// </summary>
-class MockCompiler is ICompiler
-{
+class MockCompiler is ICompiler {
 	/// <summary>
 	/// Initializes a new instance of the <see cref='Compiler'/> class.
 	/// </summary>
@@ -67,7 +68,7 @@ class MockCompiler is ICompiler
 	/// <summary>
 	/// Compile
 	/// </summary>
-	CreateCompileOperations(SharedCompileArguments arguments) {
+	CreateCompileOperations(arguments) {
 		_compileRequests.add(arguments)
 
 		var result = []
@@ -88,7 +89,7 @@ class MockCompiler is ICompiler
 					]))
 		}
 
-		if (!ReferenceEquals(arguments.InterfaceUnit, null)) {
+		if (arguments.InterfaceUnit != null) {
 			result.add(
 				BuildOperation.new(
 					"MockCompileModule: %(_compileRequests.Count)",
@@ -125,7 +126,7 @@ class MockCompiler is ICompiler
 	/// <summary>
 	/// Link
 	/// </summary>
-	CreateLinkOperation(LinkArguments arguments) {
+	CreateLinkOperation(arguments) {
 		_linkRequests.add(arguments)
 		return BuildOperation.new(
 			"MockLink: %(_linkRequests.Count)",

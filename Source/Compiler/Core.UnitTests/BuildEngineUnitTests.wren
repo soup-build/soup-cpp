@@ -6,10 +6,10 @@ import "../../Path" for Path
 import "../../BuildOperation" for BuildOperation
 import "../../BuildState" for BuildState
 import "../../Assert" for Assert
-import "../BuildEngine" for BuildEngine
-import "../MockCompiler" for MockCompiler
-import "../Core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, SourceFile, TargetFile
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, PartitionSourceFile, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "../Core/BuildEngine" for BuildEngine
+import "../Core/MockCompiler" for MockCompiler
+import "../Core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, PartitionSourceFile, SourceFile
+import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
 import "../Core/LinkArguments" for LinkArguments, LinkTarget
 
 class BuildEngineUnitTests {
@@ -38,22 +38,22 @@ class BuildEngineUnitTests {
 		var compiler = MockCompiler.new()
 
 		// Setup the build arguments
-		var arguments = BuildArguments.new(
-			"Program",
-			BuildTargetType.WindowsApplication,
-			LanguageStandard.CPP20,
-			Path.new("C:/source/"),
-			Path.new("C:/target/"),
-			Path.new("obj/"),
-			Path.new("bin/"),
-			[
-				Path.new("TestFile.cpp"),
-			],
-			BuildOptimizationLevel.None,
-			[
-				Path.new("../Other/bin/OtherModule1.mock.a"),
-				Path.new("../OtherModule2.mock.a"),
-			])
+		var arguments = BuildArguments.new()
+		arguments.TargetName = "Program"
+		arguments.TargetType = BuildTargetType.WindowsApplication
+		arguments.LanguageStandard = LanguageStandard.CPP20
+		arguments.SourceRootDirectory = Path.new("C:/source/")
+		arguments.TargetRootDirectory = Path.new("C:/target/")
+		arguments.ObjectDirectory = Path.new("obj/")
+		arguments.BinaryDirectory = Path.new("bin/")
+		arguments.SourceFiles = [
+			Path.new("TestFile.cpp"),
+		]
+		arguments.OptimizationLevel = BuildOptimizationLevel.None
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
+		]
 
 		var uut = BuildEngine.new(compiler)
 
