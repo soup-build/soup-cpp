@@ -1,12 +1,7 @@
+// <copyright file="BuildEngineUnitTests.wren" company="Soup">
+// Copyright (c) Soup. All rights reserved.
+// </copyright>
 
-using Opal;
-using Opal.System;
-using Soup.Build.Runtime;
-using System.Collections.Generic;
-using Xunit;
-
-namespace Soup.Build.Cpp.Compiler.UnitTests
-{
 	public class BuildEngineUnitTests
 	{
 		[Fact]
