@@ -82,7 +82,14 @@ class BuildArguments {
 		_targetRootDirectory = targetRootDirectory
 		_objectDirectory = objectDirectory
 		_binaryDirectory = binaryDirectory
+		_moduleInterfacePartitionSourceFiles = []
+		_moduleInterfaceSourceFile = null
+		_sourceFiles = []
+		_assemblySourceFiles = []
 		_moduleDependencies = []
+		_linkDependencies = []
+		_libraryPaths = []
+		_runtimeDependencies = []
 	}
 
 	/// <summary>
@@ -130,35 +137,35 @@ class BuildArguments {
 	/// Note: These files can be plain old translation units 
 	/// or they can be module implementation units
 	/// </summary>
-	ModuleInterfacePartitionSourceFiles {}
+	ModuleInterfacePartitionSourceFiles { _moduleInterfacePartitionSourceFiles }
 
 	/// <summary>
 	/// Gets or sets the single module interface source file
 	/// </summary>
-	ModuleInterfaceSourceFile {}
+	ModuleInterfaceSourceFile { _moduleInterfaceSourceFile}
 
 	/// <summary>
 	/// Gets or sets the MSVC Resrouce file
 	/// TODO: Abstract for multi-compiler/platform support
 	/// </summary>
-	ResourceFile {}
+	ResourceFile { _resourceFile}
 
 	/// <summary>
 	/// Gets or sets the list of source files
 	/// Note: These files can be plain old translation units 
 	/// or they can be module implementation units
 	/// </summary>
-	SourceFiles {}
+	SourceFiles { _sourceFiles }
 
 	/// <summary>
 	/// Gets or sets the list of assembly source files
 	/// </summary>
-	AssemblySourceFiles {}
+	AssemblySourceFiles { _assemblySourceFiles }
 
 	/// <summary>
 	/// Gets or sets the list of include directories
 	/// </summary>
-	IncludeDirectories {}
+	IncludeDirectories { _includeDirectories }
 
 	/// <summary>
 	/// Gets or sets the list of module dependencies
@@ -170,55 +177,55 @@ class BuildArguments {
 	/// Note: These libraries will be included at link time, but will not be an input
 	/// for the incremental builds
 	/// </summary>
-	PlatformLinkDependencies {}
+	PlatformLinkDependencies { _platformLinkDependencies }
 
 	/// <summary>
 	/// Gets or sets the list of link libraries
 	/// </summary>
-	LinkDependencies {}
+	LinkDependencies { _linkDependencies }
 
 	/// <summary>
 	/// Gets or sets the list of library paths
 	/// </summary>
-	LibraryPaths {}
+	LibraryPaths { _libraryPaths }
 
 	/// <summary>
 	/// Gets or sets the list of preprocessor definitions
 	/// </summary>
-	PreprocessorDefinitions {}
+	PreprocessorDefinitions { _preprocessorDefinitions }
 
 	/// <summary>
 	/// Gets or sets the list of runtime dependencies
 	/// </summary>
-	RuntimeDependencies {}
+	RuntimeDependencies { _runtimeDependencies }
 
 	/// <summary>
 	/// Gets or sets the optimization level
 	/// </summary>
-	OptimizationLevel {}
+	OptimizationLevel { _optimizationLevel }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether to generate source debug information
 	/// </summary>
-	GenerateSourceDebugInfo {}
+	GenerateSourceDebugInfo { _generateSourceDebugInfo }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether to enable warnings as errors
 	/// </summary>
-	EnableWarningsAsErrors {}
+	EnableWarningsAsErrors { _enableWarningsAsErrors}
 
 	/// <summary>
 	/// Gets or sets the list of disabled warnings
 	/// </summary>
-	DisabledWarnings {}
+	DisabledWarnings { _disabledWarnings}
 
 	/// <summary>
 	/// Gets or sets the list of enabled warnings
 	/// </summary>
-	EnabledWarnings {}
+	EnabledWarnings { _enabledWarnings }
 
 	/// <summary>
 	/// Gets or sets the set of custom properties for the known compiler
 	/// </summary>
-	CustomProperties {}
+	CustomProperties { _customProperties }
 }

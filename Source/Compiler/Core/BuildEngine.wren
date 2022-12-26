@@ -30,11 +30,11 @@ class BuildEngine {
 		result.ModuleDependencies = result.ModuleDependencies + arguments.ModuleDependencies
 
 		// Ensure the output directories exists as the first step
-		result.BuildOperations.Add(
+		result.BuildOperations.add(
 			SharedOperations.CreateCreateDirectoryOperation(
 				arguments.TargetRootDirectory,
 				arguments.ObjectDirectory))
-		result.BuildOperations.Add(
+		result.BuildOperations.add(
 			SharedOperations.CreateCreateDirectoryOperation(
 				arguments.TargetRootDirectory,
 				arguments.BinaryDirectory))
@@ -56,10 +56,10 @@ class BuildEngine {
 	/// </summary>
 	CoreCompile(buildState, arguments, result) {
 		// Ensure there are actually files to build
-		if (arguments.ModuleInterfacePartitionSourceFiles.Count != 0 ||
-			!arguments.ModuleInterfaceSourceFile.IsEmpty ||
-			arguments.SourceFiles.Count != 0 ||
-			arguments.AssemblySourceFiles.Count != 0) {
+		if (arguments.ModuleInterfacePartitionSourceFiles.count != 0 ||
+			arguments.ModuleInterfaceSourceFile != null ||
+			arguments.SourceFiles.count != 0 ||
+			arguments.AssemblySourceFiles.count != 0) {
 			// Setup the shared properties
 			var compileArguments = SharedCompileArguments.new(
 				arguments.LanguageStandard,
@@ -96,7 +96,7 @@ class BuildEngine {
 			// Build up the entire Interface Dependency Closure for each file
 			var partitionInterfaceDependencyLookup = {}
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
-				partitionInterfaceDependencyLookup.Add(file.File, file.Imports)
+				partitionInterfaceDependencyLookup.add(file.File, file.Imports)
 			}
 
 			// Compile the individual module interface partition translation units
@@ -120,7 +120,7 @@ class BuildEngine {
 				for (dependency in interfaceDependencyClosure) {
 					var importInterface = arguments.ObjectDirectory + Path.new(dependency.GetFileName())
 					importInterface.SetFileExtension(_compiler.ModuleFileExtension)
-					partitionImports.Add(arguments.TargetRootDirectory + importInterface)
+					partitionImports.add(arguments.TargetRootDirectory + importInterface)
 				}
 
 				var compileFileArguments = InterfaceUnitCompileArguments.new(
@@ -131,14 +131,14 @@ class BuildEngine {
 
 				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				compileInterfacePartitionUnits.Add(compileFileArguments)
-				allPartitionInterfaces.Add(arguments.TargetRootDirectory + objectModuleInterfaceFile)
+				compileInterfacePartitionUnits.add(compileFileArguments)
+				allPartitionInterfaces.add(arguments.TargetRootDirectory + objectModuleInterfaceFile)
 			}
 
 			// Add all partition unit interface files as module dependencies since MSVC does not
 			// combine the interfaces into the final interface unit
 			for (module in allPartitionInterfaces) {
-				result.ModuleDependencies.Add(module)
+				result.ModuleDependencies.add(module)
 			}
 
 			compileArguments.InterfacePartitionUnits = compileInterfacePartitionUnits
@@ -172,12 +172,12 @@ class BuildEngine {
 						arguments.TargetRootDirectory,
 						objectModuleInterfaceFile,
 						binaryOutputModuleInterfaceFile)
-				result.BuildOperations.Add(copyInterfaceOperation)
+				result.BuildOperations.add(copyInterfaceOperation)
 
 				// Add output module interface to the parent set of modules
 				// This will allow the module implementation units access as well as downstream
 				// dependencies to the public interface.
-				result.ModuleDependencies.Add(
+				result.ModuleDependencies.add(
 					binaryOutputModuleInterfaceFile.HasRoot ?
 						binaryOutputModuleInterfaceFile :
 						arguments.TargetRootDirectory + binaryOutputModuleInterfaceFile)
@@ -193,7 +193,7 @@ class BuildEngine {
 				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.GetFileName())
 				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				compileImplementationUnits.Add(compileFileArguments)
+				compileImplementationUnits.add(compileFileArguments)
 			}
 
 			compileArguments.ImplementationUnits = compileImplementationUnits
@@ -208,7 +208,7 @@ class BuildEngine {
 				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.GetFileName())
 				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				compileAssemblyUnits.Add(compileFileArguments)
+				compileAssemblyUnits.add(compileFileArguments)
 			}
 
 			compileArguments.AssemblyUnits = compileAssemblyUnits
@@ -216,7 +216,7 @@ class BuildEngine {
 			// Compile all source files as a single call
 			var compileOperations = _compiler.CreateCompileOperations(compileArguments)
 			for (operation in compileOperations) {
-				result.BuildOperations.Add(operation)
+				result.BuildOperations.add(operation)
 			}
 		}
 	}
@@ -273,18 +273,18 @@ class BuildEngine {
 			// Add the library as a link dependency and all recursive libraries
 			result.LinkDependencies = []
 			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.LinkDependencies.Add(absoluteTargetFile)
+			result.LinkDependencies.add(absoluteTargetFile)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			linkArguments.TargetType = LinkTarget.DynamicLibrary
 
 			// Add the DLL as a runtime dependency
 			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.RuntimeDependencies.Add(absoluteTargetFile)
+			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// Clear out all previous link dependencies and replace with the 
 			// single implementation library for the DLL
 			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ? linkArguments.ImplementationFile : linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
-			result.LinkDependencies.Add(absoluteImplementationFile)
+			result.LinkDependencies.add(absoluteImplementationFile)
 
 			// Set the targe file
 			result.TargetFile = absoluteTargetFile
@@ -293,7 +293,7 @@ class BuildEngine {
 
 			// Add the Executable as a runtime dependency
 			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.RuntimeDependencies.Add(absoluteTargetFile)
+			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// All link dependencies stop here.
 
@@ -304,7 +304,7 @@ class BuildEngine {
 
 			// Add the Executable as a runtime dependency
 			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.RuntimeDependencies.Add(absoluteTargetFile)
+			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// All link dependencies stop here.
 
@@ -318,41 +318,41 @@ class BuildEngine {
 		var objectFiles = []
 
 		// Add the resource file if present
-		if (!arguments.ResourceFile.IsEmpty) {
+		if (arguments.ResourceFile != null) {
 			var compiledResourceFile =
 				arguments.ObjectDirectory +
 				Path.new(arguments.ResourceFile.GetFileName())
 			compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension)
 
-			objectFiles.Add(compiledResourceFile)
+			objectFiles.add(compiledResourceFile)
 		}
 
 		// Add the partition object files
 		for (sourceFile in arguments.ModuleInterfacePartitionSourceFiles) {
 			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.File.GetFileName())
 			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.Add(objectFile)
+			objectFiles.add(objectFile)
 		}
 
 		// Add the module interface object file if present
-		if (!arguments.ModuleInterfaceSourceFile.IsEmpty) {
+		if (arguments.ModuleInterfaceSourceFile != null) {
 			var objectFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
 			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.Add(objectFile)
+			objectFiles.add(objectFile)
 		}
 
 		// Add the implementation unit object files
 		for (sourceFile in arguments.SourceFiles) {
 			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
 			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.Add(objectFile)
+			objectFiles.add(objectFile)
 		}
 
 		// Add the assembly unit object files
 		for (sourceFile in arguments.AssemblySourceFiles) {
 			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
 			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.Add(objectFile)
+			objectFiles.add(objectFile)
 		}
 
 		linkArguments.ObjectFiles = objectFiles
@@ -360,13 +360,13 @@ class BuildEngine {
 		// Perform the link
 		buildState.LogTrace(TraceLevel.Information, "Generate Link Operation: " + linkArguments.TargetFile.ToString())
 		var linkOperation = _compiler.CreateLinkOperation(linkArguments)
-		result.BuildOperations.Add(linkOperation)
+		result.BuildOperations.add(linkOperation)
 
 		// Pass along the link arguments for internal access
 		result.InternalLinkDependencies = []
 		result.InternalLinkDependencies = result.InternalLinkDependencies + arguments.LinkDependencies
 		for (file in linkArguments.ObjectFiles) {
-			result.InternalLinkDependencies.Add(file)
+			result.InternalLinkDependencies.add(file)
 		}
 	}
 
@@ -383,22 +383,22 @@ class BuildEngine {
 					arguments.TargetRootDirectory,
 					source,
 					target)
-				result.BuildOperations.Add(operation)
+				result.BuildOperations.add(operation)
 
 				// Add the copied file as the new runtime dependency
-				result.RuntimeDependencies.Add(target)
+				result.RuntimeDependencies.add(target)
 			}
 		} else {
 			// Pass along all runtime dependencies in their original location
 			for (source in arguments.RuntimeDependencies) {
-				result.RuntimeDependencies.Add(source)
+				result.RuntimeDependencies.add(source)
 			}
 		}
 	}
 
 	BuildClosure(closure, file, partitionInterfaceDependencyLookup) {
 		for (childFile in partitionInterfaceDependencyLookup[file]) {
-			closure.Add(childFile)
+			closure.add(childFile)
 			this.BuildClosure(closure, childFile, partitionInterfaceDependencyLookup)
 		}
 	}

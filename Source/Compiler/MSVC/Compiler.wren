@@ -69,12 +69,12 @@ class Compiler is ICompiler {
 		var writeSharedArgumentsOperation = SharedOperations.CreateWriteFileOperation(
 			arguments.TargetRootDirectory,
 			responseFile,
-			this.CombineArguments(sharedCommandArguments))
+			Compiler.CombineArguments(sharedCommandArguments))
 		operations.Add(writeSharedArgumentsOperation)
 
 		// Initialize a shared input set
 		var sharedInputFiles = []
-		sharedInputFiles.AddRange(arguments.IncludeModules)
+		sharedInputFiles = sharedInputFiles + arguments.IncludeModules
 
 		var absoluteResponseFile = arguments.TargetRootDirectory + responseFile
 
@@ -101,7 +101,7 @@ class Compiler is ICompiler {
 				resourceFileArguments.SourceFile.ToString(),
 				arguments.SourceRootDirectory,
 				_rcExecutable,
-				this.CombineArguments(commandArguments),
+				Compiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.Add(buildOperation)
@@ -113,7 +113,7 @@ class Compiler is ICompiler {
 			var inputFiles = sharedInputFiles.ToList()
 			inputFiles.Add(partitionUnitArguments.SourceFile)
 			inputFiles.Add(absoluteResponseFile)
-			inputFiles.AddRange(partitionUnitArguments.IncludeModules)
+			inputFiles = inputFiles + partitionUnitArguments.IncludeModules
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + partitionUnitArguments.TargetFile,
@@ -131,7 +131,7 @@ class Compiler is ICompiler {
 				partitionUnitArguments.SourceFile.ToString(),
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				this.CombineArguments(commandArguments),
+				Compiler.CombineArguments(commandArguments),
 				inputFiles.ToArray(),
 				outputFiles)
 			operations.Add(buildOperation)
@@ -148,7 +148,7 @@ class Compiler is ICompiler {
 			var inputFiles = sharedInputFiles.ToList()
 			inputFiles.Add(interfaceUnitArguments.SourceFile)
 			inputFiles.Add(absoluteResponseFile)
-			inputFiles.AddRange(interfaceUnitArguments.IncludeModules)
+			inputFiles = inputFiles + interfaceUnitArguments.IncludeModules
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
@@ -166,7 +166,7 @@ class Compiler is ICompiler {
 				interfaceUnitArguments.SourceFile.ToString(),
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				this.CombineArguments(commandArguments),
+				Compiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.Add(buildOperation)
@@ -180,8 +180,8 @@ class Compiler is ICompiler {
 			var inputFiles = sharedInputFiles.ToList()
 			inputFiles.Add(implementationUnitArguments.SourceFile)
 			inputFiles.Add(absoluteResponseFile)
-			inputFiles.AddRange(implementationUnitArguments.IncludeModules)
-			inputFiles.AddRange(internalModules)
+			inputFiles = inputFiles + implementationUnitArguments.IncludeModules
+			inputFiles = inputFiles + internalModules
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + implementationUnitArguments.TargetFile,
@@ -199,7 +199,7 @@ class Compiler is ICompiler {
 				implementationUnitArguments.SourceFile.ToString(),
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				this.CombineArguments(commandArguments),
+				Compiler.CombineArguments(commandArguments),
 				inputFiles.ToArray(),
 				outputFiles)
 			operations.Add(buildOperation)
@@ -225,7 +225,7 @@ class Compiler is ICompiler {
 				assemblyUnitArguments.SourceFile.ToString(),
 				arguments.SourceRootDirectory,
 				_mlExecutable,
-				this.CombineArguments(commandArguments),
+				Compiler.CombineArguments(commandArguments),
 				inputFiles.ToArray(),
 				outputFiles)
 			operations.Add(buildOperation)
@@ -239,21 +239,21 @@ class Compiler is ICompiler {
 	/// </summary>
 	CreateLinkOperation(arguments) {
 		// Select the correct executable for linking libraries or executables
-		executablePath
+		var executablePath
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
-			executable= _libraryExecutable
+			executablePath = _libraryExecutable
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary ||
 			arguments.TargetType == LinkTarget.Executable ||
 			arguments.TargetType == LinkTarget.WindowsApplication) {
-			executable= _linkerExecutable
+			executablePath = _linkerExecutable
 		} else {
 			Fiber.abort("Unknown LinkTarget.")
 		}
 
 		// Build the set of input/output files along with the arguments
 		var inputFiles = []
-		inputFiles.AddRange(arguments.LibraryFiles)
-		inputFiles.AddRange(arguments.ObjectFiles)
+		inputFiles = inputFiles + arguments.LibraryFiles
+		inputFiles = inputFiles + arguments.ObjectFiles
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
@@ -263,7 +263,7 @@ class Compiler is ICompiler {
 			arguments.TargetFile.ToString(),
 			arguments.TargetRootDirectory,
 			executablePath,
-			this.CombineArguments(commandarguments),
+			Compiler.CombineArguments(commandarguments),
 			inputFiles,
 			outputFiles)
 
@@ -271,6 +271,6 @@ class Compiler is ICompiler {
 	}
 
 	static CombineArguments(arguments) {
-		return string.Join(" ", arguments)
+		return arguments.join(" ")
 	}
 }

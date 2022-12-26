@@ -1,6 +1,7 @@
 import "./Compiler/MSVC/Compiler" for Compiler
 import "./Compiler/Core/BuildArguments" for BuildArguments, BuildTargetType
 import "./Compiler/Core/BuildEngine" for BuildEngine
+import "./BuildState" for BuildState
 import "./Path" for Path
 
 var compilerExecutable = "cl.exe"
@@ -18,7 +19,7 @@ var compiler = Compiler.new(
 
 var engine = BuildEngine.new(compiler)
 
-var buildState = {}
+var buildState = BuildState.new()
 
 var targetName = "TestProject"
 var targetArchitecture = "x64"

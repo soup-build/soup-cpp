@@ -195,7 +195,7 @@ class ArgumentBuilder {
 			absoluteTargetFile.ToString())
 
 		// Add the source file as input
-		commandArguments.Add(arguments.ResourceFile.SourceFile.ToString())
+		commandArguments.add(arguments.ResourceFile.SourceFile.ToString())
 
 		return commandArguments
 	}
@@ -208,7 +208,7 @@ class ArgumentBuilder {
 		var commandArguments = []
 
 		// Add the response file
-		commandArguments.Add("@" + responseFile.ToString())
+		commandArguments.add("@" + responseFile.ToString())
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
@@ -217,7 +217,7 @@ class ArgumentBuilder {
 		}
 
 		// Add the source file as input
-		commandArguments.Add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.ToString())
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
@@ -270,7 +270,7 @@ class ArgumentBuilder {
 		}
 
 		// Add the source file as input
-		commandArguments.Add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.ToString())
 
 		return commandArguments
 	}
@@ -283,7 +283,7 @@ class ArgumentBuilder {
 		var commandArguments = []
 
 		// Add the response file
-		commandArguments.Add("@" + responseFile.ToString())
+		commandArguments.add("@" + responseFile.ToString())
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
@@ -292,7 +292,7 @@ class ArgumentBuilder {
 		}
 
 		// Add the source file as input
-		commandArguments.Add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.ToString())
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
@@ -322,7 +322,7 @@ class ArgumentBuilder {
 		var commandArguments = []
 
 		// Add the response file
-		commandArguments.Add("@" + responseFile.ToString())
+		commandArguments.add("@" + responseFile.ToString())
 
 		// Add the internal module references as input
 		for (moduleFile in arguments.IncludeModules) {
@@ -337,7 +337,7 @@ class ArgumentBuilder {
 		}
 
 		// Add the source file as input
-		commandArguments.Add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.ToString())
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
@@ -351,7 +351,7 @@ class ArgumentBuilder {
 
 	static BuildLinkerArguments(arguments) {
 		// Verify the input
-		if (string.IsNullOrEmpty(arguments.TargetFile.GetFileName())) {
+		if (arguments.TargetFile.GetFileName() == null) {
 			Fiber.abort("Target file cannot be empty.")
 		}
 
@@ -422,7 +422,7 @@ class ArgumentBuilder {
 		// Add the library files
 		for (file in arguments.LibraryFiles) {
 			// Add the library files as input
-			commandArguments.Add(file.ToString())
+			commandArguments.add(file.ToString())
 		}
 
 		// Add the external libraries as default libraries so they are resolved last
@@ -435,33 +435,33 @@ class ArgumentBuilder {
 		// Add the object files
 		for (file in arguments.ObjectFiles) {
 			// Add the object files as input
-			commandArguments.Add(file.ToString())
+			commandArguments.add(file.ToString())
 		}
 
 		return commandArguments
 	}
 
 	static AddValueWithQuotes(arguments, value) {
-		arguments.Add("\"%(value)\"")
+		arguments.add("\"%(value)\"")
 	}
 
 	static AddFlag(arguments, flag) {
-		arguments.Add("/%(flag)")
+		arguments.add("/%(flag)")
 	}
 
 	static AddFlagValue(arguments, flag, value) {
-		arguments.Add("/%(flag)%(value)")
+		arguments.add("/%(flag)%(value)")
 	}
 
 	static AddFlagValueWithQuotes(arguments, flag, value) {
-		arguments.Add("/%(flag)\"%(value)\"")
+		arguments.add("/%(flag)\"%(value)\"")
 	}
 
 	static AddParameter(arguments, name, value) {
-		arguments.Add("/%(name):%(value)")
+		arguments.add("/%(name):%(value)")
 	}
 
 	static AddParameterWithQuotes(arguments, name, value) {
-		arguments.Add("/%(name):\"%(value)\"")
+		arguments.add("/%(name):\"%(value)\"")
 	}
 }

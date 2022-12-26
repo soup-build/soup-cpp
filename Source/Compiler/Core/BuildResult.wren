@@ -7,12 +7,13 @@
 /// </summary>
 class BuildResult {
 	construct new() {
+		_buildOperations = []
 	}
 
 	/// <summary>
 	/// Gets or sets the resulting root build operations
 	/// </summary>
-	BuildOperations {}
+	BuildOperations { _buildOperations }
 
 	/// <summary>
 	/// Gets or sets the list of module dependencies
@@ -23,12 +24,14 @@ class BuildResult {
 	/// <summary>
 	/// Gets or sets the list of link libraries that downstream builds should use when linking
 	/// </summary>
-	LinkDependencies {}
+	LinkDependencies { _linkDependencies }
+	LinkDependencies=(value) { _linkDependencies = value }
 
 	/// <summary>
 	/// Gets or sets the list of internal link libraries that were used to link the final result
 	/// </summary>
-	InternalLinkDependencies {}
+	InternalLinkDependencies { _internalLinkDependencies }
+	InternalLinkDependencies=(value) { _internalLinkDependencies = value }
 
 	/// <summary>
 	/// Gets or sets the list of runtime dependencies

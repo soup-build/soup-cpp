@@ -6,27 +6,27 @@ class TraceLevel {
 	/// <summary>
 	/// Exceptional state that will fail the build
 	/// </summary>
-	Error { "Error" }
+	static Error { "Error" }
 
 	/// <summary>
 	/// A possible issue in the build that may be fine to continue
 	/// </summary>
-	Warning { "Warning" }
+	static Warning { "Warning" }
 
 	/// <summary>
 	/// Highest level of logging that will be on in all but the quiet logs
 	/// </summary>
-	HighPriority { "HighPriority" }
+	static HighPriority { "HighPriority" }
 
 	/// <summary>
 	/// Important information that will be on in verbose logs. May help users investigate what occurred during a build.
 	/// </summary>
-	Information { "Information" }
+	static Information { "Information" }
 
 	/// <summary>
 	/// The most detailed of logs that will only be useful for detailed investigations into runtime issues for build engineers. Diagnostic log level.
 	/// </summary>
-	Debug { "Debug" }
+	static Debug { "Debug" }
 }
 
 class IBuildState {

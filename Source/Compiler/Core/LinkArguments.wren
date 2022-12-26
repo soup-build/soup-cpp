@@ -9,22 +9,22 @@ class LinkTarget {
 	/// <summary>
 	/// Static Library
 	/// </summary>
-	StaticLibrary { "StaticLibrary" }
+	static StaticLibrary { "StaticLibrary" }
 
 	/// <summary>
 	/// Dynamic Library
 	/// </summary>
-	DynamicLibrary { "DynamicLibrary" }
+	static DynamicLibrary { "DynamicLibrary" }
 
 	/// <summary>
 	/// Executable
 	/// </summary>
-	Executable { "Executable" }
+	static Executable { "Executable" }
 
 	/// <summary>
 	/// Windows Application
 	/// </summary>
-	WindowsApplication { "WindowsApplication" }
+	static WindowsApplication { "WindowsApplication" }
 }
 
 /// <summary>
@@ -42,9 +42,12 @@ class LinkArguments {
 		_targetArchitecture = targetArchitecture
 		_implementationFile = implementationFile
 		_targetRootDirectory = targetRootDirectory
+		_libraryFiles = []
+		_externalLibraryFiles = []
 		_libraryPaths = libraryPaths
 		_generateSourceDebugInfo = generateSourceDebugInfo
 	}
+
 	/// <summary>
 	/// Gets or sets the target file
 	/// </summary>
@@ -53,7 +56,8 @@ class LinkArguments {
 	/// <summary>
 	/// Gets or sets the target type
 	/// </summary>
-	TargetType { _targetArchitecture }
+	TargetType { _targetType }
+	TargetType=(value) { _targetType = value }
 
 	/// <summary>
 	/// Gets or sets the implementation file
@@ -68,22 +72,23 @@ class LinkArguments {
 	/// <summary>
 	/// Gets or sets the target architecture
 	/// </summary>
-	TargetArchitecture {}
+	TargetArchitecture { _targetArchitecture }
 
 	/// <summary>
 	/// Gets or sets the list of object files
 	/// </summary>
-	ObjectFiles {}
+	ObjectFiles { _objectFiles }
+	ObjectFiles=(value) { _objectFiles = value }
 
 	/// <summary>
 	/// Gets or sets the list of library files
 	/// </summary>
-	LibraryFiles { }
+	LibraryFiles { _libraryFiles }
 
 	/// <summary>
 	/// Gets or sets the list of external library files
 	/// </summary>
-	ExternalLibraryFiles {}
+	ExternalLibraryFiles { _externalLibraryFiles }
 
 	/// <summary>
 	/// Gets or sets the list of library paths
