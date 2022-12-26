@@ -51,16 +51,26 @@ class BuildTargetType {
 /// The source file definition
 /// </summary>
 class SourceFile {
-	File {}
-	IsModule {}
+	construct new(file, isModule) {
+		_file = file
+		_isModule = isModule
+	}
+
+	File { _file }
+	IsModule { _isModule }
 }
 
 /// <summary>
 /// The partition source file definition
 /// </summary>
 class PartitionSourceFile {
-	File {}
-	Imports {}
+	construct new(file, imports) {
+		_file = file
+		_imports = imports
+	}
+
+	File { _file }
+	Imports { _imports }
 }
 
 /// <summary>

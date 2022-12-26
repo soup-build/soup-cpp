@@ -96,7 +96,6 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 /// The set of shared compiler arguments
 /// </summary>
 class SharedCompileArguments {
-
 	construct new(
 		standard,
 		optimizationLevel,
@@ -129,92 +128,92 @@ class SharedCompileArguments {
 	/// <summary>
 	/// Gets or sets the language standard
 	/// </summary>
-	Standard {}
+	Standard { _standard }
 
 	/// <summary>
 	/// Gets or sets the optimization level
 	/// </summary>
-	Optimize {}
+	Optimize { _optimize }
 
 	/// <summary>
 	/// Gets or sets the source directory
 	/// </summary>
-	SourceRootDirectory {}
+	SourceRootDirectory { _sourceRootDirectory }
 
 	/// <summary>
 	/// Gets or sets the target directory
 	/// </summary>
-	TargetRootDirectory {}
+	TargetRootDirectory { _targetRootDirectory }
 
 	/// <summary>
 	/// Gets or sets the object directory
 	/// </summary>
-	ObjectDirectory {}
+	ObjectDirectory { _objectDirectory }
 
 	/// <summary>
 	/// Gets or sets the list of preprocessor definitions
 	/// </summary>
-	PreprocessorDefinitions {}
+	PreprocessorDefinitions { _preprocessorDefinitions }
 
 	/// <summary>
 	/// Gets or sets the list of include directories
 	/// </summary>
-	IncludeDirectories {}
+	IncludeDirectories { _includeDirectories }
 
 	/// <summary>
 	/// Gets or sets the list of modules
 	/// </summary>
-	IncludeModules {}
+	IncludeModules { _includeModules }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether to generate source debug information
 	/// </summary>
-	GenerateSourceDebugInfo {}
+	GenerateSourceDebugInfo { _generateSourceDebugInfo }
 
 	/// <summary>
 	/// Gets or sets the list of interface partition translation units to compile
 	/// </summary>
-	InterfacePartitionUnits {}
+	InterfacePartitionUnits { _interfacePartitionUnits }
 
 	/// <summary>
 	/// Gets or sets the single optional interface unit to compile
 	/// </summary>
-	InterfaceUnit {}
+	InterfaceUnit { _interfaceUnit }
 
 	/// <summary>
 	/// Gets or sets the list of individual translation units to compile
 	/// </summary>
-	ImplementationUnits {}
+	ImplementationUnits { _implementationUnits }
 
 	/// <summary>
 	/// Gets or sets the list of individual assembly units to compile
 	/// </summary>
-	AssemblyUnits {}
+	AssemblyUnits { _assemblyUnits }
 
 	/// <summary>
 	/// Gets or sets the single optional resource file to compile
 	/// </summary>
-	ResourceFile {}
+	ResourceFile { _resourceFile }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether to enable warnings as errors
 	/// </summary>
-	EnableWarningsAsErrors {}
+	EnableWarningsAsErrors { _enableWarningsAsErrors }
 
 	/// <summary>
 	/// Gets or sets the list of disabled warnings
 	/// </summary>
-	DisabledWarnings {}
+	DisabledWarnings { _disabledWarnings }
 
 	/// <summary>
 	/// Gets or sets the list of enabled warnings
 	/// </summary>
-	EnabledWarnings {}
+	EnabledWarnings { _enabledWarnings }
 
 	/// <summary>
 	/// Gets or sets the set of custom properties for the known compiler
 	/// </summary>
-	CustomProperties {}
+	CustomProperties { _customProperties }
 }
 
 
