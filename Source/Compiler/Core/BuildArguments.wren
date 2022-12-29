@@ -72,6 +72,11 @@ class PartitionSourceFile {
 		_imports = []
 	}
 
+	construct new(file, imports) {
+		_file = file
+		_imports = imports
+	}
+
 	File { _file }
 	File=(value) { _file = value }
 

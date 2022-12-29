@@ -59,6 +59,12 @@ class TranslationUnitCompileArguments {
 		_includeModules = []
 	}
 
+	construct new(sourceFile, targetFile, includeModules) {
+		_sourceFile = sourceFile
+		_targetFile = targetFile
+		_includeModules = includeModules
+	}
+
 	/// <summary>
 	/// Gets or sets the source file
 	/// </summary>

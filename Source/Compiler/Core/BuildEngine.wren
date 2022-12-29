@@ -96,7 +96,7 @@ class BuildEngine {
 			// Build up the entire Interface Dependency Closure for each file
 			var partitionInterfaceDependencyLookup = {}
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
-				partitionInterfaceDependencyLookup.add(file.File, file.Imports)
+				partitionInterfaceDependencyLookup[file.File.ToString()] = file.Imports
 			}
 
 			// Compile the individual module interface partition translation units
@@ -112,22 +112,22 @@ class BuildEngine {
 
 				var interfaceDependencyClosure = Set.new()
 				this.BuildClosure(interfaceDependencyClosure, file.File, partitionInterfaceDependencyLookup)
-				if (interfaceDependencyClosure.Contains(file.File)) {
+				if (interfaceDependencyClosure.contains(file.File)) {
 					Fiber.abort("Circular partition references in: %(file.File)")
 				}
 
 				var partitionImports = []
-				for (dependency in interfaceDependencyClosure) {
+				for (dependency in interfaceDependencyClosure.list) {
 					var importInterface = arguments.ObjectDirectory + Path.new(dependency.GetFileName())
 					importInterface.SetFileExtension(_compiler.ModuleFileExtension)
 					partitionImports.add(arguments.TargetRootDirectory + importInterface)
 				}
 
-				var compileFileArguments = InterfaceUnitCompileArguments.new(
-					file.File,
-					arguments.ObjectDirectory + Path.new(file.File.GetFileName()),
-					partitionImports,
-					objectModuleInterfaceFile)
+				var compileFileArguments = InterfaceUnitCompileArguments.new()
+				compileFileArguments.SourceFile = file.File
+				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.File.GetFileName())
+				compileFileArguments.IncludeModules = partitionImports
+				compileFileArguments.ModuleInterfaceTarget = objectModuleInterfaceFile
 
 				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
@@ -155,11 +155,11 @@ class BuildEngine {
 					arguments.BinaryDirectory +
 					Path.new(arguments.TargetName + "." + _compiler.ModuleFileExtension)
 
-				var compileModuleFileArguments = InterfaceUnitCompileArguments.new(
-					arguments.ModuleInterfaceSourceFile,
-					arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName()),
-					allPartitionInterfaces,
-					objectModuleInterfaceFile)
+				var compileModuleFileArguments = InterfaceUnitCompileArguments.new()
+				compileModuleFileArguments.SourceFile = arguments.ModuleInterfaceSourceFile
+				compileModuleFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
+				compileModuleFileArguments.IncludeModules = allPartitionInterfaces
+				compileModuleFileArguments.ModuleInterfaceTarget = objectModuleInterfaceFile
 
 				compileModuleFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
@@ -397,7 +397,7 @@ class BuildEngine {
 	}
 
 	BuildClosure(closure, file, partitionInterfaceDependencyLookup) {
-		for (childFile in partitionInterfaceDependencyLookup[file]) {
+		for (childFile in partitionInterfaceDependencyLookup[file.ToString()]) {
 			closure.add(childFile)
 			this.BuildClosure(closure, childFile, partitionInterfaceDependencyLookup)
 		}

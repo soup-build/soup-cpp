@@ -21,4 +21,14 @@ class Set {
 			_list.add(item)
 		}
 	}
+
+	contains(item) {
+		for (current in _list) {
+			if (current == item) {
+				return true
+			}
+		}
+
+		return false
+	}
 }
