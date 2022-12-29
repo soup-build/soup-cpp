@@ -57,11 +57,19 @@ class Path {
 	static RelativeParentDirectory { ".." }
 
 	==(rhs) {
-		return _value == rhs.ToString()
+		if (rhs is Null) {
+			return false
+		} else {
+			return _value == rhs.ToString()
+		}
 	}
 
 	!=(rhs) {
-		return _value != rhs.ToString()
+		if (rhs is Null) {
+			return false
+		} else {
+			return _value != rhs.ToString()
+		}
 	}
 
 	/// <summary>

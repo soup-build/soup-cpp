@@ -1,8 +1,9 @@
 // <copyright file="SharedOperations.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
+
 import "./BuildOperation" for BuildOperation
-import "./Path" for Path
+import "./Utils/Path" for Path
 
 /// <summary>
 /// The Shared Operations class

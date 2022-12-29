@@ -3,7 +3,7 @@
 // </copyright>
 
 import "../../BuildOperation" for BuildOperation
-import "../../Path" for Path
+import "../../Utils/Path" for Path
 import "./ICompiler" for ICompiler
 
 /// <summary>
@@ -76,7 +76,7 @@ class MockCompiler is ICompiler {
 		for (fileArguments in arguments.InterfacePartitionUnits) {
 			result.add(
 				BuildOperation.new(
-					"MockCompilePartition: %(_compileRequests.Count)",
+					"MockCompilePartition: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
 					"Arguments",
@@ -92,7 +92,7 @@ class MockCompiler is ICompiler {
 		if (arguments.InterfaceUnit != null) {
 			result.add(
 				BuildOperation.new(
-					"MockCompileModule: %(_compileRequests.Count)",
+					"MockCompileModule: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
 					"Arguments",
@@ -108,7 +108,7 @@ class MockCompiler is ICompiler {
 		for (fileArguments in arguments.ImplementationUnits) {
 			result.add(
 				BuildOperation.new(
-					"MockCompile: %(_compileRequests.Count)",
+					"MockCompile: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
 					"Arguments",
@@ -129,7 +129,7 @@ class MockCompiler is ICompiler {
 	CreateLinkOperation(arguments) {
 		_linkRequests.add(arguments)
 		return BuildOperation.new(
-			"MockLink: %(_linkRequests.Count)",
+			"MockLink: %(_linkRequests.count)",
 			Path.new("MockWorkingDirectory"),
 			Path.new("MockLinker.exe"),
 			"Arguments",

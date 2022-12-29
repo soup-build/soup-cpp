@@ -7,9 +7,9 @@ import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
 import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
 import "../../IBuildState" for TraceLevel
-import "../../Path" for Path
-import "../../Set" for Set
 import "../../SharedOperations" for SharedOperations
+import "../../Utils/Path" for Path
+import "../../Utils/Set" for Set
 
 /// <summary>
 /// The build engine
@@ -61,23 +61,23 @@ class BuildEngine {
 			arguments.SourceFiles.count != 0 ||
 			arguments.AssemblySourceFiles.count != 0) {
 			// Setup the shared properties
-			var compileArguments = SharedCompileArguments.new(
-				arguments.LanguageStandard,
-				this.ConvertBuildOptimizationLevel(arguments.OptimizationLevel),
-				arguments.SourceRootDirectory,
-				arguments.TargetRootDirectory,
-				arguments.ObjectDirectory,
-				arguments.IncludeDirectories,
-				arguments.ModuleDependencies,
-				arguments.PreprocessorDefinitions,
-				arguments.GenerateSourceDebugInfo,
-				arguments.EnableWarningsAsErrors,
-				arguments.DisabledWarnings,
-				arguments.EnabledWarnings,
-				arguments.CustomProperties)
+			var compileArguments = SharedCompileArguments.new()
+			compileArguments.Standard = arguments.LanguageStandard
+			compileArguments.Optimize = this.ConvertBuildOptimizationLevel(arguments.OptimizationLevel)
+			compileArguments.SourceRootDirectory = arguments.SourceRootDirectory
+			compileArguments.TargetRootDirectory = arguments.TargetRootDirectory
+			compileArguments.ObjectDirectory = arguments.ObjectDirectory
+			compileArguments.IncludeDirectories = arguments.IncludeDirectories
+			compileArguments.IncludeModules = arguments.ModuleDependencies
+			compileArguments.PreprocessorDefinitions = arguments.PreprocessorDefinitions
+			compileArguments.GenerateSourceDebugInfo = arguments.GenerateSourceDebugInfo
+			compileArguments.EnableWarningsAsErrors = arguments.EnableWarningsAsErrors
+			compileArguments.DisabledWarnings = arguments.DisabledWarnings
+			compileArguments.EnabledWarnings = arguments.EnabledWarnings
+			compileArguments.CustomProperties = arguments.CustomProperties
 
 			// Compile the resource file if present
-			if (!arguments.ResourceFile.IsEmpty) {
+			if (arguments.ResourceFile) {
 				buildState.LogTrace(TraceLevel.Information, "Generate Resource File Compile: " + arguments.ResourceFile.ToString())
 
 				var compiledResourceFile =
@@ -85,9 +85,9 @@ class BuildEngine {
 					Path.new(arguments.ResourceFile.GetFileName())
 				compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension)
 
-				var compileResourceFileArguments = ResourceCompileArguments.new(
-					arguments.ResourceFile,
-					compiledResourceFile)
+				var compileResourceFileArguments = ResourceCompileArguments.new()
+				compileResourceFileArguments.SourceFile = arguments.ResourceFile
+				compileResourceFileArguments.TargetFile = compiledResourceFile
 
 				// Add the resource file arguments to the shared build definition
 				compileArguments.ResourceFile = compileResourceFileArguments
@@ -144,7 +144,7 @@ class BuildEngine {
 			compileArguments.InterfacePartitionUnits = compileInterfacePartitionUnits
 
 			// Compile the module interface unit if present
-			if (!arguments.ModuleInterfaceSourceFile.IsEmpty) {
+			if (arguments.ModuleInterfaceSourceFile != null) {
 				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: " + arguments.ModuleInterfaceSourceFile.ToString())
 
 				var objectModuleInterfaceFile =
@@ -250,13 +250,13 @@ class BuildEngine {
 
 		buildState.LogTrace(TraceLevel.Information, "Linking target")
 
-		var linkArguments = LinkArguments.new(
-			targetFile,
-			arguments.TargetArchitecture,
-			implementationFile,
-			arguments.TargetRootDirectory,
-			arguments.LibraryPaths,
-			arguments.GenerateSourceDebugInfo)
+		var linkArguments = LinkArguments.new()
+		linkArguments.TargetFile = targetFile
+		linkArguments.TargetArchitecture = arguments.TargetArchitecture
+		linkArguments.ImplementationFile = implementationFile
+		linkArguments.TargetRootDirectory = arguments.TargetRootDirectory
+		linkArguments.LibraryPaths = arguments.LibraryPaths
+		linkArguments.GenerateSourceDebugInfo = arguments.GenerateSourceDebugInfo
 
 		// Only resolve link libraries if not a library ourself
 		if (arguments.TargetType != BuildTargetType.StaticLibrary) {

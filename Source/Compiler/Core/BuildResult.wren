@@ -8,12 +8,19 @@
 class BuildResult {
 	construct new() {
 		_buildOperations = []
+		_moduleDependencies = []
+		_linkDependencies = []
+		_internalLinkDependencies = []
+		_runtimeDependencies = []
+		_runtimeDependencies = []
+		_targetFile = null
 	}
 
 	/// <summary>
 	/// Gets or sets the resulting root build operations
 	/// </summary>
 	BuildOperations { _buildOperations }
+	BuildOperations=(value) { _buildOperations = value }
 
 	/// <summary>
 	/// Gets or sets the list of module dependencies
@@ -36,10 +43,12 @@ class BuildResult {
 	/// <summary>
 	/// Gets or sets the list of runtime dependencies
 	/// </summary>
-	RuntimeDependencies {}
+	RuntimeDependencies { _runtimeDependencies }
+	RuntimeDependencies=(value) { _runtimeDependencies = value }
 
 	/// <summary>
 	/// Gets or sets the target file for the build
 	/// </summary>
-	TargetFile {}
+	TargetFile { _targetFile }
+	TargetFile=(value) { _targetFile = value }
 }

@@ -16,68 +16,63 @@ class ResolveToolsTaskUnitTests
 	}
 
 	Execute() {
-		// Register the test systems
-		var testListener = new TestTraceListener();
-		using (var scopedTraceListener = new ScopedTraceListenerRegister(testListener))
+		// Setup the input build state
+		var buildState = new MockBuildState();
+		var state = buildState.ActiveState;
+
+		// Set the sdks
+		var sdks = new ValueList();
+		sdks.Add(new Value(new ValueTable()
 		{
-			// Setup the input build state
-			var buildState = new MockBuildState();
-			var state = buildState.ActiveState;
-
-			// Set the sdks
-			var sdks = new ValueList();
-			sdks.Add(new Value(new ValueTable()
-			{
-				{ "Name", new Value("MSVC") },
-				{ 
-					"Properties",
-					new Value(new ValueTable()
-					{
-						{ "Version", new Value("1.0.0") },
-						{ "VCToolsRoot", new Value("C:/VCTools/Root/") },
-					})
-				},
-			}));
-			sdks.Add(new Value(new ValueTable()
-			{
-				{ "Name", new Value("Windows") },
+			{ "Name", new Value("MSVC") },
+			{ 
+				"Properties",
+				new Value(new ValueTable()
 				{
-					"Properties",
-					new Value(new ValueTable()
-					{
-						{ "Version", new Value("10.0.0") },
-						{ "RootPath", new Value("C:/WindowsKit/Root/") },
-					})
-				},
-			}));
-
-			// Setup parameters table
-			var parametersTable = new ValueTable();
-			state.Add("Parameters", new Value(parametersTable));
-			parametersTable.Add("SDKs", new Value(sdks));
-			parametersTable.Add("System", new Value("win32"));
-			parametersTable.Add("Architecture", new Value("x64"));
-
-			var factory = new ValueFactory();
-			var uut = new ResolveToolsTask(buildState, factory);
-
-			uut.Execute();
-
-			// Verify expected logs
-			Assert.Equal(
-				new List<string>()
+					{ "Version", new Value("1.0.0") },
+					{ "VCToolsRoot", new Value("C:/VCTools/Root/") },
+				})
+			},
+		}));
+		sdks.Add(new Value(new ValueTable()
+		{
+			{ "Name", new Value("Windows") },
+			{
+				"Properties",
+				new Value(new ValueTable()
 				{
-					"INFO: Using VC Version: 1.0.0",
-					"INFO: Using Windows Kit Version: 10.0.0",
-				},
-				testListener.GetMessages());
+					{ "Version", new Value("10.0.0") },
+					{ "RootPath", new Value("C:/WindowsKit/Root/") },
+				})
+			},
+		}));
 
-			// Verify build state
-			var expectedBuildOperations = new List<BuildOperation>();
+		// Setup parameters table
+		var parametersTable = new ValueTable();
+		state.Add("Parameters", new Value(parametersTable));
+		parametersTable.Add("SDKs", new Value(sdks));
+		parametersTable.Add("System", new Value("win32"));
+		parametersTable.Add("Architecture", new Value("x64"));
 
-			Assert.Equal(
-				expectedBuildOperations,
-				buildState.GetBuildOperations());
-		}
+		var factory = new ValueFactory();
+		var uut = new ResolveToolsTask(buildState, factory);
+
+		uut.Execute();
+
+		// Verify expected logs
+		Assert.Equal(
+			new List<string>()
+			{
+				"INFO: Using VC Version: 1.0.0",
+				"INFO: Using Windows Kit Version: 10.0.0",
+			},
+			testListener.GetMessages());
+
+		// Verify build state
+		var expectedBuildOperations = new List<BuildOperation>();
+
+		Assert.Equal(
+			expectedBuildOperations,
+			buildState.GetBuildOperations());
 	}
 }

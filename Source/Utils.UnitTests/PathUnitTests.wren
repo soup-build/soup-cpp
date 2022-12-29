@@ -2,42 +2,71 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "./Path" for Path
-import "./Assert" for Assert
+import "../Utils/Path" for Path
+import "../Test/Assert" for Assert
 
 class PathUnitTests {
 	construct new() {
 	}
 
 	RunTests() {
+		System.print("Path.DefaultInitializer()")
 		this.DefaultInitializer()
+		System.print("Path.Empty()")
 		this.Empty()
+		System.print("Path.RelativePath_Simple()")
 		this.RelativePath_Simple()
+		System.print("Path.RelativePath_Parent()")
 		this.RelativePath_Parent()
+		System.print("Path.RelativePath_Complex()")
 		this.RelativePath_Complex()
+		System.print("Path.LinuxRoot()")
 		this.LinuxRoot()
+		System.print("Path.SimpleAbsolutePath()")
 		this.SimpleAbsolutePath()
+		System.print("Path.AlternativeDirectoriesPath()")
 		this.AlternativeDirectoriesPath()
+		System.print("Path.RemoveEmptyDirectoryInside()")
 		this.RemoveEmptyDirectoryInside()
+		System.print("Path.RemoveParentDirectoryInside()")
 		this.RemoveParentDirectoryInside()
+		System.print("Path.RemoveTwoParentDirectoryInside()")
 		this.RemoveTwoParentDirectoryInside()
+		System.print("Path.LeaveParentDirectoryAtStart()")
 		this.LeaveParentDirectoryAtStart()
+		System.print("Path.CurrentDirectoryAtStart()")
 		this.CurrentDirectoryAtStart()
+		System.print("Path.CurrentDirectoryAtStartAlternate()")
 		this.CurrentDirectoryAtStartAlternate()
+		System.print("Path.Concatenate_Simple()")
 		this.Concatenate_Simple()
+		System.print("Path.Concatenate_Empty()")
 		this.Concatenate_Empty()
+		System.print("Path.Concatenate_RootFile()")
 		this.Concatenate_RootFile()
+		System.print("Path.Concatenate_RootFolder()")
 		this.Concatenate_RootFolder()
+		System.print("Path.Concatenate_UpDirectory()")
 		this.Concatenate_UpDirectory()
+		System.print("Path.Concatenate_UpDirectoryBeginning()")
 		this.Concatenate_UpDirectoryBeginning()
+		System.print("Path.SetFileExtension_Replace()")
 		this.SetFileExtension_Replace()
+		System.print("Path.SetFileExtension_Replace_Rooted()")
 		this.SetFileExtension_Replace_Rooted()
+		System.print("Path.SetFileExtension_Add()")
 		this.SetFileExtension_Add()
+		System.print("Path.GetRelativeTo_Empty()")
 		this.GetRelativeTo_Empty()
+		System.print("Path.GetRelativeTo_SingleRelative()")
 		this.GetRelativeTo_SingleRelative()
+		System.print("Path.GetRelativeTo_UpParentRelative()")
 		this.GetRelativeTo_UpParentRelative()
+		System.print("Path.GetRelativeTo_MismatchRelative()")
 		this.GetRelativeTo_MismatchRelative()
+		System.print("Path.GetRelativeTo_Rooted_DifferentRoot()")
 		this.GetRelativeTo_Rooted_DifferentRoot()
+		System.print("Path.GetRelativeTo_Rooted_SingleFolder()")
 		this.GetRelativeTo_Rooted_SingleFolder()
 	}
 

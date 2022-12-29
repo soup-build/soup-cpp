@@ -1,3 +1,4 @@
+import "../Utils/ListExtensions" for ListExtensions
 
 class Assert {
 	static True(value) {
@@ -9,6 +10,12 @@ class Assert {
 	static False(value) {
 		if (value) {
 			Fiber.abort("Value must be false")
+		}
+	}
+
+	static ListEqual(expected, actual) {
+		if (ListExtensions.SequenceEqual(expected, actual)) {
+			Fiber.abort("Values must be equal [%(expected)] [%(actual)]")
 		}
 	}
 
