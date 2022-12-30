@@ -2,6 +2,8 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+import "../../Utils/ListExtensions" for ListExtensions
+
 /// <summary>
 /// The enumeration of link targets
 /// </summary>
@@ -103,4 +105,26 @@ class LinkArguments {
 	/// </summary>
 	GenerateSourceDebugInfo { _generateSourceDebugInfo }
 	GenerateSourceDebugInfo=(value) { _generateSourceDebugInfo = value }
+
+	==(other) {
+		System.print("LinkArguments==")
+		if (other is Null) {
+			return false
+		}
+
+		return this.TargetFile == other.TargetFile &&
+			this.TargetType == other.TargetType &&
+			this.ImplementationFile == other.ImplementationFile &&
+			this.TargetRootDirectory == other.TargetRootDirectory &&
+			this.TargetArchitecture == other.TargetArchitecture &&
+			ListExtensions.SequenceEqual(this.ObjectFiles, other.ObjectFiles) &&
+			ListExtensions.SequenceEqual(this.LibraryFiles, other.LibraryFiles) &&
+			ListExtensions.SequenceEqual(this.ExternalLibraryFiles, other.ExternalLibraryFiles) &&
+			ListExtensions.SequenceEqual(this.LibraryPaths, other.LibraryPaths) &&
+			this.GenerateSourceDebugInfo == other.GenerateSourceDebugInfo
+	}
+
+	toString {
+		return "LinkArguments { TargetFile=%(_targetFile), TargetType=%(_targetType), ImplementationFile=%(_implementationFile), TargetRootDirectory=%(_targetRootDirectory), TargetArchitecture=%(_targetArchitecture), ObjectFiles=%(_objectFiles), LibraryFiles=%(_libraryFiles), ExternalLibraryFiles=%(_externalLibraryFiles), LibraryPaths=%(_libraryPaths), GenerateSourceDebugInfo=%(_generateSourceDebugInfo) }"
+	}
 }

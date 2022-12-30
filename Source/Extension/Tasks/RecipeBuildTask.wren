@@ -151,7 +151,7 @@ namespace Soup.Build.Cpp
 			{
 				var resourcesFilePath = new Path(resourcesValue.AsString());
 
-				resourcesFile = resourcesFilePath.ToString();
+				resourcesFile = resourcesFilePath.toString;
 			}
 
 			// Load the module interface partition files if present
@@ -210,7 +210,7 @@ namespace Soup.Build.Cpp
 					moduleInterfaceSourceFilePath.SetFileExtension("cppm");
 				}
 
-				moduleInterfaceSourceFile = moduleInterfaceSourceFilePath.ToString();
+				moduleInterfaceSourceFile = moduleInterfaceSourceFilePath.toString;
 			}
 
 			// Load the source files if present
@@ -260,10 +260,10 @@ namespace Soup.Build.Cpp
 			}
 
 			buildTable["TargetName"] = this.factory.Create(name);
-			buildTable["SourceRootDirectory"] = this.factory.Create(packageRoot.ToString());
-			buildTable["TargetRootDirectory"] = this.factory.Create(targetDirectory.ToString());
-			buildTable["ObjectDirectory"] = this.factory.Create(objectDirectory.ToString());
-			buildTable["BinaryDirectory"] = this.factory.Create(binaryDirectory.ToString());
+			buildTable["SourceRootDirectory"] = this.factory.Create(packageRoot.toString);
+			buildTable["TargetRootDirectory"] = this.factory.Create(targetDirectory.toString);
+			buildTable["ObjectDirectory"] = this.factory.Create(objectDirectory.toString);
+			buildTable["BinaryDirectory"] = this.factory.Create(binaryDirectory.toString);
 			buildTable["ResourcesFile"] = this.factory.Create(resourcesFile);
 			buildTable.EnsureValueList(this.factory, "ModuleInterfacePartitionSourceFiles").Append(moduleInterfacePartitionSourceFiles);
 			buildTable["ModuleInterfaceSourceFile"] = this.factory.Create(moduleInterfaceSourceFile);

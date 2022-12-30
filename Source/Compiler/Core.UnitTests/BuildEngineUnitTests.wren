@@ -120,7 +120,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -129,7 +129,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -264,7 +264,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -273,7 +273,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -401,7 +401,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -410,7 +410,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -571,7 +571,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -580,7 +580,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -788,7 +788,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -797,7 +797,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1052,7 +1052,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1061,7 +1061,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1343,7 +1343,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1352,7 +1352,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1565,7 +1565,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1574,7 +1574,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/mkdir.exe"),
+				Path.new("./ProcessFolder/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[

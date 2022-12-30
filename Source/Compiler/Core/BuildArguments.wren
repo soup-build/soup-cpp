@@ -110,10 +110,10 @@ class BuildArguments {
 		_preprocessorDefinitions = []
 		_runtimeDependencies = []
 		_optimizationLevel = null
-		_generateSourceDebugInfo = null
-		_enableWarningsAsErrors = null
-		_disabledWarnings = null
-		_enabledWarnings = null
+		_generateSourceDebugInfo = false
+		_enableWarningsAsErrors = false
+		_disabledWarnings = []
+		_enabledWarnings = []
 		_customProperties = {}
 	}
 

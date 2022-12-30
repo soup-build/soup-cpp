@@ -233,8 +233,8 @@ namespace Soup.Build.Cpp
 
 			if (!buildResult.TargetFile.IsEmpty)
 			{
-				sharedBuildTable["TargetFile"] = this.factory.Create(buildResult.TargetFile.ToString());
-				sharedBuildTable["RunExecutable"] = this.factory.Create(buildResult.TargetFile.ToString());
+				sharedBuildTable["TargetFile"] = this.factory.Create(buildResult.TargetFile.toString);
+				sharedBuildTable["RunExecutable"] = this.factory.Create(buildResult.TargetFile.toString);
 				sharedBuildTable.EnsureValueList(this.factory, "RunArguments").SetAll(this.factory, new List<string>() { });
 			}
 
@@ -253,9 +253,9 @@ namespace Soup.Build.Cpp
 		{
 			var valueSet = new HashSet<string>();
 			foreach (var value in collection1)
-				valueSet.Add(value.ToString());
+				valueSet.Add(value.toString);
 			foreach (var value in collection2)
-				valueSet.Add(value.ToString());
+				valueSet.Add(value.toString);
 
 			return valueSet.Select(value => new Path(value)).ToList();
 		}
@@ -264,7 +264,7 @@ namespace Soup.Build.Cpp
 		{
 			var valueSet = new HashSet<string>();
 			foreach (var value in collection)
-				valueSet.Add(value.ToString());
+				valueSet.Add(value.toString);
 
 			return valueSet.Select(value => new Path(value)).ToList();
 		}

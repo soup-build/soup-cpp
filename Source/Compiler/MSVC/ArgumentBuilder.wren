@@ -123,7 +123,7 @@ class ArgumentBuilder {
 
 		// Set the include paths
 		for (directory in arguments.IncludeDirectories) {
-			this.AddFlagValueWithQuotes(commandArguments, this.Compiler_ArgumentParameter_Include, directory.ToString())
+			this.AddFlagValueWithQuotes(commandArguments, this.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Set the preprocessor definitions
@@ -150,7 +150,7 @@ class ArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			this.AddFlag(commandArguments, "reference")
-			this.AddValueWithQuotes(commandArguments, moduleFile.ToString())
+			this.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// TODO: For now we allow exports to be large
@@ -184,7 +184,7 @@ class ArgumentBuilder {
 
 		// Set the include paths
 		for (directory in arguments.IncludeDirectories) {
-			this.AddFlagValueWithQuotes(commandArguments, this.Compiler_ArgumentParameter_Include, directory.ToString())
+			this.AddFlagValueWithQuotes(commandArguments, this.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Add the target file as outputs
@@ -192,10 +192,10 @@ class ArgumentBuilder {
 		this.AddFlagValueWithQuotes(
 			commandArguments,
 			this.Compiler_ArgumentParameter_ObjectFile,
-			absoluteTargetFile.ToString())
+			absoluteTargetFile.toString)
 
 		// Add the source file as input
-		commandArguments.add(arguments.ResourceFile.SourceFile.ToString())
+		commandArguments.add(arguments.ResourceFile.SourceFile.toString)
 
 		return commandArguments
 	}
@@ -208,23 +208,23 @@ class ArgumentBuilder {
 		var commandArguments = []
 
 		// Add the response file
-		commandArguments.add("@" + responseFile.ToString())
+		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			this.AddFlag(commandArguments, "reference")
-			this.AddValueWithQuotes(commandArguments, moduleFile.ToString())
+			this.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.toString)
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		this.AddFlagValueWithQuotes(
 			commandArguments,
 			this.Compiler_ArgumentParameter_ObjectFile,
-			absoluteTargetFile.ToString())
+			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an interface unit
 		this.AddFlag(commandArguments, "interface")
@@ -233,7 +233,7 @@ class ArgumentBuilder {
 		this.AddFlag(commandArguments, "ifcOutput")
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		this.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.ToString())
+		this.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -253,7 +253,7 @@ class ArgumentBuilder {
 		this.AddFlagValueWithQuotes(
 			commandArguments,
 			this.Compiler_ArgumentParameter_ObjectFile,
-			absoluteTargetFile.ToString())
+			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble
 		this.AddFlag(commandArguments, this.Compiler_ArgumentFlag_CompileOnly)
@@ -266,11 +266,11 @@ class ArgumentBuilder {
 
 		// Set the include paths
 		for (directory in sharedArguments.IncludeDirectories) {
-			this.AddFlagValueWithQuotes(commandArguments, this.Compiler_ArgumentParameter_Include, directory.ToString())
+			this.AddFlagValueWithQuotes(commandArguments, this.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.toString)
 
 		return commandArguments
 	}
@@ -283,23 +283,23 @@ class ArgumentBuilder {
 		var commandArguments = []
 
 		// Add the response file
-		commandArguments.add("@" + responseFile.ToString())
+		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			this.AddFlag(commandArguments, "reference")
-			this.AddValueWithQuotes(commandArguments, moduleFile.ToString())
+			this.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.toString)
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		this.AddFlagValueWithQuotes(
 			commandArguments,
 			this.Compiler_ArgumentParameter_ObjectFile,
-			absoluteTargetFile.ToString())
+			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an partition unit
 		this.AddFlag(commandArguments, "interface")
@@ -308,7 +308,7 @@ class ArgumentBuilder {
 		this.AddFlag(commandArguments, "ifcOutput")
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		this.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.ToString())
+		this.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -322,29 +322,29 @@ class ArgumentBuilder {
 		var commandArguments = []
 
 		// Add the response file
-		commandArguments.add("@" + responseFile.ToString())
+		commandArguments.add("@" + responseFile.toString)
 
 		// Add the internal module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			this.AddFlag(commandArguments, "reference")
-			this.AddValueWithQuotes(commandArguments, moduleFile.ToString())
+			this.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the internal module references as input
 		for (moduleFile in internalModules) {
 			this.AddFlag(commandArguments, "reference")
-			this.AddValueWithQuotes(commandArguments, moduleFile.ToString())
+			this.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.ToString())
+		commandArguments.add(arguments.SourceFile.toString)
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		this.AddFlagValueWithQuotes(
 			commandArguments,
 			this.Compiler_ArgumentParameter_ObjectFile,
-			absoluteTargetFile.ToString())
+			absoluteTargetFile.toString)
 
 		return commandArguments
 	}
@@ -387,7 +387,7 @@ class ArgumentBuilder {
 			this.AddParameterWithQuotes(
 				commandArguments,
 				this.Linker_ArgumentParameter_ImplementationLibrary,
-				arguments.ImplementationFile.ToString())
+				arguments.ImplementationFile.toString)
 		} else if (arguments.TargetType == LinkTarget.Executable) {
 			// TODO: May want to specify the exact value
 			// set the default lib to multithreaded
@@ -413,29 +413,29 @@ class ArgumentBuilder {
 
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			this.AddParameterWithQuotes(commandArguments, this.Linker_ArgumentParameter_LibraryPath, directory.ToString())
+			this.AddParameterWithQuotes(commandArguments, this.Linker_ArgumentParameter_LibraryPath, directory.toString)
 		}
 
 		// Add the target as an output
-		this.AddParameterWithQuotes(commandArguments, this.Linker_ArgumentParameter_Output, arguments.TargetFile.ToString())
+		this.AddParameterWithQuotes(commandArguments, this.Linker_ArgumentParameter_Output, arguments.TargetFile.toString)
 
 		// Add the library files
 		for (file in arguments.LibraryFiles) {
 			// Add the library files as input
-			commandArguments.add(file.ToString())
+			commandArguments.add(file.toString)
 		}
 
 		// Add the external libraries as default libraries so they are resolved last
 		for (file in arguments.ExternalLibraryFiles) {
 			// Add the external library files as input
 			// TODO: Explicitly ignore these files from the input for now
-			this.AddParameter(commandArguments, this.Linker_ArgumentParameter_DefaultLibrary, file.ToString())
+			this.AddParameter(commandArguments, this.Linker_ArgumentParameter_DefaultLibrary, file.toString)
 		}
 
 		// Add the object files
 		for (file in arguments.ObjectFiles) {
 			// Add the object files as input
-			commandArguments.add(file.ToString())
+			commandArguments.add(file.toString)
 		}
 
 		return commandArguments

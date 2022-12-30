@@ -98,7 +98,7 @@ class Compiler is ICompiler {
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				resourceFileArguments.SourceFile.ToString(),
+				resourceFileArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_rcExecutable,
 				Compiler.CombineArguments(commandArguments),
@@ -128,7 +128,7 @@ class Compiler is ICompiler {
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				partitionUnitArguments.SourceFile.ToString(),
+				partitionUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				Compiler.CombineArguments(commandArguments),
@@ -163,7 +163,7 @@ class Compiler is ICompiler {
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				interfaceUnitArguments.SourceFile.ToString(),
+				interfaceUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				Compiler.CombineArguments(commandArguments),
@@ -196,7 +196,7 @@ class Compiler is ICompiler {
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				implementationUnitArguments.SourceFile.ToString(),
+				implementationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				Compiler.CombineArguments(commandArguments),
@@ -222,7 +222,7 @@ class Compiler is ICompiler {
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				assemblyUnitArguments.SourceFile.ToString(),
+				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_mlExecutable,
 				Compiler.CombineArguments(commandArguments),
@@ -260,7 +260,7 @@ class Compiler is ICompiler {
 		var commandarguments = ArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
-			arguments.TargetFile.ToString(),
+			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
 			Compiler.CombineArguments(commandarguments),

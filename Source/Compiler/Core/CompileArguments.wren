@@ -3,6 +3,7 @@
 // </copyright>
 
 import "../../Utils/ListExtensions" for ListExtensions
+import "../../Utils/MapExtensions" for MapExtensions
 
 /// <summary>
 /// The enumeration of language standards
@@ -82,6 +83,21 @@ class TranslationUnitCompileArguments {
 	/// </summary>
 	IncludeModules { _includeModules }
 	IncludeModules=(value) { _includeModules = value }
+
+	==(other) {
+		System.print("TranslationUnitCompileArguments==")
+		if (other is Null) {
+			return false
+		}
+
+		return this.SourceFile == other.SourceFile &&
+			this.TargetFile == other.TargetFile &&
+			ListExtensions.SequenceEqual(this.IncludeModules, other.IncludeModules)
+	}
+
+	toString {
+		return "TranslationUnitCompileArguments { SourceFile=%(_sourceFile), TargetFile=%(_targetFile), IncludeModules=%(_includeModules) }"
+	}
 }
 
 /// <summary>
@@ -98,6 +114,22 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 	/// </summary>
 	ModuleInterfaceTarget { _moduleInterfaceTarget }
 	ModuleInterfaceTarget=(value) { _moduleInterfaceTarget = value }
+
+	==(other) {
+		System.print("InterfaceUnitCompileArguments==")
+		if (other is Null) {
+			return false
+		}
+
+		return this.SourceFile == other.SourceFile &&
+			this.TargetFile == other.TargetFile &&
+			ListExtensions.SequenceEqual(this.IncludeModules, other.IncludeModules) &&
+			this.ModuleInterfaceTarget == other.ModuleInterfaceTarget
+	}
+
+	toString {
+		return "InterfaceUnitCompileArguments { SourceFile=%(_sourceFile), TargetFile=%(_targetFile), IncludeModules=%(_includeModules), ModuleInterfaceTarget=%(_moduleInterfaceTarget) }"
+	}
 }
 
 /// <summary>
@@ -113,13 +145,13 @@ class SharedCompileArguments {
 		_preprocessorDefinitions = []
 		_includeDirectories = []
 		_includeModules = []
-		_generateSourceDebugInfo = true
+		_generateSourceDebugInfo = false
 		_interfacePartitionUnits = []
 		_interfaceUnit = null
 		_implementationUnits = []
 		_assemblyUnits = []
 		_resourceFile = null
-		_enableWarningsAsErrors = true
+		_enableWarningsAsErrors = false
 		_disabledWarnings = []
 		_enabledWarnings = []
 		_customProperties = {}
@@ -233,20 +265,34 @@ class SharedCompileArguments {
 	CustomProperties { _customProperties }
 	CustomProperties=(value) { _customProperties = value }
 
-	==(rhs) {
-		System.print("==")
-		if (rhs == null) {
+	==(other) {
+		System.print("SharedCompileArguments==")
+		if (other is Null) {
 			return false
 		}
 
-		return this.SourceFile == rhs.SourceFile &&
-			this.TargetFile == rhs.TargetFile &&
-			ListExtensions.SequenceEqual(this.IncludeModules == rhs.IncludeModules)
+		return this.Standard == other.Standard &&
+			this.Optimize == other.Optimize  &&
+			this.SourceRootDirectory == other.SourceRootDirectory &&
+			this.TargetRootDirectory == other.TargetRootDirectory &&
+			this.ObjectDirectory == other.ObjectDirectory &&
+			ListExtensions.SequenceEqual(this.PreprocessorDefinitions, other.PreprocessorDefinitions) &&
+			ListExtensions.SequenceEqual(this.IncludeDirectories, other.IncludeDirectories) &&
+			ListExtensions.SequenceEqual(this.IncludeModules, other.IncludeModules) &&
+			this.GenerateSourceDebugInfo == other.GenerateSourceDebugInfo &&
+			ListExtensions.SequenceEqual(this.InterfacePartitionUnits, other.InterfacePartitionUnits) &&
+			this.InterfaceUnit == other.InterfaceUnit &&
+			ListExtensions.SequenceEqual(this.ImplementationUnits, other.ImplementationUnits) &&
+			ListExtensions.SequenceEqual(this.AssemblyUnits, other.AssemblyUnits) &&
+			this.ResourceFile == other.ResourceFile &&
+			this.EnableWarningsAsErrors == other.EnableWarningsAsErrors &&
+			ListExtensions.SequenceEqual(this.DisabledWarnings, other.DisabledWarnings) &&
+			ListExtensions.SequenceEqual(this.EnabledWarnings, other.EnabledWarnings)
+			MapExtensions.Equal(this.CustomProperties, other.CustomProperties)
 	}
-	
-	!=(rhs) {
-		System.print("!=")
-		return !(this == rhs)
+
+	toString {
+		return "SharedCompileArguments { Standard=%(_standard), Optimize=%(_optimize), SourceRootDirectory=%(_sourceRootDirectory), TargetRootDirectory=%(_targetRootDirectory), ObjectDirectory=%(_objectDirectory), PreprocessorDefinitions=%(_preprocessorDefinitions), IncludeDirectories=%(_includeDirectories), IncludeModules=%(_includeModules), GenerateSourceDebugInfo=%(_generateSourceDebugInfo), InterfacePartitionUnits=%(_interfacePartitionUnits), InterfaceUnit=%(_interfaceUnit), ImplementationUnits=%(_implementationUnits), AssemblyUnits=%(_assemblyUnits), ResourceFile=%(_resourceFile), EnableWarningsAsErrors=%(_enableWarningsAsErrors), DisabledWarnings=%(_disabledWarnings), EnabledWarnings=%(_enabledWarnings), CustomProperties=%(_customProperties) }"
 	}
 }
 
@@ -270,4 +316,14 @@ class ResourceCompileArguments {
 	/// </summary>
 	TargetFile { _targetFile }
 	TargetFile=(value) { _targetFile = value }
+
+	==(other) {
+		System.print("ResourceCompileArguments==")
+		if (other is Null) {
+			return false
+		}
+
+		return this.SourceFile == other.SourceFile &&
+			this.TargetFile == other.TargetFile
+	}
 }

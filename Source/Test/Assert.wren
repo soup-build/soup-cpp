@@ -14,14 +14,18 @@ class Assert {
 	}
 
 	static ListEqual(expected, actual) {
-		if (ListExtensions.SequenceEqual(expected, actual)) {
-			Fiber.abort("Values must be equal [%(expected)] [%(actual)]")
+		if (!ListExtensions.SequenceEqual(expected, actual)) {
+			System.print("Expected: %(expected)")
+			System.print("Actual  : %(actual)")
+			Fiber.abort("Values must be equal")
 		}
 	}
 
 	static Equal(expected, actual) {
-		if (expected != actual) {
-			Fiber.abort("Values must be equal [%(expected)] [%(actual)]")
+		if (!(expected == actual)) {
+			System.print("Expected: %(expected)")
+			System.print("Actual  : %(actual)")
+			Fiber.abort("Values must be equal")
 		}
 	}
 }

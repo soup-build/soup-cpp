@@ -110,17 +110,17 @@ namespace Soup.Build.Cpp
 
 			// Save the build properties
 			state["MSVC.Version"] = this.factory.Create(visualCompilerVersion);
-			state["MSVC.VCToolsRoot"] = this.factory.Create(visualCompilerVersionFolder.ToString());
-			state["MSVC.VCToolsBinaryRoot"] = this.factory.Create(vcToolsBinaryFolder.ToString());
-			state["MSVC.WindosKitsBinaryRoot"] = this.factory.Create(windosKitsBinaryFolder.ToString());
-			state["MSVC.LinkToolPath"] = this.factory.Create(linkToolPath.ToString());
-			state["MSVC.LibToolPath"] = this.factory.Create(libToolPath.ToString());
-			state["MSVC.RCToolPath"] = this.factory.Create(rcToolPath.ToString());
-			state["MSVC.MLToolPath"] = this.factory.Create(mlToolPath.ToString());
+			state["MSVC.VCToolsRoot"] = this.factory.Create(visualCompilerVersionFolder.toString);
+			state["MSVC.VCToolsBinaryRoot"] = this.factory.Create(vcToolsBinaryFolder.toString);
+			state["MSVC.WindosKitsBinaryRoot"] = this.factory.Create(windosKitsBinaryFolder.toString);
+			state["MSVC.LinkToolPath"] = this.factory.Create(linkToolPath.toString);
+			state["MSVC.LibToolPath"] = this.factory.Create(libToolPath.toString);
+			state["MSVC.RCToolPath"] = this.factory.Create(rcToolPath.toString);
+			state["MSVC.MLToolPath"] = this.factory.Create(mlToolPath.toString);
 
 			// Allow custom overrides for the compiler path
 			if (!state.ContainsKey("MSVC.ClToolPath"))
-				state["MSVC.ClToolPath"] = this.factory.Create(clToolPath.ToString());
+				state["MSVC.ClToolPath"] = this.factory.Create(clToolPath.toString);
 
 			// Set the include paths
 			var platformIncludePaths = new List<Path>();

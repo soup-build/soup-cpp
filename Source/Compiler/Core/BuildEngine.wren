@@ -78,7 +78,7 @@ class BuildEngine {
 
 			// Compile the resource file if present
 			if (arguments.ResourceFile) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Resource File Compile: " + arguments.ResourceFile.ToString())
+				buildState.LogTrace(TraceLevel.Information, "Generate Resource File Compile: %(arguments.ResourceFile)")
 
 				var compiledResourceFile =
 					arguments.ObjectDirectory +
@@ -96,14 +96,14 @@ class BuildEngine {
 			// Build up the entire Interface Dependency Closure for each file
 			var partitionInterfaceDependencyLookup = {}
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
-				partitionInterfaceDependencyLookup[file.File.ToString()] = file.Imports
+				partitionInterfaceDependencyLookup[file.File.toString] = file.Imports
 			}
 
 			// Compile the individual module interface partition translation units
 			var compileInterfacePartitionUnits = []
 			var allPartitionInterfaces = []
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Partition Compile Operation: " + file.File.ToString())
+				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Partition Compile Operation: %(file.File)")
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
@@ -145,7 +145,7 @@ class BuildEngine {
 
 			// Compile the module interface unit if present
 			if (arguments.ModuleInterfaceSourceFile != null) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: " + arguments.ModuleInterfaceSourceFile.ToString())
+				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
@@ -186,7 +186,7 @@ class BuildEngine {
 			// Compile the individual translation units
 			var compileImplementationUnits = []
 			for (file in arguments.SourceFiles) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Compile Operation: " + file.ToString())
+				buildState.LogTrace(TraceLevel.Information, "Generate Compile Operation: %(file)")
 
 				var compileFileArguments = TranslationUnitCompileArguments.new()
 				compileFileArguments.SourceFile = file
@@ -201,7 +201,7 @@ class BuildEngine {
 			// Compile the individual assembly units
 			var compileAssemblyUnits = []
 			for (file in arguments.AssemblySourceFiles) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Compile Assembly Operation: " + file.ToString())
+				buildState.LogTrace(TraceLevel.Information, "Generate Compile Assembly Operation: %(file)")
 
 				var compileFileArguments = TranslationUnitCompileArguments.new()
 				compileFileArguments.SourceFile = file
@@ -231,7 +231,7 @@ class BuildEngine {
 		buildState.LogTrace(TraceLevel.Information, "CoreLink")
 
 		var targetFile
-		var implementationFile = Path.new()
+		var implementationFile
 		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
 			targetFile = arguments.BinaryDirectory +
 				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
@@ -358,7 +358,7 @@ class BuildEngine {
 		linkArguments.ObjectFiles = objectFiles
 
 		// Perform the link
-		buildState.LogTrace(TraceLevel.Information, "Generate Link Operation: " + linkArguments.TargetFile.ToString())
+		buildState.LogTrace(TraceLevel.Information, "Generate Link Operation: %(linkArguments.TargetFile)")
 		var linkOperation = _compiler.CreateLinkOperation(linkArguments)
 		result.BuildOperations.add(linkOperation)
 
@@ -397,7 +397,7 @@ class BuildEngine {
 	}
 
 	BuildClosure(closure, file, partitionInterfaceDependencyLookup) {
-		for (childFile in partitionInterfaceDependencyLookup[file.ToString()]) {
+		for (childFile in partitionInterfaceDependencyLookup[file.toString]) {
 			closure.add(childFile)
 			this.BuildClosure(closure, childFile, partitionInterfaceDependencyLookup)
 		}

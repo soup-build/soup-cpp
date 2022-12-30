@@ -57,10 +57,11 @@ class Path {
 	static RelativeParentDirectory { ".." }
 
 	==(rhs) {
+		System.print("Path: %(this)==%(rhs)")
 		if (rhs is Null) {
 			return false
 		} else {
-			return _value == rhs.ToString()
+			return _value == rhs.toString
 		}
 	}
 
@@ -68,7 +69,7 @@ class Path {
 		if (rhs is Null) {
 			return false
 		} else {
-			return _value != rhs.ToString()
+			return _value != rhs.toString
 		}
 	}
 
@@ -79,7 +80,7 @@ class Path {
 	/// <param name="rhs">The right hand side.</param>
 	+(rhs) {
 		if (rhs.HasRoot) {
-			Fiber.abort("Cannot combine a rooted path on the right hand side: %(rhs.ToString())")
+			Fiber.abort("Cannot combine a rooted path on the right hand side: %(rhs)")
 		}
 
 		// Combine the directories
@@ -293,7 +294,7 @@ class Path {
 	/// <summary>
 	/// Convert to string
 	/// </summary>
-	ToString() { _value }
+	toString { _value }
 
 	ToAlternateString() {
 		// Replace all normal separators with the windows version
