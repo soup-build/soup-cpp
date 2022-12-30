@@ -2,7 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-public class BuildTaskUnitTests
+class BuildTaskUnitTests
 {
 	public void Initialize_Success()
 	{
