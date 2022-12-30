@@ -510,7 +510,7 @@ class BuildEngineUnitTests {
 		// Setup the shared arguments
 		var expectedCompileArguments = SharedCompileArguments.new()
 		expectedCompileArguments.Standard = LanguageStandard.CPP20
-		expectedCompileArguments.Optimize = OptimizationLevel.None
+		expectedCompileArguments.Optimize = OptimizationLevel.Size
 		expectedCompileArguments.ObjectDirectory = Path.new("obj/")
 		expectedCompileArguments.SourceRootDirectory = Path.new("C:/source/")
 		expectedCompileArguments.TargetRootDirectory = Path.new("C:/target/")
@@ -532,8 +532,8 @@ class BuildEngineUnitTests {
 		expectedTranslationUnit2Arguments.TargetFile = Path.new("obj/TestFile2.mock.obj")
 
 		var expectedTranslationUnit3Arguments = TranslationUnitCompileArguments.new()
-		expectedTranslationUnit2Arguments.SourceFile = Path.new("TestFile3.cpp")
-		expectedTranslationUnit2Arguments.TargetFile = Path.new("obj/TestFile3.mock.obj")
+		expectedTranslationUnit3Arguments.SourceFile = Path.new("TestFile3.cpp")
+		expectedTranslationUnit3Arguments.TargetFile = Path.new("obj/TestFile3.mock.obj")
 
 		expectedCompileArguments.ImplementationUnits = [
 			expectedTranslationUnit1Arguments,
@@ -656,7 +656,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 
 		Assert.Equal(
-			Path.new(),
+			null,
 			result.TargetFile)
 	}
 
@@ -806,7 +806,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/copy.exe"),
+				Path.new("./ProcessFolder/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -897,7 +897,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 
 		Assert.Equal(
-			Path.new(),
+			null,
 			result.TargetFile)
 	}
 
@@ -972,7 +972,7 @@ class BuildEngineUnitTests {
 		expectedCompileArguments.ObjectDirectory = Path.new("obj/")
 		expectedCompileArguments.SourceRootDirectory = Path.new("C:/source/")
 		expectedCompileArguments.TargetRootDirectory = Path.new("C:/target/")
-		expectedCompileArguments.TargetRootDirectory = [
+		expectedCompileArguments.IncludeDirectories = [
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
@@ -1070,7 +1070,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/copy.exe"),
+				Path.new("./ProcessFolder/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1176,7 +1176,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 
 		Assert.Equal(
-			Path.new(),
+			null,
 			result.TargetFile)
 	}
 
@@ -1361,7 +1361,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/copy.exe"),
+				Path.new("./ProcessFolder/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1469,7 +1469,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 
 		Assert.Equal(
-			Path.new(),
+			null,
 			result.TargetFile)
 	}
 
@@ -1583,7 +1583,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/copy.exe"),
+				Path.new("./ProcessFolder/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1641,7 +1641,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 
 		Assert.Equal(
-			Path.new(),
+			null,
 			result.TargetFile)
 	}
 }

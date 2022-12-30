@@ -386,7 +386,7 @@ class Path {
 		var fileName = decomposeResult[2]
 
 		// Normalize any unnecessary directories in the raw path
-		var hasRoot = root != null
+		var hasRoot = !(root is Null)
 		Path.NormalizeDirectories(directories, hasRoot)
 
 		// Rebuild the string value
@@ -465,7 +465,7 @@ class Path {
 	SetState(directories, root, fileName) {
 		var stringBuilder = ""
 
-		if (root != null) {
+		if (!(root is Null)) {
 			stringBuilder = stringBuilder + root
 			stringBuilder = stringBuilder + Path.DirectorySeparator
 		}
@@ -475,23 +475,23 @@ class Path {
 			stringBuilder = stringBuilder + Path.DirectorySeparator
 		}
 
-		if (fileName != null) {
+		if (!(fileName is Null)) {
 			stringBuilder = stringBuilder + fileName
 		}
 
 		// Store the persistant state
 		_value = stringBuilder
 
-		if (root != null) {
-			_rootEndLocation = root.count
-		} else {
+		if (root is Null) {
 			_rootEndLocation = -1
+		} else {
+			_rootEndLocation = root.count
 		}
 
-		if (fileName != null) {
-			_fileNameStartLocation = _value.count - fileName.count
-		} else {
+		if (fileName is Null) {
 			_fileNameStartLocation = _value.count
+		} else {
+			_fileNameStartLocation = _value.count - fileName.count
 		}
 	}
 

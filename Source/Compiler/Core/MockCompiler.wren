@@ -89,7 +89,7 @@ class MockCompiler is ICompiler {
 					]))
 		}
 
-		if (arguments.InterfaceUnit != null) {
+		if (!(arguments.InterfaceUnit is Null)) {
 			result.add(
 				BuildOperation.new(
 					"MockCompileModule: %(_compileRequests.count)",

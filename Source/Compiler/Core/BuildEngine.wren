@@ -57,7 +57,7 @@ class BuildEngine {
 	CoreCompile(buildState, arguments, result) {
 		// Ensure there are actually files to build
 		if (arguments.ModuleInterfacePartitionSourceFiles.count != 0 ||
-			arguments.ModuleInterfaceSourceFile != null ||
+			!(arguments.ModuleInterfaceSourceFile is Null) ||
 			arguments.SourceFiles.count != 0 ||
 			arguments.AssemblySourceFiles.count != 0) {
 			// Setup the shared properties
@@ -144,7 +144,7 @@ class BuildEngine {
 			compileArguments.InterfacePartitionUnits = compileInterfacePartitionUnits
 
 			// Compile the module interface unit if present
-			if (arguments.ModuleInterfaceSourceFile != null) {
+			if (!(arguments.ModuleInterfaceSourceFile is Null)) {
 				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
 
 				var objectModuleInterfaceFile =
@@ -271,7 +271,7 @@ class BuildEngine {
 			linkArguments.TargetType = LinkTarget.StaticLibrary
 			
 			// Add the library as a link dependency and all recursive libraries
-			result.LinkDependencies = []
+			result.LinkDependencies = [] + arguments.LinkDependencies
 			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.LinkDependencies.add(absoluteTargetFile)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
@@ -318,7 +318,7 @@ class BuildEngine {
 		var objectFiles = []
 
 		// Add the resource file if present
-		if (arguments.ResourceFile != null) {
+		if (!(arguments.ResourceFile is Null)) {
 			var compiledResourceFile =
 				arguments.ObjectDirectory +
 				Path.new(arguments.ResourceFile.GetFileName())
@@ -335,7 +335,7 @@ class BuildEngine {
 		}
 
 		// Add the module interface object file if present
-		if (arguments.ModuleInterfaceSourceFile != null) {
+		if (!(arguments.ModuleInterfaceSourceFile is Null)) {
 			var objectFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
 			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
 			objectFiles.add(objectFile)
