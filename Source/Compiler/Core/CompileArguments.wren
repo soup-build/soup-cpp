@@ -110,9 +110,7 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 	}
 
 	construct new(sourceFile, targetFile, includeModules, moduleInterfaceTarget) {
-		_sourceFile = sourceFile
-		_targetFile = targetFile
-		_includeModules = includeModules
+		super(sourceFile, targetFile, includeModules)
 		_moduleInterfaceTarget = moduleInterfaceTarget
 	}
 

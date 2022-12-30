@@ -71,7 +71,7 @@ class MSVCCompiler is ICompiler {
 			arguments.TargetRootDirectory,
 			responseFile,
 			MSVCCompiler.CombineArguments(sharedCommandArguments))
-		operations.Add(writeSharedArgumentsOperation)
+		operations.add(writeSharedArgumentsOperation)
 
 		// Initialize a shared input set
 		var sharedInputFiles = []
@@ -84,10 +84,10 @@ class MSVCCompiler is ICompiler {
 			var resourceFileArguments = arguments.ResourceFile
 
 			// Build up the input/output sets
-			var inputFiles = sharedInputFiles.ToList()
-			inputFiles.Add(resourceFileArguments.SourceFile)
+			var inputFiles = [] + sharedInputFiles
+			inputFiles.add(resourceFileArguments.SourceFile)
 			// TODO: The temp files require read access, need a way to tell build operation
-			inputFiles.Add(arguments.TargetRootDirectory + Path.new("fake_file"))
+			inputFiles.add(arguments.TargetRootDirectory + Path.new("fake_file"))
 			var outputFiles = [
 				arguments.TargetRootDirectory + resourceFileArguments.TargetFile,
 			]
@@ -105,15 +105,15 @@ class MSVCCompiler is ICompiler {
 				MSVCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
-			operations.Add(buildOperation)
+			operations.add(buildOperation)
 		}
 
 		var internalModules = []
 		for (partitionUnitArguments in arguments.InterfacePartitionUnits) {
 			// Build up the input/output sets
-			var inputFiles = sharedInputFiles.ToList()
-			inputFiles.Add(partitionUnitArguments.SourceFile)
-			inputFiles.Add(absoluteResponseFile)
+			var inputFiles = [] + sharedInputFiles
+			inputFiles.add(partitionUnitArguments.SourceFile)
+			inputFiles.add(absoluteResponseFile)
 			inputFiles = inputFiles + partitionUnitArguments.IncludeModules
 
 			var outputFiles = [
@@ -133,12 +133,12 @@ class MSVCCompiler is ICompiler {
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				MSVCCompiler.CombineArguments(commandArguments),
-				inputFiles.ToArray(),
+				inputFiles,
 				outputFiles)
-			operations.Add(buildOperation)
+			operations.add(buildOperation)
 
 			// Add our module interface back in for the downstream compilers
-			internalModules.Add(arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget)
+			internalModules.add(arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget)
 		}
 
 		// Generate the interface build operation if present
@@ -146,9 +146,9 @@ class MSVCCompiler is ICompiler {
 			var interfaceUnitArguments = arguments.InterfaceUnit
 
 			// Build up the input/output sets
-			var inputFiles = sharedInputFiles.ToList()
-			inputFiles.Add(interfaceUnitArguments.SourceFile)
-			inputFiles.Add(absoluteResponseFile)
+			var inputFiles = [] + sharedInputFiles
+			inputFiles.add(interfaceUnitArguments.SourceFile)
+			inputFiles.add(absoluteResponseFile)
 			inputFiles = inputFiles + interfaceUnitArguments.IncludeModules
 
 			var outputFiles = [
@@ -170,17 +170,17 @@ class MSVCCompiler is ICompiler {
 				MSVCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
-			operations.Add(buildOperation)
+			operations.add(buildOperation)
 
 			// Add our module interface back in for the downstream compilers
-			internalModules.Add(arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget)
+			internalModules.add(arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget)
 		}
 
 		for (implementationUnitArguments in arguments.ImplementationUnits) {
 			// Build up the input/output sets
-			var inputFiles = sharedInputFiles.ToList()
-			inputFiles.Add(implementationUnitArguments.SourceFile)
-			inputFiles.Add(absoluteResponseFile)
+			var inputFiles = [] + sharedInputFiles
+			inputFiles.add(implementationUnitArguments.SourceFile)
+			inputFiles.add(absoluteResponseFile)
 			inputFiles = inputFiles + implementationUnitArguments.IncludeModules
 			inputFiles = inputFiles + internalModules
 
@@ -201,15 +201,15 @@ class MSVCCompiler is ICompiler {
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				MSVCCompiler.CombineArguments(commandArguments),
-				inputFiles.ToArray(),
+				inputFiles,
 				outputFiles)
-			operations.Add(buildOperation)
+			operations.add(buildOperation)
 		}
 
 		for (assemblyUnitArguments in arguments.AssemblyUnits) {
 			// Build up the input/output sets
-			var inputFiles = sharedInputFiles.ToList()
-			inputFiles.Add(assemblyUnitArguments.SourceFile)
+			var inputFiles = [] + sharedInputFiles
+			inputFiles.add(assemblyUnitArguments.SourceFile)
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + assemblyUnitArguments.TargetFile,
@@ -227,9 +227,9 @@ class MSVCCompiler is ICompiler {
 				arguments.SourceRootDirectory,
 				_mlExecutable,
 				MSVCCompiler.CombineArguments(commandArguments),
-				inputFiles.ToArray(),
+				inputFiles,
 				outputFiles)
-			operations.Add(buildOperation)
+			operations.add(buildOperation)
 		}
 
 		return operations

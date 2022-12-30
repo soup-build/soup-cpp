@@ -12,8 +12,6 @@ class MSVCArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_DefaultParameters")
-		this.BSCA_DefaultParameters()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
@@ -48,35 +46,6 @@ class MSVCArgumentBuilderUnitTests {
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
 	}
 
-	// [Fact]
-	BSCA_DefaultParameters() {
-		var arguments = SharedCompileArguments.new()
-
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
-			arguments)
-
-		var expectedArguments = [
-			"/nologo",
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++11",
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
-		]
-
-		Assert.Equal(expectedArguments, actualArguments)
-	}
-
 	// [Theory]
 	// [InlineData(LanguageStandard.CPP11, "/std:c++11")]
 	// [InlineData(LanguageStandard.CPP14, "/std:c++14")]
@@ -86,6 +55,7 @@ class MSVCArgumentBuilderUnitTests {
 		expectedFlag) {
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = standard
+		arguments.Optimize = OptimizationLevel.None
 
 		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
@@ -109,13 +79,14 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
 	BSCA_SingleArgument_LanguageStandard_CPP20() {
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP20
+		arguments.Optimize = OptimizationLevel.None
 
 		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
@@ -139,7 +110,7 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -170,7 +141,7 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Theory]
@@ -205,7 +176,7 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -238,7 +209,7 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -271,12 +242,14 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
 	BSCA_SingleArgument_IncludePaths() {
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.IncludeDirectories = [
 			Path.new("C:/Files/SDK/"),
 			Path.new("my files/")
@@ -306,12 +279,14 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
 	BSCA_SingleArgument_PreprocessorDefinitions() {
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"VERSION=1"
@@ -341,12 +316,14 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
 	BSCA_SingleArgument_Modules() {
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.IncludeModules = [
 			Path.new("Module.pcm"),
 			Path.new("Std.pcm"),
@@ -378,7 +355,7 @@ class MSVCArgumentBuilderUnitTests {
 			"/c",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -405,7 +382,7 @@ class MSVCArgumentBuilderUnitTests {
 			"\"C:/target/module.ifc\"",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -432,7 +409,7 @@ class MSVCArgumentBuilderUnitTests {
 			"\"C:/target/module.ifc\"",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -457,7 +434,7 @@ class MSVCArgumentBuilderUnitTests {
 			"/Fo\"C:/target/module.obj\"",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -497,6 +474,6 @@ class MSVCArgumentBuilderUnitTests {
 			"/Fo\"C:/target/module.obj\"",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 }

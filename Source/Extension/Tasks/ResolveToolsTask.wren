@@ -142,17 +142,17 @@ namespace Soup.Build.Cpp
 			{
 				if (architectureName == "x64")
 				{
-					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./ucrt/x64/"))
-					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./um/x64/"))
-					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x64/"))
-					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./lib/x64/"))
+					platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./ucrt/x64/"))
+					platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./um/x64/"))
+					platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x64/"))
+					platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./lib/x64/"))
 				}
 				else if (architectureName == "x86")
 				{
-					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./ucrt/x86/"))
-					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./um/x86/"))
-					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x86/"))
-					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./lib/x86/"))
+					platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./ucrt/x86/"))
+					platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./um/x86/"))
+					platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x86/"))
+					platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./lib/x86/"))
 				}
 			}
 
@@ -164,7 +164,7 @@ namespace Soup.Build.Cpp
 			}
 
 			if (architectureName == "x86")
-				platformPreprocessorDefinitions.Add("WIN32")
+				platformPreprocessorDefinitions.add("WIN32")
 
 			// Set the platform libraries
 			var platformLibraries = [

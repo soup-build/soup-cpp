@@ -39,6 +39,6 @@ class MSVCResourceCompileArgumentBuilderUnitTests {
 			"./Resources.rc",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 }

@@ -22,7 +22,7 @@ class ResolveToolsTaskUnitTests
 
 		// Set the sdks
 		var sdks = new ValueList()
-		sdks.Add(new Value(new ValueTable()
+		sdks.add(new Value(new ValueTable()
 		{
 			{ "Name", new Value("MSVC") },
 			{ 
@@ -34,7 +34,7 @@ class ResolveToolsTaskUnitTests
 				})
 			},
 		}))
-		sdks.Add(new Value(new ValueTable()
+		sdks.add(new Value(new ValueTable()
 		{
 			{ "Name", new Value("Windows") },
 			{
@@ -49,10 +49,10 @@ class ResolveToolsTaskUnitTests
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("SDKs", new Value(sdks))
-		parametersTable.Add("System", new Value("win32"))
-		parametersTable.Add("Architecture", new Value("x64"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("SDKs", new Value(sdks))
+		parametersTable.add("System", new Value("win32"))
+		parametersTable.add("Architecture", new Value("x64"))
 
 		var factory = new ValueFactory()
 		var uut = new ResolveToolsTask(buildState, factory)

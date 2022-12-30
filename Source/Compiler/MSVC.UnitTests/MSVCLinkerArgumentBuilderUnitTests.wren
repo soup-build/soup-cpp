@@ -44,7 +44,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			"/out:\"./Library.mock.lib\"",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -79,7 +79,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			"./File.mock.o",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -105,7 +105,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			"./File.mock.o",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -131,7 +131,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			"./File.mock.obj",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -158,7 +158,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			"./File.mock.obj",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
@@ -185,6 +185,6 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			"./File.mock.obj",
 		]
 
-		Assert.Equal(expectedArguments, actualArguments)
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 }

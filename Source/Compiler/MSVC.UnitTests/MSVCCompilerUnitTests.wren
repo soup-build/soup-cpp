@@ -7,7 +7,7 @@ import "../../Utils/Path" for Path
 import "../../Test/Assert" for Assert
 import "../../BuildOperation" for BuildOperation
 import "../Core/LinkArguments" for LinkArguments, LinkTarget
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
+import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
 class MSVCCompilerUnitTests {
 	construct new() {
@@ -60,13 +60,15 @@ class MSVCCompilerUnitTests {
 			Path.new("C:/bin/mock.ml.exe"))
 
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.SourceRootDirectory = Path.new("C:/source/")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("ObjectDir/")
 
 		var translationUnitArguments = TranslationUnitCompileArguments.new()
-		translationUnitArgumentsSourceFile = Path.new("File.cpp")
-		translationUnitArgumentsTargetFile = Path.new("obj/File.obj")
+		translationUnitArguments.SourceFile = Path.new("File.cpp")
+		translationUnitArguments.TargetFile = Path.new("obj/File.obj")
 
 		arguments.ImplementationUnits = [
 			translationUnitArguments,
@@ -99,7 +101,7 @@ class MSVCCompilerUnitTests {
 				]),
 		]
 
-		Assert.Equal(expected, result)
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]
@@ -112,6 +114,8 @@ class MSVCCompilerUnitTests {
 			Path.new("C:/bin/mock.ml.exe"))
 
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.SourceRootDirectory = Path.new("C:/source/")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("ObjectDir/")
@@ -164,7 +168,7 @@ class MSVCCompilerUnitTests {
 				]),
 		]
 
-		Assert.Equal(expected, result)
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]
@@ -177,6 +181,8 @@ class MSVCCompilerUnitTests {
 			Path.new("C:/bin/mock.ml.exe"))
 
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.SourceRootDirectory = Path.new("C:/source/")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("ObjectDir/")
@@ -228,7 +234,7 @@ class MSVCCompilerUnitTests {
 				]),
 		]
 
-		Assert.Equal(expected, result)
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]
@@ -241,6 +247,8 @@ class MSVCCompilerUnitTests {
 			Path.new("C:/bin/mock.ml.exe"))
 
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.SourceRootDirectory = Path.new("C:/source/")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("ObjectDir/")
@@ -275,8 +283,7 @@ class MSVCCompilerUnitTests {
 				Path.new("obj/File3.obj"),
 				[
 					Path.new("obj/Other3.pcm")
-				],
-				null)
+				])
 		]
 
 		var result = uut.CreateCompileOperations(arguments)
@@ -340,7 +347,7 @@ class MSVCCompilerUnitTests {
 				]),
 		]
 
-		Assert.Equal(expected, result)
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]
@@ -353,6 +360,8 @@ class MSVCCompilerUnitTests {
 			Path.new("C:/bin/mock.ml.exe"))
 
 		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.Optimize = OptimizationLevel.None
 		arguments.SourceRootDirectory = Path.new("C:/source/")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("ObjectDir/")
@@ -397,7 +406,7 @@ class MSVCCompilerUnitTests {
 				]),
 		]
 
-		Assert.Equal(expected, result)
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]

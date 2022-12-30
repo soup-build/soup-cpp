@@ -67,7 +67,7 @@ namespace Soup.Build.Cpp
 			{
 				foreach (var value in platformLibrariesValue.AsList().Select(value => Path.new(value.AsString())))
 				{
-					platformLibraries.Add(value)
+					platformLibraries.add(value)
 				}
 			}
 
@@ -80,11 +80,11 @@ namespace Soup.Build.Cpp
 					// If relative then resolve to working directory
 					if (value.HasRoot)
 					{
-						linkLibraries.Add(value)
+						linkLibraries.add(value)
 					}
 					else
 					{
-						linkLibraries.Add(packageRoot + value)
+						linkLibraries.add(packageRoot + value)
 					}
 				}
 			}
@@ -103,11 +103,11 @@ namespace Soup.Build.Cpp
 					// If relative then resolve to working directory
 					if (value.HasRoot)
 					{
-						runtimeDependencies.Add(value)
+						runtimeDependencies.add(value)
 					}
 					else
 					{
-						runtimeDependencies.Add(packageRoot + value)
+						runtimeDependencies.add(packageRoot + value)
 					}
 				}
 
@@ -138,7 +138,7 @@ namespace Soup.Build.Cpp
 			}
 
 			preprocessorDefinitions.AddRange(platformPreprocessorDefinitions)
-			preprocessorDefinitions.Add("SOUP_BUILD")
+			preprocessorDefinitions.add("SOUP_BUILD")
 
 			// Build up arguments to build this individual recipe
 			var targetDirectory = Path.new(parametersTable["TargetDirectory"].AsString())
@@ -163,7 +163,7 @@ namespace Soup.Build.Cpp
 					var targetPartitionTable = this.factory.CreateTable()
 					if (partition.IsString())
 					{
-						targetPartitionTable.Add(
+						targetPartitionTable.add(
 							"Source",
 							this.factory.Create(partition.AsString()))
 					}
@@ -172,7 +172,7 @@ namespace Soup.Build.Cpp
 						var partitionTable = partition.AsTable()
 						if (partitionTable.TryGetValue("Source", out var partitionSourceValue))
 						{
-							targetPartitionTable.Add(
+							targetPartitionTable.add(
 								"Source",
 								this.factory.Create(partitionSourceValue.AsString()))
 						}
@@ -184,7 +184,7 @@ namespace Soup.Build.Cpp
 						if (partitionTable.TryGetValue("Imports", out var partitionImportsValue))
 						{
 							var partitionImports = partitionImportsValue.AsList().Select(value => this.factory.Create(value.AsString()))
-							targetPartitionTable.Add(
+							targetPartitionTable.add(
 								"Imports",
 								this.factory.Create(this.factory.CreateList().Append(partitionImports)))
 						}
@@ -194,7 +194,7 @@ namespace Soup.Build.Cpp
 						throw new InvalidOperationException("Unknown partition type.")
 					}
 
-					moduleInterfacePartitionSourceFiles.Add(this.factory.Create(targetPartitionTable))
+					moduleInterfacePartitionSourceFiles.add(this.factory.Create(targetPartitionTable))
 				}
 			}
 
@@ -244,13 +244,13 @@ namespace Soup.Build.Cpp
 			}
 			else if (string.Compare(buildFlavor, "debugrelease", StringComparison.OrdinalIgnoreCase) == 0)
 			{
-				preprocessorDefinitions.Add("RELEASE")
+				preprocessorDefinitions.add("RELEASE")
 				generateSourceDebugInfo = true
 				optimizationLevel = BuildOptimizationLevel.Speed
 			}
 			else if (string.Compare(buildFlavor, "release", StringComparison.OrdinalIgnoreCase) == 0)
 			{
-				preprocessorDefinitions.Add("RELEASE")
+				preprocessorDefinitions.add("RELEASE")
 				optimizationLevel = BuildOptimizationLevel.Speed
 			}
 			else

@@ -19,15 +19,15 @@ public class BuildTaskUnitTests
 
 		// Setup build table
 		var buildTable = new ValueTable()
-		state.Add("Build", new Value(buildTable))
-		buildTable.Add("TargetName", new Value("Program"))
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.WindowsApplication))
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
-		buildTable.Add("ObjectDirectory", new Value("obj/"))
-		buildTable.Add("BinaryDirectory", new Value("bin/"))
-		buildTable.Add(
+		state.add("Build", new Value(buildTable))
+		buildTable.add("TargetName", new Value("Program"))
+		buildTable.add("TargetType", new Value((long)BuildTargetType.WindowsApplication))
+		buildTable.add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.add("ObjectDirectory", new Value("obj/"))
+		buildTable.add("BinaryDirectory", new Value("bin/"))
+		buildTable.add(
 			"Source",
 			new Value(new ValueList()
 				{
@@ -36,14 +36,14 @@ public class BuildTaskUnitTests
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("Architecture", new Value("x64"))
-		parametersTable.Add("Compiler", new Value("MOCK"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("Architecture", new Value("x64"))
+		parametersTable.add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
 		var compiler = new Compiler.Mock.Compiler()
 		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
+		compilerFactory.add("MOCK", (IValueTable state) => { return compiler })
 
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory, compilerFactory)
@@ -168,15 +168,15 @@ public class BuildTaskUnitTests
 
 		// Setup build table
 		var buildTable = new ValueTable()
-		state.Add("Build", new Value(buildTable))
-		buildTable.Add("TargetName", new Value("Program"))
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.Executable))
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
-		buildTable.Add("ObjectDirectory", new Value("obj/"))
-		buildTable.Add("BinaryDirectory", new Value("bin/"))
-		buildTable.Add(
+		state.add("Build", new Value(buildTable))
+		buildTable.add("TargetName", new Value("Program"))
+		buildTable.add("TargetType", new Value((long)BuildTargetType.Executable))
+		buildTable.add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.add("ObjectDirectory", new Value("obj/"))
+		buildTable.add("BinaryDirectory", new Value("bin/"))
+		buildTable.add(
 			"Source",
 			new Value(new ValueList()
 				{
@@ -185,14 +185,14 @@ public class BuildTaskUnitTests
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("Architecture", new Value("x64"))
-		parametersTable.Add("Compiler", new Value("MOCK"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("Architecture", new Value("x64"))
+		parametersTable.add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
 		var compiler = new Compiler.Mock.Compiler()
 		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
+		compilerFactory.add("MOCK", (IValueTable state) => { return compiler })
 
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory, compilerFactory)
@@ -317,42 +317,42 @@ public class BuildTaskUnitTests
 
 		// Setup build table
 		var buildTable = new ValueTable()
-		state.Add("Build", new Value(buildTable))
-		buildTable.Add("TargetName", new Value("Library"))
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
-		buildTable.Add("ObjectDirectory", new Value("obj/"))
-		buildTable.Add("BinaryDirectory", new Value("bin/"))
-		buildTable.Add("Source", new Value(new ValueList()
+		state.add("Build", new Value(buildTable))
+		buildTable.add("TargetName", new Value("Library"))
+		buildTable.add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.add("ObjectDirectory", new Value("obj/"))
+		buildTable.add("BinaryDirectory", new Value("bin/"))
+		buildTable.add("Source", new Value(new ValueList()
 		{
 			new Value("TestFile1.cpp"),
 			new Value("TestFile2.cpp"),
 			new Value("TestFile3.cpp"),
 		}))
-		buildTable.Add("IncludeDirectories", new Value(new ValueList()
+		buildTable.add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
 		}))
-		buildTable.Add("ModuleDependencies", new Value(new ValueList()
+		buildTable.add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
 		}))
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
+		buildTable.add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("Architecture", new Value("x64"))
-		parametersTable.Add("Compiler", new Value("MOCK"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("Architecture", new Value("x64"))
+		parametersTable.add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
 		var compiler = new Compiler.Mock.Compiler()
 		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
+		compilerFactory.add("MOCK", (IValueTable state) => { return compiler })
 
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory, compilerFactory)
@@ -529,33 +529,33 @@ public class BuildTaskUnitTests
 
 		// Setup build table
 		var buildTable = new ValueTable()
-		state.Add("Build", new Value(buildTable))
-		buildTable.Add("TargetName", new Value("Library"))
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
-		buildTable.Add("ObjectDirectory", new Value("obj/"))
-		buildTable.Add("BinaryDirectory", new Value("bin/"))
-		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
-		buildTable.Add("Source", new Value(new ValueList()
+		state.add("Build", new Value(buildTable))
+		buildTable.add("TargetName", new Value("Library"))
+		buildTable.add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.add("ObjectDirectory", new Value("obj/"))
+		buildTable.add("BinaryDirectory", new Value("bin/"))
+		buildTable.add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
+		buildTable.add("Source", new Value(new ValueList()
 		{
 			new Value("TestFile1.cpp"),
 			new Value("TestFile2.cpp"),
 			new Value("TestFile3.cpp"),
 		}))
-		buildTable.Add("IncludeDirectories", new Value(new ValueList()
+		buildTable.add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
 		}))
-		buildTable.Add("ModuleDependencies", new Value(new ValueList()
+		buildTable.add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
 		}))
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
-		buildTable.Add("PreprocessorDefinitions", new Value(new ValueList()
+		buildTable.add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
+		buildTable.add("PreprocessorDefinitions", new Value(new ValueList()
 		{
 			new Value("DEBUG"),
 			new Value("AWESOME"),
@@ -563,14 +563,14 @@ public class BuildTaskUnitTests
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("Architecture", new Value("x64"))
-		parametersTable.Add("Compiler", new Value("MOCK"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("Architecture", new Value("x64"))
+		parametersTable.add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
 		var compiler = new Compiler.Mock.Compiler()
 		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
+		compilerFactory.add("MOCK", (IValueTable state) => { return compiler })
 
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory, compilerFactory)
@@ -786,15 +786,15 @@ public class BuildTaskUnitTests
 
 		// Setup build table
 		var buildTable = new ValueTable()
-		state.Add("Build", new Value(buildTable))
-		buildTable.Add("TargetName", new Value("Library"))
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
-		buildTable.Add("ObjectDirectory", new Value("obj/"))
-		buildTable.Add("BinaryDirectory", new Value("bin/"))
-		buildTable.Add("ModuleInterfacePartitionSourceFiles", new Value(new ValueList()
+		state.add("Build", new Value(buildTable))
+		buildTable.add("TargetName", new Value("Library"))
+		buildTable.add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.add("ObjectDirectory", new Value("obj/"))
+		buildTable.add("BinaryDirectory", new Value("bin/"))
+		buildTable.add("ModuleInterfacePartitionSourceFiles", new Value(new ValueList()
 		{
 			new Value(new ValueTable()
 			{
@@ -806,24 +806,24 @@ public class BuildTaskUnitTests
 				{ "Imports", new Value(new ValueList() { new Value("TestFile1.cpp"), }) },
 			}),
 		}))
-		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
-		buildTable.Add("Source", new Value(new ValueList()
+		buildTable.add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
+		buildTable.add("Source", new Value(new ValueList()
 		{
 			new Value("TestFile3.cpp"),
 			new Value("TestFile4.cpp"),
 		}))
-		buildTable.Add("IncludeDirectories", new Value(new ValueList()
+		buildTable.add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
 		}))
-		buildTable.Add("ModuleDependencies", new Value(new ValueList()
+		buildTable.add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
 		}))
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
-		buildTable.Add("PreprocessorDefinitions", new Value(new ValueList()
+		buildTable.add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
+		buildTable.add("PreprocessorDefinitions", new Value(new ValueList()
 		{
 			new Value("DEBUG"),
 			new Value("AWESOME"),
@@ -831,14 +831,14 @@ public class BuildTaskUnitTests
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("Architecture", new Value("x64"))
-		parametersTable.Add("Compiler", new Value("MOCK"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("Architecture", new Value("x64"))
+		parametersTable.add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
 		var compiler = new Compiler.Mock.Compiler()
 		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
+		compilerFactory.add("MOCK", (IValueTable state) => { return compiler })
 
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory, compilerFactory)
@@ -1090,28 +1090,28 @@ public class BuildTaskUnitTests
 
 		// Setup build table
 		var buildTable = new ValueTable()
-		state.Add("Build", new Value(buildTable))
-		buildTable.Add("TargetName", new Value("Library"))
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
-		buildTable.Add("ObjectDirectory", new Value("obj/"))
-		buildTable.Add("BinaryDirectory", new Value("bin/"))
-		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
-		state.Add("SourceFiles", new Value(new ValueList()))
-		buildTable.Add("IncludeDirectories", new Value(new ValueList()
+		state.add("Build", new Value(buildTable))
+		buildTable.add("TargetName", new Value("Library"))
+		buildTable.add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.add("ObjectDirectory", new Value("obj/"))
+		buildTable.add("BinaryDirectory", new Value("bin/"))
+		buildTable.add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
+		state.add("SourceFiles", new Value(new ValueList()))
+		buildTable.add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
 		}))
-		buildTable.Add("ModuleDependencies", new Value(new ValueList()
+		buildTable.add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
 		}))
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
-		buildTable.Add("PreprocessorDefinitions", new Value(new ValueList()
+		buildTable.add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
+		buildTable.add("PreprocessorDefinitions", new Value(new ValueList()
 		{
 			new Value("DEBUG"),
 			new Value("AWESOME"),
@@ -1119,14 +1119,14 @@ public class BuildTaskUnitTests
 
 		// Setup parameters table
 		var parametersTable = new ValueTable()
-		state.Add("Parameters", new Value(parametersTable))
-		parametersTable.Add("Architecture", new Value("x64"))
-		parametersTable.Add("Compiler", new Value("MOCK"))
+		state.add("Parameters", new Value(parametersTable))
+		parametersTable.add("Architecture", new Value("x64"))
+		parametersTable.add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
 		var compiler = new Compiler.Mock.Compiler()
 		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
+		compilerFactory.add("MOCK", (IValueTable state) => { return compiler })
 
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory, compilerFactory)

@@ -35,7 +35,7 @@ namespace Soup.Build.Cpp
 			this(buildState, factory, new Dictionary<string, Func<IValueTable, ICompiler>>())
 		{
 			// Register default compilers
-			this.compilerFactory.Add("MSVC", (IValueTable activeState) =>
+			this.compilerFactory.add("MSVC", (IValueTable activeState) =>
 			{
 				var clToolPath = Path.new(activeState["MSVC.ClToolPath"].AsString())
 				var linkToolPath = Path.new(activeState["MSVC.LinkToolPath"].AsString())
@@ -96,7 +96,7 @@ namespace Soup.Build.Cpp
 						partitionImports = partitionImportsValue.AsList().Select(value => Path.new(value.AsString())).ToList()
 					}
 
-					paritionTargets.Add(new PartitionSourceFile()
+					paritionTargets.add(new PartitionSourceFile()
 					{
 						File = Path.new(partitionTable["Source"].AsString()),
 						Imports = partitionImports,
@@ -253,9 +253,9 @@ namespace Soup.Build.Cpp
 		{
 			var valueSet = new HashSet<string>()
 			foreach (var value in collection1)
-				valueSet.Add(value.toString)
+				valueSet.add(value.toString)
 			foreach (var value in collection2)
-				valueSet.Add(value.toString)
+				valueSet.add(value.toString)
 
 			return valueSet.Select(value => Path.new(value)).ToList()
 		}
@@ -264,7 +264,7 @@ namespace Soup.Build.Cpp
 		{
 			var valueSet = new HashSet<string>()
 			foreach (var value in collection)
-				valueSet.Add(value.toString)
+				valueSet.add(value.toString)
 
 			return valueSet.Select(value => Path.new(value)).ToList()
 		}
