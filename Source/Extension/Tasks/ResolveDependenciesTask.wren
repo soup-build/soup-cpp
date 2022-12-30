@@ -4,7 +4,7 @@
 
 namespace Soup.Build.Cpp
 {
-	using System.Collections.Generic;
+	using System.Collections.Generic
 
 	/// <summary>
 	/// The resolve dependencies build task that knows how to combine all previous state
@@ -12,28 +12,28 @@ namespace Soup.Build.Cpp
 	/// </summary>
 	public class ResolveDependenciesTask : IBuildTask
 	{
-		private IBuildState buildState;
-		private IValueFactory factory;
+		private IBuildState buildState
+		private IValueFactory factory
 
 		/// <summary>
 		/// Get the run before list
 		/// </summary>
-		public static IReadOnlyList<string> RunBeforeList => new List<string>()
+		public static IReadOnlyList<string> RunBeforeList => [
 		{
 			"BuildTask",
-		};
+		}
 
 		/// <summary>
 		/// Get the run after list
 		/// </summary>
-		public static IReadOnlyList<string> RunAfterList => new List<string>()
+		public static IReadOnlyList<string> RunAfterList => [
 		{
-		};
+		}
 
 		public ResolveDependenciesTask(IBuildState buildState, IValueFactory factory)
 		{
-			this.buildState = buildState;
-			this.factory = factory;
+			this.buildState = buildState
+			this.factory = factory
 		}
 
 		/// <summary>
@@ -41,42 +41,42 @@ namespace Soup.Build.Cpp
 		/// </summary>
 		public void Execute()
 		{
-			var activeState = this.buildState.ActiveState;
+			var activeState = this.buildState.ActiveState
 
 			if (activeState.TryGetValue("Dependencies", out var dependenciesValue))
 			{
-				var dependenciesTable = dependenciesValue.AsTable();
+				var dependenciesTable = dependenciesValue.AsTable()
 				if (dependenciesTable.TryGetValue("Runtime", out var runtimeValue))
 				{
-					var runtimeDependenciesTable = runtimeValue.AsTable();
-					var buildTable = activeState.EnsureValueTable(this.factory, "Build");
+					var runtimeDependenciesTable = runtimeValue.AsTable()
+					var buildTable = activeState.EnsureValueTable(this.factory, "Build")
 
 					foreach (var dependencyName in runtimeDependenciesTable.Keys)
 					{
 						// Combine the core dependency build inputs for the core build task
-						this.buildState.LogTrace(TraceLevel.Information, "Combine Runtime Dependency: " + dependencyName);
-						var dependencyTable = runtimeDependenciesTable[dependencyName].AsTable();
+						this.buildState.LogTrace(TraceLevel.Information, "Combine Runtime Dependency: " + dependencyName)
+						var dependencyTable = runtimeDependenciesTable[dependencyName].AsTable()
 
 						if (dependencyTable.TryGetValue("Build", out var buildValue))
 						{
-							var dependencyBuildTable = buildValue.AsTable();
+							var dependencyBuildTable = buildValue.AsTable()
 
 							if (dependencyBuildTable.TryGetValue("ModuleDependencies", out var moduleDependenciesValue))
 							{
-								var moduleDependencies = moduleDependenciesValue.AsList();
-								buildTable.EnsureValueList(this.factory, "ModuleDependencies").Append(moduleDependencies);
+								var moduleDependencies = moduleDependenciesValue.AsList()
+								buildTable.EnsureValueList(this.factory, "ModuleDependencies").Append(moduleDependencies)
 							}
 
 							if (dependencyBuildTable.TryGetValue("RuntimeDependencies", out var runtimeDependenciesValue))
 							{
-								var runtimeDependencies = runtimeDependenciesValue.AsList();
-								buildTable.EnsureValueList(this.factory, "RuntimeDependencies").Append(runtimeDependencies);
+								var runtimeDependencies = runtimeDependenciesValue.AsList()
+								buildTable.EnsureValueList(this.factory, "RuntimeDependencies").Append(runtimeDependencies)
 							}
 
 							if (dependencyBuildTable.TryGetValue("LinkDependencies", out var linkDependenciesValue))
 							{
-								var linkDependencies = linkDependenciesValue.AsList();
-								buildTable.EnsureValueList(this.factory, "LinkDependencies").Append(linkDependencies);
+								var linkDependencies = linkDependenciesValue.AsList()
+								buildTable.EnsureValueList(this.factory, "LinkDependencies").Append(linkDependencies)
 							}
 						}
 					}

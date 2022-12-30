@@ -1,4 +1,4 @@
-﻿// <copyright file="ArgumentBuilder.wren" company="Soup">
+﻿// <copyright file="MSVCArgumentBuilder.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 import "../Core/CompileArguments" for LanguageStandard, OptimizationLevel
@@ -8,7 +8,7 @@ import "../Core/LinkArguments" for LinkTarget
 /// A helper class that builds the correct set of compiler arguments for a given
 /// set of options.
 /// </summary>
-class ArgumentBuilder {
+class MSVCArgumentBuilder {
 	static ArgumentFlag_NoLogo { "nologo" }
 
 	static Compiler_ArgumentFlag_GenerateDebugInformation { "Z7" }

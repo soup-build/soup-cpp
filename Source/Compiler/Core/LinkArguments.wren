@@ -107,7 +107,7 @@ class LinkArguments {
 	GenerateSourceDebugInfo=(value) { _generateSourceDebugInfo = value }
 
 	==(other) {
-		System.print("LinkArguments==")
+		// System.print("LinkArguments==")
 		if (other is Null) {
 			return false
 		}

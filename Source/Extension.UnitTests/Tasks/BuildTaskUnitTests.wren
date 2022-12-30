@@ -6,53 +6,53 @@ public class BuildTaskUnitTests
 {
 	public void Initialize_Success()
 	{
-		var buildState = new MockBuildState();
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory);
+		var buildState = new MockBuildState()
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory)
 	}
 
 	public void Build_WindowsApplication()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Setup build table
-		var buildTable = new ValueTable();
-		state.Add("Build", new Value(buildTable));
-		buildTable.Add("TargetName", new Value("Program"));
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.WindowsApplication));
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20));
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"));
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"));
-		buildTable.Add("ObjectDirectory", new Value("obj/"));
-		buildTable.Add("BinaryDirectory", new Value("bin/"));
+		var buildTable = new ValueTable()
+		state.Add("Build", new Value(buildTable))
+		buildTable.Add("TargetName", new Value("Program"))
+		buildTable.Add("TargetType", new Value((long)BuildTargetType.WindowsApplication))
+		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.Add("ObjectDirectory", new Value("obj/"))
+		buildTable.Add("BinaryDirectory", new Value("bin/"))
 		buildTable.Add(
 			"Source",
 			new Value(new ValueList()
 				{
 					new Value("TestFile.cpp"),
-				}));
+				}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("Architecture", new Value("x64"));
-		parametersTable.Add("Compiler", new Value("MOCK"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("Architecture", new Value("x64"))
+		parametersTable.Add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
-		var compiler = new Compiler.Mock.Compiler();
-		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>();
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler; });
+		var compiler = new Compiler.Mock.Compiler()
+		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
+		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
 
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory, compilerFactory);
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory, compilerFactory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
-			new List<string>()
+			[
 			{
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
@@ -60,35 +60,35 @@ public class BuildTaskUnitTests
 				"INFO: Generate Link Operation: ./bin/Program.exe",
 				"INFO: Build Generate Done",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
-		var expectedCompileArguments = new SharedCompileArguments()
+		var expectedCompileArguments = SharedCompileArguments.new()
 		{
 			Standard = LanguageStandard.CPP20,
 			Optimize = OptimizationLevel.None,
-			SourceRootDirectory = new Path("C:/source/"),
-			TargetRootDirectory = new Path("C:/target/"),
-			ObjectDirectory = new Path("obj/"),
-		};
+			SourceRootDirectory = Path.new("C:/source/"),
+			TargetRootDirectory = Path.new("C:/target/"),
+			ObjectDirectory = Path.new("obj/"),
+		}
 
-		var expectedTranslationUnitArguments = new TranslationUnitCompileArguments();
-		expectedTranslationUnitArguments.SourceFile = new Path("TestFile.cpp");
-		expectedTranslationUnitArguments.TargetFile = new Path("obj/TestFile.mock.obj");
+		var expectedTranslationUnitArguments = TranslationUnitCompileArguments.new()
+		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
+		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
 		expectedCompileArguments.ImplementationUnits = new List<TranslationUnitCompileArguments>()
 		{
 			expectedTranslationUnitArguments,
-		};
+		}
 
-		var expectedLinkArguments = new LinkArguments();
-		expectedLinkArguments.TargetType = LinkTarget.WindowsApplication;
-		expectedLinkArguments.TargetArchitecture = "x64";
-		expectedLinkArguments.TargetFile = new Path("bin/Program.exe");
-		expectedLinkArguments.TargetRootDirectory = new Path("C:/target/");
-		expectedLinkArguments.ObjectFiles = new List<Path>()
+		var expectedLinkArguments = LinkArguments.new()
+		expectedLinkArguments.TargetType = LinkTarget.WindowsApplication
+		expectedLinkArguments.TargetArchitecture = "x64"
+		expectedLinkArguments.TargetFile = Path.new("bin/Program.exe")
+		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedLinkArguments.ObjectFiles = [
 		{
-			new Path("obj/TestFile.mock.obj"),
-		};
+			Path.new("obj/TestFile.mock.obj"),
+		}
 
 		// Verify expected compiler calls
 		Assert.Equal(
@@ -96,112 +96,112 @@ public class BuildTaskUnitTests
 			{
 				expectedCompileArguments,
 			},
-			compiler.GetCompileRequests());
+			compiler.GetCompileRequests())
 		Assert.Equal(
 			new List<LinkArguments>()
 			{
 				expectedLinkArguments,
 			},
-			compiler.GetLinkRequests());
+			compiler.GetLinkRequests())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>()
+		var expectedBuildOperations = [
 		{
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./obj/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("obj/"),
+					Path.new("obj/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./bin/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("bin/"),
+					Path.new("bin/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile.cpp"),
+					Path.new("TestFile.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile.mock.obj"),
+					Path.new("obj/TestFile.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockLink: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockLinker.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockLinker.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("InputFile.in"),
+					Path.new("InputFile.in"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("OutputFile.out"),
+					Path.new("OutputFile.out"),
 				}),
-		};
+		}
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 
 	public void Build_Executable()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Setup build table
-		var buildTable = new ValueTable();
-		state.Add("Build", new Value(buildTable));
-		buildTable.Add("TargetName", new Value("Program"));
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.Executable));
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20));
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"));
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"));
-		buildTable.Add("ObjectDirectory", new Value("obj/"));
-		buildTable.Add("BinaryDirectory", new Value("bin/"));
+		var buildTable = new ValueTable()
+		state.Add("Build", new Value(buildTable))
+		buildTable.Add("TargetName", new Value("Program"))
+		buildTable.Add("TargetType", new Value((long)BuildTargetType.Executable))
+		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.Add("ObjectDirectory", new Value("obj/"))
+		buildTable.Add("BinaryDirectory", new Value("bin/"))
 		buildTable.Add(
 			"Source",
 			new Value(new ValueList()
 				{
 					new Value("TestFile.cpp"),
-				}));
+				}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("Architecture", new Value("x64"));
-		parametersTable.Add("Compiler", new Value("MOCK"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("Architecture", new Value("x64"))
+		parametersTable.Add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
-		var compiler = new Compiler.Mock.Compiler();
-		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>();
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler; });
+		var compiler = new Compiler.Mock.Compiler()
+		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
+		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
 
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory, compilerFactory);
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory, compilerFactory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
-			new List<string>()
+			[
 			{
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
@@ -209,35 +209,35 @@ public class BuildTaskUnitTests
 				"INFO: Generate Link Operation: ./bin/Program.exe",
 				"INFO: Build Generate Done",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
-		var expectedCompileArguments = new SharedCompileArguments()
+		var expectedCompileArguments = SharedCompileArguments.new()
 		{
 			Standard = LanguageStandard.CPP20,
 			Optimize = OptimizationLevel.None,
-			SourceRootDirectory = new Path("C:/source/"),
-			TargetRootDirectory = new Path("C:/target/"),
-			ObjectDirectory = new Path("obj/"),
-		};
+			SourceRootDirectory = Path.new("C:/source/"),
+			TargetRootDirectory = Path.new("C:/target/"),
+			ObjectDirectory = Path.new("obj/"),
+		}
 
-		var expectedTranslationUnitArguments = new TranslationUnitCompileArguments();
-		expectedTranslationUnitArguments.SourceFile = new Path("TestFile.cpp");
-		expectedTranslationUnitArguments.TargetFile = new Path("obj/TestFile.mock.obj");
+		var expectedTranslationUnitArguments = TranslationUnitCompileArguments.new()
+		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
+		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
 		expectedCompileArguments.ImplementationUnits = new List<TranslationUnitCompileArguments>()
 		{
 			expectedTranslationUnitArguments,
-		};
+		}
 
-		var expectedLinkArguments = new LinkArguments();
-		expectedLinkArguments.TargetType = LinkTarget.Executable;
-		expectedLinkArguments.TargetArchitecture = "x64";
-		expectedLinkArguments.TargetFile = new Path("bin/Program.exe");
-		expectedLinkArguments.TargetRootDirectory = new Path("C:/target/");
-		expectedLinkArguments.ObjectFiles = new List<Path>()
+		var expectedLinkArguments = LinkArguments.new()
+		expectedLinkArguments.TargetType = LinkTarget.Executable
+		expectedLinkArguments.TargetArchitecture = "x64"
+		expectedLinkArguments.TargetFile = Path.new("bin/Program.exe")
+		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedLinkArguments.ObjectFiles = [
 		{
-			new Path("obj/TestFile.mock.obj"),
-		};
+			Path.new("obj/TestFile.mock.obj"),
+		}
 
 		// Verify expected compiler calls
 		Assert.Equal(
@@ -245,123 +245,123 @@ public class BuildTaskUnitTests
 			{
 				expectedCompileArguments,
 			},
-			compiler.GetCompileRequests());
+			compiler.GetCompileRequests())
 		Assert.Equal(
 			new List<LinkArguments>()
 			{
 				expectedLinkArguments,
 			},
-			compiler.GetLinkRequests());
+			compiler.GetLinkRequests())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>()
+		var expectedBuildOperations = [
 		{
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./obj/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("./obj/"),
+					Path.new("./obj/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./bin/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("./bin/"),
+					Path.new("./bin/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile.cpp"),
+					Path.new("TestFile.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile.mock.obj"),
+					Path.new("obj/TestFile.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockLink: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockLinker.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockLinker.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("InputFile.in"),
+					Path.new("InputFile.in"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("OutputFile.out"),
+					Path.new("OutputFile.out"),
 				}),
-		};
+		}
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 
 	public void Build_Library_MultipleFiles()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Setup build table
-		var buildTable = new ValueTable();
-		state.Add("Build", new Value(buildTable));
-		buildTable.Add("TargetName", new Value("Library"));
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary));
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20));
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"));
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"));
-		buildTable.Add("ObjectDirectory", new Value("obj/"));
-		buildTable.Add("BinaryDirectory", new Value("bin/"));
+		var buildTable = new ValueTable()
+		state.Add("Build", new Value(buildTable))
+		buildTable.Add("TargetName", new Value("Library"))
+		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.Add("ObjectDirectory", new Value("obj/"))
+		buildTable.Add("BinaryDirectory", new Value("bin/"))
 		buildTable.Add("Source", new Value(new ValueList()
 		{
 			new Value("TestFile1.cpp"),
 			new Value("TestFile2.cpp"),
 			new Value("TestFile3.cpp"),
-		}));
+		}))
 		buildTable.Add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
-		}));
+		}))
 		buildTable.Add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
-		}));
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None));
+		}))
+		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("Architecture", new Value("x64"));
-		parametersTable.Add("Compiler", new Value("MOCK"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("Architecture", new Value("x64"))
+		parametersTable.Add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
-		var compiler = new Compiler.Mock.Compiler();
-		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>();
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler; });
+		var compiler = new Compiler.Mock.Compiler()
+		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
+		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
 
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory, compilerFactory);
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory, compilerFactory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
-			new List<string>()
+			[
 			{
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
@@ -371,59 +371,59 @@ public class BuildTaskUnitTests
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
 				"INFO: Build Generate Done",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
 		// Setup the shared arguments
-		var expectedCompileArguments = new SharedCompileArguments()
+		var expectedCompileArguments = SharedCompileArguments.new()
 		{
 			Standard = LanguageStandard.CPP20,
 			Optimize = OptimizationLevel.None,
-			SourceRootDirectory = new Path("C:/source/"),
-			TargetRootDirectory = new Path("C:/target/"),
-			ObjectDirectory = new Path("obj/"),
-			IncludeDirectories = new List<Path>()
+			SourceRootDirectory = Path.new("C:/source/"),
+			TargetRootDirectory = Path.new("C:/target/"),
+			ObjectDirectory = Path.new("obj/"),
+			IncludeDirectories = [
 			{
-				new Path("Folder"),
-				new Path("AnotherFolder/Sub"),
+				Path.new("Folder"),
+				Path.new("AnotherFolder/Sub"),
 			},
-			IncludeModules = new List<Path>()
+			IncludeModules = [
 			{
-				new Path("../Other/bin/OtherModule1.mock.bmi"),
-				new Path("../OtherModule2.mock.bmi"),
+				Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				Path.new("../OtherModule2.mock.bmi"),
 			},
-		};
+		}
 
 		expectedCompileArguments.ImplementationUnits = new List<TranslationUnitCompileArguments>()
 		{
-			new TranslationUnitCompileArguments()
+			TranslationUnitCompileArguments.new()
 			{
-				SourceFile = new Path("TestFile1.cpp"),
-				TargetFile = new Path("obj/TestFile1.mock.obj"),
+				SourceFile = Path.new("TestFile1.cpp"),
+				TargetFile = Path.new("obj/TestFile1.mock.obj"),
 			},
-			new TranslationUnitCompileArguments()
+			TranslationUnitCompileArguments.new()
 			{
-				SourceFile = new Path("TestFile2.cpp"),
-				TargetFile = new Path("obj/TestFile2.mock.obj"),
+				SourceFile = Path.new("TestFile2.cpp"),
+				TargetFile = Path.new("obj/TestFile2.mock.obj"),
 			},
-			new TranslationUnitCompileArguments()
+			TranslationUnitCompileArguments.new()
 			{
-				SourceFile = new Path("TestFile3.cpp"),
-				TargetFile = new Path("obj/TestFile3.mock.obj"),
+				SourceFile = Path.new("TestFile3.cpp"),
+				TargetFile = Path.new("obj/TestFile3.mock.obj"),
 			},
-		};
+		}
 
-		var expectedLinkArguments = new LinkArguments();
-		expectedLinkArguments.TargetFile = new Path("bin/Library.mock.lib");
-		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary;
-		expectedLinkArguments.TargetArchitecture = "x64";
-		expectedLinkArguments.TargetRootDirectory = new Path("C:/target/");
-		expectedLinkArguments.ObjectFiles = new List<Path>()
+		var expectedLinkArguments = LinkArguments.new()
+		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
+		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary
+		expectedLinkArguments.TargetArchitecture = "x64"
+		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedLinkArguments.ObjectFiles = [
 		{
-			new Path("obj/TestFile1.mock.obj"),
-			new Path("obj/TestFile2.mock.obj"),
-			new Path("obj/TestFile3.mock.obj"),
-		};
-		expectedLinkArguments.LibraryFiles = new List<Path>();
+			Path.new("obj/TestFile1.mock.obj"),
+			Path.new("obj/TestFile2.mock.obj"),
+			Path.new("obj/TestFile3.mock.obj"),
+		}
+		expectedLinkArguments.LibraryFiles = [
 
 		// Verify expected compiler calls
 		Assert.Equal(
@@ -431,155 +431,155 @@ public class BuildTaskUnitTests
 			{
 				expectedCompileArguments,
 			},
-			compiler.GetCompileRequests());
+			compiler.GetCompileRequests())
 		Assert.Equal(
 			new List<LinkArguments>()
 			{
 				expectedLinkArguments,
 			},
-			compiler.GetLinkRequests());
+			compiler.GetLinkRequests())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>()
+		var expectedBuildOperations = [
 		{
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./obj/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("./obj/"),
+					Path.new("./obj/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./bin/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("./bin/"),
+					Path.new("./bin/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile1.cpp"),
+					Path.new("TestFile1.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile1.mock.obj"),
+					Path.new("obj/TestFile1.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile2.cpp"),
+					Path.new("TestFile2.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile2.mock.obj"),
+					Path.new("obj/TestFile2.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile3.cpp"),
+					Path.new("TestFile3.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile3.mock.obj"),
+					Path.new("obj/TestFile3.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockLink: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockLinker.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockLinker.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("InputFile.in"),
+					Path.new("InputFile.in"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("OutputFile.out"),
+					Path.new("OutputFile.out"),
 				}),
-		};
+		}
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 
 	public void Build_Library_ModuleInterface()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Setup build table
-		var buildTable = new ValueTable();
-		state.Add("Build", new Value(buildTable));
-		buildTable.Add("TargetName", new Value("Library"));
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary));
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20));
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"));
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"));
-		buildTable.Add("ObjectDirectory", new Value("obj/"));
-		buildTable.Add("BinaryDirectory", new Value("bin/"));
-		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"));
+		var buildTable = new ValueTable()
+		state.Add("Build", new Value(buildTable))
+		buildTable.Add("TargetName", new Value("Library"))
+		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.Add("ObjectDirectory", new Value("obj/"))
+		buildTable.Add("BinaryDirectory", new Value("bin/"))
+		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
 		buildTable.Add("Source", new Value(new ValueList()
 		{
 			new Value("TestFile1.cpp"),
 			new Value("TestFile2.cpp"),
 			new Value("TestFile3.cpp"),
-		}));
+		}))
 		buildTable.Add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
-		}));
+		}))
 		buildTable.Add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
-		}));
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None));
+		}))
+		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
 		buildTable.Add("PreprocessorDefinitions", new Value(new ValueList()
 		{
 			new Value("DEBUG"),
 			new Value("AWESOME"),
-		}));
+		}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("Architecture", new Value("x64"));
-		parametersTable.Add("Compiler", new Value("MOCK"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("Architecture", new Value("x64"))
+		parametersTable.Add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
-		var compiler = new Compiler.Mock.Compiler();
-		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>();
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler; });
+		var compiler = new Compiler.Mock.Compiler()
+		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
+		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
 
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory, compilerFactory);
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory, compilerFactory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
-			new List<string>()
+			[
 			{
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
@@ -590,70 +590,70 @@ public class BuildTaskUnitTests
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
 				"INFO: Build Generate Done",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
 		// Setup the shared arguments
-		var expectedCompileArguments = new SharedCompileArguments()
+		var expectedCompileArguments = SharedCompileArguments.new()
 		{
 			Standard = LanguageStandard.CPP20,
 			Optimize = OptimizationLevel.None,
-			SourceRootDirectory = new Path("C:/source/"),
-			TargetRootDirectory = new Path("C:/target/"),
-			ObjectDirectory = new Path("obj/"),
-			IncludeDirectories = new List<Path>()
+			SourceRootDirectory = Path.new("C:/source/"),
+			TargetRootDirectory = Path.new("C:/target/"),
+			ObjectDirectory = Path.new("obj/"),
+			IncludeDirectories = [
 			{
-				new Path("Folder"),
-				new Path("AnotherFolder/Sub"),
+				Path.new("Folder"),
+				Path.new("AnotherFolder/Sub"),
 			},
-			IncludeModules = new List<Path>()
+			IncludeModules = [
 			{
-				new Path("../Other/bin/OtherModule1.mock.bmi"),
-				new Path("../OtherModule2.mock.bmi"),
+				Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				Path.new("../OtherModule2.mock.bmi"),
 			},
-			PreprocessorDefinitions = new List<string>()
+			PreprocessorDefinitions = [
 			{
 				"DEBUG",
 				"AWESOME",
 			},
-			InterfaceUnit = new InterfaceUnitCompileArguments()
+			InterfaceUnit = InterfaceUnitCompileArguments.new()
 			{
-				ModuleInterfaceTarget = new Path("obj/Public.mock.bmi"),
-				SourceFile = new Path("Public.cpp"),
-				TargetFile = new Path("obj/Public.mock.obj"),
+				ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi"),
+				SourceFile = Path.new("Public.cpp"),
+				TargetFile = Path.new("obj/Public.mock.obj"),
 			},
 			ImplementationUnits = new List<TranslationUnitCompileArguments>()
 			{
-				new TranslationUnitCompileArguments()
+				TranslationUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile1.cpp"),
-					TargetFile = new Path("obj/TestFile1.mock.obj"),
+					SourceFile = Path.new("TestFile1.cpp"),
+					TargetFile = Path.new("obj/TestFile1.mock.obj"),
 				},
-				new TranslationUnitCompileArguments()
+				TranslationUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile2.cpp"),
-					TargetFile = new Path("obj/TestFile2.mock.obj"),
+					SourceFile = Path.new("TestFile2.cpp"),
+					TargetFile = Path.new("obj/TestFile2.mock.obj"),
 				},
-				new TranslationUnitCompileArguments()
+				TranslationUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile3.cpp"),
-					TargetFile = new Path("obj/TestFile3.mock.obj"),
+					SourceFile = Path.new("TestFile3.cpp"),
+					TargetFile = Path.new("obj/TestFile3.mock.obj"),
 				},
 			},
-		};
+		}
 
-		var expectedLinkArguments = new LinkArguments();
-		expectedLinkArguments.TargetFile = new Path("bin/Library.mock.lib");
-		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary;
-		expectedLinkArguments.TargetArchitecture = "x64";
-		expectedLinkArguments.TargetRootDirectory = new Path("C:/target/");
-		expectedLinkArguments.ObjectFiles = new List<Path>()
+		var expectedLinkArguments = LinkArguments.new()
+		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
+		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary
+		expectedLinkArguments.TargetArchitecture = "x64"
+		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedLinkArguments.ObjectFiles = [
 		{
-			new Path("obj/Public.mock.obj"),
-			new Path("obj/TestFile1.mock.obj"),
-			new Path("obj/TestFile2.mock.obj"),
-			new Path("obj/TestFile3.mock.obj"),
-		};
-		expectedLinkArguments.LibraryFiles = new List<Path>();
+			Path.new("obj/Public.mock.obj"),
+			Path.new("obj/TestFile1.mock.obj"),
+			Path.new("obj/TestFile2.mock.obj"),
+			Path.new("obj/TestFile3.mock.obj"),
+		}
+		expectedLinkArguments.LibraryFiles = [
 
 		// Verify expected compiler calls
 		Assert.Equal(
@@ -661,139 +661,139 @@ public class BuildTaskUnitTests
 			{
 				expectedCompileArguments,
 			},
-			compiler.GetCompileRequests());
+			compiler.GetCompileRequests())
 		Assert.Equal(
 			new List<LinkArguments>()
 			{
 				expectedLinkArguments,
 			},
-			compiler.GetLinkRequests());
+			compiler.GetLinkRequests())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>()
+		var expectedBuildOperations = [
 		{
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./obj/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("obj/"),
+					Path.new("obj/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./bin/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("bin/"),
+					Path.new("bin/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				new Path("C:/target/"),
-				new Path("C:/copy.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
-				new List<Path>()
+				[
 				{
-					new Path("obj/Public.mock.bmi"),
+					Path.new("obj/Public.mock.bmi"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("bin/Library.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompileModule: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("Public.cpp"),
+					Path.new("Public.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/Public.mock.obj"),
-					new Path("obj/Public.mock.bmi"),
+					Path.new("obj/Public.mock.obj"),
+					Path.new("obj/Public.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile1.cpp"),
+					Path.new("TestFile1.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile1.mock.obj"),
+					Path.new("obj/TestFile1.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile2.cpp"),
+					Path.new("TestFile2.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile2.mock.obj"),
+					Path.new("obj/TestFile2.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile3.cpp"),
+					Path.new("TestFile3.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile3.mock.obj"),
+					Path.new("obj/TestFile3.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockLink: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockLinker.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockLinker.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("InputFile.in"),
+					Path.new("InputFile.in"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("OutputFile.out"),
+					Path.new("OutputFile.out"),
 				}),
-		};
+		}
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 
 	public void Build_Library_ModuleInterface_WithPartitions()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Setup build table
-		var buildTable = new ValueTable();
-		state.Add("Build", new Value(buildTable));
-		buildTable.Add("TargetName", new Value("Library"));
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary));
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20));
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"));
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"));
-		buildTable.Add("ObjectDirectory", new Value("obj/"));
-		buildTable.Add("BinaryDirectory", new Value("bin/"));
+		var buildTable = new ValueTable()
+		state.Add("Build", new Value(buildTable))
+		buildTable.Add("TargetName", new Value("Library"))
+		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.Add("ObjectDirectory", new Value("obj/"))
+		buildTable.Add("BinaryDirectory", new Value("bin/"))
 		buildTable.Add("ModuleInterfacePartitionSourceFiles", new Value(new ValueList()
 		{
 			new Value(new ValueTable()
@@ -805,49 +805,49 @@ public class BuildTaskUnitTests
 				{ "Source", new Value("TestFile2.cpp") },
 				{ "Imports", new Value(new ValueList() { new Value("TestFile1.cpp"), }) },
 			}),
-		}));
-		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"));
+		}))
+		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
 		buildTable.Add("Source", new Value(new ValueList()
 		{
 			new Value("TestFile3.cpp"),
 			new Value("TestFile4.cpp"),
-		}));
+		}))
 		buildTable.Add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
-		}));
+		}))
 		buildTable.Add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
-		}));
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None));
+		}))
+		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
 		buildTable.Add("PreprocessorDefinitions", new Value(new ValueList()
 		{
 			new Value("DEBUG"),
 			new Value("AWESOME"),
-		}));
+		}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("Architecture", new Value("x64"));
-		parametersTable.Add("Compiler", new Value("MOCK"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("Architecture", new Value("x64"))
+		parametersTable.Add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
-		var compiler = new Compiler.Mock.Compiler();
-		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>();
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler; });
+		var compiler = new Compiler.Mock.Compiler()
+		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
+		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
 
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory, compilerFactory);
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory, compilerFactory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
-			new List<string>()
+			[
 			{
 				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
@@ -859,90 +859,90 @@ public class BuildTaskUnitTests
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
 				"INFO: Build Generate Done",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
 		// Setup the shared arguments
-		var expectedCompileArguments = new SharedCompileArguments()
+		var expectedCompileArguments = SharedCompileArguments.new()
 		{
 			Standard = LanguageStandard.CPP20,
 			Optimize = OptimizationLevel.None,
-			SourceRootDirectory = new Path("C:/source/"),
-			TargetRootDirectory = new Path("C:/target/"),
-			ObjectDirectory = new Path("obj/"),
-			IncludeDirectories = new List<Path>()
+			SourceRootDirectory = Path.new("C:/source/"),
+			TargetRootDirectory = Path.new("C:/target/"),
+			ObjectDirectory = Path.new("obj/"),
+			IncludeDirectories = [
 			{
-				new Path("Folder"),
-				new Path("AnotherFolder/Sub"),
+				Path.new("Folder"),
+				Path.new("AnotherFolder/Sub"),
 			},
-			IncludeModules = new List<Path>()
+			IncludeModules = [
 			{
-				new Path("../Other/bin/OtherModule1.mock.bmi"),
-				new Path("../OtherModule2.mock.bmi"),
+				Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				Path.new("../OtherModule2.mock.bmi"),
 			},
-			PreprocessorDefinitions = new List<string>()
+			PreprocessorDefinitions = [
 			{
 				"DEBUG",
 				"AWESOME",
 			},
-			InterfacePartitionUnits = new List<InterfaceUnitCompileArguments>()
+			InterfacePartitionUnits = [
 			{
-				new InterfaceUnitCompileArguments()
+				InterfaceUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile1.cpp"),
-					TargetFile = new Path("obj/TestFile1.mock.obj"),
-					ModuleInterfaceTarget = new Path("obj/TestFile1.mock.bmi"),
+					SourceFile = Path.new("TestFile1.cpp"),
+					TargetFile = Path.new("obj/TestFile1.mock.obj"),
+					ModuleInterfaceTarget = Path.new("obj/TestFile1.mock.bmi"),
 				},
-				new InterfaceUnitCompileArguments()
+				InterfaceUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile2.cpp"),
-					TargetFile = new Path("obj/TestFile2.mock.obj"),
-					IncludeModules = new List<Path>()
+					SourceFile = Path.new("TestFile2.cpp"),
+					TargetFile = Path.new("obj/TestFile2.mock.obj"),
+					IncludeModules = [
 					{
-						new Path("C:/target/obj/TestFile1.mock.bmi"),
+						Path.new("C:/target/obj/TestFile1.mock.bmi"),
 					},
-					ModuleInterfaceTarget = new Path("obj/TestFile2.mock.bmi"),
+					ModuleInterfaceTarget = Path.new("obj/TestFile2.mock.bmi"),
 				},
 			},
-			InterfaceUnit = new InterfaceUnitCompileArguments()
+			InterfaceUnit = InterfaceUnitCompileArguments.new()
 			{
-				ModuleInterfaceTarget = new Path("obj/Public.mock.bmi"),
-				SourceFile = new Path("Public.cpp"),
-				IncludeModules = new List<Path>()
+				ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi"),
+				SourceFile = Path.new("Public.cpp"),
+				IncludeModules = [
 				{
-					new Path("C:/target/obj/TestFile1.mock.bmi"),
-					new Path("C:/target/obj/TestFile2.mock.bmi"),
+					Path.new("C:/target/obj/TestFile1.mock.bmi"),
+					Path.new("C:/target/obj/TestFile2.mock.bmi"),
 				},
-				TargetFile = new Path("obj/Public.mock.obj"),
+				TargetFile = Path.new("obj/Public.mock.obj"),
 			},
 			ImplementationUnits = new List<TranslationUnitCompileArguments>()
 			{
-				new TranslationUnitCompileArguments()
+				TranslationUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile3.cpp"),
-					TargetFile = new Path("obj/TestFile3.mock.obj"),
+					SourceFile = Path.new("TestFile3.cpp"),
+					TargetFile = Path.new("obj/TestFile3.mock.obj"),
 				},
-				new TranslationUnitCompileArguments()
+				TranslationUnitCompileArguments.new()
 				{
-					SourceFile = new Path("TestFile4.cpp"),
-					TargetFile = new Path("obj/TestFile4.mock.obj"),
+					SourceFile = Path.new("TestFile4.cpp"),
+					TargetFile = Path.new("obj/TestFile4.mock.obj"),
 				},
 			},
-		};
+		}
 
-		var expectedLinkArguments = new LinkArguments();
-		expectedLinkArguments.TargetFile = new Path("bin/Library.mock.lib");
-		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary;
-		expectedLinkArguments.TargetArchitecture = "x64";
-		expectedLinkArguments.TargetRootDirectory = new Path("C:/target/");
-		expectedLinkArguments.ObjectFiles = new List<Path>()
+		var expectedLinkArguments = LinkArguments.new()
+		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
+		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary
+		expectedLinkArguments.TargetArchitecture = "x64"
+		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedLinkArguments.ObjectFiles = [
 		{
-			new Path("obj/TestFile1.mock.obj"),
-			new Path("obj/TestFile2.mock.obj"),
-			new Path("obj/Public.mock.obj"),
-			new Path("obj/TestFile3.mock.obj"),
-			new Path("obj/TestFile4.mock.obj"),
-		};
-		expectedLinkArguments.LibraryFiles = new List<Path>();
+			Path.new("obj/TestFile1.mock.obj"),
+			Path.new("obj/TestFile2.mock.obj"),
+			Path.new("obj/Public.mock.obj"),
+			Path.new("obj/TestFile3.mock.obj"),
+			Path.new("obj/TestFile4.mock.obj"),
+		}
+		expectedLinkArguments.LibraryFiles = [
 
 		// Verify expected compiler calls
 		Assert.Equal(
@@ -950,188 +950,188 @@ public class BuildTaskUnitTests
 			{
 				expectedCompileArguments,
 			},
-			compiler.GetCompileRequests());
+			compiler.GetCompileRequests())
 		Assert.Equal(
 			new List<LinkArguments>()
 			{
 				expectedLinkArguments,
 			},
-			compiler.GetLinkRequests());
+			compiler.GetLinkRequests())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>()
+		var expectedBuildOperations = [
 		{
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./obj/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("obj/"),
+					Path.new("obj/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./bin/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("bin/"),
+					Path.new("bin/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				new Path("C:/target/"),
-				new Path("C:/copy.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
-				new List<Path>()
+				[
 				{
-					new Path("obj/Public.mock.bmi"),
+					Path.new("obj/Public.mock.bmi"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("bin/Library.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompilePartition: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile1.cpp"),
+					Path.new("TestFile1.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile1.mock.obj"),
-					new Path("obj/TestFile1.mock.bmi"),
+					Path.new("obj/TestFile1.mock.obj"),
+					Path.new("obj/TestFile1.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompilePartition: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile2.cpp"),
+					Path.new("TestFile2.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile2.mock.obj"),
-					new Path("obj/TestFile2.mock.bmi"),
+					Path.new("obj/TestFile2.mock.obj"),
+					Path.new("obj/TestFile2.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompileModule: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("Public.cpp"),
+					Path.new("Public.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/Public.mock.obj"),
-					new Path("obj/Public.mock.bmi"),
+					Path.new("obj/Public.mock.obj"),
+					Path.new("obj/Public.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile3.cpp"),
+					Path.new("TestFile3.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile3.mock.obj"),
+					Path.new("obj/TestFile3.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompile: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("TestFile4.cpp"),
+					Path.new("TestFile4.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/TestFile4.mock.obj"),
+					Path.new("obj/TestFile4.mock.obj"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockLink: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockLinker.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockLinker.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("InputFile.in"),
+					Path.new("InputFile.in"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("OutputFile.out"),
+					Path.new("OutputFile.out"),
 				}),
-		};
+		}
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 
 	public void Build_Library_ModuleInterfaceNoSource()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Setup build table
-		var buildTable = new ValueTable();
-		state.Add("Build", new Value(buildTable));
-		buildTable.Add("TargetName", new Value("Library"));
-		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary));
-		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20));
-		buildTable.Add("SourceRootDirectory", new Value("C:/source/"));
-		buildTable.Add("TargetRootDirectory", new Value("C:/target/"));
-		buildTable.Add("ObjectDirectory", new Value("obj/"));
-		buildTable.Add("BinaryDirectory", new Value("bin/"));
-		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"));
-		state.Add("SourceFiles", new Value(new ValueList()));
+		var buildTable = new ValueTable()
+		state.Add("Build", new Value(buildTable))
+		buildTable.Add("TargetName", new Value("Library"))
+		buildTable.Add("TargetType", new Value((long)BuildTargetType.StaticLibrary))
+		buildTable.Add("LanguageStandard", new Value((long)LanguageStandard.CPP20))
+		buildTable.Add("SourceRootDirectory", new Value("C:/source/"))
+		buildTable.Add("TargetRootDirectory", new Value("C:/target/"))
+		buildTable.Add("ObjectDirectory", new Value("obj/"))
+		buildTable.Add("BinaryDirectory", new Value("bin/"))
+		buildTable.Add("ModuleInterfaceSourceFile", new Value("Public.cpp"))
+		state.Add("SourceFiles", new Value(new ValueList()))
 		buildTable.Add("IncludeDirectories", new Value(new ValueList()
 		{
 			new Value("Folder"),
 			new Value("AnotherFolder/Sub"),
-		}));
+		}))
 		buildTable.Add("ModuleDependencies", new Value(new ValueList()
 		{
 			new Value("../Other/bin/OtherModule1.mock.bmi"),
 			new Value("../OtherModule2.mock.bmi"),
-		}));
-		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None));
+		}))
+		buildTable.Add("OptimizationLevel", new Value((long)BuildOptimizationLevel.None))
 		buildTable.Add("PreprocessorDefinitions", new Value(new ValueList()
 		{
 			new Value("DEBUG"),
 			new Value("AWESOME"),
-		}));
+		}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("Architecture", new Value("x64"));
-		parametersTable.Add("Compiler", new Value("MOCK"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("Architecture", new Value("x64"))
+		parametersTable.Add("Compiler", new Value("MOCK"))
 
 		// Register the mock compiler
-		var compiler = new Compiler.Mock.Compiler();
-		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>();
-		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler; });
+		var compiler = new Compiler.Mock.Compiler()
+		var compilerFactory = new Dictionary<string, Func<IValueTable, ICompiler>>()
+		compilerFactory.Add("MOCK", (IValueTable state) => { return compiler })
 
-		var factory = new ValueFactory();
-		var uut = new BuildTask(buildState, factory, compilerFactory);
+		var factory = new ValueFactory()
+		var uut = new BuildTask(buildState, factory, compilerFactory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
@@ -1143,49 +1143,49 @@ public class BuildTaskUnitTests
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
 				"INFO: Build Generate Done",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
 		// Setup the shared arguments
-		var expectedCompileArguments = new SharedCompileArguments()
+		var expectedCompileArguments = SharedCompileArguments.new()
 		{
 			Standard = LanguageStandard.CPP20,
 			Optimize = OptimizationLevel.None,
-			SourceRootDirectory = new Path("C:/source/"),
-			TargetRootDirectory = new Path("C:/target/"),
-			ObjectDirectory = new Path("./obj/"),
-			IncludeDirectories = new List<Path>()
+			SourceRootDirectory = Path.new("C:/source/"),
+			TargetRootDirectory = Path.new("C:/target/"),
+			ObjectDirectory = Path.new("./obj/"),
+			IncludeDirectories = [
 			{
-				new Path("Folder"),
-				new Path("AnotherFolder/Sub"),
+				Path.new("Folder"),
+				Path.new("AnotherFolder/Sub"),
 			},
-			IncludeModules = new List<Path>()
+			IncludeModules = [
 			{
-				new Path("../Other/bin/OtherModule1.mock.bmi"),
-				new Path("../OtherModule2.mock.bmi"),
+				Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				Path.new("../OtherModule2.mock.bmi"),
 			},
-			PreprocessorDefinitions = new List<string>()
+			PreprocessorDefinitions = [
 			{
 				"DEBUG",
 				"AWESOME",
 			},
-			InterfaceUnit = new InterfaceUnitCompileArguments()
+			InterfaceUnit = InterfaceUnitCompileArguments.new()
 			{
-				SourceFile = new Path("./Public.cpp"),
-				TargetFile = new Path("./obj/Public.mock.obj"),
-				ModuleInterfaceTarget = new Path("./obj/Public.mock.bmi"),
+				SourceFile = Path.new("./Public.cpp"),
+				TargetFile = Path.new("./obj/Public.mock.obj"),
+				ModuleInterfaceTarget = Path.new("./obj/Public.mock.bmi"),
 			}
-		};
+		}
 
-		var expectedLinkArguments = new LinkArguments();
-		expectedLinkArguments.TargetFile = new Path("bin/Library.mock.lib");
-		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary;
-		expectedLinkArguments.TargetArchitecture = "x64";
-		expectedLinkArguments.TargetRootDirectory = new Path("C:/target/");
-		expectedLinkArguments.ObjectFiles = new List<Path>()
+		var expectedLinkArguments = LinkArguments.new()
+		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
+		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary
+		expectedLinkArguments.TargetArchitecture = "x64"
+		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedLinkArguments.ObjectFiles = [
 		{
-			new Path("obj/Public.mock.obj"),
-		};
-		expectedLinkArguments.LibraryFiles = new List<Path>();
+			Path.new("obj/Public.mock.obj"),
+		}
+		expectedLinkArguments.LibraryFiles = [
 
 		// Verify expected compiler calls
 		Assert.Equal(
@@ -1193,81 +1193,81 @@ public class BuildTaskUnitTests
 			{
 				expectedCompileArguments,
 			},
-			compiler.GetCompileRequests());
+			compiler.GetCompileRequests())
 		Assert.Equal(
 			new List<LinkArguments>()
 			{
 				expectedLinkArguments,
 			},
-			compiler.GetLinkRequests());
+			compiler.GetLinkRequests())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>()
+		var expectedBuildOperations = [
 		{
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./obj/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("obj/"),
+					Path.new("obj/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MakeDir [./bin/]",
-				new Path("C:/target/"),
-				new Path("C:/mkdir.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				new List<Path>(),
-				new List<Path>()
+				[,
+				[
 				{
-					new Path("bin/"),
+					Path.new("bin/"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				new Path("C:/target/"),
-				new Path("C:/copy.exe"),
+				Path.new("C:/target/"),
+				Path.new("C:/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
-				new List<Path>()
+				[
 				{
-					new Path("obj/Public.mock.bmi"),
+					Path.new("obj/Public.mock.bmi"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("bin/Library.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				}),
-			new BuildOperation(
+			BuildOperation.new(
 				"MockCompileModule: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockCompiler.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("Public.cpp"),
+					Path.new("Public.cpp"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("obj/Public.mock.obj"),
-					new Path("obj/Public.mock.bmi"),
+					Path.new("obj/Public.mock.obj"),
+					Path.new("obj/Public.mock.bmi"),
 				}),
-				new BuildOperation(
+				BuildOperation.new(
 				"MockLink: 1",
-				new Path("MockWorkingDirectory"),
-				new Path("MockLinker.exe"),
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockLinker.exe"),
 				"Arguments",
-				new List<Path>()
+				[
 				{
-					new Path("InputFile.in"),
+					Path.new("InputFile.in"),
 				},
-				new List<Path>()
+				[
 				{
-					new Path("OutputFile.out"),
+					Path.new("OutputFile.out"),
 				}),
-		};
+		}
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 }

@@ -10,18 +10,18 @@ class ResolveToolsTaskUnitTests
 	}
 
 	Initialize_Success() {
-		var buildState = new MockBuildState();
-		var factory = new ValueFactory();
-		var uut = new ResolveToolsTask(buildState, factory);
+		var buildState = new MockBuildState()
+		var factory = new ValueFactory()
+		var uut = new ResolveToolsTask(buildState, factory)
 	}
 
 	Execute() {
 		// Setup the input build state
-		var buildState = new MockBuildState();
-		var state = buildState.ActiveState;
+		var buildState = new MockBuildState()
+		var state = buildState.ActiveState
 
 		// Set the sdks
-		var sdks = new ValueList();
+		var sdks = new ValueList()
 		sdks.Add(new Value(new ValueTable()
 		{
 			{ "Name", new Value("MSVC") },
@@ -33,7 +33,7 @@ class ResolveToolsTaskUnitTests
 					{ "VCToolsRoot", new Value("C:/VCTools/Root/") },
 				})
 			},
-		}));
+		}))
 		sdks.Add(new Value(new ValueTable()
 		{
 			{ "Name", new Value("Windows") },
@@ -45,34 +45,34 @@ class ResolveToolsTaskUnitTests
 					{ "RootPath", new Value("C:/WindowsKit/Root/") },
 				})
 			},
-		}));
+		}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable();
-		state.Add("Parameters", new Value(parametersTable));
-		parametersTable.Add("SDKs", new Value(sdks));
-		parametersTable.Add("System", new Value("win32"));
-		parametersTable.Add("Architecture", new Value("x64"));
+		var parametersTable = new ValueTable()
+		state.Add("Parameters", new Value(parametersTable))
+		parametersTable.Add("SDKs", new Value(sdks))
+		parametersTable.Add("System", new Value("win32"))
+		parametersTable.Add("Architecture", new Value("x64"))
 
-		var factory = new ValueFactory();
-		var uut = new ResolveToolsTask(buildState, factory);
+		var factory = new ValueFactory()
+		var uut = new ResolveToolsTask(buildState, factory)
 
-		uut.Execute();
+		uut.Execute()
 
 		// Verify expected logs
 		Assert.Equal(
-			new List<string>()
+			[
 			{
 				"INFO: Using VC Version: 1.0.0",
 				"INFO: Using Windows Kit Version: 10.0.0",
 			},
-			testListener.GetMessages());
+			testListener.GetMessages())
 
 		// Verify build state
-		var expectedBuildOperations = new List<BuildOperation>();
+		var expectedBuildOperations = [
 
 		Assert.Equal(
 			expectedBuildOperations,
-			buildState.GetBuildOperations());
+			buildState.GetBuildOperations())
 	}
 }

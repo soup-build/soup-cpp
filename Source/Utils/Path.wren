@@ -57,7 +57,7 @@ class Path {
 	static RelativeParentDirectory { ".." }
 
 	==(rhs) {
-		System.print("Path: %(this)==%(rhs)")
+		// System.print("Path: %(this)==%(rhs)")
 		if (rhs is Null) {
 			return false
 		} else {

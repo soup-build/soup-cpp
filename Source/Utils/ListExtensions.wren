@@ -1,7 +1,7 @@
 
 class ListExtensions {
 	static SequenceEqual(lhs, rhs) {
-		System.print("SequenceEqual %(lhs) == %(rhs) %(lhs.count)")
+		// System.print("SequenceEqual %(lhs) == %(rhs) %(lhs.count)")
 		if (lhs is Null || rhs is Null) {
 			return lhs is Null && rhs is Null
 		}
@@ -11,7 +11,7 @@ class ListExtensions {
 		}
 
 		for (i in 0...lhs.count) {
-			System.print("SequenceEqual %(lhs[i]) == %(rhs[i])")
+			// System.print("SequenceEqual %(lhs[i]) == %(rhs[i])")
 			if (!(lhs[i] == rhs[i])) {
 				return false
 			}

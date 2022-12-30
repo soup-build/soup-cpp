@@ -1,7 +1,7 @@
 
 class MapExtensions {
 	static Equal(lhs, rhs) {
-		System.print("Equal %(lhs) == %(rhs)")
+		// System.print("Equal %(lhs) == %(rhs)")
 		if (lhs is Null || rhs is Null) {
 			return lhs is Null && rhs is Null
 		}
@@ -12,7 +12,7 @@ class MapExtensions {
 
 		// Check that every key exists in both maps and the value is equal
 		for (entry in lhs) {
-			System.print("SequenceEqual %(entry.key) %(entry.value)")
+			// System.print("SequenceEqual %(entry.key) %(entry.value)")
 			if (!rhs.containsKey(entry.key) || !(entry.value == rhs[entry.key])) {
 				return false
 			}

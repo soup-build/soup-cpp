@@ -2,10 +2,10 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-using Opal;
-using Opal.System;
-using System;
-using System.Collections.Generic;
+using Opal
+using Opal.System
+using System
+using System.Collections.Generic
 
 namespace Soup.Build.Cpp
 {
@@ -14,27 +14,27 @@ namespace Soup.Build.Cpp
 	/// </summary>
 	public class ResolveToolsTask : IBuildTask
 	{
-		private IBuildState buildState;
-		private IValueFactory factory;
+		private IBuildState buildState
+		private IValueFactory factory
 
 		/// <summary>
 		/// Get the run before list
 		/// </summary>
-		public static IReadOnlyList<string> RunBeforeList => new List<string>()
+		public static IReadOnlyList<string> RunBeforeList => [
 		{
-		};
+		}
 
 		/// <summary>
 		/// Get the run after list
 		/// </summary>
-		public static IReadOnlyList<string> RunAfterList => new List<string>()
+		public static IReadOnlyList<string> RunAfterList => [
 		{
-		};
+		}
 
 		public ResolveToolsTask(IBuildState buildState, IValueFactory factory)
 		{
-			this.buildState = buildState;
-			this.factory = factory;
+			this.buildState = buildState
+			this.factory = factory
 		}
 
 		/// <summary>
@@ -42,157 +42,157 @@ namespace Soup.Build.Cpp
 		/// </summary>
 		public void Execute()
 		{
-			var state = this.buildState.ActiveState;
-			var parameters = state["Parameters"].AsTable();
+			var state = this.buildState.ActiveState
+			var parameters = state["Parameters"].AsTable()
 
-			var systemName = parameters["System"].AsString();
-			var architectureName = parameters["Architecture"].AsString();
+			var systemName = parameters["System"].AsString()
+			var architectureName = parameters["Architecture"].AsString()
 
 			if (systemName != "win32")
-				throw new InvalidOperationException("Win32 is the only supported system... so far.");
+				throw new InvalidOperationException("Win32 is the only supported system... so far.")
 
 			// Check if skip platform includes was specified
-			bool skipPlatform = false;
+			bool skipPlatform = false
 			if (state.TryGetValue("SkipPlatform", out var skipPlatformValue))
 			{
-				skipPlatform = skipPlatformValue.AsBoolean();
+				skipPlatform = skipPlatformValue.AsBoolean()
 			}
 
 			// Find the MSVC SDK
-			var msvcSDKProperties = GetSDKProperties("MSVC", parameters);
+			var msvcSDKProperties = GetSDKProperties("MSVC", parameters)
 
 			// Use the default version
-			var visualCompilerVersion = msvcSDKProperties["Version"].AsString();
-			this.buildState.LogTrace(TraceLevel.Information, "Using VC Version: " + visualCompilerVersion);
+			var visualCompilerVersion = msvcSDKProperties["Version"].AsString()
+			this.buildState.LogTrace(TraceLevel.Information, "Using VC Version: " + visualCompilerVersion)
 
 			// Get the final VC tools folder
-			var visualCompilerVersionFolder = new Path(msvcSDKProperties["VCToolsRoot"].AsString());
+			var visualCompilerVersionFolder = Path.new(msvcSDKProperties["VCToolsRoot"].AsString())
 
 			// Load the Windows sdk
-			var windowsSDKProperties = GetSDKProperties("Windows", parameters);
+			var windowsSDKProperties = GetSDKProperties("Windows", parameters)
 
 			// Calculate the windows kits directory
-			var windows10KitPath = new Path(windowsSDKProperties["RootPath"].AsString());
-			var windows10KitIncludePath = windows10KitPath + new Path("./include/");
-			var windows10KitBinPath = windows10KitPath + new Path("./bin/");
-			var windows10KitLibPath = windows10KitPath + new Path("./Lib/");
+			var windows10KitPath = Path.new(windowsSDKProperties["RootPath"].AsString())
+			var windows10KitIncludePath = windows10KitPath + Path.new("./include/")
+			var windows10KitBinPath = windows10KitPath + Path.new("./bin/")
+			var windows10KitLibPath = windows10KitPath + Path.new("./Lib/")
 
-			var windowsKitVersion = windowsSDKProperties["Version"].AsString();
+			var windowsKitVersion = windowsSDKProperties["Version"].AsString()
 
-			this.buildState.LogTrace(TraceLevel.Information, "Using Windows Kit Version: " + windowsKitVersion);
-			var windows10KitVersionIncludePath = windows10KitIncludePath + new Path(windowsKitVersion + "/");
-			var windows10KitVersionBinPath = windows10KitBinPath + new Path(windowsKitVersion + "/");
-			var windows10KitVersionLibPath = windows10KitLibPath + new Path(windowsKitVersion + "/");
+			this.buildState.LogTrace(TraceLevel.Information, "Using Windows Kit Version: " + windowsKitVersion)
+			var windows10KitVersionIncludePath = windows10KitIncludePath + Path.new(windowsKitVersion + "/")
+			var windows10KitVersionBinPath = windows10KitBinPath + Path.new(windowsKitVersion + "/")
+			var windows10KitVersionLibPath = windows10KitLibPath + Path.new(windowsKitVersion + "/")
 
 			// Set the VC tools binary folder
-			Path vcToolsBinaryFolder;
-			Path windosKitsBinaryFolder;
+			Path vcToolsBinaryFolder
+			Path windosKitsBinaryFolder
 			if (architectureName == "x64")
 			{
-				vcToolsBinaryFolder = visualCompilerVersionFolder + new Path("./bin/Hostx64/x64/");
-				windosKitsBinaryFolder = windows10KitVersionBinPath + new Path("x64/");
+				vcToolsBinaryFolder = visualCompilerVersionFolder + Path.new("./bin/Hostx64/x64/")
+				windosKitsBinaryFolder = windows10KitVersionBinPath + Path.new("x64/")
 			}
 			else if (architectureName == "x86")
 			{
-				vcToolsBinaryFolder = visualCompilerVersionFolder + new Path("./bin/Hostx64/x86/");
-				windosKitsBinaryFolder = windows10KitVersionBinPath + new Path("x86/");
+				vcToolsBinaryFolder = visualCompilerVersionFolder + Path.new("./bin/Hostx64/x86/")
+				windosKitsBinaryFolder = windows10KitVersionBinPath + Path.new("x86/")
 			}
 			else
 			{
-				throw new InvalidOperationException("Unknown architecture.");
+				throw new InvalidOperationException("Unknown architecture.")
 			}
 
-			var clToolPath = vcToolsBinaryFolder + new Path("cl.exe");
-			var linkToolPath = vcToolsBinaryFolder + new Path("link.exe");
-			var libToolPath = vcToolsBinaryFolder + new Path("lib.exe");
-			var mlToolPath = vcToolsBinaryFolder + new Path("ml64.exe");
-			var rcToolPath = windosKitsBinaryFolder + new Path("rc.exe");
+			var clToolPath = vcToolsBinaryFolder + Path.new("cl.exe")
+			var linkToolPath = vcToolsBinaryFolder + Path.new("link.exe")
+			var libToolPath = vcToolsBinaryFolder + Path.new("lib.exe")
+			var mlToolPath = vcToolsBinaryFolder + Path.new("ml64.exe")
+			var rcToolPath = windosKitsBinaryFolder + Path.new("rc.exe")
 
 			// Save the build properties
-			state["MSVC.Version"] = this.factory.Create(visualCompilerVersion);
-			state["MSVC.VCToolsRoot"] = this.factory.Create(visualCompilerVersionFolder.toString);
-			state["MSVC.VCToolsBinaryRoot"] = this.factory.Create(vcToolsBinaryFolder.toString);
-			state["MSVC.WindosKitsBinaryRoot"] = this.factory.Create(windosKitsBinaryFolder.toString);
-			state["MSVC.LinkToolPath"] = this.factory.Create(linkToolPath.toString);
-			state["MSVC.LibToolPath"] = this.factory.Create(libToolPath.toString);
-			state["MSVC.RCToolPath"] = this.factory.Create(rcToolPath.toString);
-			state["MSVC.MLToolPath"] = this.factory.Create(mlToolPath.toString);
+			state["MSVC.Version"] = this.factory.Create(visualCompilerVersion)
+			state["MSVC.VCToolsRoot"] = this.factory.Create(visualCompilerVersionFolder.toString)
+			state["MSVC.VCToolsBinaryRoot"] = this.factory.Create(vcToolsBinaryFolder.toString)
+			state["MSVC.WindosKitsBinaryRoot"] = this.factory.Create(windosKitsBinaryFolder.toString)
+			state["MSVC.LinkToolPath"] = this.factory.Create(linkToolPath.toString)
+			state["MSVC.LibToolPath"] = this.factory.Create(libToolPath.toString)
+			state["MSVC.RCToolPath"] = this.factory.Create(rcToolPath.toString)
+			state["MSVC.MLToolPath"] = this.factory.Create(mlToolPath.toString)
 
 			// Allow custom overrides for the compiler path
 			if (!state.ContainsKey("MSVC.ClToolPath"))
-				state["MSVC.ClToolPath"] = this.factory.Create(clToolPath.toString);
+				state["MSVC.ClToolPath"] = this.factory.Create(clToolPath.toString)
 
 			// Set the include paths
-			var platformIncludePaths = new List<Path>();
+			var platformIncludePaths = [
 			if (!skipPlatform)
 			{
-				platformIncludePaths = new List<Path>()
+				platformIncludePaths = [
 				{
-					visualCompilerVersionFolder + new Path("./include/"),
-					windows10KitVersionIncludePath + new Path("./ucrt/"),
-					windows10KitVersionIncludePath + new Path("./um/"),
-					windows10KitVersionIncludePath + new Path("./winrt/"),
-					windows10KitVersionIncludePath + new Path("./shared/"),
-				};
+					visualCompilerVersionFolder + Path.new("./include/"),
+					windows10KitVersionIncludePath + Path.new("./ucrt/"),
+					windows10KitVersionIncludePath + Path.new("./um/"),
+					windows10KitVersionIncludePath + Path.new("./winrt/"),
+					windows10KitVersionIncludePath + Path.new("./shared/"),
+				}
 			}
 
 			// Set the include paths
-			var platformLibraryPaths = new List<Path>();
+			var platformLibraryPaths = [
 			if (!skipPlatform)
 			{
 				if (architectureName == "x64")
 				{
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./ucrt/x64/"));
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./um/x64/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./atlmfc/lib/x64/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./lib/x64/"));
+					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./ucrt/x64/"))
+					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./um/x64/"))
+					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x64/"))
+					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./lib/x64/"))
 				}
 				else if (architectureName == "x86")
 				{
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./ucrt/x86/"));
-					platformLibraryPaths.Add(windows10KitVersionLibPath + new Path("./um/x86/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./atlmfc/lib/x86/"));
-					platformLibraryPaths.Add(visualCompilerVersionFolder + new Path("./lib/x86/"));
+					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./ucrt/x86/"))
+					platformLibraryPaths.Add(windows10KitVersionLibPath + Path.new("./um/x86/"))
+					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x86/"))
+					platformLibraryPaths.Add(visualCompilerVersionFolder + Path.new("./lib/x86/"))
 				}
 			}
 
 			// Set the platform definitions
-			var platformPreprocessorDefinitions = new List<string>()
+			var platformPreprocessorDefinitions = [
 			{
 				// "this.DLL", // Link against the dynamic runtime dll
 				// "this.MT", // Use multithreaded runtime
-			};
+			}
 
 			if (architectureName == "x86")
-				platformPreprocessorDefinitions.Add("WIN32");
+				platformPreprocessorDefinitions.Add("WIN32")
 
 			// Set the platform libraries
-			var platformLibraries = new List<Path>()
+			var platformLibraries = [
 			{
-				new Path("kernel32.lib"),
-				new Path("user32.lib"),
-				new Path("gdi32.lib"),
-				new Path("winspool.lib"),
-				new Path("comdlg32.lib"),
-				new Path("advapi32.lib"),
-				new Path("shell32.lib"),
-				new Path("ole32.lib"),
-				new Path("oleaut32.lib"),
-				new Path("uuid.lib"),
+				Path.new("kernel32.lib"),
+				Path.new("user32.lib"),
+				Path.new("gdi32.lib"),
+				Path.new("winspool.lib"),
+				Path.new("comdlg32.lib"),
+				Path.new("advapi32.lib"),
+				Path.new("shell32.lib"),
+				Path.new("ole32.lib"),
+				Path.new("oleaut32.lib"),
+				Path.new("uuid.lib"),
 				// Path("odbc32.lib"),
 				// Path("odbccp32.lib"),
 				// Path("crypt32.lib"),
-			};
+			}
 
 			// if (this.options.Configuration == "debug")
 			// {
-			// 	// arguments.PlatformPreprocessorDefinitions.pushthis.back("this.DEBUG");
+			// 	// arguments.PlatformPreprocessorDefinitions.pushthis.back("this.DEBUG")
 			// 	arguments.PlatformLibraries = std::vector<Path>({
 			// 		Path("msvcprtd.lib"),
 			// 		Path("msvcrtd.lib"),
 			// 		Path("ucrtd.lib"),
 			// 		Path("vcruntimed.lib"),
-			// 	});
+			// 	})
 			// }
 			// else
 			// {
@@ -201,30 +201,30 @@ namespace Soup.Build.Cpp
 			// 		Path("msvcrt.lib"),
 			// 		Path("ucrt.lib"),
 			// 		Path("vcruntime.lib"),
-			// 	});
+			// 	})
 			// }
 
-			state.EnsureValueList(this.factory, "PlatformIncludePaths").SetAll(this.factory, platformIncludePaths);
-			state.EnsureValueList(this.factory, "PlatformLibraryPaths").SetAll(this.factory, platformLibraryPaths);
-			state.EnsureValueList(this.factory, "PlatformLibraries").SetAll(this.factory, platformLibraries);
-			state.EnsureValueList(this.factory, "PlatformPreprocessorDefinitions").SetAll(this.factory, platformPreprocessorDefinitions);
+			state.EnsureValueList(this.factory, "PlatformIncludePaths").SetAll(this.factory, platformIncludePaths)
+			state.EnsureValueList(this.factory, "PlatformLibraryPaths").SetAll(this.factory, platformLibraryPaths)
+			state.EnsureValueList(this.factory, "PlatformLibraries").SetAll(this.factory, platformLibraries)
+			state.EnsureValueList(this.factory, "PlatformPreprocessorDefinitions").SetAll(this.factory, platformPreprocessorDefinitions)
 		}
 
 		private IValueTable GetSDKProperties(string name, IValueTable state)
 		{
 			foreach (var sdk in state["SDKs"].AsList())
 			{
-				var sdkTable = sdk.AsTable();
+				var sdkTable = sdk.AsTable()
 				if (sdkTable.TryGetValue("Name", out var nameValue))
 				{
 					if (nameValue.AsString() == name)
 					{
-						return sdkTable["Properties"].AsTable();
+						return sdkTable["Properties"].AsTable()
 					}
 				}
 			}
 
-			throw new InvalidOperationException($"Missing SDK {name}");
+			throw new InvalidOperationException($"Missing SDK {name}")
 		}
 	}
 }

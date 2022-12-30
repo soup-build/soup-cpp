@@ -29,7 +29,7 @@ class BuildOperation {
 
 	
 	==(other) {
-		System.print("BuildOperation==")
+		// System.print("BuildOperation==")
 		if (other is Null) {
 			return false
 		}

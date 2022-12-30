@@ -85,7 +85,7 @@ class TranslationUnitCompileArguments {
 	IncludeModules=(value) { _includeModules = value }
 
 	==(other) {
-		System.print("TranslationUnitCompileArguments==")
+		// System.print("TranslationUnitCompileArguments==")
 		if (other is Null) {
 			return false
 		}
@@ -109,6 +109,13 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 		_moduleInterfaceTarget = null
 	}
 
+	construct new(sourceFile, targetFile, includeModules, moduleInterfaceTarget) {
+		_sourceFile = sourceFile
+		_targetFile = targetFile
+		_includeModules = includeModules
+		_moduleInterfaceTarget = moduleInterfaceTarget
+	}
+
 	/// <summary>
 	/// Gets or sets the source file
 	/// </summary>
@@ -116,7 +123,7 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 	ModuleInterfaceTarget=(value) { _moduleInterfaceTarget = value }
 
 	==(other) {
-		System.print("InterfaceUnitCompileArguments==")
+		// System.print("InterfaceUnitCompileArguments==")
 		if (other is Null) {
 			return false
 		}
@@ -266,7 +273,7 @@ class SharedCompileArguments {
 	CustomProperties=(value) { _customProperties = value }
 
 	==(other) {
-		System.print("SharedCompileArguments==")
+		// System.print("SharedCompileArguments==")
 		if (other is Null) {
 			return false
 		}
@@ -305,6 +312,11 @@ class ResourceCompileArguments {
 		_targetFile = null
 	}
 
+	construct new(sourceFile, targetFile) {
+		_sourceFile = sourceFile
+		_targetFile = targetFile
+	}
+
 	/// <summary>
 	/// Gets or sets the resource file
 	/// </summary>
@@ -318,7 +330,7 @@ class ResourceCompileArguments {
 	TargetFile=(value) { _targetFile = value }
 
 	==(other) {
-		System.print("ResourceCompileArguments==")
+		// System.print("ResourceCompileArguments==")
 		if (other is Null) {
 			return false
 		}
