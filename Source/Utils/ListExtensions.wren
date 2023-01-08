@@ -1,4 +1,6 @@
 
+import "./Path" for Path
+
 class ListExtensions {
 	static SequenceEqual(lhs, rhs) {
 		// System.print("SequenceEqual %(lhs) == %(rhs) %(lhs.count)")
@@ -18,5 +20,23 @@ class ListExtensions {
 		}
 
 		return true
+	}
+
+	static ConvertToPathList(list) {
+		var result = []
+		for (value in list) {
+			result.add(Path.new(value.toString))
+		}
+
+		return result
+	}
+
+	static ConvertFromPathList(list) {
+		var result = []
+		for (value in list) {
+			result.add(value.toString)
+		}
+
+		return result
 	}
 }

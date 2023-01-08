@@ -2,19 +2,36 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-class BuildTaskUnitTests
-{
-	public void Initialize_Success()
-	{
-		var buildState = new MockBuildState()
+class BuildTaskUnitTests {
+	construct new() {
+	}
+
+	RunTests() {
+		System.print("BuildTaskUnitTests.Initialize_Success")
+		this.Initialize_Success()
+		System.print("BuildTaskUnitTests.Build_WindowsApplication")
+		this.Build_WindowsApplication()
+		System.print("BuildTaskUnitTests.Build_Executable")
+		this.Build_Executable()
+		System.print("BuildTaskUnitTests.Build_Library_MultipleFiles")
+		this.Build_Library_MultipleFiles()
+		System.print("BuildTaskUnitTests.Build_Library_ModuleInterface")
+		this.Build_Library_ModuleInterface()
+		System.print("BuildTaskUnitTests.Build_Library_ModuleInterface_WithPartitions")
+		this.Build_Library_ModuleInterface_WithPartitions()
+		System.print("BuildTaskUnitTests.Build_Library_ModuleInterfaceNoSource")
+		this.Build_Library_ModuleInterfaceNoSource()
+	}
+
+	Initialize_Success() {
+		var buildState = MockBuildState.new()
 		var factory = new ValueFactory()
 		var uut = new BuildTask(buildState, factory)
 	}
 
-	public void Build_WindowsApplication()
-	{
+	Build_WindowsApplication() {
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Setup build table
@@ -92,13 +109,13 @@ class BuildTaskUnitTests
 
 		// Verify expected compiler calls
 		Assert.Equal(
-			new List<SharedCompileArguments>()
+			[
 			{
 				expectedCompileArguments,
 			},
 			compiler.GetCompileRequests())
 		Assert.Equal(
-			new List<LinkArguments>()
+			[
 			{
 				expectedLinkArguments,
 			},
@@ -112,9 +129,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("obj/"),
 				}),
 			BuildOperation.new(
@@ -122,9 +138,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("bin/"),
 				}),
 			BuildOperation.new(
@@ -133,11 +148,9 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile.cpp"),
 				},
 				[
-				{
 					Path.new("obj/TestFile.mock.obj"),
 				}),
 			BuildOperation.new(
@@ -146,11 +159,9 @@ class BuildTaskUnitTests
 				Path.new("MockLinker.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("InputFile.in"),
 				},
 				[
-				{
 					Path.new("OutputFile.out"),
 				}),
 		}
@@ -160,10 +171,9 @@ class BuildTaskUnitTests
 			buildState.GetBuildOperations())
 	}
 
-	public void Build_Executable()
-	{
+	Build_Executable() {
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Setup build table
@@ -202,13 +212,12 @@ class BuildTaskUnitTests
 		// Verify expected logs
 		Assert.Equal(
 			[
-			{
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Program.exe",
 				"INFO: Build Generate Done",
-			},
+			],
 			testListener.GetMessages())
 
 		var expectedCompileArguments = SharedCompileArguments.new()
@@ -241,67 +250,58 @@ class BuildTaskUnitTests
 
 		// Verify expected compiler calls
 		Assert.Equal(
-			new List<SharedCompileArguments>()
-			{
+			[
 				expectedCompileArguments,
-			},
+			],
 			compiler.GetCompileRequests())
 		Assert.Equal(
-			new List<LinkArguments>()
-			{
+			[
 				expectedLinkArguments,
-			},
+			],
 			compiler.GetLinkRequests())
 
 		// Verify build state
 		var expectedBuildOperations = [
-		{
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("./obj/"),
-				}),
+				]),
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("./bin/"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile.mock.obj"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("InputFile.in"),
-				},
+				],
 				[
-				{
 					Path.new("OutputFile.out"),
-				}),
+				]),
 		}
 
 		Assert.Equal(
@@ -309,10 +309,9 @@ class BuildTaskUnitTests
 			buildState.GetBuildOperations())
 	}
 
-	public void Build_Library_MultipleFiles()
-	{
+	Build_Library_MultipleFiles() {
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Setup build table
@@ -362,7 +361,6 @@ class BuildTaskUnitTests
 		// Verify expected logs
 		Assert.Equal(
 			[
-			{
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -370,7 +368,7 @@ class BuildTaskUnitTests
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
 				"INFO: Build Generate Done",
-			},
+			],
 			testListener.GetMessages())
 
 		// Setup the shared arguments
@@ -427,13 +425,13 @@ class BuildTaskUnitTests
 
 		// Verify expected compiler calls
 		Assert.Equal(
-			new List<SharedCompileArguments>()
+			[
 			{
 				expectedCompileArguments,
 			},
 			compiler.GetCompileRequests())
 		Assert.Equal(
-			new List<LinkArguments>()
+			[
 			{
 				expectedLinkArguments,
 			},
@@ -447,9 +445,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("./obj/"),
 				}),
 			BuildOperation.new(
@@ -457,9 +454,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("./bin/"),
 				}),
 			BuildOperation.new(
@@ -468,50 +464,42 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile1.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile1.mock.obj"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile2.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile2.mock.obj"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile3.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile3.mock.obj"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("InputFile.in"),
 				},
 				[
-				{
 					Path.new("OutputFile.out"),
 				}),
 		}
@@ -521,10 +509,10 @@ class BuildTaskUnitTests
 			buildState.GetBuildOperations())
 	}
 
-	public void Build_Library_ModuleInterface()
+	Build_Library_ModuleInterface()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Setup build table
@@ -657,13 +645,13 @@ class BuildTaskUnitTests
 
 		// Verify expected compiler calls
 		Assert.Equal(
-			new List<SharedCompileArguments>()
+			[
 			{
 				expectedCompileArguments,
 			},
 			compiler.GetCompileRequests())
 		Assert.Equal(
-			new List<LinkArguments>()
+			[
 			{
 				expectedLinkArguments,
 			},
@@ -677,9 +665,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("obj/"),
 				}),
 			BuildOperation.new(
@@ -687,22 +674,19 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("bin/"),
-				}),
+				]),
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
 				Path.new("C:/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
-				{
 					Path.new("obj/Public.mock.bmi"),
-				},
+				],
 				[
-				{
 					Path.new("bin/Library.mock.bmi"),
 				}),
 			BuildOperation.new(
@@ -711,51 +695,43 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("Public.cpp"),
 				},
 				[
-				{
 					Path.new("obj/Public.mock.obj"),
 					Path.new("obj/Public.mock.bmi"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile1.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile1.mock.obj"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile2.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile2.mock.obj"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile3.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile3.mock.obj"),
 				}),
 			BuildOperation.new(
@@ -764,13 +740,11 @@ class BuildTaskUnitTests
 				Path.new("MockLinker.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("InputFile.in"),
-				},
+				],
 				[
-				{
 					Path.new("OutputFile.out"),
-				}),
+				]),
 		}
 
 		Assert.Equal(
@@ -778,10 +752,9 @@ class BuildTaskUnitTests
 			buildState.GetBuildOperations())
 	}
 
-	public void Build_Library_ModuleInterface_WithPartitions()
-	{
+	Build_Library_ModuleInterface_WithPartitions() {
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Setup build table
@@ -908,7 +881,6 @@ class BuildTaskUnitTests
 				ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi"),
 				SourceFile = Path.new("Public.cpp"),
 				IncludeModules = [
-				{
 					Path.new("C:/target/obj/TestFile1.mock.bmi"),
 					Path.new("C:/target/obj/TestFile2.mock.bmi"),
 				},
@@ -946,13 +918,13 @@ class BuildTaskUnitTests
 
 		// Verify expected compiler calls
 		Assert.Equal(
-			new List<SharedCompileArguments>()
+			[
 			{
 				expectedCompileArguments,
 			},
 			compiler.GetCompileRequests())
 		Assert.Equal(
-			new List<LinkArguments>()
+			[
 			{
 				expectedLinkArguments,
 			},
@@ -966,9 +938,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("obj/"),
 				}),
 			BuildOperation.new(
@@ -976,9 +947,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("bin/"),
 				}),
 			BuildOperation.new(
@@ -987,38 +957,32 @@ class BuildTaskUnitTests
 				Path.new("C:/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
-				{
 					Path.new("obj/Public.mock.bmi"),
-				},
+				],
 				[
-				{
 					Path.new("bin/Library.mock.bmi"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile1.cpp"),
-				},
+				],
 				[
-				{
 					Path.new("obj/TestFile1.mock.obj"),
 					Path.new("obj/TestFile1.mock.bmi"),
-				}),
+				]),
 			BuildOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile2.cpp"),
 				},
 				[
-				{
 					Path.new("obj/TestFile2.mock.obj"),
 					Path.new("obj/TestFile2.mock.bmi"),
 				}),
@@ -1028,11 +992,9 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("Public.cpp"),
 				},
 				[
-				{
 					Path.new("obj/Public.mock.obj"),
 					Path.new("obj/Public.mock.bmi"),
 				}),
@@ -1042,11 +1004,9 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile3.cpp"),
 				},
 				[
-				{
 					Path.new("obj/TestFile3.mock.obj"),
 				}),
 			BuildOperation.new(
@@ -1055,11 +1015,9 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("TestFile4.cpp"),
 				},
 				[
-				{
 					Path.new("obj/TestFile4.mock.obj"),
 				}),
 			BuildOperation.new(
@@ -1068,11 +1026,9 @@ class BuildTaskUnitTests
 				Path.new("MockLinker.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("InputFile.in"),
 				},
 				[
-				{
 					Path.new("OutputFile.out"),
 				}),
 		}
@@ -1082,10 +1038,9 @@ class BuildTaskUnitTests
 			buildState.GetBuildOperations())
 	}
 
-	public void Build_Library_ModuleInterfaceNoSource()
-	{
+	Build_Library_ModuleInterfaceNoSource() {
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Setup build table
@@ -1189,13 +1144,13 @@ class BuildTaskUnitTests
 
 		// Verify expected compiler calls
 		Assert.Equal(
-			new List<SharedCompileArguments>()
+			[
 			{
 				expectedCompileArguments,
 			},
 			compiler.GetCompileRequests())
 		Assert.Equal(
-			new List<LinkArguments>()
+			[
 			{
 				expectedLinkArguments,
 			},
@@ -1209,9 +1164,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./obj/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("obj/"),
 				}),
 			BuildOperation.new(
@@ -1219,9 +1173,8 @@ class BuildTaskUnitTests
 				Path.new("C:/target/"),
 				Path.new("C:/mkdir.exe"),
 				"\"./bin/\"",
-				[,
+				[],
 				[
-				{
 					Path.new("bin/"),
 				}),
 			BuildOperation.new(
@@ -1230,11 +1183,9 @@ class BuildTaskUnitTests
 				Path.new("C:/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
-				{
 					Path.new("obj/Public.mock.bmi"),
 				},
 				[
-				{
 					Path.new("bin/Library.mock.bmi"),
 				}),
 			BuildOperation.new(
@@ -1243,11 +1194,9 @@ class BuildTaskUnitTests
 				Path.new("MockCompiler.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("Public.cpp"),
 				},
 				[
-				{
 					Path.new("obj/Public.mock.obj"),
 					Path.new("obj/Public.mock.bmi"),
 				}),
@@ -1257,11 +1206,9 @@ class BuildTaskUnitTests
 				Path.new("MockLinker.exe"),
 				"Arguments",
 				[
-				{
 					Path.new("InputFile.in"),
 				},
 				[
-				{
 					Path.new("OutputFile.out"),
 				}),
 		}

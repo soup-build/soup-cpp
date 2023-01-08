@@ -2,252 +2,213 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-class BuildTask is IBuildTask {
+import "soup" for Soup, SoupExtension
+import "../../Utils/Path" for Path
+import "../../Utils/Set" for Set
+import "../../Utils/ListExtensions" for ListExtensions
+import "../../Utils/MapExtensions" for MapExtensions
+import "../../Compiler/Core/BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
+import "../../Compiler/Core/BuildEngine" for BuildEngine
+import "../../Compiler/MSVC/MSVCCompiler" for MSVCCompiler
+
+class BuildTask is SoupExtension {
 	/// <summary>
 	/// Get the run before list
 	/// </summary>
-	static RunBeforeList { [] }
+	static runBefore { [] }
 
 	/// <summary>
 	/// Get the run after list
 	/// </summary>
-	static RunAfterList { [] }
+	static runAfter { [] }
 
-	construct new(IBuildState buildState, IValueFactory factory) :
-		this(buildState, factory, new Dictionary<string, Func<IValueTable, ICompiler>>())
-	{
+	static evaluate() {
 		// Register default compilers
-		this.compilerFactory.add("MSVC", (IValueTable activeState) =>
-		{
-			var clToolPath = Path.new(activeState["MSVC.ClToolPath"].AsString())
-			var linkToolPath = Path.new(activeState["MSVC.LinkToolPath"].AsString())
-			var libToolPath = Path.new(activeState["MSVC.LibToolPath"].AsString())
-			var rcToolPath = Path.new(activeState["MSVC.RCToolPath"].AsString())
-			var mlToolPath = Path.new(activeState["MSVC.MLToolPath"].AsString())
-			return new Compiler.MSVC.Compiler(
-				clToolPath,
-				linkToolPath,
-				libToolPath,
-				rcToolPath,
-				mlToolPath)
-		})
-	}
+		var compilerFactory  = {}
+		compilerFactory.add("MSVC", BuildTask.createMSVCCompiler)
 
-	public BuildTask(IBuildState buildState, IValueFactory factory, Dictionary<string, Func<IValueTable, ICompiler>> compilerFactory)
-	{
-		this.buildState = buildState
-		this.factory = factory
-		this.compilerFactory = compilerFactory
-	}
-
-	public void Execute()
-	{
 		var activeState = this.buildState.ActiveState
 		var sharedState = this.buildState.SharedState
 
-		var buildTable = activeState["Build"].AsTable()
-		var parametersTable = activeState["Parameters"].AsTable()
+		var buildTable = activeState["Build"]
+		var parametersTable = activeState["Parameters"]
 
-		var arguments = new BuildArguments()
-		arguments.TargetArchitecture = parametersTable["Architecture"].AsString()
-		arguments.TargetName = buildTable["TargetName"].AsString()
-		arguments.TargetType = (BuildTargetType)
-			buildTable["TargetType"].AsInteger()
-		arguments.LanguageStandard = (LanguageStandard)
-			buildTable["LanguageStandard"].AsInteger()
-		arguments.SourceRootDirectory = Path.new(buildTable["SourceRootDirectory"].AsString())
-		arguments.TargetRootDirectory = Path.new(buildTable["TargetRootDirectory"].AsString())
-		arguments.ObjectDirectory = Path.new(buildTable["ObjectDirectory"].AsString())
-		arguments.BinaryDirectory = Path.new(buildTable["BinaryDirectory"].AsString())
+		var arguments = BuildArguments.new()
+		arguments.TargetArchitecture = parametersTable["Architecture"]
+		arguments.TargetName = buildTable["TargetName"]
+		arguments.TargetType = buildTable["TargetType"]
+		arguments.LanguageStandard = buildTable["LanguageStandard"]
+		arguments.SourceRootDirectory = Path.new(buildTable["SourceRootDirectory"])
+		arguments.TargetRootDirectory = Path.new(buildTable["TargetRootDirectory"])
+		arguments.ObjectDirectory = Path.new(buildTable["ObjectDirectory"])
+		arguments.BinaryDirectory = Path.new(buildTable["BinaryDirectory"])
 
-		if (buildTable.TryGetValue("ResourcesFile", out var resourcesFile))
-		{
-			arguments.ResourceFile = Path.new(resourcesFile.AsString())
+		if (buildTable.containsKey("ResourcesFile")) {
+			arguments.ResourceFile = Path.new(buildTable["ResourcesFile"])
 		}
 
-		if (buildTable.TryGetValue("ModuleInterfacePartitionSourceFiles", out var moduleInterfacePartitionSourceFiles))
-		{
-			var paritionTargets = new List<PartitionSourceFile>()
-			foreach (var partition in moduleInterfacePartitionSourceFiles.AsList())
-			{
-				var partitionTable = partition.AsTable()
+		if (buildTable.containsKey("ModuleInterfacePartitionSourceFiles")) {
+			var paritionTargets = []
+			for (partition in buildTable["ModuleInterfacePartitionSourceFiles"]) {
+				var partitionTable = partition
 
-				var partitionImports = [
-				if (partitionTable.TryGetValue("Imports", out var partitionImportsValue))
-				{
-					partitionImports = partitionImportsValue.AsList().Select(value => Path.new(value.AsString())).ToList()
+				var partitionImports = []
+				if (partitionTable.containsKey("Imports")) {
+					partitionImports = ListExtensions.ConvertToPathList(partitionTable["Imports"])
 				}
 
-				paritionTargets.add(new PartitionSourceFile()
-				{
-					File = Path.new(partitionTable["Source"].AsString()),
-					Imports = partitionImports,
-				})
+				paritionTargets.add(PartitionSourceFile.new(
+					Path.new(partitionTable["Source"]),
+					partitionImports))
 			}
 
 			arguments.ModuleInterfacePartitionSourceFiles = paritionTargets
 		}
 
-		if (buildTable.TryGetValue("ModuleInterfaceSourceFile", out var moduleInterfaceSourceFile))
-		{
-			arguments.ModuleInterfaceSourceFile = Path.new(moduleInterfaceSourceFile.AsString())
+		if (buildTable.containsKey("ModuleInterfaceSourceFile")) {
+			arguments.ModuleInterfaceSourceFile = Path.new(buildTable["ModuleInterfaceSourceFile"])
 		}
 
-		if (buildTable.TryGetValue("Source", out var sourceValue))
-		{
-			arguments.SourceFiles = sourceValue.AsList().Select(value => Path.new(value.AsString())).ToList()
+		if (buildTable.containsKey("Source")) {
+			arguments.SourceFiles = ListExtensions.ConvertToPathList(buildTable["Source"])
 		}
 
-		if (buildTable.TryGetValue("AssemblySource", out var assemblySourceValue))
-		{
-			arguments.AssemblySourceFiles = assemblySourceValue.AsList().Select(value => Path.new(value.AsString())).ToList()
+		if (buildTable.containsKey("AssemblySource")) {
+			arguments.AssemblySourceFiles = ListExtensions.ConvertToPathList(buildTable["AssemblySource"])
 		}
 
-		if (buildTable.TryGetValue("IncludeDirectories", out var includeDirectoriesValue))
-		{
-			arguments.IncludeDirectories = includeDirectoriesValue.AsList().Select(value => Path.new(value.AsString())).ToList()
+		if (buildTable.containsKey("IncludeDirectories")) {
+			arguments.IncludeDirectories = ListExtensions.ConvertToPathList(buildTable["IncludeDirectories"])
 		}
 
-		if (buildTable.TryGetValue("PlatformLibraries", out var platformLibrariesValue))
-		{
-			arguments.PlatformLinkDependencies = platformLibrariesValue.AsList().Select(value => Path.new(value.AsString())).ToList()
+		if (buildTable.containsKey("PlatformLibraries")) {
+			arguments.PlatformLinkDependencies = ListExtensions.ConvertToPathList(buildTable["PlatformLibraries"])
 		}
 
-		if (buildTable.TryGetValue("LinkLibraries", out var linkLibrariesValue))
-		{
-			arguments.LinkDependencies = MakeUnique(linkLibrariesValue.AsList().Select(value => Path.new(value.AsString())))
+		if (buildTable.containsKey("LinkLibraries")) {
+			arguments.LinkDependencies = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["LinkLibraries"]))
 		}
 
-		if (buildTable.TryGetValue("LibraryPaths", out var libraryPathsValue))
-		{
-			arguments.LibraryPaths = libraryPathsValue.AsList().Select(value => Path.new(value.AsString())).ToList()
+		if (buildTable.containsKey("LibraryPaths")) {
+			arguments.LibraryPaths = ListExtensions.ConvertToPathList(buildTable["LibraryPaths"])
 		}
 
-		if (buildTable.TryGetValue("PreprocessorDefinitions", out var preprocessorDefinitionsValue))
-		{
-			arguments.PreprocessorDefinitions = preprocessorDefinitionsValue.AsList().Select(value => value.AsString()).ToList()
+		if (buildTable.containsKey("PreprocessorDefinitions")) {
+			arguments.PreprocessorDefinitions = buildTable["PreprocessorDefinitions"]
 		}
 
-		if (buildTable.TryGetValue("OptimizationLevel", out var optimizationLevelValue))
-		{
-			arguments.OptimizationLevel = (BuildOptimizationLevel)
-				optimizationLevelValue.AsInteger()
-		}
-		else
-		{
+		if (buildTable.containsKey("OptimizationLevel")) {
+			arguments.OptimizationLevel = buildTable["OptimizationLevel"]
+		} else {
 			arguments.OptimizationLevel = BuildOptimizationLevel.None
 		}
 
-		if (buildTable.TryGetValue("GenerateSourceDebugInfo", out var generateSourceDebugInfoValue))
-		{
-			arguments.GenerateSourceDebugInfo = generateSourceDebugInfoValue.AsBoolean()
-		}
-		else
-		{
+		if (buildTable.containsKey("GenerateSourceDebugInfo")) {
+			arguments.GenerateSourceDebugInfo = buildTable["GenerateSourceDebugInfo"]
+		} else {
 			arguments.GenerateSourceDebugInfo = false
 		}
 
 		// Load the runtime dependencies
-		if (buildTable.TryGetValue("RuntimeDependencies", out var runtimeDependenciesValue))
-		{
-			arguments.RuntimeDependencies = MakeUnique(
-				runtimeDependenciesValue.AsList().Select(value => Path.new(value.AsString())))
+		if (buildTable.containsKey("RuntimeDependencies")) {
+			arguments.RuntimeDependencies = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["RuntimeDependencies"]))
 		}
 
 		// Load the link dependencies
-		if (buildTable.TryGetValue("LinkDependencies", out var linkDependenciesValue))
-		{
-			arguments.LinkDependencies = CombineUnique(
+		if (buildTable.containsKey("LinkDependencies")) {
+			arguments.LinkDependencies = BuildTask.CombineUnique(
 				arguments.LinkDependencies,
-				linkDependenciesValue.AsList().Select(value => Path.new(value.AsString())))
+				ListExtensions.ConvertToPathList(buildTable["LinkDependencies"]))
 		}
 
 		// Load the module references
-		if (buildTable.TryGetValue("ModuleDependencies", out var moduleDependenciesValue))
-		{
-			arguments.ModuleDependencies = MakeUnique(
-				moduleDependenciesValue.AsList().Select(value => Path.new(value.AsString())))
+		if (buildTable.containsKey("ModuleDependencies")) {
+			arguments.ModuleDependencies = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["ModuleDependencies"]))
 		}
 
 		// Load the list of disabled warnings
-		if (buildTable.TryGetValue("EnableWarningsAsErrors", out var enableWarningsAsErrorsValue))
-		{
-			arguments.EnableWarningsAsErrors = enableWarningsAsErrorsValue.AsBoolean()
-		}
-		else
-		{
+		if (buildTable.containsKey("EnableWarningsAsErrors")) {
+			arguments.EnableWarningsAsErrors = buildTable["EnableWarningsAsErrors"]
+		} else {
 			arguments.GenerateSourceDebugInfo = false
 		}
 
 		// Load the list of disabled warnings
-		if (buildTable.TryGetValue("DisabledWarnings", out var disabledWarningsValue))
-		{
-			arguments.DisabledWarnings = disabledWarningsValue.AsList().Select(value => value.AsString()).ToList()
+		if (buildTable.containsKey("DisabledWarnings")) {
+			arguments.DisabledWarnings = buildTable["DisabledWarnings"]
 		}
 
 		// Check for any custom compiler flags
-		if (buildTable.TryGetValue("CustomCompilerProperties", out var customCompilerPropertiesValue))
-		{
-			arguments.CustomProperties = customCompilerPropertiesValue.AsList().Select(value => value.AsString()).ToList()
+		if (buildTable.containsKey("CustomCompilerProperties")) {
+			arguments.CustomProperties = buildTable["CustomCompilerProperties"]
 		}
 
 		// Initialize the compiler to use
-		var compilerName = parametersTable["Compiler"].AsString()
-		if (!this.compilerFactory.TryGetValue(compilerName, out var compileFactory))
-		{
-			this.buildState.LogTrace(TraceLevel.Error, "Unknown compiler: " + compilerName)
-			throw new InvalidOperationException()
+		var compilerName = parametersTable["Compiler"]
+		if (!compilerFactory.containsKey(compilerName)) {
+			Fiber.abort("Unknown compiler: %(compilerName)")
 		}
 
-		var compiler = compileFactory(activeState)
+		var compiler = compileFactory[compilerName].call(activeState)
 
-		var buildEngine = new BuildEngine(compiler)
-		var buildResult = buildEngine.Execute(this.buildState, arguments)
+		var buildEngine = BuildEngine.new(compiler)
+		var buildResult = buildEngine.Execute(arguments)
 
 		// Pass along internal state for other stages to gain access
-		buildTable.EnsureValueList(this.factory, "InternalLinkDependencies").SetAll(this.factory, buildResult.InternalLinkDependencies)
+		buildTable["InternalLinkDependencies"] = ListExtensions.ConvertPathList(buildResult.InternalLinkDependencies)
 
 		// Always pass along required input to shared build tasks
-		var sharedBuildTable = sharedState.EnsureValueTable(this.factory, "Build")
-		sharedBuildTable.EnsureValueList(this.factory, "ModuleDependencies").SetAll(this.factory, buildResult.ModuleDependencies)
-		sharedBuildTable.EnsureValueList(this.factory, "RuntimeDependencies").SetAll(this.factory, buildResult.RuntimeDependencies)
-		sharedBuildTable.EnsureValueList(this.factory, "LinkDependencies").SetAll(this.factory, buildResult.LinkDependencies)
+		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
+		sharedBuildTable["ModuleDependencies"] = ListExtensions.ConvertPathList(buildResult.ModuleDependencies)
+		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertPathList(buildResult.RuntimeDependencies)
+		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertPathList(buildResult.LinkDependencies)
 
-		if (!buildResult.TargetFile.IsEmpty)
-		{
-			sharedBuildTable["TargetFile"] = this.factory.Create(buildResult.TargetFile.toString)
-			sharedBuildTable["RunExecutable"] = this.factory.Create(buildResult.TargetFile.toString)
-			sharedBuildTable.EnsureValueList(this.factory, "RunArguments").SetAll(this.factory, [ { })
+		if (!buildResult.TargetFile.IsEmpty) {
+			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
+			sharedBuildTable["RunExecutable"] = buildResult.TargetFile.toString
+			sharedBuildTable["RunArguments"] = []
 		}
 
 		// Register the build operations
-		foreach (var operation in buildResult.BuildOperations)
-		{
-			this.buildState.CreateOperation(operation)
+		for (operation in buildResult.BuildOperations) {
+			Soup.createOperation(operation)
 		}
 
-		this.buildState.LogTrace(TraceLevel.Information, "Build Generate Done")
+		Soup.debug("Build Generate Done")
 	}
 
-	private static List<Path> CombineUnique(
-		IEnumerable<Path> collection1,
-		IEnumerable<Path> collection2)
-	{
-		var valueSet = new HashSet<string>()
-		foreach (var value in collection1)
-			valueSet.add(value.toString)
-		foreach (var value in collection2)
-			valueSet.add(value.toString)
-
-		return valueSet.Select(value => Path.new(value)).ToList()
+	static createMSVCCompiler(activeState) {
+		var clToolPath = Path.new(activeState["MSVC.ClToolPath"])
+		var linkToolPath = Path.new(activeState["MSVC.LinkToolPath"])
+		var libToolPath = Path.new(activeState["MSVC.LibToolPath"])
+		var rcToolPath = Path.new(activeState["MSVC.RCToolPath"])
+		var mlToolPath = Path.new(activeState["MSVC.MLToolPath"])
+		return MSVCCompiler.new(
+			clToolPath,
+			linkToolPath,
+			libToolPath,
+			rcToolPath,
+			mlToolPath)
 	}
 
-	private static List<Path> MakeUnique(IEnumerable<Path> collection)
-	{
-		var valueSet = new HashSet<string>()
-		foreach (var value in collection)
+	static CombineUnique(collection1, collection2) {
+		var valueSet = Set.new()
+		for (value in collection1) {
 			valueSet.add(value.toString)
+		}
+		for (value in collection2) {
+			valueSet.add(value.toString)
+		}
 
-		return valueSet.Select(value => Path.new(value)).ToList()
+		return ListExtensions.ConvertToPathList(valueSet)
+	}
+
+	static MakeUnique(collection) {
+		var valueSet = Set.new()
+		for (value in collection) {
+			valueSet.add(value.toString)
+		}
+
+		return ListExtensions.ConvertToPathList(valueSet)
 	}
 }

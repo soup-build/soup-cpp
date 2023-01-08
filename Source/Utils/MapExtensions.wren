@@ -20,4 +20,20 @@ class MapExtensions {
 
 		return true
 	}
+
+	static EnsureList(parent, key) {
+		if (!parent.containsKey(key)) {
+			parent[key] = []
+		}
+
+		return parent[key]
+	}
+
+	static EnsureTable(parent, key) {
+		if (!parent.containsKey(key)) {
+			parent[key] = {}
+		}
+
+		return parent[key]
+	}
 }

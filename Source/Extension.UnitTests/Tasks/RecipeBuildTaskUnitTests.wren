@@ -6,7 +6,7 @@ class RecipeBuildTaskUnitTests
 {
 	public void Initialize_Success()
 	{
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var factory = new ValueFactory()
 		var uut = new RecipeBuildTask(buildState, factory)
 	}
@@ -14,7 +14,7 @@ class RecipeBuildTaskUnitTests
 	public void Build_Executable()
 	{
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 		state.add("PlatformLibraries", new Value(new ValueList()))
 		state.add("PlatformIncludePaths", new Value(new ValueList()))

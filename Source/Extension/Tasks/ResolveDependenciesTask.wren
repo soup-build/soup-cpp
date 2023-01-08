@@ -2,77 +2,59 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+import "soup" for Soup, SoupExtension
+import "../../Utils/MapExtensions" for MapExtensions
+
 /// <summary>
 /// The resolve dependencies build task that knows how to combine all previous state
 /// into the active state.
 /// </summary>
-public class ResolveDependenciesTask : IBuildTask
-{
-	private IBuildState buildState
-	private IValueFactory factory
-
+class ResolveDependenciesTask is SoupExtension {
 	/// <summary>
 	/// Get the run before list
 	/// </summary>
-	public static IReadOnlyList<string> RunBeforeList => [
-	{
+	static runBefore { [
 		"BuildTask",
-	}
+	] }
 
 	/// <summary>
 	/// Get the run after list
 	/// </summary>
-	public static IReadOnlyList<string> RunAfterList => [
-	{
-	}
-
-	public ResolveDependenciesTask(IBuildState buildState, IValueFactory factory)
-	{
-		this.buildState = buildState
-		this.factory = factory
-	}
+	static runAfter { [] }
 
 	/// <summary>
 	/// The Core Execute task
 	/// </summary>
-	public void Execute()
-	{
-		var activeState = this.buildState.ActiveState
+	static evaluate() {
+		var activeState = Soup.activeState
 
-		if (activeState.TryGetValue("Dependencies", out var dependenciesValue))
-		{
-			var dependenciesTable = dependenciesValue.AsTable()
-			if (dependenciesTable.TryGetValue("Runtime", out var runtimeValue))
-			{
-				var runtimeDependenciesTable = runtimeValue.AsTable()
-				var buildTable = activeState.EnsureValueTable(this.factory, "Build")
+		if (activeState.containsKey("Dependencies")) {
+			var dependenciesTable = activeState["Dependencies"]
+			if (dependenciesTable.containsKey("Runtime")) {
+				var runtimeDependenciesTable = dependenciesTable["Runtime"]
+				var buildTable = MapExtensions.EnsureTable(activeState.EnsureValueTable, "Build")
 
-				foreach (var dependencyName in runtimeDependenciesTable.Keys)
-				{
+				for ( dependencyName in runtimeDependenciesTable.Keys) {
 					// Combine the core dependency build inputs for the core build task
-					this.buildState.LogTrace(TraceLevel.Information, "Combine Runtime Dependency: " + dependencyName)
-					var dependencyTable = runtimeDependenciesTable[dependencyName].AsTable()
+					Soup.debug("Combine Runtime Dependency: %(dependencyName)")
+					var dependencyTable = runtimeDependenciesTable[dependencyName]
 
-					if (dependencyTable.TryGetValue("Build", out var buildValue))
-					{
-						var dependencyBuildTable = buildValue.AsTable()
+					if (dependencyTable.containsKey("Build")) {
+						var dependencyBuildTable = dependencyTable["Build"]
 
-						if (dependencyBuildTable.TryGetValue("ModuleDependencies", out var moduleDependenciesValue))
-						{
-							var moduleDependencies = moduleDependenciesValue.AsList()
-							buildTable.EnsureValueList(this.factory, "ModuleDependencies").Append(moduleDependencies)
+						if (dependencyBuildTable.containsKey("ModuleDependencies")) {
+							var moduleDependencies = dependencyBuildTable["ModuleDependencies"]
+							MapExtensions.EnsureList(buildTable, "ModuleDependencies").Append(moduleDependencies)
 						}
 
-						if (dependencyBuildTable.TryGetValue("RuntimeDependencies", out var runtimeDependenciesValue))
-						{
-							var runtimeDependencies = runtimeDependenciesValue.AsList()
-							buildTable.EnsureValueList(this.factory, "RuntimeDependencies").Append(runtimeDependencies)
+						if (dependencyBuildTable.containsKey("RuntimeDependencies")) {
+							var runtimeDependencies = dependencyBuildTable["RuntimeDependencies"]
+							MapExtensions.EnsureList(buildTable, "RuntimeDependencies").Append(runtimeDependencies)
 						}
 
-						if (dependencyBuildTable.TryGetValue("LinkDependencies", out var linkDependenciesValue))
-						{
-							var linkDependencies = linkDependenciesValue.AsList()
-							buildTable.EnsureValueList(this.factory, "LinkDependencies").Append(linkDependencies)
+						if (dependencyBuildTable.containsKey("LinkDependencies")) {
+							var linkDependencies = dependencyBuildTable["LinkDependencies"]
+							MapExtensions.EnsureList(buildTable, "LinkDependencies").Append(linkDependencies)
 						}
 					}
 				}

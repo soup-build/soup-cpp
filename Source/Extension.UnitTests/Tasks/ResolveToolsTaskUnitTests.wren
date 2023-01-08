@@ -10,14 +10,14 @@ class ResolveToolsTaskUnitTests
 	}
 
 	Initialize_Success() {
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var factory = new ValueFactory()
 		var uut = new ResolveToolsTask(buildState, factory)
 	}
 
 	Execute() {
 		// Setup the input build state
-		var buildState = new MockBuildState()
+		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
 
 		// Set the sdks
@@ -62,7 +62,6 @@ class ResolveToolsTaskUnitTests
 		// Verify expected logs
 		Assert.Equal(
 			[
-			{
 				"INFO: Using VC Version: 1.0.0",
 				"INFO: Using Windows Kit Version: 10.0.0",
 			},
