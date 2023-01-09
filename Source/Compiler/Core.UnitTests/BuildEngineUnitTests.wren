@@ -4,7 +4,6 @@
 
 import "../../Utils/Path" for Path
 import "../../BuildOperation" for BuildOperation
-import "../../BuildState" for BuildState
 import "../../Test/Assert" for Assert
 import "../Core/BuildEngine" for BuildEngine
 import "../Core/MockCompiler" for MockCompiler
@@ -66,8 +65,7 @@ class BuildEngineUnitTests {
 
 		var uut = BuildEngine.new(compiler)
 
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -202,8 +200,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -345,8 +342,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -492,8 +488,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -698,8 +693,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -948,8 +942,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -1231,8 +1224,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(
@@ -1503,8 +1495,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var buildState = BuildState.new()
-		var result = uut.Execute(buildState, arguments)
+		var result = uut.Execute(arguments)
 
 		// Verify expected logs
 		// Assert.ListEqual(

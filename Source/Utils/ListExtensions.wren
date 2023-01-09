@@ -39,4 +39,8 @@ class ListExtensions {
 
 		return result
 	}
+
+	static Append(target, source) {
+		target = target + source
+	}
 }

@@ -24,8 +24,9 @@ class ResolveToolsTask is SoupExtension {
 	/// The Core Execute task
 	/// </summary>
 	static evaluate() {
-		var state = Soup.activeState
-		var parameters = state["Parameters"]
+		var globalState = Soup.globalState
+		var activeState = Soup.activeState
+		var parameters = globalState["Parameters"]
 
 		var systemName = parameters["System"]
 		var architectureName = parameters["Architecture"]
@@ -36,8 +37,8 @@ class ResolveToolsTask is SoupExtension {
 
 		// Check if skip platform includes was specified
 		var skipPlatform = false
-		if (state.containsKey("SkipPlatform")) {
-			skipPlatform = state["SkipPlatform"]
+		if (activeState.containsKey("SkipPlatform")) {
+			skipPlatform = activeState["SkipPlatform"]
 		}
 
 		// Find the MSVC SDK
@@ -86,18 +87,18 @@ class ResolveToolsTask is SoupExtension {
 		var rcToolPath = windosKitsBinaryFolder + Path.new("rc.exe")
 
 		// Save the build properties
-		state["MSVC.Version"] = visualCompilerVersion
-		state["MSVC.VCToolsRoot"] = visualCompilerVersionFolder.toString
-		state["MSVC.VCToolsBinaryRoot"] = vcToolsBinaryFolder.toString
-		state["MSVC.WindosKitsBinaryRoot"] = windosKitsBinaryFolder.toString
-		state["MSVC.LinkToolPath"] = linkToolPath.toString
-		state["MSVC.LibToolPath"] = libToolPath.toString
-		state["MSVC.RCToolPath"] = rcToolPath.toString
-		state["MSVC.MLToolPath"] = mlToolPath.toString
+		activeState["MSVC.Version"] = visualCompilerVersion
+		activeState["MSVC.VCToolsRoot"] = visualCompilerVersionFolder.toString
+		activeState["MSVC.VCToolsBinaryRoot"] = vcToolsBinaryFolder.toString
+		activeState["MSVC.WindosKitsBinaryRoot"] = windosKitsBinaryFolder.toString
+		activeState["MSVC.LinkToolPath"] = linkToolPath.toString
+		activeState["MSVC.LibToolPath"] = libToolPath.toString
+		activeState["MSVC.RCToolPath"] = rcToolPath.toString
+		activeState["MSVC.MLToolPath"] = mlToolPath.toString
 
 		// Allow custom overrides for the compiler path
-		if (!state.containsKey("MSVC.ClToolPath")) {
-			state["MSVC.ClToolPath"] = clToolPath.toString
+		if (!activeState.containsKey("MSVC.ClToolPath")) {
+			activeState["MSVC.ClToolPath"] = clToolPath.toString
 		}
 
 		// Set the include paths
@@ -172,10 +173,10 @@ class ResolveToolsTask is SoupExtension {
 		// 	})
 		// }
 
-		state["PlatformIncludePaths"] = ListExtensions.ConvertFromPathList(platformIncludePaths)
-		state["PlatformLibraryPaths"] = ListExtensions.ConvertFromPathList(platformLibraryPaths)
-		state["PlatformLibraries"] = ListExtensions.ConvertFromPathList(platformLibraries)
-		state["PlatformPreprocessorDefinitions"] = platformPreprocessorDefinitions
+		activeState["PlatformIncludePaths"] = ListExtensions.ConvertFromPathList(platformIncludePaths)
+		activeState["PlatformLibraryPaths"] = ListExtensions.ConvertFromPathList(platformLibraryPaths)
+		activeState["PlatformLibraries"] = ListExtensions.ConvertFromPathList(platformLibraries)
+		activeState["PlatformPreprocessorDefinitions"] = platformPreprocessorDefinitions
 	}
 
 	static GetSDKProperties(name, state) {

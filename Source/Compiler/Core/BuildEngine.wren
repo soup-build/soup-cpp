@@ -6,7 +6,6 @@ import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
 import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
-import "../../IBuildState" for TraceLevel
 import "../../SharedOperations" for SharedOperations
 import "../../Utils/Path" for Path
 import "../../Utils/Set" for Set
@@ -22,7 +21,7 @@ class BuildEngine {
 	/// <summary>
 	/// Generate the required build operations for the requested build
 	/// </summary>
-	Execute(buildState, arguments) {
+	Execute(arguments) {
 		var result = BuildResult.new()
 
 		// All dependencies must include the entire interface dependency closure
@@ -40,10 +39,10 @@ class BuildEngine {
 				arguments.BinaryDirectory))
 
 		// Perform the core compilation of the source files
-		this.CoreCompile(buildState, arguments, result)
+		this.CoreCompile(arguments, result)
 
 		// Link the final target after all of the compile graph is done
-		this.CoreLink(buildState, arguments, result)
+		this.CoreLink(arguments, result)
 
 		// Copy previous runtime dependencies after linking has completed
 		this.CopyRuntimeDependencies(arguments, result)
@@ -54,7 +53,7 @@ class BuildEngine {
 	/// <summary>
 	/// Compile the module and source files
 	/// </summary>
-	CoreCompile(buildState, arguments, result) {
+	CoreCompile(arguments, result) {
 		// Ensure there are actually files to build
 		if (arguments.ModuleInterfacePartitionSourceFiles.count != 0 ||
 			!(arguments.ModuleInterfaceSourceFile is Null) ||
@@ -78,7 +77,7 @@ class BuildEngine {
 
 			// Compile the resource file if present
 			if (arguments.ResourceFile) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Resource File Compile: %(arguments.ResourceFile)")
+				System.print("Generate Resource File Compile: %(arguments.ResourceFile)")
 
 				var compiledResourceFile =
 					arguments.ObjectDirectory +
@@ -103,7 +102,7 @@ class BuildEngine {
 			var compileInterfacePartitionUnits = []
 			var allPartitionInterfaces = []
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Partition Compile Operation: %(file.File)")
+				System.print("Generate Module Interface Partition Compile Operation: %(file.File)")
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
@@ -145,7 +144,7 @@ class BuildEngine {
 
 			// Compile the module interface unit if present
 			if (!(arguments.ModuleInterfaceSourceFile is Null)) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
+				System.print("Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
@@ -186,7 +185,7 @@ class BuildEngine {
 			// Compile the individual translation units
 			var compileImplementationUnits = []
 			for (file in arguments.SourceFiles) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Compile Operation: %(file)")
+				System.print("Generate Compile Operation: %(file)")
 
 				var compileFileArguments = TranslationUnitCompileArguments.new()
 				compileFileArguments.SourceFile = file
@@ -201,7 +200,7 @@ class BuildEngine {
 			// Compile the individual assembly units
 			var compileAssemblyUnits = []
 			for (file in arguments.AssemblySourceFiles) {
-				buildState.LogTrace(TraceLevel.Information, "Generate Compile Assembly Operation: %(file)")
+				System.print("Generate Compile Assembly Operation: %(file)")
 
 				var compileFileArguments = TranslationUnitCompileArguments.new()
 				compileFileArguments.SourceFile = file
@@ -225,10 +224,9 @@ class BuildEngine {
 	/// Link the library
 	/// </summary>
 	CoreLink(
-		buildState,
 		arguments,
 		result) {
-		buildState.LogTrace(TraceLevel.Information, "CoreLink")
+		System.print("CoreLink")
 
 		var targetFile
 		var implementationFile
@@ -248,7 +246,7 @@ class BuildEngine {
 			Fiber.abort("Unknown build target type.")
 		}
 
-		buildState.LogTrace(TraceLevel.Information, "Linking target")
+		System.print("Linking target")
 
 		var linkArguments = LinkArguments.new()
 		linkArguments.TargetFile = targetFile
@@ -358,7 +356,7 @@ class BuildEngine {
 		linkArguments.ObjectFiles = objectFiles
 
 		// Perform the link
-		buildState.LogTrace(TraceLevel.Information, "Generate Link Operation: %(linkArguments.TargetFile)")
+		System.print("Generate Link Operation: %(linkArguments.TargetFile)")
 		var linkOperation = _compiler.CreateLinkOperation(linkArguments)
 		result.BuildOperations.add(linkOperation)
 

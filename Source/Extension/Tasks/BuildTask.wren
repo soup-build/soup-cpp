@@ -25,13 +25,14 @@ class BuildTask is SoupExtension {
 	static evaluate() {
 		// Register default compilers
 		var compilerFactory  = {}
-		compilerFactory.add("MSVC", BuildTask.createMSVCCompiler)
+		compilerFactory["MSVC"] = BuildTask.createMSVCCompiler
 
-		var activeState = this.buildState.ActiveState
-		var sharedState = this.buildState.SharedState
+		var globalState = Soup.globalState
+		var activeState = Soup.activeState
+		var sharedState = Soup.sharedState
 
 		var buildTable = activeState["Build"]
-		var parametersTable = activeState["Parameters"]
+		var parametersTable = globalState["Parameters"]
 
 		var arguments = BuildArguments.new()
 		arguments.TargetArchitecture = parametersTable["Architecture"]
@@ -149,19 +150,19 @@ class BuildTask is SoupExtension {
 			Fiber.abort("Unknown compiler: %(compilerName)")
 		}
 
-		var compiler = compileFactory[compilerName].call(activeState)
+		var compiler = compilerFactory[compilerName].call(activeState)
 
 		var buildEngine = BuildEngine.new(compiler)
 		var buildResult = buildEngine.Execute(arguments)
 
 		// Pass along internal state for other stages to gain access
-		buildTable["InternalLinkDependencies"] = ListExtensions.ConvertPathList(buildResult.InternalLinkDependencies)
+		buildTable["InternalLinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.InternalLinkDependencies)
 
 		// Always pass along required input to shared build tasks
 		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
-		sharedBuildTable["ModuleDependencies"] = ListExtensions.ConvertPathList(buildResult.ModuleDependencies)
-		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertPathList(buildResult.RuntimeDependencies)
-		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertPathList(buildResult.LinkDependencies)
+		sharedBuildTable["ModuleDependencies"] = ListExtensions.ConvertFromPathList(buildResult.ModuleDependencies)
+		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
+		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
 
 		if (!buildResult.TargetFile.IsEmpty) {
 			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
@@ -171,24 +172,32 @@ class BuildTask is SoupExtension {
 
 		// Register the build operations
 		for (operation in buildResult.BuildOperations) {
-			Soup.createOperation(operation)
+			Soup.createOperation(
+				operation.Title,
+				operation.Executable.toString,
+				operation.Arguments,
+				operation.WorkingDirectory.toString,
+				ListExtensions.ConvertFromPathList(operation.DeclaredInput),
+				ListExtensions.ConvertFromPathList(operation.DeclaredOutput))
 		}
 
 		Soup.debug("Build Generate Done")
 	}
 
-	static createMSVCCompiler(activeState) {
-		var clToolPath = Path.new(activeState["MSVC.ClToolPath"])
-		var linkToolPath = Path.new(activeState["MSVC.LinkToolPath"])
-		var libToolPath = Path.new(activeState["MSVC.LibToolPath"])
-		var rcToolPath = Path.new(activeState["MSVC.RCToolPath"])
-		var mlToolPath = Path.new(activeState["MSVC.MLToolPath"])
-		return MSVCCompiler.new(
-			clToolPath,
-			linkToolPath,
-			libToolPath,
-			rcToolPath,
-			mlToolPath)
+	static createMSVCCompiler {
+		return Fn.new { |activeState|
+			var clToolPath = Path.new(activeState["MSVC.ClToolPath"])
+			var linkToolPath = Path.new(activeState["MSVC.LinkToolPath"])
+			var libToolPath = Path.new(activeState["MSVC.LibToolPath"])
+			var rcToolPath = Path.new(activeState["MSVC.RCToolPath"])
+			var mlToolPath = Path.new(activeState["MSVC.MLToolPath"])
+			return MSVCCompiler.new(
+				clToolPath,
+				linkToolPath,
+				libToolPath,
+				rcToolPath,
+				mlToolPath)
+		}
 	}
 
 	static CombineUnique(collection1, collection2) {
@@ -200,7 +209,7 @@ class BuildTask is SoupExtension {
 			valueSet.add(value.toString)
 		}
 
-		return ListExtensions.ConvertToPathList(valueSet)
+		return ListExtensions.ConvertToPathList(valueSet.list)
 	}
 
 	static MakeUnique(collection) {
@@ -209,6 +218,6 @@ class BuildTask is SoupExtension {
 			valueSet.add(value.toString)
 		}
 
-		return ListExtensions.ConvertToPathList(valueSet)
+		return ListExtensions.ConvertToPathList(valueSet.list)
 	}
 }

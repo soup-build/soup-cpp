@@ -32,19 +32,20 @@ class RecipeBuildTask is SoupExtension {
 	/// The Core Execute task
 	/// </summary>
 	static evaluate() {
-		var rootTable = Soup.activeState
-		var parametersTable = rootTable["Parameters"]
-		var recipeTable = rootTable["Recipe"]
-		var buildTable = MapExtensions.EnsureTable(rootTable, "Build")
+		var globalState = Soup.globalState
+		var activeState = Soup.activeState
+		var parametersTable = globalState["Parameters"]
+		var recipeTable = globalState["Recipe"]
+		var buildTable = MapExtensions.EnsureTable(activeState, "Build")
 
 		// Load the input properties
 		var compilerName = parametersTable["Compiler"]
 		var packageRoot = Path.new(parametersTable["PackageDirectory"])
 		var buildFlavor = parametersTable["Flavor"]
-		var platformLibraries = ListExtensions.ConvertToPathList(rootTable["PlatformLibraries"])
-		var platformIncludePaths = ListExtensions.ConvertToPathList(rootTable["PlatformIncludePaths"])
-		var platformLibraryPaths = ListExtensions.ConvertToPathList(rootTable["PlatformLibraryPaths"])
-		var platformPreprocessorDefinitions = rootTable["PlatformPreprocessorDefinitions"]
+		var platformLibraries = ListExtensions.ConvertToPathList(activeState["PlatformLibraries"])
+		var platformIncludePaths = ListExtensions.ConvertToPathList(activeState["PlatformIncludePaths"])
+		var platformLibraryPaths = ListExtensions.ConvertToPathList(activeState["PlatformLibraryPaths"])
+		var platformPreprocessorDefinitions = activeState["PlatformPreprocessorDefinitions"]
 
 		// Load Recipe properties
 		var name = recipeTable["Name"]
@@ -131,24 +132,18 @@ class RecipeBuildTask is SoupExtension {
 			for (partition in recipeTable["Partitions"]) {
 				var targetPartitionTable = {}
 				if (partition.IsString()) {
-					targetPartitionTable.add(
-						"Source",
-						partition)
+					targetPartitionTable["Source"] = partition
 				} else if (partition.IsTable()) {
 					var partitionTable = partition
 					if (partitionTable.containsKey("Source")) {
-						targetPartitionTable.add(
-							"Source",
-							partitionTable["Source"])
+						targetPartitionTable["Source"] = partitionTable["Source"]
 					} else {
 						Fiber.abort("Partition table missing Source")
 					}
 
 					if (partitionTable.containsKey("Imports")) {
 						var partitionImports = partitionTable["Imports"]
-						targetPartitionTable.add(
-							"Imports",
-							[ partitionImports ])
+						targetPartitionTable["Imports"] = partitionImports
 					}
 				} else {
 					Fiber.abort("Unknown partition type.")
@@ -211,19 +206,39 @@ class RecipeBuildTask is SoupExtension {
 		buildTable["TargetRootDirectory"] = targetDirectory.toString
 		buildTable["ObjectDirectory"] = objectDirectory.toString
 		buildTable["BinaryDirectory"] = binaryDirectory.toString
-		buildTable["ResourcesFile"] = resourcesFile
-		MapExtensions.EnsureList(buildTable, "ModuleInterfacePartitionSourceFiles").Append(moduleInterfacePartitionSourceFiles)
-		buildTable["ModuleInterfaceSourceFile"] = moduleInterfaceSourceFile
+		if (!(resourcesFile is Null)) {
+			buildTable["ResourcesFile"] = resourcesFile
+		}
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "ModuleInterfacePartitionSourceFiles"),
+			moduleInterfacePartitionSourceFiles)
+		if (!(moduleInterfaceSourceFile is Null)) {
+			buildTable["ModuleInterfaceSourceFile"] = moduleInterfaceSourceFile
+		}
 		buildTable["OptimizationLevel"] = optimizationLevel
 		buildTable["GenerateSourceDebugInfo"] = generateSourceDebugInfo
 
-		MapExtensions.EnsureList(buildTable, "PlatformLibraries").Append(platformLibraries)
-		MapExtensions.EnsureList(buildTable, "LinkLibraries").Append(linkLibraries)
-		MapExtensions.EnsureList(buildTable, "PreprocessorDefinitions").Append(preprocessorDefinitions)
-		MapExtensions.EnsureList(buildTable, "IncludeDirectories").Append(includePaths)
-		MapExtensions.EnsureList(buildTable, "LibraryPaths").Append(libraryPaths)
-		MapExtensions.EnsureList(buildTable, "Source").Append(sourceFiles)
-		MapExtensions.EnsureList(buildTable, "AssemblySource").Append(assemblySourceFiles)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "PlatformLibraries"),
+			ListExtensions.ConvertFromPathList(platformLibraries))
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "LinkLibraries"),
+			linkLibraries)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "PreprocessorDefinitions"),
+			preprocessorDefinitions)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "IncludeDirectories"),
+			includePaths)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "LibraryPaths"),
+			libraryPaths)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "Source"),
+			sourceFiles)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "AssemblySource"),
+			assemblySourceFiles)
 
 		buildTable["EnableWarningsAsErrors"] = enableWarningsAsErrors
 

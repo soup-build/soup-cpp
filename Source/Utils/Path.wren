@@ -321,7 +321,7 @@ class Path {
 
 		// Ensure the last separator was at the end of the string
 		if (current != value.count) {
-			Fiber.abort("The directories string must end in a separator")
+			Fiber.abort("The directories string must end in a separator: %(value)")
 		}
 
 		return directories
