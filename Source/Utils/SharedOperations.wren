@@ -3,7 +3,7 @@
 // </copyright>
 
 import "./BuildOperation" for BuildOperation
-import "./Utils/Path" for Path
+import "./Path" for Path
 
 /// <summary>
 /// The Shared Operations class

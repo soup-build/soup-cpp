@@ -4,8 +4,8 @@
 
 import "../Core/ICompiler" for ICompiler
 import "../Core/LinkArguments" for LinkTarget
-import "../../BuildOperation" for BuildOperation
-import "../../SharedOperations" for SharedOperations
+import "../../Utils/BuildOperation" for BuildOperation
+import "../../Utils/SharedOperations" for SharedOperations
 import "../../Utils/Path" for Path
 import "./MSVCArgumentBuilder" for MSVCArgumentBuilder
 

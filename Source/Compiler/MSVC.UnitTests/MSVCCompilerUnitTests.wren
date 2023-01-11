@@ -5,7 +5,7 @@
 import "../MSVC/MSVCCompiler" for MSVCCompiler
 import "../../Utils/Path" for Path
 import "../../Test/Assert" for Assert
-import "../../BuildOperation" for BuildOperation
+import "../../Utils/BuildOperation" for BuildOperation
 import "../Core/LinkArguments" for LinkArguments, LinkTarget
 import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 

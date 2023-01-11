@@ -3,7 +3,7 @@
 // </copyright>
 
 import "../../Utils/Path" for Path
-import "../../BuildOperation" for BuildOperation
+import "../../Utils/BuildOperation" for BuildOperation
 import "../../Test/Assert" for Assert
 import "../Core/BuildEngine" for BuildEngine
 import "../Core/MockCompiler" for MockCompiler

@@ -6,7 +6,7 @@ import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
 import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
-import "../../SharedOperations" for SharedOperations
+import "../../Utils/SharedOperations" for SharedOperations
 import "../../Utils/Path" for Path
 import "../../Utils/Set" for Set
 

@@ -2,7 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "./Utils/ListExtensions" for ListExtensions
+import "./ListExtensions" for ListExtensions
 
 class BuildOperation {
 	construct new(

@@ -1,4 +1,4 @@
-// <copyright file="PathTests.cs" company="Soup">
+// <copyright file="PathTests.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
