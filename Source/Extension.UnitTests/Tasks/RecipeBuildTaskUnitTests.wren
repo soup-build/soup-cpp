@@ -2,43 +2,57 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-class RecipeBuildTaskUnitTests
-{
-	public void Build_Executable() {
+import "soup-test" for SoupTest
+import "../../Extension/Tasks/RecipeBuildTask" for RecipeBuildTask
+import "../../Test/Assert" for Assert
+
+class RecipeBuildTaskUnitTests {
+	construct new() {
+	}
+
+	RunTests() {
+		System.print("RecipeBuildTaskUnitTests.Build_Executable")
+		this.Build_Executable()
+	}
+
+	Build_Executable() {
+		SoupTest.initialize()
+
 		// Setup the input build state
-		var buildState = MockBuildState.new()
-		var state = buildState.ActiveState
-		state.add("PlatformLibraries", new Value(new ValueList()))
-		state.add("PlatformIncludePaths", new Value(new ValueList()))
-		state.add("PlatformLibraryPaths", new Value(new ValueList()))
-		state.add("PlatformPreprocessorDefinitions", new Value(new ValueList()))
+		var activeState = SoupTest.activeState
+		var globalState = SoupTest.globalState
+
+		activeState["PlatformLibraries"] = []
+		activeState["PlatformIncludePaths"] = []
+		activeState["PlatformLibraryPaths"] = []
+		activeState["PlatformPreprocessorDefinitions"] = []
 
 		// Setup recipe table
-		var buildTable = {}
-		state.add("Recipe", new Value(buildTable))
-		buildTable.add("Name", new Value("Program"))
+		var recipeTable = {}
+		globalState["Recipe"] = recipeTable
+		recipeTable["Name"] = "Program"
 
 		// Setup parameters table
 		var parametersTable = {}
-		state.add("Parameters", new Value(parametersTable))
-		parametersTable.add("TargetDirectory", new Value("C:/Target/"))
-		parametersTable.add("PackageDirectory", new Value("C:/PackageRoot/"))
-		parametersTable.add("Compiler", new Value("MOCK"))
-		parametersTable.add("Flavor", new Value("debug"))
+		globalState["Parameters"] = parametersTable
+		parametersTable["TargetDirectory"] = "C:/Target/"
+		parametersTable["PackageDirectory"] = "C:/PackageRoot/"
+		parametersTable["Compiler"] = "MOCK"
+		parametersTable["Flavor"] = "debug"
 
 		RecipeBuildTask.evaluate()
 
 		// Verify expected logs
 		Assert.ListEqual(
 			[],
-			testListener.GetMessages())
+			SoupTest.logs)
 
 		// Verify build state
 		var expectedBuildOperations = []
 
 		Assert.ListEqual(
 			expectedBuildOperations,
-			buildState.GetBuildOperations())
+			SoupTest.operations)
 
 		// TODO: Verify output build state
 	}

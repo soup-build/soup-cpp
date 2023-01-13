@@ -2,50 +2,53 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-class ResolveToolsTaskUnitTests
-{
+import "soup-test" for SoupTest
+import "../../Extension/Tasks/ResolveToolsTask" for ResolveToolsTask
+import "../../Test/Assert" for Assert
+
+class ResolveToolsTaskUnitTests {
+	construct new() {
+	}
+
 	RunTests() {
+		System.print("ResolveToolsTaskUnitTests.Execute")
 		this.Execute()
 	}
 
 	Execute() {
+		SoupTest.initialize()
+
 		// Setup the input build state
-		var buildState = MockBuildState.new()
-		var state = buildState.ActiveState
+		var activeState = SoupTest.activeState
+		var globalState = SoupTest.globalState
 
 		// Set the sdks
-		var sdks = new ValueList()
-		sdks.add(new Value({}
-		{
-			{ "Name", new Value("MSVC") },
-			{ 
-				"Properties",
-				new Value({}
-				{
-					{ "Version", new Value("1.0.0") },
-					{ "VCToolsRoot", new Value("C:/VCTools/Root/") },
-				})
-			},
-		}))
-		sdks.add(new Value({}
-		{
-			{ "Name", new Value("Windows") },
+		var sdks = []
+		sdks.add(
 			{
-				"Properties",
-				new Value({}
+				"Name": "MSVC",
+				"Properties":
 				{
-					{ "Version", new Value("10.0.0") },
-					{ "RootPath", new Value("C:/WindowsKit/Root/") },
-				})
-			},
-		}))
+					"Version": "1.0.0",
+					"VCToolsRoot": "C:/VCTools/Root/",
+				},
+			})
+		sdks.add(
+			{
+				"Name": "Windows",
+				"Properties":
+				{
+					"Version": "10.0.0",
+					"RootPath": "C:/WindowsKit/Root/",
+				},
+			})
 
 		// Setup parameters table
 		var parametersTable = {}
-		state.add("Parameters", new Value(parametersTable))
-		parametersTable.add("SDKs", new Value(sdks))
-		parametersTable.add("System", new Value("win32"))
-		parametersTable.add("Architecture", new Value("x64"))
+		globalState["Parameters"] = parametersTable
+		parametersTable["SDKs"] = sdks
+		parametersTable["System"] = "win32"
+		parametersTable["Architecture"] = "x64"
 
 		ResolveToolsTask.evaluate()
 
@@ -55,13 +58,13 @@ class ResolveToolsTaskUnitTests
 				"INFO: Using VC Version: 1.0.0",
 				"INFO: Using Windows Kit Version: 10.0.0",
 			],
-			testListener.GetMessages())
+			SoupTest.logs)
 
 		// Verify build state
-		var expectedBuildOperations = [
+		var expectedBuildOperations = []
 
 		Assert.ListEqual(
 			expectedBuildOperations,
-			buildState.GetBuildOperations())
+			SoupTest.operations)
 	}
 }

@@ -5,8 +5,8 @@ import "./Compiler/MSVC.UnitTests/MSVCCompilerUnitTests" for MSVCCompilerUnitTes
 import "./Compiler/MSVC.UnitTests/MSVCLinkerArgumentBuilderUnitTests" for MSVCLinkerArgumentBuilderUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCResourceCompileArgumentBuilderUnitTests" for MSVCResourceCompileArgumentBuilderUnitTests
 import "./Extension.UnitTests/Tasks/BuildTaskUnitTests" for BuildTaskUnitTests
-// import "./Extension.UnitTests/Tasks/RecipeBuildTaskUnitTests" for RecipeBuildTaskUnitTests
-// import "./Extension.UnitTests/Tasks/ResolveToolsTaskUnitTests" for ResolveToolsTaskUnitTests
+import "./Extension.UnitTests/Tasks/RecipeBuildTaskUnitTests" for RecipeBuildTaskUnitTests
+import "./Extension.UnitTests/Tasks/ResolveToolsTaskUnitTests" for ResolveToolsTaskUnitTests
 
 var uut
 
@@ -31,7 +31,7 @@ uut.RunTests()
 // Extension.UnitTests
 uut = BuildTaskUnitTests.new()
 uut.RunTests()
-// uut = RecipeBuildTaskUnitTests.new()
-// uut.RunTests()
-// uut = ResolveToolsTaskUnitTests.new()
-// uut.RunTests()
+uut = RecipeBuildTaskUnitTests.new()
+uut.RunTests()
+uut = ResolveToolsTaskUnitTests.new()
+uut.RunTests()
