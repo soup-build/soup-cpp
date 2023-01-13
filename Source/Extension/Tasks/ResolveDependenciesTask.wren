@@ -2,14 +2,14 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "soup" for Soup, SoupExtension
+import "soup" for Soup, SoupTask
 import "../../Utils/MapExtensions" for MapExtensions
 
 /// <summary>
 /// The resolve dependencies build task that knows how to combine all previous state
 /// into the active state.
 /// </summary>
-class ResolveDependenciesTask is SoupExtension {
+class ResolveDependenciesTask is SoupTask {
 	/// <summary>
 	/// Get the run before list
 	/// </summary>

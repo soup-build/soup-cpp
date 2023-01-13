@@ -2,7 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "soup" for Soup, SoupExtension
+import "soup" for Soup, SoupTask
 import "../../Utils/Path" for Path
 import "../../Utils/Set" for Set
 import "../../Utils/ListExtensions" for ListExtensions
@@ -13,7 +13,7 @@ import "../../Compiler/Core/CompileArguments" for LanguageStandard
 /// <summary>
 /// The recipe build task that knows how to build a single recipe
 /// </summary>
-class RecipeBuildTask is SoupExtension {
+class RecipeBuildTask is SoupTask {
 	/// <summary>
 	/// Get the run before list
 	/// </summary>
