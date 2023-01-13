@@ -5,14 +5,7 @@
 class ResolveToolsTaskUnitTests
 {
 	RunTests() {
-		this.Initialize_Success()
 		this.Execute()
-	}
-
-	Initialize_Success() {
-		var buildState = MockBuildState.new()
-		var factory = new ValueFactory()
-		var uut = new ResolveToolsTask(buildState, factory)
 	}
 
 	Execute() {
@@ -22,24 +15,24 @@ class ResolveToolsTaskUnitTests
 
 		// Set the sdks
 		var sdks = new ValueList()
-		sdks.add(new Value(new ValueTable()
+		sdks.add(new Value({}
 		{
 			{ "Name", new Value("MSVC") },
 			{ 
 				"Properties",
-				new Value(new ValueTable()
+				new Value({}
 				{
 					{ "Version", new Value("1.0.0") },
 					{ "VCToolsRoot", new Value("C:/VCTools/Root/") },
 				})
 			},
 		}))
-		sdks.add(new Value(new ValueTable()
+		sdks.add(new Value({}
 		{
 			{ "Name", new Value("Windows") },
 			{
 				"Properties",
-				new Value(new ValueTable()
+				new Value({}
 				{
 					{ "Version", new Value("10.0.0") },
 					{ "RootPath", new Value("C:/WindowsKit/Root/") },
@@ -48,29 +41,26 @@ class ResolveToolsTaskUnitTests
 		}))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable()
+		var parametersTable = {}
 		state.add("Parameters", new Value(parametersTable))
 		parametersTable.add("SDKs", new Value(sdks))
 		parametersTable.add("System", new Value("win32"))
 		parametersTable.add("Architecture", new Value("x64"))
 
-		var factory = new ValueFactory()
-		var uut = new ResolveToolsTask(buildState, factory)
-
-		uut.Execute()
+		ResolveToolsTask.evaluate()
 
 		// Verify expected logs
-		Assert.Equal(
+		Assert.ListEqual(
 			[
 				"INFO: Using VC Version: 1.0.0",
 				"INFO: Using Windows Kit Version: 10.0.0",
-			},
+			],
 			testListener.GetMessages())
 
 		// Verify build state
 		var expectedBuildOperations = [
 
-		Assert.Equal(
+		Assert.ListEqual(
 			expectedBuildOperations,
 			buildState.GetBuildOperations())
 	}

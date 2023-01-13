@@ -22,10 +22,14 @@ class BuildTask is SoupExtension {
 	/// </summary>
 	static runAfter { [] }
 
+	static registerCompiler(name, factory) {
+		if (__compilerFactory is Null) __compilerFactory = {}
+		__compilerFactory[name] = factory
+	}
+
 	static evaluate() {
 		// Register default compilers
-		var compilerFactory  = {}
-		compilerFactory["MSVC"] = BuildTask.createMSVCCompiler
+		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
 
 		var globalState = Soup.globalState
 		var activeState = Soup.activeState
@@ -146,11 +150,11 @@ class BuildTask is SoupExtension {
 
 		// Initialize the compiler to use
 		var compilerName = parametersTable["Compiler"]
-		if (!compilerFactory.containsKey(compilerName)) {
+		if (!__compilerFactory.containsKey(compilerName)) {
 			Fiber.abort("Unknown compiler: %(compilerName)")
 		}
 
-		var compiler = compilerFactory[compilerName].call(activeState)
+		var compiler = __compilerFactory[compilerName].call(activeState)
 
 		var buildEngine = BuildEngine.new(compiler)
 		var buildResult = buildEngine.Execute(arguments)
@@ -164,7 +168,7 @@ class BuildTask is SoupExtension {
 		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
 		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
 
-		if (!buildResult.TargetFile.IsEmpty) {
+		if (!buildResult.TargetFile is Null) {
 			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
 			sharedBuildTable["RunExecutable"] = buildResult.TargetFile.toString
 			sharedBuildTable["RunArguments"] = []
@@ -181,7 +185,7 @@ class BuildTask is SoupExtension {
 				ListExtensions.ConvertFromPathList(operation.DeclaredOutput))
 		}
 
-		Soup.debug("Build Generate Done")
+		Soup.info("Build Generate Done")
 	}
 
 	static createMSVCCompiler {

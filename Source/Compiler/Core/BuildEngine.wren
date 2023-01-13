@@ -2,6 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+import "soup" for Soup
 import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
@@ -77,7 +78,7 @@ class BuildEngine {
 
 			// Compile the resource file if present
 			if (arguments.ResourceFile) {
-				System.print("Generate Resource File Compile: %(arguments.ResourceFile)")
+				Soup.info("Generate Resource File Compile: %(arguments.ResourceFile)")
 
 				var compiledResourceFile =
 					arguments.ObjectDirectory +
@@ -102,7 +103,7 @@ class BuildEngine {
 			var compileInterfacePartitionUnits = []
 			var allPartitionInterfaces = []
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
-				System.print("Generate Module Interface Partition Compile Operation: %(file.File)")
+				Soup.info("Generate Module Interface Partition Compile Operation: %(file.File)")
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
@@ -144,7 +145,7 @@ class BuildEngine {
 
 			// Compile the module interface unit if present
 			if (!(arguments.ModuleInterfaceSourceFile is Null)) {
-				System.print("Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
+				Soup.info("Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
 
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
@@ -185,7 +186,7 @@ class BuildEngine {
 			// Compile the individual translation units
 			var compileImplementationUnits = []
 			for (file in arguments.SourceFiles) {
-				System.print("Generate Compile Operation: %(file)")
+				Soup.info("Generate Compile Operation: %(file)")
 
 				var compileFileArguments = TranslationUnitCompileArguments.new()
 				compileFileArguments.SourceFile = file
@@ -200,7 +201,7 @@ class BuildEngine {
 			// Compile the individual assembly units
 			var compileAssemblyUnits = []
 			for (file in arguments.AssemblySourceFiles) {
-				System.print("Generate Compile Assembly Operation: %(file)")
+				Soup.info("Generate Compile Assembly Operation: %(file)")
 
 				var compileFileArguments = TranslationUnitCompileArguments.new()
 				compileFileArguments.SourceFile = file
@@ -226,7 +227,7 @@ class BuildEngine {
 	CoreLink(
 		arguments,
 		result) {
-		System.print("CoreLink")
+		Soup.info("CoreLink")
 
 		var targetFile
 		var implementationFile
@@ -246,7 +247,7 @@ class BuildEngine {
 			Fiber.abort("Unknown build target type.")
 		}
 
-		System.print("Linking target")
+		Soup.info("Linking target")
 
 		var linkArguments = LinkArguments.new()
 		linkArguments.TargetFile = targetFile
@@ -356,7 +357,7 @@ class BuildEngine {
 		linkArguments.ObjectFiles = objectFiles
 
 		// Perform the link
-		System.print("Generate Link Operation: %(linkArguments.TargetFile)")
+		Soup.info("Generate Link Operation: %(linkArguments.TargetFile)")
 		var linkOperation = _compiler.CreateLinkOperation(linkArguments)
 		result.BuildOperations.add(linkOperation)
 

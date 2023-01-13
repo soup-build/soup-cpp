@@ -4,15 +4,7 @@
 
 class RecipeBuildTaskUnitTests
 {
-	public void Initialize_Success()
-	{
-		var buildState = MockBuildState.new()
-		var factory = new ValueFactory()
-		var uut = new RecipeBuildTask(buildState, factory)
-	}
-
-	public void Build_Executable()
-	{
+	public void Build_Executable() {
 		// Setup the input build state
 		var buildState = MockBuildState.new()
 		var state = buildState.ActiveState
@@ -22,34 +14,29 @@ class RecipeBuildTaskUnitTests
 		state.add("PlatformPreprocessorDefinitions", new Value(new ValueList()))
 
 		// Setup recipe table
-		var buildTable = new ValueTable()
+		var buildTable = {}
 		state.add("Recipe", new Value(buildTable))
 		buildTable.add("Name", new Value("Program"))
 
 		// Setup parameters table
-		var parametersTable = new ValueTable()
+		var parametersTable = {}
 		state.add("Parameters", new Value(parametersTable))
 		parametersTable.add("TargetDirectory", new Value("C:/Target/"))
 		parametersTable.add("PackageDirectory", new Value("C:/PackageRoot/"))
 		parametersTable.add("Compiler", new Value("MOCK"))
 		parametersTable.add("Flavor", new Value("debug"))
 
-		var factory = new ValueFactory()
-		var uut = new RecipeBuildTask(buildState, factory)
-
-		uut.Execute()
+		RecipeBuildTask.evaluate()
 
 		// Verify expected logs
-		Assert.Equal(
-			[
-			{
-			},
+		Assert.ListEqual(
+			[],
 			testListener.GetMessages())
 
 		// Verify build state
-		var expectedBuildOperations = [
+		var expectedBuildOperations = []
 
-		Assert.Equal(
+		Assert.ListEqual(
 			expectedBuildOperations,
 			buildState.GetBuildOperations())
 

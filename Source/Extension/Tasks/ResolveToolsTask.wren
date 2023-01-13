@@ -46,7 +46,7 @@ class ResolveToolsTask is SoupExtension {
 
 		// Use the default version
 		var visualCompilerVersion = msvcSDKProperties["Version"]
-		Soup.debug("Using VC Version: %(visualCompilerVersion)")
+		Soup.info("Using VC Version: %(visualCompilerVersion)")
 
 		// Get the final VC tools folder
 		var visualCompilerVersionFolder = Path.new(msvcSDKProperties["VCToolsRoot"])
@@ -62,7 +62,7 @@ class ResolveToolsTask is SoupExtension {
 
 		var windowsKitVersion = windowsSDKProperties["Version"]
 
-		Soup.debug("Using Windows Kit Version: %(windowsKitVersion)")
+		Soup.info("Using Windows Kit Version: %(windowsKitVersion)")
 		var windows10KitVersionIncludePath = windows10KitIncludePath + Path.new(windowsKitVersion + "/")
 		var windows10KitVersionBinPath = windows10KitBinPath + Path.new(windowsKitVersion + "/")
 		var windows10KitVersionLibPath = windows10KitLibPath + Path.new(windowsKitVersion + "/")

@@ -18,7 +18,7 @@ class SharedOperations {
 		destination) {
 		var title = "Copy [%(source)] -> [%(destination)]"
 
-		var moduleFolder = Path.new("ProcessFolder/")
+		var moduleFolder = Path.new("C:/Program Files/SoupBuild/Soup/Soup/")
 
 		var program = moduleFolder + Path.new("copy.exe")
 		var inputFiles = [
@@ -52,7 +52,8 @@ class SharedOperations {
 
 		var title = "MakeDir [%(directory)]"
 
-		var moduleFolder = Path.new("ProcessFolder/")
+		// TODO: Real path
+		var moduleFolder = Path.new("C:/Program Files/SoupBuild/Soup/Soup/")
 
 		var program = moduleFolder + Path.new("mkdir.exe")
 		var inputFiles = []

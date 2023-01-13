@@ -2,6 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+import "soup-test" for SoupTest
 import "../../Utils/Path" for Path
 import "../../Utils/BuildOperation" for BuildOperation
 import "../../Test/Assert" for Assert
@@ -37,11 +38,15 @@ class BuildEngineUnitTests {
 	}
 
 	Initialize_Success() {
+		SoupTest.initialize()
+
 		var compiler = MockCompiler.new()
 		var uut = BuildEngine.new(compiler)
 	}
 
 	Build_WindowsApplication() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -68,14 +73,14 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Compile Operation: ./TestFile.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Program.exe",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Compile Operation: ./TestFile.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Program.exe",
+			],
+			SoupTest.logs)
 
 		var expectedCompileArguments = SharedCompileArguments.new()
 		expectedCompileArguments.Standard = LanguageStandard.CPP20
@@ -118,7 +123,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -127,7 +132,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -177,6 +182,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_WindowsApplicationWithResource() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -203,15 +210,15 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Resource File Compile: ./Resources.rc",
-		// 		"INFO: Generate Compile Operation: ./TestFile.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Program.exe",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Resource File Compile: ./Resources.rc",
+				"INFO: Generate Compile Operation: ./TestFile.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Program.exe",
+			],
+			SoupTest.logs)
 
 		var expectedCompileArguments = SharedCompileArguments.new()
 		expectedCompileArguments.Standard = LanguageStandard.CPP20
@@ -261,7 +268,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -270,7 +277,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -320,6 +327,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_Executable() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -345,14 +354,14 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Compile Operation: ./TestFile.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Program.exe",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Compile Operation: ./TestFile.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Program.exe",
+			],
+			SoupTest.logs)
 
 		var expectedCompileArguments = SharedCompileArguments.new()
 		expectedCompileArguments.Standard = LanguageStandard.CPP20
@@ -397,7 +406,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -406,7 +415,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -456,6 +465,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_Library_MultipleFiles() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -491,16 +502,16 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Compile Operation: ./TestFile1.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile2.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile3.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Library.mock.lib",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Compile Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Operation: ./TestFile3.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
+			],
+			SoupTest.logs)
 
 		// Setup the shared arguments
 		var expectedCompileArguments = SharedCompileArguments.new()
@@ -566,7 +577,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -575,7 +586,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -656,6 +667,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_Library_ModuleInterface() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -696,17 +709,17 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile1.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile2.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile3.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Library.mock.lib",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Operation: ./TestFile3.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
+			],
+			SoupTest.logs)
 
 		// Setup the shared arguments
 		var expectedCompileArguments = SharedCompileArguments.new()
@@ -782,7 +795,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -791,7 +804,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -800,7 +813,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/copy.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -896,6 +909,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_Library_ModuleInterface_WithPartitions() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -945,18 +960,18 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
-		// 		"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
-		// 		"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile3.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile4.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Library.mock.lib",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
+				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
+				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Operation: ./TestFile3.cpp",
+				"INFO: Generate Compile Operation: ./TestFile4.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
+			],
+			SoupTest.logs)
 
 		// Setup the shared arguments
 		var expectedCompileArguments = SharedCompileArguments.new()
@@ -1045,7 +1060,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1054,7 +1069,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1063,7 +1078,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/copy.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1174,6 +1189,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_Library_ModuleInterface_WithPartitions_TransitiveImport() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -1227,18 +1244,18 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
-		// 		"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
-		// 		"INFO: Generate Module Interface Partition Compile Operation: ./TestFile3.cpp",
-		// 		"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
-		// 		"INFO: Generate Compile Operation: ./TestFile4.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Library.mock.lib",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
+				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
+				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile3.cpp",
+				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Operation: ./TestFile4.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
+			],
+			SoupTest.logs)
 
 		// Setup the shared arguments
 		var expectedCompileArguments = SharedCompileArguments.new()
@@ -1335,7 +1352,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1344,7 +1361,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1353,7 +1370,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/copy.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1466,6 +1483,8 @@ class BuildEngineUnitTests {
 	}
 
 	Build_Library_ModuleInterfaceNoSource() {
+		SoupTest.initialize()
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 
@@ -1498,14 +1517,14 @@ class BuildEngineUnitTests {
 		var result = uut.Execute(arguments)
 
 		// Verify expected logs
-		// Assert.ListEqual(
-		// 	[
-		// 		"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
-		// 		"INFO: CoreLink",
-		// 		"INFO: Linking target",
-		// 		"INFO: Generate Link Operation: ./bin/Library.mock.lib",
-		// 	],
-		// 	testListener.GetMessages())
+		Assert.ListEqual(
+			[
+				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: CoreLink",
+				"INFO: Linking target",
+				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
+			],
+			SoupTest.logs)
 
 		// Setup the shared arguments
 		var expectedCompileArguments = SharedCompileArguments.new()
@@ -1556,7 +1575,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1565,7 +1584,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/mkdir.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1574,7 +1593,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("./ProcessFolder/copy.exe"),
+				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
