@@ -223,16 +223,16 @@ class RecipeBuildTask is SoupTask {
 			ListExtensions.ConvertFromPathList(platformLibraries))
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "LinkLibraries"),
-			linkLibraries)
+			ListExtensions.ConvertFromPathList(linkLibraries))
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "PreprocessorDefinitions"),
 			preprocessorDefinitions)
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "IncludeDirectories"),
-			includePaths)
+			ListExtensions.ConvertFromPathList(includePaths))
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "LibraryPaths"),
-			libraryPaths)
+			ListExtensions.ConvertFromPathList(libraryPaths))
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "Source"),
 			sourceFiles)

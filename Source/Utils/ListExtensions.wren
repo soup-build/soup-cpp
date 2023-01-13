@@ -41,6 +41,8 @@ class ListExtensions {
 	}
 
 	static Append(target, source) {
-		target = target + source
+		for (value in source) {
+			target.add(value)
+		}
 	}
 }
