@@ -86,7 +86,7 @@ class RecipeBuildTask is SoupTask {
 				}
 			}
 
-			MapExtensions.EnsureList(buildTable, "RuntimeDependencies").SetAll(runtimeDependencies)
+			buildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(runtimeDependencies)
 		}
 
 		// Combine the include paths from the recipe and the system
@@ -131,9 +131,9 @@ class RecipeBuildTask is SoupTask {
 		if (recipeTable.containsKey("Partitions")) {
 			for (partition in recipeTable["Partitions"]) {
 				var targetPartitionTable = {}
-				if (partition.IsString()) {
+				if (partition is String) {
 					targetPartitionTable["Source"] = partition
-				} else if (partition.IsTable()) {
+				} else if (partition is Map) {
 					var partitionTable = partition
 					if (partitionTable.containsKey("Source")) {
 						targetPartitionTable["Source"] = partitionTable["Source"]

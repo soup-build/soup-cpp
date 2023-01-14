@@ -3,6 +3,7 @@
 // </copyright>
 
 import "soup" for Soup, SoupTask
+import "../../Utils/ListExtensions" for ListExtensions
 import "../../Utils/MapExtensions" for MapExtensions
 
 /// <summary>
@@ -27,14 +28,15 @@ class ResolveDependenciesTask is SoupTask {
 	/// </summary>
 	static evaluate() {
 		var activeState = Soup.activeState
+		var globalState = Soup.globalState
 
-		if (activeState.containsKey("Dependencies")) {
-			var dependenciesTable = activeState["Dependencies"]
+		if (globalState.containsKey("Dependencies")) {
+			var dependenciesTable = globalState["Dependencies"]
 			if (dependenciesTable.containsKey("Runtime")) {
 				var runtimeDependenciesTable = dependenciesTable["Runtime"]
-				var buildTable = MapExtensions.EnsureTable(activeState.EnsureValueTable, "Build")
+				var buildTable = MapExtensions.EnsureTable(activeState, "Build")
 
-				for ( dependencyName in runtimeDependenciesTable.Keys) {
+				for (dependencyName in runtimeDependenciesTable.keys) {
 					// Combine the core dependency build inputs for the core build task
 					Soup.info("Combine Runtime Dependency: %(dependencyName)")
 					var dependencyTable = runtimeDependenciesTable[dependencyName]
@@ -44,17 +46,23 @@ class ResolveDependenciesTask is SoupTask {
 
 						if (dependencyBuildTable.containsKey("ModuleDependencies")) {
 							var moduleDependencies = dependencyBuildTable["ModuleDependencies"]
-							MapExtensions.EnsureList(buildTable, "ModuleDependencies").Append(moduleDependencies)
+							ListExtensions.Append(
+								MapExtensions.EnsureList(buildTable, "ModuleDependencies"),
+								moduleDependencies)
 						}
 
 						if (dependencyBuildTable.containsKey("RuntimeDependencies")) {
 							var runtimeDependencies = dependencyBuildTable["RuntimeDependencies"]
-							MapExtensions.EnsureList(buildTable, "RuntimeDependencies").Append(runtimeDependencies)
+							ListExtensions.Append(
+								MapExtensions.EnsureList(buildTable, "RuntimeDependencies"),
+								runtimeDependencies)
 						}
 
 						if (dependencyBuildTable.containsKey("LinkDependencies")) {
 							var linkDependencies = dependencyBuildTable["LinkDependencies"]
-							MapExtensions.EnsureList(buildTable, "LinkDependencies").Append(linkDependencies)
+							ListExtensions.Append(
+								MapExtensions.EnsureList(buildTable, "LinkDependencies"),
+								linkDependencies)
 						}
 					}
 				}

@@ -168,7 +168,7 @@ class BuildTask is SoupTask {
 		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
 		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
 
-		if (!buildResult.TargetFile is Null) {
+		if (!(buildResult.TargetFile is Null)) {
 			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
 			sharedBuildTable["RunExecutable"] = buildResult.TargetFile.toString
 			sharedBuildTable["RunArguments"] = []
