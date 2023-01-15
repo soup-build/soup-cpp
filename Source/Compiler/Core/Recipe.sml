@@ -1,5 +1,5 @@
 Name: "Soup.Cpp.Compiler"
-Language: "C#|0.1"
+Language: "Wren|0.1"
 Version: "0.5.1"
 Source: [
 	"BuildArguments.cs"

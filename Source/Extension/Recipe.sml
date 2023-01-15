@@ -1,5 +1,5 @@
 Name: "Soup.Cpp"
-Language: "C#|0.1"
+Language: "Wren|0.1"
 Version: "0.4.3"
 Source: [
 	"Tasks/BuildTask.cs"

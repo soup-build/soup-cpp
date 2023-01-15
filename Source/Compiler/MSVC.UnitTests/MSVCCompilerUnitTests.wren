@@ -434,7 +434,7 @@ class MSVCCompilerUnitTests {
 			"./Library.mock.a",
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.lib.exe"),
-			"/nologo /machine:X64 /out:\"./Library.mock.a\" ./File.mock.obj",
+			"/nologo /INCREMENTAL:NO /machine:X64 /out:\"./Library.mock.a\" ./File.mock.obj",
 			[
 				Path.new("File.mock.obj"),
 			],
@@ -473,7 +473,7 @@ class MSVCCompilerUnitTests {
 			"./Something.exe",
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
-			"/nologo /subsystem:console /machine:X64 /out:\"./Something.exe\" ./Library.mock.a ./File.mock.obj",
+			"/nologo /INCREMENTAL:NO /subsystem:console /machine:X64 /out:\"./Something.exe\" ./Library.mock.a ./File.mock.obj",
 			[
 				Path.new("Library.mock.a"),
 				Path.new("File.mock.obj"),
@@ -513,7 +513,7 @@ class MSVCCompilerUnitTests {
 			"./Something.exe",
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
-			"/nologo /subsystem:windows /machine:X64 /out:\"./Something.exe\" ./Library.mock.a ./File.mock.obj",
+			"/nologo /INCREMENTAL:NO /subsystem:windows /machine:X64 /out:\"./Something.exe\" ./Library.mock.a ./File.mock.obj",
 			[
 				Path.new("Library.mock.a"),
 				Path.new("File.mock.obj"),

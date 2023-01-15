@@ -40,6 +40,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/INCREMENTAL:NO",
 			"/machine:X64",
 			"/out:\"./Library.mock.lib\"",
 		]
@@ -74,6 +75,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/INCREMENTAL:NO",
 			"/machine:X64",
 			"/out:\"./Library.mock.lib\"",
 			"./File.mock.o",
@@ -99,6 +101,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/INCREMENTAL:NO",
 			"/machine:X64",
 			"/libpath:\"../libraries/\"",
 			"/out:\"./Library.mock.lib\"",
@@ -123,6 +126,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/INCREMENTAL:NO",
 			"/subsystem:console",
 			"/dll",
 			"/implib:\"./Library.mock.lib\"",
@@ -151,6 +155,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/INCREMENTAL:NO",
 			"/subsystem:console",
 			"/machine:X64",
 			"/out:\"./out/Something.exe\"",
@@ -178,6 +183,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/INCREMENTAL:NO",
 			"/subsystem:windows",
 			"/machine:X64",
 			"/out:\"./out/Something.exe\"",

@@ -360,6 +360,9 @@ class MSVCArgumentBuilder {
 		// Disable the logo
 		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
 
+		// Disable incremental linking. I believe this is causing issues as the linker reads and writes to the same file
+		MSVCArgumentBuilder.AddParameter(commandArguments, "INCREMENTAL", "NO")
+
 		// Disable the default libraries, we will set this up
 		// MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Linker_ArgumentFlag_NoDefaultLibraries)
 
