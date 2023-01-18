@@ -1,8 +1,9 @@
 ﻿// <copyright file="MSVCArgumentBuilder.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
-import "../Core/CompileArguments" for LanguageStandard, OptimizationLevel
-import "../Core/LinkArguments" for LinkTarget
+
+import "Soup.Cpp.Compiler:./CompileArguments" for LanguageStandard, OptimizationLevel
+import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 
 /// <summary>
 /// A helper class that builds the correct set of compiler arguments for a given

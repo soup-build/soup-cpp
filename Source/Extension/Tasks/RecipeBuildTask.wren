@@ -3,12 +3,12 @@
 // </copyright>
 
 import "soup" for Soup, SoupTask
-import "../../Utils/Path" for Path
-import "../../Utils/Set" for Set
-import "../../Utils/ListExtensions" for ListExtensions
-import "../../Utils/MapExtensions" for MapExtensions
-import "../../Compiler/Core/BuildArguments" for BuildOptimizationLevel, BuildTargetType
-import "../../Compiler/Core/CompileArguments" for LanguageStandard
+import "Soup.Build.Utils:./Path" for Path
+import "Soup.Build.Utils:./Set" for Set
+import "Soup.Build.Utils:./ListExtensions" for ListExtensions
+import "Soup.Build.Utils:./MapExtensions" for MapExtensions
+import "Soup.Cpp.Compiler:./BuildArguments" for BuildOptimizationLevel, BuildTargetType
+import "Soup.Cpp.Compiler:./CompileArguments" for LanguageStandard
 
 /// <summary>
 /// The recipe build task that knows how to build a single recipe

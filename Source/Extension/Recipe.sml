@@ -11,5 +11,7 @@ Source: [
 Dependencies: {
 	Runtime: [
 		"../Utils/"
+		"../Compiler/Core/"
+		"../Compiler/MSVC/"
 	]
 }

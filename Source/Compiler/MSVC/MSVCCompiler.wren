@@ -2,11 +2,11 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../Core/ICompiler" for ICompiler
-import "../Core/LinkArguments" for LinkTarget
-import "../../Utils/BuildOperation" for BuildOperation
-import "../../Utils/SharedOperations" for SharedOperations
-import "../../Utils/Path" for Path
+import "Soup.Cpp.Compiler:./ICompiler" for ICompiler
+import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
+import "Soup.Build.Utils:./BuildOperation" for BuildOperation
+import "Soup.Build.Utils:./SharedOperations" for SharedOperations
+import "Soup.Build.Utils:./Path" for Path
 import "./MSVCArgumentBuilder" for MSVCArgumentBuilder
 
 /// <summary>

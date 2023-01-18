@@ -2,8 +2,8 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../../Utils/ListExtensions" for ListExtensions
-import "../../Utils/MapExtensions" for MapExtensions
+import "Soup.Build.Utils:./ListExtensions" for ListExtensions
+import "Soup.Build.Utils:./MapExtensions" for MapExtensions
 
 /// <summary>
 /// The enumeration of language standards

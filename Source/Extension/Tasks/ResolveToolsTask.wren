@@ -3,8 +3,8 @@
 // </copyright>
 
 import "soup" for Soup, SoupTask
-import "../../Utils/Path" for Path
-import "../../Utils/ListExtensions" for ListExtensions
+import "Soup.Build.Utils:./Path" for Path
+import "Soup.Build.Utils:./ListExtensions" for ListExtensions
 
 /// <summary>
 /// The recipe build task that knows how to build a single recipe

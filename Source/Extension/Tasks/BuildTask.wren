@@ -3,13 +3,13 @@
 // </copyright>
 
 import "soup" for Soup, SoupTask
-import "../../Utils/Path" for Path
-import "../../Utils/Set" for Set
-import "../../Utils/ListExtensions" for ListExtensions
-import "../../Utils/MapExtensions" for MapExtensions
-import "../../Compiler/Core/BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
-import "../../Compiler/Core/BuildEngine" for BuildEngine
-import "../../Compiler/MSVC/MSVCCompiler" for MSVCCompiler
+import "Soup.Build.Utils:./Path" for Path
+import "Soup.Build.Utils:./Set" for Set
+import "Soup.Build.Utils:./ListExtensions" for ListExtensions
+import "Soup.Build.Utils:./MapExtensions" for MapExtensions
+import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
+import "Soup.Cpp.Compiler:./BuildEngine" for BuildEngine
+import "Soup.Cpp.Compiler.MSVC:./MSVCCompiler" for MSVCCompiler
 
 class BuildTask is SoupTask {
 	/// <summary>

@@ -7,9 +7,9 @@ import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
 import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
-import "../../Utils/SharedOperations" for SharedOperations
-import "../../Utils/Path" for Path
-import "../../Utils/Set" for Set
+import "Soup.Build.Utils:./SharedOperations" for SharedOperations
+import "Soup.Build.Utils:./Path" for Path
+import "Soup.Build.Utils:./Set" for Set
 
 /// <summary>
 /// The build engine
