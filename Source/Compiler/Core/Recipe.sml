@@ -1,6 +1,6 @@
 Name: "Soup.Cpp.Compiler"
 Language: "Wren|0.1"
-Version: "0.5.1"
+Version: "0.6.0"
 Source: [
 	"BuildArguments.wren"
 	"BuildEngine.wren"
@@ -13,6 +13,6 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		"../../Utils/"
+		"Soup.Build.Utils@0.1.0"
 	]
 }

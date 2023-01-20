@@ -1,6 +1,6 @@
 Name: "Soup.Cpp.Compiler.MSVC"
 Language: "Wren|0.1"
-Version: "0.5.1"
+Version: "0.6.0"
 Source: [
 	"MSVCArgumentBuilder.Wren"
 	"MSVCCompiler.wren"
@@ -8,7 +8,7 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		"../Core/"
-		"../../Utils/"
+		"Soup.Cpp.Compiler@0.6.0"
+		"Soup.Build.Utils@0.1.0"
 	]
 }

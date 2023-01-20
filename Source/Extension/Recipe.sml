@@ -1,6 +1,6 @@
 Name: "Soup.Cpp"
 Language: "Wren|0.1"
-Version: "0.4.3"
+Version: "0.6.0"
 Source: [
 	"Tasks/BuildTask.wren"
 	"Tasks/RecipeBuildTask.wren"
@@ -10,8 +10,8 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		"../Utils/"
-		"../Compiler/Core/"
-		"../Compiler/MSVC/"
+		"Soup.Cpp.Compiler@0.6.0"
+		"Soup.Cpp.Compiler.MSVC@0.6.0"
+		"Soup.Build.Utils@0.1.0"
 	]
 }
