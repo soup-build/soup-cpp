@@ -1,6 +1,6 @@
 Name: "Soup.Cpp.Compiler"
 Language: "Wren|0.1"
-Version: "0.6.0"
+Version: "0.6.1"
 Source: [
 	"BuildArguments.wren"
 	"BuildEngine.wren"

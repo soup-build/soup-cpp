@@ -82,6 +82,10 @@ class BuildTask is SoupTask {
 			arguments.AssemblySourceFiles = ListExtensions.ConvertToPathList(buildTable["AssemblySource"])
 		}
 
+		if (buildTable.containsKey("PublicHeaders")) {
+			arguments.PublicHeaderFiles = ListExtensions.ConvertToPathList(buildTable["PublicHeaders"])
+		}
+
 		if (buildTable.containsKey("IncludeDirectories")) {
 			arguments.IncludeDirectories = ListExtensions.ConvertToPathList(buildTable["IncludeDirectories"])
 		}
@@ -172,6 +176,10 @@ class BuildTask is SoupTask {
 			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
 			sharedBuildTable["RunExecutable"] = buildResult.TargetFile.toString
 			sharedBuildTable["RunArguments"] = []
+		}
+
+		if (!(buildResult.PublicInclude is Null)) {
+			sharedBuildTable["PublicInclude"] = buildResult.PublicInclude.toString
 		}
 
 		// Register the build operations

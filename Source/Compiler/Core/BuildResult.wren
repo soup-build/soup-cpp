@@ -51,4 +51,10 @@ class BuildResult {
 	/// </summary>
 	TargetFile { _targetFile }
 	TargetFile=(value) { _targetFile = value }
+	
+	/// <summary>
+	/// Gets or sets the public include directory for the build
+	/// </summary>
+	PublicInclude { _publicInclude }
+	PublicInclude=(value) { _publicInclude = value }
 }

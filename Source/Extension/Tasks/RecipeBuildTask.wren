@@ -178,6 +178,12 @@ class RecipeBuildTask is SoupTask {
 			assemblySourceFiles = recipeTable["AssemblySource"]
 		}
 
+		// Load the public header files if present
+		var publicHeaderFiles = []
+		if (recipeTable.containsKey("PublicHeaders")) {
+			publicHeaderFiles = recipeTable["PublicHeaders"]
+		}
+
 		// Check for warning settings
 		var enableWarningsAsErrors = true
 		if (recipeTable.containsKey("EnableWarningsAsErrors")) {
@@ -239,6 +245,9 @@ class RecipeBuildTask is SoupTask {
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "AssemblySource"),
 			assemblySourceFiles)
+		ListExtensions.Append(
+			MapExtensions.EnsureList(buildTable, "PublicHeaders"),
+			publicHeaderFiles)
 
 		buildTable["EnableWarningsAsErrors"] = enableWarningsAsErrors
 

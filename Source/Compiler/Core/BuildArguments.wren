@@ -102,6 +102,7 @@ class BuildArguments {
 		_resourceFile = null
 		_sourceFiles = []
 		_assemblySourceFiles = []
+		_publicHeaderFiles = []
 		_includeDirectories = []
 		_moduleDependencies = []
 		_platformLinkDependencies = []
@@ -199,6 +200,12 @@ class BuildArguments {
 	/// </summary>
 	AssemblySourceFiles { _assemblySourceFiles }
 	AssemblySourceFiles=(value) { _assemblySourceFiles = value }
+
+	/// <summary>
+	/// Gets or sets the list of public headers files
+	/// </summary>
+	PublicHeaderFiles { _publicHeaderFiles }
+	PublicHeaderFiles=(value) { _publicHeaderFiles = value }
 
 	/// <summary>
 	/// Gets or sets the list of include directories

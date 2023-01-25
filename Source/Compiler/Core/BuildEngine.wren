@@ -48,6 +48,9 @@ class BuildEngine {
 		// Copy previous runtime dependencies after linking has completed
 		this.CopyRuntimeDependencies(arguments, result)
 
+		// Copy public headers
+		this.CopyPublicHeaders(arguments, result)
+
 		return result
 	}
 
@@ -391,6 +394,45 @@ class BuildEngine {
 			// Pass along all runtime dependencies in their original location
 			for (source in arguments.RuntimeDependencies) {
 				result.RuntimeDependencies.add(source)
+			}
+		}
+	}
+
+	/// <summary>
+	/// Copy public headers
+	/// </summary>
+	CopyPublicHeaders(arguments, result) {
+		if (arguments.PublicHeaderFiles.count > 0) {
+			Soup.info("Setup Public Headers")
+			var includeDirectory = Path.new("include/")
+
+			// Pass along the output include folder
+			result.PublicInclude = arguments.TargetRootDirectory + includeDirectory
+
+			// Discover all unique sub folders
+			var folderSet = Set.new()
+			folderSet.add(includeDirectory)
+			for (file in arguments.PublicHeaderFiles) {
+				folderSet.add(includeDirectory + file.GetParent())
+			}
+
+			// Ensure the output directories exists
+			for (folder in folderSet.list) {
+				result.BuildOperations.add(
+					SharedOperations.CreateCreateDirectoryOperation(
+						arguments.TargetRootDirectory,
+						folder))
+			}
+
+			// Copy the script files to the output
+			for (file in arguments.PublicHeaderFiles) {
+				Soup.info("Generate Copy Header: %(file)")
+				var operation = SharedOperations.CreateCopyFileOperation(
+						arguments.TargetRootDirectory,
+						arguments.SourceRootDirectory + file,
+						includeDirectory + file)
+						
+					result.BuildOperations.add(operation)
 			}
 		}
 	}

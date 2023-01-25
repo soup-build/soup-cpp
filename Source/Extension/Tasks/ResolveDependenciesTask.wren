@@ -64,6 +64,11 @@ class ResolveDependenciesTask is SoupTask {
 								MapExtensions.EnsureList(buildTable, "LinkDependencies"),
 								linkDependencies)
 						}
+
+						if (dependencyBuildTable.containsKey("PublicInclude")) {
+							var publicInclude = dependencyBuildTable["PublicInclude"]
+							MapExtensions.EnsureList(buildTable, "IncludeDirectories").add(publicInclude)
+						}
 					}
 				}
 			}
