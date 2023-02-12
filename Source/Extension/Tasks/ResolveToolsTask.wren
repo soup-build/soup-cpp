@@ -42,7 +42,7 @@ class ResolveToolsTask is SoupTask {
 		}
 
 		// Find the MSVC SDK
-		var msvcSDKProperties = ResolveToolsTask.GetSDKProperties("MSVC", parameters)
+		var msvcSDKProperties = ResolveToolsTask.GetSDKProperties("MSVC", globalState)
 
 		// Use the default version
 		var visualCompilerVersion = msvcSDKProperties["Version"]
@@ -52,7 +52,7 @@ class ResolveToolsTask is SoupTask {
 		var visualCompilerVersionFolder = Path.new(msvcSDKProperties["VCToolsRoot"])
 
 		// Load the Windows sdk
-		var windowsSDKProperties = ResolveToolsTask.GetSDKProperties("Windows", parameters)
+		var windowsSDKProperties = ResolveToolsTask.GetSDKProperties("Windows", globalState)
 
 		// Calculate the windows kits directory
 		var windows10KitPath = Path.new(windowsSDKProperties["RootPath"])
@@ -179,8 +179,8 @@ class ResolveToolsTask is SoupTask {
 		activeState["PlatformPreprocessorDefinitions"] = platformPreprocessorDefinitions
 	}
 
-	static GetSDKProperties(name, state) {
-		for (sdk in state["SDKs"]) {
+	static GetSDKProperties(name, globalState) {
+		for (sdk in globalState["SDKs"]) {
 			if (sdk.containsKey("Name")) {
 				var nameValue = sdk["Name"]
 				if (nameValue == name) {

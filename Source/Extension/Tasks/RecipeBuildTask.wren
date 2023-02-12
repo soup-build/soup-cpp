@@ -35,12 +35,13 @@ class RecipeBuildTask is SoupTask {
 		var globalState = Soup.globalState
 		var activeState = Soup.activeState
 		var parametersTable = globalState["Parameters"]
+		var contextTable = globalState["Context"]
 		var recipeTable = globalState["Recipe"]
 		var buildTable = MapExtensions.EnsureTable(activeState, "Build")
 
 		// Load the input properties
 		var compilerName = parametersTable["Compiler"]
-		var packageRoot = Path.new(parametersTable["PackageDirectory"])
+		var packageRoot = Path.new(contextTable["PackageDirectory"])
 		var buildFlavor = parametersTable["Flavor"]
 		var platformLibraries = ListExtensions.ConvertToPathList(activeState["PlatformLibraries"])
 		var platformIncludePaths = ListExtensions.ConvertToPathList(activeState["PlatformIncludePaths"])
@@ -114,7 +115,7 @@ class RecipeBuildTask is SoupTask {
 		preprocessorDefinitions.add("SOUP_BUILD")
 
 		// Build up arguments to build this individual recipe
-		var targetDirectory = Path.new(parametersTable["TargetDirectory"])
+		var targetDirectory = Path.new(contextTable["TargetDirectory"])
 		var binaryDirectory = Path.new("bin/")
 		var objectDirectory = Path.new("obj/")
 

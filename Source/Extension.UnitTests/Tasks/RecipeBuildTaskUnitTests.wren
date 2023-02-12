@@ -32,11 +32,15 @@ class RecipeBuildTaskUnitTests {
 		globalState["Recipe"] = recipeTable
 		recipeTable["Name"] = "Program"
 
+		// Setup context table
+		var contextTable = {}
+		globalState["Context"] = contextTable
+		contextTable["TargetDirectory"] = "/(TARGET)/"
+		contextTable["PackageDirectory"] = "/(PACKAGE)/"
+
 		// Setup parameters table
 		var parametersTable = {}
 		globalState["Parameters"] = parametersTable
-		parametersTable["TargetDirectory"] = "C:/Target/"
-		parametersTable["PackageDirectory"] = "C:/PackageRoot/"
 		parametersTable["Compiler"] = "MOCK"
 		parametersTable["Flavor"] = "debug"
 
