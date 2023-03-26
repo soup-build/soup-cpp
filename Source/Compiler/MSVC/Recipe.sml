@@ -1,16 +1,14 @@
 Name: "Soup.Cpp.Compiler.MSVC"
-Language: "C#|0.1"
-Version: "0.5.1"
+Language: "Wren|0.1"
+Version: "0.6.0"
 Source: [
-	"ArgumentBuilder.cs"
-	"Compiler.cs"
+	"MSVCArgumentBuilder.Wren"
+	"MSVCCompiler.wren"
 ]
 
 Dependencies: {
 	Runtime: [
-		"Opal@1.2.0"
-		"Soup.Cpp.Compiler@0.5.1"
-		"Soup.Build.Extensions@0.4.1"
-		"Soup.Build.Extensions.Utilities@0.4.1"
+		"Soup.Cpp.Compiler@0.6.0"
+		"Soup.Build.Utils@0.1.0"
 	]
 }

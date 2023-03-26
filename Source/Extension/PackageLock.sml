@@ -1,19 +1,26 @@
 Version: 4
 Closures: {
 	Root: {
-		"C#": [
-			{ Name: "Opal", Version: "1.4.0", Build: "Build0" }
-			{ Name: "Soup.Build", Version: "0.2.1", Build: "Build0" }
-			{ Name: "Soup.Build.Extensions", Version: "0.4.1", Build: "Build0" }
-			{ Name: "Soup.Build.Extensions.Utilities", Version: "0.4.1", Build: "Build0" }
+		"C++": [
+			{ Name: "copy", Version: "1.0.0", Build: "Build0" }
+			{ Name: "mkdir", Version: "1.0.0", Build: "Build0" }
+		]
+		Wren: [
+			{ Name: "Soup.Build.Utils", Version: "0.3.0", Build: "Build1" }
 			{ Name: "Soup.Cpp", Version: "./", Build: "Build0" }
-			{ Name: "Soup.Cpp.Compiler", Version: "0.5.1", Build: "Build0" }
-			{ Name: "Soup.Cpp.Compiler.MSVC", Version: "0.5.1", Build: "Build0" }
+			{ Name: "Soup.Cpp.Compiler", Version: "0.6.1", Build: "Build1" }
+			{ Name: "Soup.Cpp.Compiler.MSVC", Version: "0.6.0", Build: "Build1" }
 		]
 	}
 	Build0: {
-		"C#": [
-			{ Name: "Soup.CSharp", Version: "0.7.3" }
+		Wren: [
+			{ Name: "Soup.Cpp", Version: "0.6.2" }
+			{ Name: "Soup.Wren", Version: "0.1.2" }
+		]
+	}
+	Build1: {
+		Wren: [
+			{ Name: "Soup.Wren", Version: "0.1.2" }
 		]
 	}
 }
