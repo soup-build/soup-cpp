@@ -50,6 +50,19 @@ class BuildTaskUnitTests {
 			"TestFile.cpp",
 		]
 
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
+
 		// Setup parameters table
 		var parametersTable = {}
 		globalState["Parameters"] = parametersTable
@@ -113,7 +126,7 @@ class BuildTaskUnitTests {
 		var expectedBuildOperations = [
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				Path.new("C:/target/"),
 				[],
@@ -122,7 +135,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				Path.new("C:/target/"),
 				[],
@@ -177,6 +190,19 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			"TestFile.cpp",
 		]
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Setup parameters table
 		var parametersTable = {}
@@ -241,7 +267,7 @@ class BuildTaskUnitTests {
 		var expectedBuildOperations = [
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				Path.new("C:/target/"),
 				[],
@@ -250,7 +276,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				Path.new("C:/target/"),
 				[],
@@ -316,6 +342,19 @@ class BuildTaskUnitTests {
 			"../OtherModule2.mock.bmi",
 		]
 		buildTable["OptimizationLevel"] = BuildOptimizationLevel.None
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Setup parameters table
 		var parametersTable = {}
@@ -401,7 +440,7 @@ class BuildTaskUnitTests {
 		var expectedBuildOperations = [
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				Path.new("C:/target/"),
 				[],
@@ -410,7 +449,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				Path.new("C:/target/"),
 				[],
@@ -503,6 +542,26 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Setup parameters table
 		var parametersTable = {}
@@ -598,7 +657,7 @@ class BuildTaskUnitTests {
 		var expectedBuildOperations = [
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				Path.new("C:/target/"),
 				[],
@@ -607,7 +666,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				Path.new("C:/target/"),
 				[],
@@ -616,7 +675,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				Path.new("C:/target/"),
 				[
@@ -732,6 +791,26 @@ class BuildTaskUnitTests {
 			"AWESOME",
 		]
 
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
+
 		// Setup parameters table
 		var parametersTable = {}
 		globalState["Parameters"] = parametersTable
@@ -841,7 +920,7 @@ class BuildTaskUnitTests {
 		var expectedBuildOperations = [
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				Path.new("C:/target/"),
 				[],
@@ -850,7 +929,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				Path.new("C:/target/"),
 				[],
@@ -859,7 +938,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				Path.new("C:/target/"),
 				[
@@ -976,6 +1055,26 @@ class BuildTaskUnitTests {
 			"AWESOME",
 		]
 
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
+
 		// Setup parameters table
 		var parametersTable = {}
 		globalState["Parameters"] = parametersTable
@@ -1050,7 +1149,7 @@ class BuildTaskUnitTests {
 		var expectedBuildOperations = [
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				Path.new("C:/target/"),
 				[],
@@ -1059,7 +1158,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				Path.new("C:/target/"),
 				[],
@@ -1068,7 +1167,7 @@ class BuildTaskUnitTests {
 				]),
 			SoupTestOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				Path.new("C:/target/"),
 				[

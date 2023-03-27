@@ -47,7 +47,22 @@ class BuildEngineUnitTests {
 	}
 
 	Build_WindowsApplication() {
+		// Setup the input build state
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -125,7 +140,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -134,7 +149,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -185,6 +200,20 @@ class BuildEngineUnitTests {
 
 	Build_WindowsApplicationWithResource() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -270,7 +299,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -279,7 +308,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -330,6 +359,20 @@ class BuildEngineUnitTests {
 
 	Build_Executable() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -408,7 +451,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -417,7 +460,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -468,6 +511,27 @@ class BuildEngineUnitTests {
 
 	Build_Library_PublicHeaderFiles() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -570,7 +634,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -579,7 +643,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -610,7 +674,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./include/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./include/\"",
 				[],
 				[
@@ -619,7 +683,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [C:/source/TestFile1.h] -> [./include/TestFile1.h]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"C:/source/TestFile1.h\" \"./include/TestFile1.h\"",
 				[
 					Path.new("C:/source/TestFile1.h"),
@@ -630,7 +694,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [C:/source/TestFile2.h] -> [./include/TestFile2.h]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"C:/source/TestFile2.h\" \"./include/TestFile2.h\"",
 				[
 					Path.new("C:/source/TestFile2.h"),
@@ -670,6 +734,20 @@ class BuildEngineUnitTests {
 
 	Build_Library_MultipleFiles() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -781,7 +859,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -790,7 +868,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -872,6 +950,27 @@ class BuildEngineUnitTests {
 
 	Build_Library_ModuleInterface() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -999,7 +1098,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1008,7 +1107,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1017,7 +1116,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1114,6 +1213,27 @@ class BuildEngineUnitTests {
 
 	Build_Library_ModuleInterface_WithPartitions() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -1264,7 +1384,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1273,7 +1393,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1282,7 +1402,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1394,6 +1514,27 @@ class BuildEngineUnitTests {
 
 	Build_Library_ModuleInterface_WithPartitions_TransitiveImport() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -1556,7 +1697,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1565,7 +1706,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1574,7 +1715,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1688,6 +1829,27 @@ class BuildEngineUnitTests {
 
 	Build_Library_ModuleInterfaceNoSource() {
 		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"copy": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/copy.exe"
+					}
+				}
+			},
+			"mkdir": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/mkdir.exe"
+					}
+				}
+			}
+		}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -1779,7 +1941,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./obj/\"",
 				[],
 				[
@@ -1788,7 +1950,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/mkdir.exe"),
+				Path.new("/TARGET/mkdir.exe"),
 				"\"./bin/\"",
 				[],
 				[
@@ -1797,7 +1959,7 @@ class BuildEngineUnitTests {
 			BuildOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
-				Path.new("C:/Program Files/SoupBuild/Soup/Soup/copy.exe"),
+				Path.new("/TARGET/copy.exe"),
 				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
 				[
 					Path.new("obj/Public.mock.bmi"),
