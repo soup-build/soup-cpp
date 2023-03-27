@@ -79,7 +79,9 @@ class MockCompiler is ICompiler {
 					"MockCompilePartition: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
-					"Arguments",
+					[
+						"Arguments",
+					],
 					[
 						fileArguments.SourceFile,
 					],
@@ -95,7 +97,9 @@ class MockCompiler is ICompiler {
 					"MockCompileModule: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
-					"Arguments",
+					[
+						"Arguments",
+					],
 					[
 						arguments.InterfaceUnit.SourceFile,
 					],
@@ -111,7 +115,9 @@ class MockCompiler is ICompiler {
 					"MockCompile: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
-					"Arguments",
+					[
+						"Arguments",
+					],
 					[
 						fileArguments.SourceFile,
 					],
@@ -132,7 +138,9 @@ class MockCompiler is ICompiler {
 			"MockLink: %(_linkRequests.count)",
 			Path.new("MockWorkingDirectory"),
 			Path.new("MockLinker.exe"),
-			"Arguments",
+			[
+				"Arguments",
+			],
 			[
 				Path.new("InputFile.in"),
 			],

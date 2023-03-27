@@ -141,7 +141,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("./obj/"),
@@ -150,7 +152,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("./bin/"),
@@ -159,7 +163,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile.cpp"),
 				],
@@ -170,7 +176,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -300,7 +308,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("./obj/"),
@@ -309,7 +319,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("./bin/"),
@@ -318,7 +330,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile.cpp"),
 				],
@@ -329,7 +343,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -452,7 +468,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("./obj/"),
@@ -461,7 +479,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("./bin/"),
@@ -470,7 +490,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile.cpp"),
 				],
@@ -481,7 +503,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -635,7 +659,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("./obj/"),
@@ -644,7 +670,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("./bin/"),
@@ -653,7 +681,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile1.cpp"),
 				],
@@ -664,7 +694,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -675,7 +707,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./include/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./include/\"",
+				[
+					"./include/",
+				],
 				[],
 				[
 					Path.new("./include/"),
@@ -684,7 +718,10 @@ class BuildEngineUnitTests {
 				"Copy [C:/source/TestFile1.h] -> [./include/TestFile1.h]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
-				"\"C:/source/TestFile1.h\" \"./include/TestFile1.h\"",
+				[
+					"C:/source/TestFile1.h",
+					"./include/TestFile1.h",
+				],
 				[
 					Path.new("C:/source/TestFile1.h"),
 				],
@@ -695,7 +732,10 @@ class BuildEngineUnitTests {
 				"Copy [C:/source/TestFile2.h] -> [./include/TestFile2.h]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
-				"\"C:/source/TestFile2.h\" \"./include/TestFile2.h\"",
+				[
+					"C:/source/TestFile2.h",
+					"./include/TestFile2.h",
+				],
 				[
 					Path.new("C:/source/TestFile2.h"),
 				],
@@ -860,7 +900,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("./obj/"),
@@ -869,7 +911,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("./bin/"),
@@ -878,7 +922,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile1.cpp"),
 				],
@@ -889,7 +935,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile2.cpp"),
 				],
@@ -900,7 +948,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile3.cpp"),
 				],
@@ -911,7 +961,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -1099,7 +1151,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("obj/"),
@@ -1108,7 +1162,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("bin/"),
@@ -1117,7 +1173,10 @@ class BuildEngineUnitTests {
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				[
 					Path.new("obj/Public.mock.bmi"),
 				],
@@ -1128,7 +1187,9 @@ class BuildEngineUnitTests {
 				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("Public.cpp"),
 				],
@@ -1140,7 +1201,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile1.cpp"),
 				],
@@ -1151,7 +1214,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile2.cpp"),
 				],
@@ -1162,7 +1227,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile3.cpp"),
 				],
@@ -1173,7 +1240,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -1385,7 +1454,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("obj/"),
@@ -1394,7 +1465,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("bin/"),
@@ -1403,7 +1476,10 @@ class BuildEngineUnitTests {
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				[
 					Path.new("obj/Public.mock.bmi"),
 				],
@@ -1414,7 +1490,9 @@ class BuildEngineUnitTests {
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile1.cpp"),
 				],
@@ -1426,7 +1504,9 @@ class BuildEngineUnitTests {
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile2.cpp"),
 				],
@@ -1438,7 +1518,9 @@ class BuildEngineUnitTests {
 				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("Public.cpp"),
 				],
@@ -1450,7 +1532,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile3.cpp"),
 				],
@@ -1461,7 +1545,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile4.cpp"),
 				],
@@ -1472,7 +1558,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -1698,7 +1786,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("obj/"),
@@ -1707,7 +1797,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("bin/"),
@@ -1716,7 +1808,10 @@ class BuildEngineUnitTests {
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				[
 					Path.new("obj/Public.mock.bmi"),
 				],
@@ -1727,7 +1822,9 @@ class BuildEngineUnitTests {
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile1.cpp"),
 				],
@@ -1739,7 +1836,9 @@ class BuildEngineUnitTests {
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile2.cpp"),
 				],
@@ -1751,7 +1850,9 @@ class BuildEngineUnitTests {
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile3.cpp"),
 				],
@@ -1763,7 +1864,9 @@ class BuildEngineUnitTests {
 				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("Public.cpp"),
 				],
@@ -1775,7 +1878,9 @@ class BuildEngineUnitTests {
 				"MockCompile: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("TestFile4.cpp"),
 				],
@@ -1786,7 +1891,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
@@ -1942,7 +2049,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./obj/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				[],
 				[
 					Path.new("obj/"),
@@ -1951,7 +2060,9 @@ class BuildEngineUnitTests {
 				"MakeDir [./bin/]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				[],
 				[
 					Path.new("bin/"),
@@ -1960,7 +2071,10 @@ class BuildEngineUnitTests {
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				[
 					Path.new("obj/Public.mock.bmi"),
 				],
@@ -1971,7 +2085,9 @@ class BuildEngineUnitTests {
 				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("Public.cpp"),
 				],
@@ -1983,7 +2099,9 @@ class BuildEngineUnitTests {
 				"MockLink: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				[
 					Path.new("InputFile.in"),
 				],
