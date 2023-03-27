@@ -4,8 +4,8 @@ Closures: {
 		Wren: [
 			{ Name: "Soup.Build.Utils", Version: "0.4.0", Build: "Build0", Tool: "Tool0" }
 			{ Name: "Soup.Cpp", Version: "../Extension", Build: "Build0", Tool: "Tool0" }
-			{ Name: "Soup.Cpp.Compiler", Version: "0.6.1", Build: "Build0", Tool: "Tool0" }
-			{ Name: "Soup.Cpp.Compiler.MSVC", Version: "0.6.0", Build: "Build0", Tool: "Tool0" }
+			{ Name: "Soup.Cpp.Compiler", Version: "0.7.0", Build: "Build0", Tool: "Tool0" }
+			{ Name: "Soup.Cpp.Compiler.MSVC", Version: "0.7.0", Build: "Build0", Tool: "Tool0" }
 		]
 	}
 	Build0: {
