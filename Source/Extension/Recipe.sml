@@ -11,6 +11,7 @@ Source: [
 Dependencies: {
 	Runtime: [
 		"Soup.Cpp.Compiler@0.6.1"
+		"Soup.Cpp.Compiler.GCC@0.1.0"
 		"Soup.Cpp.Compiler.MSVC@0.6.0"
 		"Soup.Build.Utils@0.3.0"
 	]

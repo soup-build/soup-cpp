@@ -9,6 +9,7 @@ import "Soup.Build.Utils:./ListExtensions" for ListExtensions
 import "Soup.Build.Utils:./MapExtensions" for MapExtensions
 import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
 import "Soup.Cpp.Compiler:./BuildEngine" for BuildEngine
+import "Soup.Cpp.Compiler.GCC:./GCCCompiler" for GCCCompiler
 import "Soup.Cpp.Compiler.MSVC:./MSVCCompiler" for MSVCCompiler
 
 class BuildTask is SoupTask {
@@ -30,6 +31,7 @@ class BuildTask is SoupTask {
 	static evaluate() {
 		// Register default compilers
 		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
+		BuildTask.registerCompiler("GCC", BuildTask.createGCCCompiler)
 
 		var globalState = Soup.globalState
 		var activeState = Soup.activeState
@@ -194,6 +196,22 @@ class BuildTask is SoupTask {
 		}
 
 		Soup.info("Build Generate Done")
+	}
+
+	static createGCCCompiler {
+		return Fn.new { |activeState|
+			var clToolPath = Path.new(activeState["GCC.ClToolPath"])
+			var linkToolPath = Path.new(activeState["GCC.LinkToolPath"])
+			var libToolPath = Path.new(activeState["GCC.LibToolPath"])
+			var rcToolPath = Path.new(activeState["GCC.RCToolPath"])
+			var mlToolPath = Path.new(activeState["GCC.MLToolPath"])
+			return GCCCompiler.new(
+				clToolPath,
+				linkToolPath,
+				libToolPath,
+				rcToolPath,
+				mlToolPath)
+		}
 	}
 
 	static createMSVCCompiler {

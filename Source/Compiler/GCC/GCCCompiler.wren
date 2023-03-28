@@ -1,4 +1,4 @@
-﻿// <copyright file="MSVCCompiler.wren" company="Soup">
+﻿// <copyright file="GCCCompiler.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -7,12 +7,12 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 import "Soup.Build.Utils:./BuildOperation" for BuildOperation
 import "Soup.Build.Utils:./SharedOperations" for SharedOperations
 import "Soup.Build.Utils:./Path" for Path
-import "./MSVCArgumentBuilder" for MSVCArgumentBuilder
+import "./GCCArgumentBuilder" for GCCArgumentBuilder
 
 /// <summary>
-/// The MSVC compiler implementation
+/// The GCC compiler implementation
 /// </summary>
-class MSVCCompiler is ICompiler {
+class GCCCompiler is ICompiler {
 	construct new(
 		compilerExecutable,
 		linkerExecutable,
@@ -29,7 +29,7 @@ class MSVCCompiler is ICompiler {
 	/// <summary>
 	/// Gets the unique name for the compiler
 	/// </summary>
-	Name { "MSVC" }
+	Name { "GCC" }
 
 	/// <summary>
 	/// Gets the object file extension for the compiler
@@ -66,11 +66,11 @@ class MSVCCompiler is ICompiler {
 
 		// Write the shared arguments to the response file
 		var responseFile = arguments.ObjectDirectory + Path.new("SharedCompileArguments.rsp")
-		var sharedCommandArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(arguments)
+		var sharedCommandArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(arguments)
 		var writeSharedArgumentsOperation = SharedOperations.CreateWriteFileOperation(
 			arguments.TargetRootDirectory,
 			responseFile,
-			MSVCCompiler.CombineArguments(sharedCommandArguments))
+			GCCCompiler.CombineArguments(sharedCommandArguments))
 		operations.add(writeSharedArgumentsOperation)
 
 		// Initialize a shared input set
@@ -93,7 +93,7 @@ class MSVCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this resource file
-			var commandArguments = MSVCArgumentBuilder.BuildResourceCompilerArguments(
+			var commandArguments = GCCArgumentBuilder.BuildResourceCompilerArguments(
 				arguments.TargetRootDirectory,
 				arguments)
 
@@ -102,7 +102,7 @@ class MSVCCompiler is ICompiler {
 				resourceFileArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_rcExecutable,
-				MSVCCompiler.CombineArguments(commandArguments),
+				GCCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -122,7 +122,7 @@ class MSVCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = MSVCArgumentBuilder.BuildPartitionUnitCompilerArguments(
+			var commandArguments = GCCArgumentBuilder.BuildPartitionUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				partitionUnitArguments,
 				absoluteResponseFile)
@@ -132,7 +132,7 @@ class MSVCCompiler is ICompiler {
 				partitionUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				MSVCCompiler.CombineArguments(commandArguments),
+				GCCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -157,7 +157,7 @@ class MSVCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = MSVCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			var commandArguments = GCCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				interfaceUnitArguments,
 				absoluteResponseFile)
@@ -167,7 +167,7 @@ class MSVCCompiler is ICompiler {
 				interfaceUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				MSVCCompiler.CombineArguments(commandArguments),
+				GCCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -189,7 +189,7 @@ class MSVCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = MSVCArgumentBuilder.BuildTranslationUnitCompilerArguments(
+			var commandArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				implementationUnitArguments,
 				absoluteResponseFile,
@@ -200,7 +200,7 @@ class MSVCCompiler is ICompiler {
 				implementationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				MSVCCompiler.CombineArguments(commandArguments),
+				GCCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -216,7 +216,7 @@ class MSVCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this assembly unit
-			var commandArguments = MSVCArgumentBuilder.BuildAssemblyUnitCompilerArguments(
+			var commandArguments = GCCArgumentBuilder.BuildAssemblyUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				arguments,
 				assemblyUnitArguments)
@@ -226,7 +226,7 @@ class MSVCCompiler is ICompiler {
 				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_mlExecutable,
-				MSVCCompiler.CombineArguments(commandArguments),
+				GCCCompiler.CombineArguments(commandArguments),
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -258,13 +258,13 @@ class MSVCCompiler is ICompiler {
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
-		var commandarguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var commandarguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
 			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
-			MSVCCompiler.CombineArguments(commandarguments),
+			GCCCompiler.CombineArguments(commandarguments),
 			inputFiles,
 			outputFiles)
 
