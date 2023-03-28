@@ -1,4 +1,8 @@
 import "./Compiler/Core.UnitTests/BuildEngineUnitTests" for BuildEngineUnitTests
+import "./Compiler/GCC.UnitTests/GCCArgumentBuilderUnitTests" for GCCArgumentBuilderUnitTests
+import "./Compiler/GCC.UnitTests/GCCCompilerUnitTests" for GCCCompilerUnitTests
+import "./Compiler/GCC.UnitTests/GCCLinkerArgumentBuilderUnitTests" for GCCLinkerArgumentBuilderUnitTests
+import "./Compiler/GCC.UnitTests/GCCResourceCompileArgumentBuilderUnitTests" forGCCResourceCompileArgumentBuilderUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCArgumentBuilderUnitTests" for MSVCArgumentBuilderUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCCompilerUnitTests" for MSVCCompilerUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCLinkerArgumentBuilderUnitTests" for MSVCLinkerArgumentBuilderUnitTests
@@ -11,6 +15,16 @@ var uut
 
 // Compiler.Core.UnitTests
 uut = BuildEngineUnitTests.new()
+uut.RunTests()
+
+// Compiler.GCC.UnitTests
+uut = GCCArgumentBuilderUnitTests.new()
+uut.RunTests()
+uut = GCCCompilerUnitTests.new()
+uut.RunTests()
+uut = GCCLinkerArgumentBuilderUnitTests.new()
+uut.RunTests()
+uut = GCCResourceCompileArgumentBuilderUnitTests.new()
 uut.RunTests()
 
 // Compiler.MSVC.UnitTests
