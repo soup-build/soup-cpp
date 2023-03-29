@@ -127,7 +127,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -136,7 +138,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -145,7 +149,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile.cpp"),
@@ -156,7 +162,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockLink: 1",
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("InputFile.in"),
@@ -268,7 +276,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -277,7 +287,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -286,7 +298,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile.cpp"),
@@ -297,7 +311,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockLink: 1",
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("InputFile.in"),
@@ -441,7 +457,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -450,7 +468,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -459,7 +479,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile1.cpp"),
@@ -470,7 +492,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile2.cpp"),
@@ -481,7 +505,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile3.cpp"),
@@ -492,7 +518,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockLink: 1",
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("InputFile.in"),
@@ -658,7 +686,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -667,7 +697,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -676,7 +708,10 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				Path.new("C:/target/"),
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -687,7 +722,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("Public.cpp"),
@@ -699,7 +736,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile1.cpp"),
@@ -710,7 +749,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile2.cpp"),
@@ -721,7 +762,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile3.cpp"),
@@ -732,7 +775,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockLink: 1",
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("InputFile.in"),
@@ -921,7 +966,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -930,7 +977,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -939,7 +988,10 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				Path.new("C:/target/"),
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -950,7 +1002,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile1.cpp"),
@@ -962,7 +1016,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile2.cpp"),
@@ -974,7 +1030,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("Public.cpp"),
@@ -986,7 +1044,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile3.cpp"),
@@ -997,7 +1057,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompile: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("TestFile4.cpp"),
@@ -1008,7 +1070,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockLink: 1",
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("InputFile.in"),
@@ -1150,7 +1214,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./obj/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./obj/\"",
+				[
+					"./obj/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -1159,7 +1225,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MakeDir [./bin/]",
 				Path.new("/TARGET/mkdir.exe"),
-				"\"./bin/\"",
+				[
+					"./bin/",
+				],
 				Path.new("C:/target/"),
 				[],
 				[
@@ -1168,7 +1236,10 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
 				Path.new("/TARGET/copy.exe"),
-				"\"./obj/Public.mock.bmi\" \"./bin/Library.mock.bmi\"",
+				[
+					"./obj/Public.mock.bmi",
+					"./bin/Library.mock.bmi",
+				],
 				Path.new("C:/target/"),
 				[
 					Path.new("obj/Public.mock.bmi"),
@@ -1179,7 +1250,9 @@ class BuildTaskUnitTests {
 			SoupTestOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("Public.cpp"),
@@ -1191,7 +1264,9 @@ class BuildTaskUnitTests {
 				SoupTestOperation.new(
 				"MockLink: 1",
 				Path.new("MockLinker.exe"),
-				"Arguments",
+				[
+					"Arguments",
+				],
 				Path.new("MockWorkingDirectory"),
 				[
 					Path.new("InputFile.in"),
