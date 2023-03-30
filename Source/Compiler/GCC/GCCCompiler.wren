@@ -102,7 +102,7 @@ class GCCCompiler is ICompiler {
 				resourceFileArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_rcExecutable,
-				GCCCompiler.CombineArguments(commandArguments),
+				commandArguments,
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -132,7 +132,7 @@ class GCCCompiler is ICompiler {
 				partitionUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				GCCCompiler.CombineArguments(commandArguments),
+				commandArguments,
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -167,7 +167,7 @@ class GCCCompiler is ICompiler {
 				interfaceUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				GCCCompiler.CombineArguments(commandArguments),
+				commandArguments,
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -200,7 +200,7 @@ class GCCCompiler is ICompiler {
 				implementationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				GCCCompiler.CombineArguments(commandArguments),
+				commandArguments,
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -226,7 +226,7 @@ class GCCCompiler is ICompiler {
 				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_mlExecutable,
-				GCCCompiler.CombineArguments(commandArguments),
+				commandArguments,
 				inputFiles,
 				outputFiles)
 			operations.add(buildOperation)
@@ -264,7 +264,7 @@ class GCCCompiler is ICompiler {
 			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
-			GCCCompiler.CombineArguments(commandarguments),
+			commandarguments,
 			inputFiles,
 			outputFiles)
 
