@@ -1,48 +1,48 @@
-// <copyright file="MSVCArgumentBuilderUnitTests.wren" company="Soup">
+// <copyright file="GCCArgumentBuilderUnitTests.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../MSVC/MSVCArgumentBuilder" for MSVCArgumentBuilder
+import "../GCC/GCCArgumentBuilder" for GCCArgumentBuilder
 import "Soup.Build.Utils:./Path" for Path
 import "../../Test/Assert" for Assert
 import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 
-class MSVCArgumentBuilderUnitTests {
+class GCCArgumentBuilderUnitTests {
 	construct new() {
 	}
 
 	RunTests() {
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "/std:c++14")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "/std:c++17")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
 		this.BSCA_SingleArgument_OptimizationLevel_Disabled()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
 		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, "/Os")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
 		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "/Ot")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors")
 		this.BSCA_SingleArgument_EnableWarningsAsErrors()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation")
 		this.BSCA_SingleArgument_GenerateDebugInformation()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_IncludePaths")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_IncludePaths")
 		this.BSCA_SingleArgument_IncludePaths()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_PreprocessorDefinitions")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_PreprocessorDefinitions")
 		this.BSCA_SingleArgument_PreprocessorDefinitions()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_Modules")
+		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_Modules")
 		this.BSCA_SingleArgument_Modules()
-		System.print("MSVCArgumentBuilderUnitTests.BuildPartitionUnitCompilerArguments")
+		System.print("GCCArgumentBuilderUnitTests.BuildPartitionUnitCompilerArguments")
 		this.BuildPartitionUnitCompilerArguments()
-		System.print("MSVCArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments")
+		System.print("GCCArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments")
 		this.BuildInterfaceUnitCompilerArguments()
-		System.print("MSVCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple")
+		System.print("GCCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple")
 		this.BuildTranslationUnitCompilerArguments_Simple()
-		System.print("MSVCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules")
+		System.print("GCCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules")
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
 	}
 
@@ -57,7 +57,7 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.Standard = standard
 		arguments.Optimize = OptimizationLevel.None
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -88,7 +88,7 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.Standard = LanguageStandard.CPP20
 		arguments.Optimize = OptimizationLevel.None
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -119,7 +119,7 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.Standard = LanguageStandard.CPP17
 		arguments.Optimize = OptimizationLevel.None
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -154,7 +154,7 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.Standard = LanguageStandard.CPP17
 		arguments.Optimize = level
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -186,7 +186,7 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.Optimize = OptimizationLevel.None
 		arguments.EnableWarningsAsErrors = true
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -219,7 +219,7 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.Optimize = OptimizationLevel.None
 		arguments.GenerateSourceDebugInfo = true
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -255,7 +255,7 @@ class MSVCArgumentBuilderUnitTests {
 			Path.new("my files/")
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -292,7 +292,7 @@ class MSVCArgumentBuilderUnitTests {
 			"VERSION=1"
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -329,7 +329,7 @@ class MSVCArgumentBuilderUnitTests {
 			Path.new("Std.pcm"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
 
 		var expectedArguments = [
@@ -368,7 +368,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var responseFile = Path.new("ResponseFile.txt")
 
-		var actualArguments = MSVCArgumentBuilder.BuildPartitionUnitCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildPartitionUnitCompilerArguments(
 			targetRootDirectory,
 			arguments,
 			responseFile)
@@ -395,7 +395,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var responseFile = Path.new("ResponseFile.txt")
 
-		var actualArguments = MSVCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
 			targetRootDirectory,
 			arguments,
 			responseFile)
@@ -422,7 +422,7 @@ class MSVCArgumentBuilderUnitTests {
 		var responseFile = Path.new("ResponseFile.txt")
 		var internalModules = []
 
-		var actualArguments = MSVCArgumentBuilder.BuildTranslationUnitCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
 			targetRootDirectory,
 			arguments,
 			responseFile,
@@ -454,7 +454,7 @@ class MSVCArgumentBuilderUnitTests {
 			Path.new("Module4.ifc"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildTranslationUnitCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
 			targetRootDirectory,
 			arguments,
 			responseFile,

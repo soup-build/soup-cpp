@@ -2,7 +2,7 @@ import "./Compiler/Core.UnitTests/BuildEngineUnitTests" for BuildEngineUnitTests
 import "./Compiler/GCC.UnitTests/GCCArgumentBuilderUnitTests" for GCCArgumentBuilderUnitTests
 import "./Compiler/GCC.UnitTests/GCCCompilerUnitTests" for GCCCompilerUnitTests
 import "./Compiler/GCC.UnitTests/GCCLinkerArgumentBuilderUnitTests" for GCCLinkerArgumentBuilderUnitTests
-import "./Compiler/GCC.UnitTests/GCCResourceCompileArgumentBuilderUnitTests" forGCCResourceCompileArgumentBuilderUnitTests
+import "./Compiler/GCC.UnitTests/GCCResourceCompileArgumentBuilderUnitTests" for GCCResourceCompileArgumentBuilderUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCArgumentBuilderUnitTests" for MSVCArgumentBuilderUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCCompilerUnitTests" for MSVCCompilerUnitTests
 import "./Compiler/MSVC.UnitTests/MSVCLinkerArgumentBuilderUnitTests" for MSVCLinkerArgumentBuilderUnitTests

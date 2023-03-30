@@ -1,30 +1,30 @@
-// <copyright file="MSVCLinkerArgumentBuilderUnitTests.wren" company="Soup">
+// <copyright file="GCCLinkerArgumentBuilderUnitTests.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../MSVC/MSVCArgumentBuilder" for MSVCArgumentBuilder
+import "../GCC/GCCArgumentBuilder" for GCCArgumentBuilder
 import "Soup.Build.Utils:./Path" for Path
 import "../../Test/Assert" for Assert
 import "../Core/LinkArguments" for LinkArguments, LinkTarget
 
-class MSVCLinkerArgumentBuilderUnitTests {
+class GCCLinkerArgumentBuilderUnitTests {
 	construct new() {
 	}
 
 	RunTests() {
-		System.print("MSVCLinkerArgumentBuilderUnitTests.ZeroObjectFiles")
+		System.print("GCCLinkerArgumentBuilderUnitTests.ZeroObjectFiles")
 		this.ZeroObjectFiles()
-		// System.print("MSVCLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws")
+		// System.print("GCCLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws")
 		// this.EmptyTargetFile_Throws()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.StaticLibrary")
+		System.print("GCCLinkerArgumentBuilderUnitTests.StaticLibrary")
 		this.StaticLibrary()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths")
+		System.print("GCCLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths")
 		this.StaticLibrary_LibraryPaths()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.DynamicLibrary")
+		System.print("GCCLinkerArgumentBuilderUnitTests.DynamicLibrary")
 		this.DynamicLibrary()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.Executable")
+		System.print("GCCLinkerArgumentBuilderUnitTests.Executable")
 		this.Executable()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.WindowsApplication")
+		System.print("GCCLinkerArgumentBuilderUnitTests.WindowsApplication")
 		this.WindowsApplication()
 	}
 
@@ -36,7 +36,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 		arguments.TargetFile = Path.new("Library.mock.lib")
 		arguments.ObjectFiles = []
 
-		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"/nologo",
@@ -57,7 +57,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 	// 		Path.new("File.mock.obj"),
 	// 	]
 	// 	Assert.Throws<InvalidOperationException>(() => {
-	// 		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+	// 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 	// 	})
 	// }
 
@@ -71,7 +71,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			Path.new("File.mock.o"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"/nologo",
@@ -97,7 +97,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			Path.new("../libraries/"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"/nologo",
@@ -122,7 +122,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			Path.new("File.mock.obj"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"/nologo",
@@ -151,7 +151,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			Path.new("Library.mock.lib"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"/nologo",
@@ -179,7 +179,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 			Path.new("Library.mock.lib"),
 		]
 
-		var actualArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"/nologo",

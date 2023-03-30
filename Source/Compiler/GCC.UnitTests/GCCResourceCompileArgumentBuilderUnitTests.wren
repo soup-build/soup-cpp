@@ -1,19 +1,19 @@
-// <copyright file="MSVCResourceCompileArgumentBuilderUnitTests.wren" company="Soup">
+// <copyright file="GCCResourceCompileArgumentBuilderUnitTests.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../MSVC/MSVCArgumentBuilder" for MSVCArgumentBuilder
+import "../GCC/GCCArgumentBuilder" for GCCArgumentBuilder
 import "Soup.Build.Utils:./Path" for Path
 import "../../Test/Assert" for Assert
 import "../Core/CompileArguments" for SharedCompileArguments, ResourceCompileArguments
 
 
-class MSVCResourceCompileArgumentBuilderUnitTests {
+class GCCResourceCompileArgumentBuilderUnitTests {
 	construct new() {
 	}
 
 	RunTests() {
-		System.print("MSVCResourceCompileArgumentBuilderUnitTests.BuildResourceCompilerArguments_Simple")
+		System.print("GCCResourceCompileArgumentBuilderUnitTests.BuildResourceCompilerArguments_Simple")
 		this.BuildResourceCompilerArguments_Simple()
 	}
 
@@ -26,7 +26,7 @@ class MSVCResourceCompileArgumentBuilderUnitTests {
 			Path.new("Resources.rc"),
 			Path.new("Resources.mock.res"))
 
-		var actualArguments = MSVCArgumentBuilder.BuildResourceCompilerArguments(
+		var actualArguments = GCCArgumentBuilder.BuildResourceCompilerArguments(
 			targetRootDirectory,
 			arguments)
 

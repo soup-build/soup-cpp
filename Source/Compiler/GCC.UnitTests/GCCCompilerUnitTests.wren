@@ -1,48 +1,48 @@
-// <copyright file="MSVCCompilerUnitTests.wren" company="Soup">
+// <copyright file="GCCCompilerUnitTests.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../MSVC/MSVCCompiler" for MSVCCompiler
+import "../GCC/GCCCompiler" for GCCCompiler
 import "Soup.Build.Utils:./Path" for Path
 import "../../Test/Assert" for Assert
 import "Soup.Build.Utils:./BuildOperation" for BuildOperation
 import "../Core/LinkArguments" for LinkArguments, LinkTarget
 import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
-class MSVCCompilerUnitTests {
+class GCCCompilerUnitTests {
 	construct new() {
 	}
 
 	RunTests() {
-		System.print("MSVCCompilerUnitTests.Initialize")
+		System.print("GCCCompilerUnitTests.Initialize")
 		this.Initialize()
-		System.print("MSVCCompilerUnitTests.Compile_Simple")
+		System.print("GCCCompilerUnitTests.Compile_Simple")
 		this.Compile_Simple()
-		System.print("MSVCCompilerUnitTests.Compile_Module_Partition")
+		System.print("GCCCompilerUnitTests.Compile_Module_Partition")
 		this.Compile_Module_Partition()
-		System.print("MSVCCompilerUnitTests.Compile_Module_Interface")
+		System.print("GCCCompilerUnitTests.Compile_Module_Interface")
 		this.Compile_Module_Interface()
-		System.print("MSVCCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation")
+		System.print("GCCCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation")
 		this.Compile_Module_PartitionInterfaceAndImplementation()
-		System.print("MSVCCompilerUnitTests.Compile_Resource")
+		System.print("GCCCompilerUnitTests.Compile_Resource")
 		this.Compile_Resource()
-		System.print("MSVCCompilerUnitTests.LinkStaticLibrary_Simple")
+		System.print("GCCCompilerUnitTests.LinkStaticLibrary_Simple")
 		this.LinkStaticLibrary_Simple()
-		System.print("MSVCCompilerUnitTests.LinkExecutable_Simple")
+		System.print("GCCCompilerUnitTests.LinkExecutable_Simple")
 		this.LinkExecutable_Simple()
-		System.print("MSVCCompilerUnitTests.LinkWindowsApplication_Simple")
+		System.print("GCCCompilerUnitTests.LinkWindowsApplication_Simple")
 		this.LinkWindowsApplication_Simple()
 	}
 
 	// [Fact]
 	Initialize() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
 			Path.new("C:/bin/mock.rc.exe"),
 			Path.new("C:/bin/mock.ml.exe"))
-		Assert.Equal("MSVC", uut.Name)
+		Assert.Equal("GCC", uut.Name)
 		Assert.Equal("obj", uut.ObjectFileExtension)
 		Assert.Equal("ifc", uut.ModuleFileExtension)
 		Assert.Equal("lib", uut.StaticLibraryFileExtension)
@@ -52,7 +52,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	Compile_Simple(){
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -106,7 +106,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	Compile_Module_Partition() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -173,7 +173,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	Compile_Module_Interface() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -239,7 +239,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	Compile_Module_PartitionInterfaceAndImplementation() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -352,7 +352,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	Compile_Resource() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -411,7 +411,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	LinkStaticLibrary_Simple() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -447,7 +447,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	LinkExecutable_Simple() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
@@ -487,7 +487,7 @@ class MSVCCompilerUnitTests {
 
 	// [Fact]
 	LinkWindowsApplication_Simple() {
-		var uut = MSVCCompiler.new(
+		var uut = GCCCompiler.new(
 			Path.new("C:/bin/mock.cl.exe"),
 			Path.new("C:/bin/mock.link.exe"),
 			Path.new("C:/bin/mock.lib.exe"),
