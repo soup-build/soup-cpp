@@ -61,7 +61,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -92,7 +91,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -123,7 +121,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -158,7 +155,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -190,7 +186,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -223,7 +218,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -259,7 +253,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -296,7 +289,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -333,7 +325,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/nologo",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",

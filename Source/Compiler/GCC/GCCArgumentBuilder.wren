@@ -10,8 +10,6 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 /// set of options.
 /// </summary>
 class GCCArgumentBuilder {
-	static ArgumentFlag_NoLogo { "nologo" }
-
 	static Compiler_ArgumentFlag_GenerateDebugInformation { "Z7" }
 	static Compiler_ArgumentFlag_GenerateDebugInformationExternal { "Zi" }
 	static Compiler_ArgumentFlag_CompileOnly { "c" }
@@ -44,9 +42,6 @@ class GCCArgumentBuilder {
 	static BuildSharedCompilerArguments(arguments) {
 		// Calculate object output file
 		var commandArguments = []
-
-		// Disable the logo
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.ArgumentFlag_NoLogo)
 
 		// Enable full paths for errors
 		GCCArgumentBuilder.AddFlag(commandArguments, "FC")
@@ -450,22 +445,22 @@ class GCCArgumentBuilder {
 	}
 
 	static AddFlag(arguments, flag) {
-		arguments.add("/%(flag)")
+		arguments.add("-%(flag)")
 	}
 
 	static AddFlagValue(arguments, flag, value) {
-		arguments.add("/%(flag)%(value)")
+		arguments.add("-%(flag)%(value)")
 	}
 
 	static AddFlagValueWithQuotes(arguments, flag, value) {
-		arguments.add("/%(flag)\"%(value)\"")
+		arguments.add("-%(flag)\"%(value)\"")
 	}
 
 	static AddParameter(arguments, name, value) {
-		arguments.add("/%(name):%(value)")
+		arguments.add("-%(name):%(value)")
 	}
 
 	static AddParameterWithQuotes(arguments, name, value) {
-		arguments.add("/%(name):\"%(value)\"")
+		arguments.add("-%(name):\"%(value)\"")
 	}
 }
