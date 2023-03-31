@@ -25,7 +25,7 @@ class GCCArgumentBuilderUnitTests {
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
 		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, "-Os")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
-		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "-Ot")
+		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "-O3")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors")
 		this.BSCA_SingleArgument_EnableWarningsAsErrors()
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation")
@@ -61,20 +61,11 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			expectedFlag,
-			"-Od",
+			"-O0",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -91,20 +82,11 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			"-std:c++latest",
-			"-Od",
+			"-O0",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -121,20 +103,11 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			"-std:c++17",
-			"-Od",
+			"-O0",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -143,7 +116,7 @@ class GCCArgumentBuilderUnitTests {
 
 	// [Theory]
 	// [InlineData(OptimizationLevel.Size, "-Os")]
-	// [InlineData(OptimizationLevel.Speed, "-Ot")]
+	// [InlineData(OptimizationLevel.Speed, "-O3")]
 	BSCA_SingleArgument_OptimizationLevel(
 		level,
 		expectedFlag) {
@@ -155,20 +128,11 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			"-std:c++17",
 			expectedFlag,
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -186,21 +150,12 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
-			"-WX",
+			"-Werror",
 			"-W4",
 			"-std:c++17",
-			"-Od",
+			"-O0",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -218,21 +173,12 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
-			"-Z7",
+			"-g",
 			"-W4",
 			"-std:c++17",
-			"-Od",
+			"-O0",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MTd",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -253,22 +199,13 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			"-std:c++11",
-			"-Od",
+			"-O0",
 			"-I\"C:/Files/SDK/\"",
 			"-I\"./my files/\"",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -289,22 +226,13 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			"-std:c++11",
-			"-Od",
+			"-O0",
 			"-DDEBUG",
 			"-DVERSION=1",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
-			"-bigobj",
+			"-fexceptions",
 			"-c",
 		]
 
@@ -325,24 +253,15 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-FC",
-			"-permissive-",
-			"-Zc:__cplusplus",
-			"-Zc:externConstexpr",
-			"-Zc:inline",
-			"-Zc:throwingNew",
 			"-W4",
 			"-std:c++11",
-			"-Od",
+			"-O0",
 			"-X",
-			"-RTC1",
-			"-EHsc",
-			"-MT",
+			"-fexceptions",
 			"-reference",
 			"\"./Module.pcm\"",
 			"-reference",
 			"\"./Std.pcm\"",
-			"-bigobj",
 			"-c",
 		]
 
@@ -367,7 +286,7 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-Fo\"C:/target/module.obj\"",
+			"-o\"C:/target/module.obj\"",
 			"-interface",
 			"-ifcOutput",
 			"\"C:/target/module.ifc\"",
@@ -394,7 +313,7 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-Fo\"C:/target/module.obj\"",
+			"-o\"C:/target/module.obj\"",
 			"-interface",
 			"-ifcOutput",
 			"\"C:/target/module.ifc\"",
@@ -422,7 +341,7 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-Fo\"C:/target/module.obj\"",
+			"-o\"C:/target/module.obj\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -462,7 +381,7 @@ class GCCArgumentBuilderUnitTests {
 			"-reference",
 			"\"./Module4.ifc\"",
 			"./module.cpp",
-			"-Fo\"C:/target/module.obj\"",
+			"-o\"C:/target/module.obj\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

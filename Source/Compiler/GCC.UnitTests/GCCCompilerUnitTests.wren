@@ -84,7 +84,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -X -RTC1 -EHsc -MT -bigobj -c",
+					"-W4 -std:c++11 -O0 -X -fexceptions -c",
 				],
 				[],
 				[
@@ -97,7 +97,7 @@ class GCCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
-					"-Fo\"C:/target/obj/File.obj\"",
+					"-o\"C:/target/obj/File.obj\"",
 				],
 				[
 					Path.new("File.cpp"),
@@ -155,7 +155,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
+					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -170,7 +170,7 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"-Fo\"C:/target/obj/File.obj\"",
+					"-o\"C:/target/obj/File.obj\"",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File.pcm\"",
@@ -233,7 +233,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
+					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -248,7 +248,7 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"-Fo\"C:/target/obj/File.obj\"",
+					"-o\"C:/target/obj/File.obj\"",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File.pcm\"",
@@ -327,7 +327,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
+					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -342,7 +342,7 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other1.pcm\"",
 					"./File1.cpp",
-					"-Fo\"C:/target/obj/File1.obj\"",
+					"-o\"C:/target/obj/File1.obj\"",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File1.pcm\"",
@@ -366,7 +366,7 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other2.pcm\"",
 					"./File2.cpp",
-					"-Fo\"C:/target/obj/File2.obj\"",
+					"-o\"C:/target/obj/File2.obj\"",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File2.pcm\"",
@@ -394,7 +394,7 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"C:/target/obj/File2.pcm\"",
 					"./File3.cpp",
-					"-Fo\"C:/target/obj/File3.obj\"",
+					"-o\"C:/target/obj/File3.obj\"",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -450,7 +450,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
+					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -465,7 +465,7 @@ class GCCCompilerUnitTests {
 					"-DUNICODE",
 					"-l\"0x0409\"",
 					"-I\"./Includes\"",
-					"-Fo\"C:/target/obj/Resources.res\"",
+					"-o\"C:/target/obj/Resources.res\"",
 					"./Resources.rc",
 				],
 				[

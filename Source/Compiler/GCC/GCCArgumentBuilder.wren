@@ -10,27 +10,19 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 /// set of options.
 /// </summary>
 class GCCArgumentBuilder {
-	static Compiler_ArgumentFlag_GenerateDebugInformation { "Z7" }
-	static Compiler_ArgumentFlag_GenerateDebugInformationExternal { "Zi" }
+	static Compiler_ArgumentFlag_GenerateDebugInformation { "g" }
 	static Compiler_ArgumentFlag_CompileOnly { "c" }
 	static Compiler_ArgumentFlag_IgnoreStandardIncludePaths { "X" }
-	static Compiler_ArgumentFlag_Optimization_Disable { "Od" }
-	static Compiler_ArgumentFlag_Optimization_Speed { "Ot" }
+	static Compiler_ArgumentFlag_Optimization_Disable { "O0" }
+	static Compiler_ArgumentFlag_Optimization_Speed { "O3" }
 	static Compiler_ArgumentFlag_Optimization_Size { "Os" }
-	static Compiler_ArgumentFlag_RuntimeChecks { "RTC1" }
-	static Compiler_ArgumentFlag_Runtime_MultithreadedDynamic_Debug { "MDd" }
-	static Compiler_ArgumentFlag_Runtime_MultithreadedDynamic_Release { "MD" }
-	static Compiler_ArgumentFlag_Runtime_MultithreadedStatic_Debug { "MTd" }
-	static Compiler_ArgumentFlag_Runtime_MultithreadedStatic_Release { "MT" }
 	static Compiler_ArgumentParameter_Standard { "std" }
-	static Compiler_ArgumentParameter_Experimental { "experimental" }
-	static Compiler_ArgumentParameter_ObjectFile { "Fo" }
+	static Compiler_ArgumentParameter_Output { "o" }
 	static Compiler_ArgumentParameter_Include { "I" }
 	static Compiler_ArgumentParameter_PreprocessorDefine { "D" }
 
-	static Linker_ArgumentFlag_NoDefaultLibraries { "nodefaultlib" }
 	static Linker_ArgumentFlag_DLL { "dll" }
-	static Linker_ArgumentFlag_Verbose { "verbose" }
+	static Linker_ArgumentFlag_Verbose { "v" }
 	static Linker_ArgumentParameter_Output { "out" }
 	static Linker_ArgumentParameter_ImplementationLibrary { "implib" }
 	static Linker_ArgumentParameter_LibraryPath { "libpath" }
@@ -43,34 +35,6 @@ class GCCArgumentBuilder {
 		// Calculate object output file
 		var commandArguments = []
 
-		// Enable full paths for errors
-		GCCArgumentBuilder.AddFlag(commandArguments, "FC")
-
-		// Enable standards-conforming compiler behavior
-		// https://docs.microsoft.com/en-us/cpp/build/reference/permissive-standards-conformance?view=vs-2019
-		// Note: Enables /Zc:referenceBinding, /Zc:strictStrings, and /Zc:rvalueCast
-		// And after 15.3 /Zc:ternary
-		GCCArgumentBuilder.AddFlag(commandArguments, "permissive-")
-
-		// Enable the __cplusplus macro to report the supported standard
-		// https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=vs-2019
-		var disableCPlusPlusMacroConformance = arguments.CustomProperties.containsKey("DisableCPlusPlusMacroConformance")
-		if (!disableCPlusPlusMacroConformance) {
-			GCCArgumentBuilder.AddParameter(commandArguments, "Zc", "__cplusplus")
-		}
-
-		// Enable external linkage for constexpr variables
-		// https://docs.microsoft.com/en-us/cpp/build/reference/zc-externconstexpr?view=vs-2019
-		GCCArgumentBuilder.AddParameter(commandArguments, "Zc", "externConstexpr")
-
-		// Remove unreferenced function or data if it is COMDAT or has internal linkage only
-		// https://docs.microsoft.com/en-us/cpp/build/reference/zc-inline-remove-unreferenced-comdat?view=vs-2019
-		GCCArgumentBuilder.AddParameter(commandArguments, "Zc", "inline")
-
-		// Assume operator new throws on failure
-		// https://docs.microsoft.com/en-us/cpp/build/reference/zc-throwingnew-assume-operator-new-throws?view=vs-2019
-		GCCArgumentBuilder.AddParameter(commandArguments, "Zc", "throwingNew")
-
 		// Generate source debug information
 		if (arguments.GenerateSourceDebugInfo) {
 			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
@@ -78,7 +42,7 @@ class GCCArgumentBuilder {
 
 		// Disabled individual warnings
 		if (arguments.EnableWarningsAsErrors) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "WX")
+			GCCArgumentBuilder.AddFlag(commandArguments, "Werror")
 		}
 
 		GCCArgumentBuilder.AddFlag(commandArguments, "W4")
@@ -130,27 +94,14 @@ class GCCArgumentBuilder {
 		// Ignore Standard Include Paths to prevent pulling in accidental headers
 		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_IgnoreStandardIncludePaths)
 
-		// Enable basic runtime checks
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_RuntimeChecks)
-
 		// Enable c++ exceptions
-		GCCArgumentBuilder.AddFlag(commandArguments, "EHsc")
-
-		// Enable multithreaded runtime static linked
-		if (arguments.GenerateSourceDebugInfo) {
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_Runtime_MultithreadedStatic_Debug)
-		} else {
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_Runtime_MultithreadedStatic_Release)
-		}
+		GCCArgumentBuilder.AddFlag(commandArguments, "fexceptions")
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
 			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
-
-		// TODO: For now we allow exports to be large
-		GCCArgumentBuilder.AddFlag(commandArguments, "bigobj")
 
 		// Only run preprocessor, compile and assemble
 		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
@@ -184,7 +135,7 @@ class GCCArgumentBuilder {
 		var absoluteTargetFile = targetRootDirectory + arguments.ResourceFile.TargetFile
 		GCCArgumentBuilder.AddFlagValueWithQuotes(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
 			absoluteTargetFile.toString)
 
 		// Add the source file as input
@@ -216,7 +167,7 @@ class GCCArgumentBuilder {
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		GCCArgumentBuilder.AddFlagValueWithQuotes(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an interface unit
@@ -242,7 +193,7 @@ class GCCArgumentBuilder {
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		GCCArgumentBuilder.AddFlagValueWithQuotes(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
 			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble
@@ -288,7 +239,7 @@ class GCCArgumentBuilder {
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		GCCArgumentBuilder.AddFlagValueWithQuotes(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an partition unit
@@ -333,7 +284,7 @@ class GCCArgumentBuilder {
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		GCCArgumentBuilder.AddFlagValueWithQuotes(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
 			absoluteTargetFile.toString)
 
 		return commandArguments
