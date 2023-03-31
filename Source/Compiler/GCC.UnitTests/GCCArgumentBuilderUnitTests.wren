@@ -13,19 +13,19 @@ class GCCArgumentBuilderUnitTests {
 
 	RunTests() {
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
-		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
+		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "-std:c++11")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
-		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "/std:c++14")
+		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "-std:c++14")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
-		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "/std:c++17")
+		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "-std:c++17")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
 		this.BSCA_SingleArgument_OptimizationLevel_Disabled()
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
-		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, "/Os")
+		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, "-Os")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
-		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "/Ot")
+		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "-Ot")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors")
 		this.BSCA_SingleArgument_EnableWarningsAsErrors()
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation")
@@ -47,9 +47,9 @@ class GCCArgumentBuilderUnitTests {
 	}
 
 	// [Theory]
-	// [InlineData(LanguageStandard.CPP11, "/std:c++11")]
-	// [InlineData(LanguageStandard.CPP14, "/std:c++14")]
-	// [InlineData(LanguageStandard.CPP17, "/std:c++17")]
+	// [InlineData(LanguageStandard.CPP11, "-std:c++11")]
+	// [InlineData(LanguageStandard.CPP14, "-std:c++14")]
+	// [InlineData(LanguageStandard.CPP17, "-std:c++17")]
 	BSCA_SingleArgument_LanguageStandard(
 		standard,
 		expectedFlag) {
@@ -61,21 +61,21 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
 			expectedFlag,
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-Od",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -91,21 +91,21 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++latest",
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
+			"-std:c++latest",
+			"-Od",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -121,29 +121,29 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++17",
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
+			"-std:c++17",
+			"-Od",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Theory]
-	// [InlineData(OptimizationLevel.Size, "/Os")]
-	// [InlineData(OptimizationLevel.Speed, "/Ot")]
+	// [InlineData(OptimizationLevel.Size, "-Os")]
+	// [InlineData(OptimizationLevel.Speed, "-Ot")]
 	BSCA_SingleArgument_OptimizationLevel(
 		level,
 		expectedFlag) {
@@ -155,21 +155,21 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++17",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
+			"-std:c++17",
 			expectedFlag,
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -186,22 +186,22 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/WX",
-			"/W4",
-			"/std:c++17",
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-WX",
+			"-W4",
+			"-std:c++17",
+			"-Od",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -218,22 +218,22 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/Z7",
-			"/W4",
-			"/std:c++17",
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MTd",
-			"/bigobj",
-			"/c",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-Z7",
+			"-W4",
+			"-std:c++17",
+			"-Od",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MTd",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -253,23 +253,23 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++11",
-			"/Od",
-			"/I\"C:/Files/SDK/\"",
-			"/I\"./my files/\"",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
+			"-std:c++11",
+			"-Od",
+			"-I\"C:/Files/SDK/\"",
+			"-I\"./my files/\"",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -289,23 +289,23 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++11",
-			"/Od",
-			"/DDEBUG",
-			"/DVERSION=1",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/bigobj",
-			"/c",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
+			"-std:c++11",
+			"-Od",
+			"-DDEBUG",
+			"-DVERSION=1",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -325,25 +325,25 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"/FC",
-			"/permissive-",
-			"/Zc:__cplusplus",
-			"/Zc:externConstexpr",
-			"/Zc:inline",
-			"/Zc:throwingNew",
-			"/W4",
-			"/std:c++11",
-			"/Od",
-			"/X",
-			"/RTC1",
-			"/EHsc",
-			"/MT",
-			"/reference",
+			"-FC",
+			"-permissive-",
+			"-Zc:__cplusplus",
+			"-Zc:externConstexpr",
+			"-Zc:inline",
+			"-Zc:throwingNew",
+			"-W4",
+			"-std:c++11",
+			"-Od",
+			"-X",
+			"-RTC1",
+			"-EHsc",
+			"-MT",
+			"-reference",
 			"\"./Module.pcm\"",
-			"/reference",
+			"-reference",
 			"\"./Std.pcm\"",
-			"/bigobj",
-			"/c",
+			"-bigobj",
+			"-c",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -367,9 +367,9 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"/Fo\"C:/target/module.obj\"",
-			"/interface",
-			"/ifcOutput",
+			"-Fo\"C:/target/module.obj\"",
+			"-interface",
+			"-ifcOutput",
 			"\"C:/target/module.ifc\"",
 		]
 
@@ -394,9 +394,9 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"/Fo\"C:/target/module.obj\"",
-			"/interface",
-			"/ifcOutput",
+			"-Fo\"C:/target/module.obj\"",
+			"-interface",
+			"-ifcOutput",
 			"\"C:/target/module.ifc\"",
 		]
 
@@ -422,7 +422,7 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"/Fo\"C:/target/module.obj\"",
+			"-Fo\"C:/target/module.obj\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -453,16 +453,16 @@ class GCCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"@./ResponseFile.txt",
-			"/reference",
+			"-reference",
 			"\"./Module1.ifc\"",
-			"/reference",
+			"-reference",
 			"\"./Module2.ifc\"",
-			"/reference",
+			"-reference",
 			"\"./Module3.ifc\"",
-			"/reference",
+			"-reference",
 			"\"./Module4.ifc\"",
 			"./module.cpp",
-			"/Fo\"C:/target/module.obj\"",
+			"-Fo\"C:/target/module.obj\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

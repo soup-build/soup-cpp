@@ -168,9 +168,6 @@ class GCCArgumentBuilder {
 		// Build the arguments for a standard translation unit
 		var commandArguments = []
 
-		// Disable the logo
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.ArgumentFlag_NoLogo)
-
 		// TODO: Defines?
 		GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "_UNICODE")
 		GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "UNICODE")
@@ -240,9 +237,6 @@ class GCCArgumentBuilder {
 		arguments) {
 		// Build the arguments for a standard translation unit
 		var commandArguments = []
-
-		// Disable the logo
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.ArgumentFlag_NoLogo)
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
@@ -352,9 +346,6 @@ class GCCArgumentBuilder {
 		}
 
 		var commandArguments = []
-
-		// Disable the logo
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.ArgumentFlag_NoLogo)
 
 		// Disable incremental linking. I believe this is causing issues as the linker reads and writes to the same file
 		GCCArgumentBuilder.AddParameter(commandArguments, "INCREMENTAL", "NO")

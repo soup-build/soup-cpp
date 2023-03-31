@@ -84,7 +84,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /X /RTC1 /EHsc /MT /bigobj /c",
+					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -X -RTC1 -EHsc -MT -bigobj -c",
 				],
 				[],
 				[
@@ -97,7 +97,7 @@ class GCCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
-					"/Fo\"C:/target/obj/File.obj\"",
+					"-Fo\"C:/target/obj/File.obj\"",
 				],
 				[
 					Path.new("File.cpp"),
@@ -155,7 +155,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
 				],
 				[],
 				[
@@ -167,12 +167,12 @@ class GCCCompilerUnitTests {
 				Path.new("C:/bin/mock.cl.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"/reference",
+					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"/Fo\"C:/target/obj/File.obj\"",
-					"/interface",
-					"/ifcOutput",
+					"-Fo\"C:/target/obj/File.obj\"",
+					"-interface",
+					"-ifcOutput",
 					"\"C:/target/obj/File.pcm\"",
 				],
 				[
@@ -233,7 +233,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
 				],
 				[],
 				[
@@ -245,12 +245,12 @@ class GCCCompilerUnitTests {
 				Path.new("C:/bin/mock.cl.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"/reference",
+					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"/Fo\"C:/target/obj/File.obj\"",
-					"/interface",
-					"/ifcOutput",
+					"-Fo\"C:/target/obj/File.obj\"",
+					"-interface",
+					"-ifcOutput",
 					"\"C:/target/obj/File.pcm\"",
 				],
 				[
@@ -327,7 +327,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
 				],
 				[],
 				[
@@ -339,12 +339,12 @@ class GCCCompilerUnitTests {
 				Path.new("C:/bin/mock.cl.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"/reference",
+					"-reference",
 					"\"./obj/Other1.pcm\"",
 					"./File1.cpp",
-					"/Fo\"C:/target/obj/File1.obj\"",
-					"/interface",
-					"/ifcOutput",
+					"-Fo\"C:/target/obj/File1.obj\"",
+					"-interface",
+					"-ifcOutput",
 					"\"C:/target/obj/File1.pcm\"",
 				],
 				[
@@ -363,12 +363,12 @@ class GCCCompilerUnitTests {
 				Path.new("C:/bin/mock.cl.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"/reference",
+					"-reference",
 					"\"./obj/Other2.pcm\"",
 					"./File2.cpp",
-					"/Fo\"C:/target/obj/File2.obj\"",
-					"/interface",
-					"/ifcOutput",
+					"-Fo\"C:/target/obj/File2.obj\"",
+					"-interface",
+					"-ifcOutput",
 					"\"C:/target/obj/File2.pcm\"",
 				],
 				[
@@ -387,14 +387,14 @@ class GCCCompilerUnitTests {
 				Path.new("C:/bin/mock.cl.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"/reference",
+					"-reference",
 					"\"./obj/Other3.pcm\"",
-					"/reference",
+					"-reference",
 					"\"C:/target/obj/File1.pcm\"",
-					"/reference",
+					"-reference",
 					"\"C:/target/obj/File2.pcm\"",
 					"./File3.cpp",
-					"/Fo\"C:/target/obj/File3.obj\"",
+					"-Fo\"C:/target/obj/File3.obj\"",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -450,7 +450,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"-FC -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew -W4 -std:c++11 -Od -I\"./Includes\" -DDEBUG -X -RTC1 -EHsc -MT -reference \"./Module.pcm\" -bigobj -c",
 				],
 				[],
 				[
@@ -461,12 +461,11 @@ class GCCCompilerUnitTests {
 				Path.new("C:/source/"),
 				Path.new("C:/bin/mock.rc.exe"),
 				[
-					"/nologo",
-					"/D_UNICODE",
-					"/DUNICODE",
-					"/l\"0x0409\"",
-					"/I\"./Includes\"",
-					"/Fo\"C:/target/obj/Resources.res\"",
+					"-D_UNICODE",
+					"-DUNICODE",
+					"-l\"0x0409\"",
+					"-I\"./Includes\"",
+					"-Fo\"C:/target/obj/Resources.res\"",
 					"./Resources.rc",
 				],
 				[
@@ -508,10 +507,9 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.lib.exe"),
 			[
-				"/nologo",
-				"/INCREMENTAL:NO",
-				"/machine:X64",
-				"/out:\"./Library.mock.a\"",
+				"-INCREMENTAL:NO",
+				"-machine:X64",
+				"-out:\"./Library.mock.a\"",
 				"./File.mock.obj",
 			],
 			[
@@ -553,11 +551,10 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
 			[
-				"/nologo",
-				"/INCREMENTAL:NO",
-				"/subsystem:console",
-				"/machine:X64",
-				"/out:\"./Something.exe\"",
+				"-INCREMENTAL:NO",
+				"-subsystem:console",
+				"-machine:X64",
+				"-out:\"./Something.exe\"",
 				"./Library.mock.a",
 				"./File.mock.obj",
 			],
@@ -601,11 +598,10 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
 			[
-				"/nologo",
-				"/INCREMENTAL:NO",
-				"/subsystem:windows",
-				"/machine:X64",
-				"/out:\"./Something.exe\"",
+				"-INCREMENTAL:NO",
+				"-subsystem:windows",
+				"-machine:X64",
+				"-out:\"./Something.exe\"",
 				"./Library.mock.a",
 				"./File.mock.obj",
 			],
