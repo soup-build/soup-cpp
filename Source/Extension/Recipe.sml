@@ -3,6 +3,7 @@ Language: "Wren|0.1"
 Version: "0.7.0"
 Source: [
 	"Tasks/BuildTask.wren"
+	"Tasks/InitializeDefaultsTask.wren"
 	"Tasks/RecipeBuildTask.wren"
 	"Tasks/ResolveDependenciesTask.wren"
 	"Tasks/ResolveToolsTask.wren"

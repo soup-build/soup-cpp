@@ -33,15 +33,13 @@ class BuildTask is SoupTask {
 		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
 		BuildTask.registerCompiler("GCC", BuildTask.createGCCCompiler)
 
-		var globalState = Soup.globalState
 		var activeState = Soup.activeState
 		var sharedState = Soup.sharedState
 
 		var buildTable = activeState["Build"]
-		var parametersTable = globalState["Parameters"]
 
 		var arguments = BuildArguments.new()
-		arguments.TargetArchitecture = parametersTable["Architecture"]
+		arguments.TargetArchitecture = buildTable["Architecture"]
 		arguments.TargetName = buildTable["TargetName"]
 		arguments.TargetType = buildTable["TargetType"]
 		arguments.LanguageStandard = buildTable["LanguageStandard"]
@@ -155,7 +153,7 @@ class BuildTask is SoupTask {
 		}
 
 		// Initialize the compiler to use
-		var compilerName = parametersTable["Compiler"]
+		var compilerName = buildTable["Compiler"]
 		if (!__compilerFactory.containsKey(compilerName)) {
 			Fiber.abort("Unknown compiler: %(compilerName)")
 		}

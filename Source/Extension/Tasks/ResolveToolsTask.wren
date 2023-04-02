@@ -5,6 +5,7 @@
 import "soup" for Soup, SoupTask
 import "Soup.Build.Utils:./Path" for Path
 import "Soup.Build.Utils:./ListExtensions" for ListExtensions
+import "Soup.Build.Utils:./MapExtensions" for MapExtensions
 
 /// <summary>
 /// The recipe build task that knows how to build a single recipe
@@ -13,12 +14,16 @@ class ResolveToolsTask is SoupTask {
 	/// <summary>
 	/// Get the run before list
 	/// </summary>
-	static runBefore { [] }
+	static runBefore { [
+		"BuildTask",
+	] }
 
 	/// <summary>
 	/// Get the run after list
 	/// </summary>
-	static runAfter { [] }
+	static runAfter { [
+		"InitializeDefaultsTask",
+	] }
 
 	/// <summary>
 	/// The Core Execute task
@@ -26,12 +31,13 @@ class ResolveToolsTask is SoupTask {
 	static evaluate() {
 		var globalState = Soup.globalState
 		var activeState = Soup.activeState
-		var parameters = globalState["Parameters"]
 
-		var systemName = parameters["System"]
-		var architectureName = parameters["Architecture"]
+		var build = activeState["Build"]
 
-		if (systemName != "win32") {
+		var architecture = build["Architecture"]
+		var system = build["System"]
+
+		if (system != "Win32") {
 			Fiber.abort("Win32 is the only supported system... so far.")
 		}
 
@@ -70,14 +76,14 @@ class ResolveToolsTask is SoupTask {
 		// Set the VC tools binary folder
 		var vcToolsBinaryFolder
 		var windosKitsBinaryFolder
-		if (architectureName == "x64") {
+		if (architecture == "x64") {
 			vcToolsBinaryFolder = visualCompilerVersionFolder + Path.new("./bin/Hostx64/x64/")
 			windosKitsBinaryFolder = windows10KitVersionBinPath + Path.new("x64/")
-		} else if (architectureName == "x86") {
+		} else if (architecture == "x86") {
 			vcToolsBinaryFolder = visualCompilerVersionFolder + Path.new("./bin/Hostx64/x86/")
 			windosKitsBinaryFolder = windows10KitVersionBinPath + Path.new("x86/")
 		} else {
-			Fiber.abort("Unknown architecture.")
+			Fiber.abort("Unknown architecture: %(architecture)")
 		}
 
 		var clToolPath = vcToolsBinaryFolder + Path.new("cl.exe")
@@ -116,12 +122,12 @@ class ResolveToolsTask is SoupTask {
 		// Set the include paths
 		var platformLibraryPaths = []
 		if (!skipPlatform) {
-			if (architectureName == "x64") {
+			if (architecture == "x64") {
 				platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./ucrt/x64/"))
 				platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./um/x64/"))
 				platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x64/"))
 				platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./lib/x64/"))
-			} else if (architectureName == "x86") {
+			} else if (architecture == "x86") {
 				platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./ucrt/x86/"))
 				platformLibraryPaths.add(windows10KitVersionLibPath + Path.new("./um/x86/"))
 				platformLibraryPaths.add(visualCompilerVersionFolder + Path.new("./atlmfc/lib/x86/"))
@@ -135,7 +141,7 @@ class ResolveToolsTask is SoupTask {
 			// "this.MT", // Use multithreaded runtime
 		]
 
-		if (architectureName == "x86") {
+		if (architecture == "x86") {
 			platformPreprocessorDefinitions.add("WIN32")
 		}
 
@@ -173,6 +179,7 @@ class ResolveToolsTask is SoupTask {
 		// 	})
 		// }
 
+		// TODO: Should this set the build target directly?
 		activeState["PlatformIncludePaths"] = ListExtensions.ConvertFromPathList(platformIncludePaths)
 		activeState["PlatformLibraryPaths"] = ListExtensions.ConvertFromPathList(platformLibraryPaths)
 		activeState["PlatformLibraries"] = ListExtensions.ConvertFromPathList(platformLibraries)

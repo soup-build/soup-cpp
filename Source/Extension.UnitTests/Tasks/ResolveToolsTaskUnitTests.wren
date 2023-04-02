@@ -44,11 +44,16 @@ class ResolveToolsTaskUnitTests {
 				},
 			})
 
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["System"] = "win32"
-		parametersTable["Architecture"] = "x64"
+		// Setup context table
+		var contextTable = {}
+		globalState["Context"] = contextTable
+		contextTable["HostPlatform"] = "Windows"
+
+		// Setup build table
+		var buildTable = {}
+		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Win32"
 
 		ResolveToolsTask.evaluate()
 

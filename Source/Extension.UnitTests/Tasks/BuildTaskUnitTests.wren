@@ -39,6 +39,8 @@ class BuildTaskUnitTests {
 		// Setup build table
 		var buildTable = {}
 		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Program"
 		buildTable["TargetType"] = BuildTargetType.WindowsApplication
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
@@ -62,12 +64,6 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Architecture"] = "x64"
-		parametersTable["Compiler"] = "MOCK"
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -188,6 +184,8 @@ class BuildTaskUnitTests {
 		// Setup build table
 		var buildTable = {}
 		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Program"
 		buildTable["TargetType"] = BuildTargetType.Executable
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
@@ -211,12 +209,6 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Architecture"] = "x64"
-		parametersTable["Compiler"] = "MOCK"
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -337,6 +329,8 @@ class BuildTaskUnitTests {
 		// Setup build table
 		var buildTable = {}
 		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
@@ -371,12 +365,6 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Architecture"] = "x64"
-		parametersTable["Compiler"] = "MOCK"
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -544,6 +532,8 @@ class BuildTaskUnitTests {
 		// Setup build table
 		var buildTable = {}
 		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
@@ -590,12 +580,6 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Architecture"] = "x64"
-		parametersTable["Compiler"] = "MOCK"
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -801,6 +785,8 @@ class BuildTaskUnitTests {
 		// Setup build table
 		var buildTable = {}
 		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
@@ -855,12 +841,6 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Architecture"] = "x64"
-		parametersTable["Compiler"] = "MOCK"
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -1096,6 +1076,8 @@ class BuildTaskUnitTests {
 		// Setup build table
 		var buildTable = {}
 		activeState["Build"] = buildTable
+		buildTable["Architecture"] = "x64"
+		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
@@ -1138,12 +1120,6 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Architecture"] = "x64"
-		parametersTable["Compiler"] = "MOCK"
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()

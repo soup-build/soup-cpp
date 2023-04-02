@@ -25,6 +25,7 @@ class RecipeBuildTask is SoupTask {
 	/// Get the run after list
 	/// </summary>
 	static runAfter { [
+		"InitializeDefaultsTask",
 		"ResolveToolsTask",
 	] }
 
@@ -34,34 +35,35 @@ class RecipeBuildTask is SoupTask {
 	static evaluate() {
 		var globalState = Soup.globalState
 		var activeState = Soup.activeState
-		var parametersTable = globalState["Parameters"]
-		var contextTable = globalState["Context"]
-		var recipeTable = globalState["Recipe"]
-		var buildTable = MapExtensions.EnsureTable(activeState, "Build")
+
+		var context = globalState["Context"]
+		var recipe = globalState["Recipe"]
+
+		var build = MapExtensions.EnsureTable(activeState, "Build")
 
 		// Load the input properties
-		var compilerName = parametersTable["Compiler"]
-		var packageRoot = Path.new(contextTable["PackageDirectory"])
-		var buildFlavor = parametersTable["Flavor"]
+		var compiler = build["Compiler"]
+		var packageRoot = Path.new(context["PackageDirectory"])
+		var flavor = build["Flavor"]
 		var platformLibraries = ListExtensions.ConvertToPathList(activeState["PlatformLibraries"])
 		var platformIncludePaths = ListExtensions.ConvertToPathList(activeState["PlatformIncludePaths"])
 		var platformLibraryPaths = ListExtensions.ConvertToPathList(activeState["PlatformLibraryPaths"])
 		var platformPreprocessorDefinitions = activeState["PlatformPreprocessorDefinitions"]
 
 		// Load Recipe properties
-		var name = recipeTable["Name"]
+		var name = recipe["Name"]
 
 		// Add any explicit platform dependencies that were added in the recipe
-		if (recipeTable.containsKey("PlatformLibraries")) {
-			for (value in ListExtensions.ConvertToPathList(recipeTable["PlatformLibraries"])) {
+		if (recipe.containsKey("PlatformLibraries")) {
+			for (value in ListExtensions.ConvertToPathList(recipe["PlatformLibraries"])) {
 				platformLibraries.add(value)
 			}
 		}
 
 		// Add the dependency static library closure to link if targeting an executable or dynamic library
 		var linkLibraries = []
-		if (recipeTable.containsKey("LinkLibraries")) {
-			for (value in ListExtensions.ConvertToPathList(recipeTable["LinkLibraries"])) {
+		if (recipe.containsKey("LinkLibraries")) {
+			for (value in ListExtensions.ConvertToPathList(recipe["LinkLibraries"])) {
 				// If relative then resolve to working directory
 				if (value.HasRoot) {
 					linkLibraries.add(value)
@@ -72,13 +74,13 @@ class RecipeBuildTask is SoupTask {
 		}
 
 		// Add the dependency runtime dependencies closure if present
-		if (recipeTable.containsKey("RuntimeDependencies")) {
+		if (recipe.containsKey("RuntimeDependencies")) {
 			var runtimeDependencies = []
-			if (buildTable.containsKey("RuntimeDependencies")) {
-				runtimeDependencies = ListExtensions.ConvertToPathList(buildTable["RuntimeDependencies"])
+			if (build.containsKey("RuntimeDependencies")) {
+				runtimeDependencies = ListExtensions.ConvertToPathList(build["RuntimeDependencies"])
 			}
 
-			for (value in ListExtensions.ConvertToPathList(recipeTable["RuntimeDependencies"])) {
+			for (value in ListExtensions.ConvertToPathList(recipe["RuntimeDependencies"])) {
 				// If relative then resolve to working directory
 				if (value.HasRoot) {
 					runtimeDependencies.add(value)
@@ -87,13 +89,13 @@ class RecipeBuildTask is SoupTask {
 				}
 			}
 
-			buildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(runtimeDependencies)
+			build["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(runtimeDependencies)
 		}
 
 		// Combine the include paths from the recipe and the system
 		var includePaths = []
-		if (recipeTable.containsKey("IncludePaths")) {
-			includePaths = ListExtensions.ConvertToPathList(recipeTable["IncludePaths"])
+		if (recipe.containsKey("IncludePaths")) {
+			includePaths = ListExtensions.ConvertToPathList(recipe["IncludePaths"])
 		}
 
 		// Add the platform include paths
@@ -107,30 +109,30 @@ class RecipeBuildTask is SoupTask {
 
 		// Combine the defines with the default set and the platform
 		var preprocessorDefinitions = []
-		if (recipeTable.containsKey("Defines")) {
-			preprocessorDefinitions = recipeTable["Defines"]
+		if (recipe.containsKey("Defines")) {
+			preprocessorDefinitions = recipe["Defines"]
 		}
 
 		preprocessorDefinitions = preprocessorDefinitions + platformPreprocessorDefinitions
 		preprocessorDefinitions.add("SOUP_BUILD")
 
 		// Build up arguments to build this individual recipe
-		var targetDirectory = Path.new(contextTable["TargetDirectory"])
+		var targetDirectory = Path.new(context["TargetDirectory"])
 		var binaryDirectory = Path.new("bin/")
 		var objectDirectory = Path.new("obj/")
 
 		// Load the resources file if present
 		var resourcesFile
-		if (recipeTable.containsKey("Resources")) {
-			var resourcesFilePath = Path.new(recipeTable["Resources"])
+		if (recipe.containsKey("Resources")) {
+			var resourcesFilePath = Path.new(recipe["Resources"])
 
 			resourcesFile = resourcesFilePath.toString
 		}
 
 		// Load the module interface partition files if present
 		var moduleInterfacePartitionSourceFiles = []
-		if (recipeTable.containsKey("Partitions")) {
-			for (partition in recipeTable["Partitions"]) {
+		if (recipe.containsKey("Partitions")) {
+			for (partition in recipe["Partitions"]) {
 				var targetPartitionTable = {}
 				if (partition is String) {
 					targetPartitionTable["Source"] = partition
@@ -156,11 +158,11 @@ class RecipeBuildTask is SoupTask {
 
 		// Load the module interface file if present
 		var moduleInterfaceSourceFile
-		if (recipeTable.containsKey("Interface")) {
-			var moduleInterfaceSourceFilePath = Path.new(recipeTable["Interface"])
+		if (recipe.containsKey("Interface")) {
+			var moduleInterfaceSourceFilePath = Path.new(recipe["Interface"])
 
 			// TODO: Clang requires annoying cppm extension
-			if (compilerName == "Clang") {
+			if (compiler == "Clang") {
 				moduleInterfaceSourceFilePath.SetFileExtension("cppm")
 			}
 
@@ -169,104 +171,104 @@ class RecipeBuildTask is SoupTask {
 
 		// Load the source files if present
 		var sourceFiles = []
-		if (recipeTable.containsKey("Source")) {
-			sourceFiles = recipeTable["Source"]
+		if (recipe.containsKey("Source")) {
+			sourceFiles = recipe["Source"]
 		}
 
 		// Load the assembly source files if present
 		var assemblySourceFiles = []
-		if (recipeTable.containsKey("AssemblySource")) {
-			assemblySourceFiles = recipeTable["AssemblySource"]
+		if (recipe.containsKey("AssemblySource")) {
+			assemblySourceFiles = recipe["AssemblySource"]
 		}
 
 		// Load the public header files if present
 		var publicHeaderFiles = []
-		if (recipeTable.containsKey("PublicHeaders")) {
-			publicHeaderFiles = recipeTable["PublicHeaders"]
+		if (recipe.containsKey("PublicHeaders")) {
+			publicHeaderFiles = recipe["PublicHeaders"]
 		}
 
 		// Check for warning settings
 		var enableWarningsAsErrors = true
-		if (recipeTable.containsKey("EnableWarningsAsErrors")) {
-			enableWarningsAsErrors = recipeTable["EnableWarningsAsErrors"]
+		if (recipe.containsKey("EnableWarningsAsErrors")) {
+			enableWarningsAsErrors = recipe["EnableWarningsAsErrors"]
 		}
 
 		// Set the correct optimization level for the requested flavor
 		var optimizationLevel = BuildOptimizationLevel.None
 		var generateSourceDebugInfo = false
-		if (buildFlavor == "debug") {
+		if (flavor == "Debug") {
 			// preprocessorDefinitions.pushthis.back("DEBUG")
 			generateSourceDebugInfo = true
-		} else if (buildFlavor == "debugrelease") {
+		} else if (flavor == "DebugRelease") {
 			preprocessorDefinitions.add("RELEASE")
 			generateSourceDebugInfo = true
 			optimizationLevel = BuildOptimizationLevel.Speed
-		} else if (buildFlavor == "release") {
+		} else if (flavor == "Release") {
 			preprocessorDefinitions.add("RELEASE")
 			optimizationLevel = BuildOptimizationLevel.Speed
 		} else {
-			Fiber.abort("Unknown build flavors type.")
+			Fiber.abort("Unknown build flavor: %(flavor)")
 		}
 
-		buildTable["TargetName"] = name
-		buildTable["SourceRootDirectory"] = packageRoot.toString
-		buildTable["TargetRootDirectory"] = targetDirectory.toString
-		buildTable["ObjectDirectory"] = objectDirectory.toString
-		buildTable["BinaryDirectory"] = binaryDirectory.toString
+		build["TargetName"] = name
+		build["SourceRootDirectory"] = packageRoot.toString
+		build["TargetRootDirectory"] = targetDirectory.toString
+		build["ObjectDirectory"] = objectDirectory.toString
+		build["BinaryDirectory"] = binaryDirectory.toString
 		if (!(resourcesFile is Null)) {
-			buildTable["ResourcesFile"] = resourcesFile
+			build["ResourcesFile"] = resourcesFile
 		}
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "ModuleInterfacePartitionSourceFiles"),
+			MapExtensions.EnsureList(build, "ModuleInterfacePartitionSourceFiles"),
 			moduleInterfacePartitionSourceFiles)
 		if (!(moduleInterfaceSourceFile is Null)) {
-			buildTable["ModuleInterfaceSourceFile"] = moduleInterfaceSourceFile
+			build["ModuleInterfaceSourceFile"] = moduleInterfaceSourceFile
 		}
-		buildTable["OptimizationLevel"] = optimizationLevel
-		buildTable["GenerateSourceDebugInfo"] = generateSourceDebugInfo
+		build["OptimizationLevel"] = optimizationLevel
+		build["GenerateSourceDebugInfo"] = generateSourceDebugInfo
 
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "PlatformLibraries"),
+			MapExtensions.EnsureList(build, "PlatformLibraries"),
 			ListExtensions.ConvertFromPathList(platformLibraries))
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "LinkLibraries"),
+			MapExtensions.EnsureList(build, "LinkLibraries"),
 			ListExtensions.ConvertFromPathList(linkLibraries))
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "PreprocessorDefinitions"),
+			MapExtensions.EnsureList(build, "PreprocessorDefinitions"),
 			preprocessorDefinitions)
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "IncludeDirectories"),
+			MapExtensions.EnsureList(build, "IncludeDirectories"),
 			ListExtensions.ConvertFromPathList(includePaths))
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "LibraryPaths"),
+			MapExtensions.EnsureList(build, "LibraryPaths"),
 			ListExtensions.ConvertFromPathList(libraryPaths))
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "Source"),
+			MapExtensions.EnsureList(build, "Source"),
 			sourceFiles)
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "AssemblySource"),
+			MapExtensions.EnsureList(build, "AssemblySource"),
 			assemblySourceFiles)
 		ListExtensions.Append(
-			MapExtensions.EnsureList(buildTable, "PublicHeaders"),
+			MapExtensions.EnsureList(build, "PublicHeaders"),
 			publicHeaderFiles)
 
-		buildTable["EnableWarningsAsErrors"] = enableWarningsAsErrors
+		build["EnableWarningsAsErrors"] = enableWarningsAsErrors
 
 		// Convert the recipe type to the required build type
 		var targetType = BuildTargetType.StaticLibrary
-		if (recipeTable.containsKey("Type")) {
-			targetType = RecipeBuildTask.ParseType(recipeTable["Type"])
+		if (recipe.containsKey("Type")) {
+			targetType = RecipeBuildTask.ParseType(recipe["Type"])
 		}
 
-		buildTable["TargetType"] = targetType
+		build["TargetType"] = targetType
 
 		// Convert the recipe language version to the required build language
 		var languageStandard = LanguageStandard.CPP20
-		if (recipeTable.containsKey("LanguageVersion")) {
-			languageStandard = RecipeBuildTask.ParseLanguageStandard(recipeTable["LanguageVersion"])
+		if (recipe.containsKey("LanguageVersion")) {
+			languageStandard = RecipeBuildTask.ParseLanguageStandard(recipe["LanguageVersion"])
 		}
 
-		buildTable["LanguageStandard"] = languageStandard
+		build["LanguageStandard"] = languageStandard
 	}
 
 	static ParseType(value) {

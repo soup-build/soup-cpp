@@ -27,6 +27,12 @@ class RecipeBuildTaskUnitTests {
 		activeState["PlatformLibraryPaths"] = []
 		activeState["PlatformPreprocessorDefinitions"] = []
 
+		// Setup build table
+		var buildTable = {}
+		activeState["Build"] = buildTable
+		buildTable["Compiler"] = "MOCK"
+		buildTable["Flavor"] = "Debug"
+
 		// Setup recipe table
 		var recipeTable = {}
 		globalState["Recipe"] = recipeTable
@@ -37,12 +43,6 @@ class RecipeBuildTaskUnitTests {
 		globalState["Context"] = contextTable
 		contextTable["TargetDirectory"] = "/(TARGET)/"
 		contextTable["PackageDirectory"] = "/(PACKAGE)/"
-
-		// Setup parameters table
-		var parametersTable = {}
-		globalState["Parameters"] = parametersTable
-		parametersTable["Compiler"] = "MOCK"
-		parametersTable["Flavor"] = "debug"
 
 		RecipeBuildTask.evaluate()
 
