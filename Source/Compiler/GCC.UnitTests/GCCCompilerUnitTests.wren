@@ -84,7 +84,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-W4 -std:c++11 -O0 -X -fexceptions -c",
+					"-std=c++11 -O0 -X -fexceptions -c",
 				],
 				[],
 				[
@@ -97,7 +97,8 @@ class GCCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
-					"-o\"C:/target/obj/File.obj\"",
+					"-o",
+					"C:/target/obj/File.obj",
 				],
 				[
 					Path.new("File.cpp"),
@@ -155,7 +156,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -170,7 +171,8 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"-o\"C:/target/obj/File.obj\"",
+					"-o",
+					"C:/target/obj/File.obj",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File.pcm\"",
@@ -233,7 +235,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -248,7 +250,8 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"-o\"C:/target/obj/File.obj\"",
+					"-o",
+					"C:/target/obj/File.obj",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File.pcm\"",
@@ -327,7 +330,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -342,7 +345,8 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other1.pcm\"",
 					"./File1.cpp",
-					"-o\"C:/target/obj/File1.obj\"",
+					"-o",
+					"C:/target/obj/File1.obj",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File1.pcm\"",
@@ -366,7 +370,8 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other2.pcm\"",
 					"./File2.cpp",
-					"-o\"C:/target/obj/File2.obj\"",
+					"-o",
+					"C:/target/obj/File2.obj",
 					"-interface",
 					"-ifcOutput",
 					"\"C:/target/obj/File2.pcm\"",
@@ -394,7 +399,8 @@ class GCCCompilerUnitTests {
 					"-reference",
 					"\"C:/target/obj/File2.pcm\"",
 					"./File3.cpp",
-					"-o\"C:/target/obj/File3.obj\"",
+					"-o",
+					"C:/target/obj/File3.obj",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -450,7 +456,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-W4 -std:c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -465,7 +471,8 @@ class GCCCompilerUnitTests {
 					"-DUNICODE",
 					"-l\"0x0409\"",
 					"-I\"./Includes\"",
-					"-o\"C:/target/obj/Resources.res\"",
+					"-o",
+					"C:/target/obj/Resources.res",
 					"./Resources.rc",
 				],
 				[
@@ -507,9 +514,9 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.lib.exe"),
 			[
-				"-INCREMENTAL:NO",
-				"-machine:X64",
-				"-out:\"./Library.mock.a\"",
+				"-INCREMENTAL=NO",
+				"-machine=X64",
+				"-out=\"./Library.mock.a\"",
 				"./File.mock.obj",
 			],
 			[
@@ -551,10 +558,10 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
 			[
-				"-INCREMENTAL:NO",
-				"-subsystem:console",
-				"-machine:X64",
-				"-out:\"./Something.exe\"",
+				"-INCREMENTAL=NO",
+				"-subsystem=console",
+				"-machine=X64",
+				"-out=\"./Something.exe\"",
 				"./Library.mock.a",
 				"./File.mock.obj",
 			],
@@ -598,10 +605,10 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
 			[
-				"-INCREMENTAL:NO",
-				"-subsystem:windows",
-				"-machine:X64",
-				"-out:\"./Something.exe\"",
+				"-INCREMENTAL=NO",
+				"-subsystem=windows",
+				"-machine=X64",
+				"-out=\"./Something.exe\"",
 				"./Library.mock.a",
 				"./File.mock.obj",
 			],

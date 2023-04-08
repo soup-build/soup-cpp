@@ -45,8 +45,6 @@ class GCCArgumentBuilder {
 			GCCArgumentBuilder.AddFlag(commandArguments, "Werror")
 		}
 
-		GCCArgumentBuilder.AddFlag(commandArguments, "W4")
-
 		// Disable any requested warnings
 		for (warning in arguments.DisabledWarnings) {
 			GCCArgumentBuilder.AddFlagValue(commandArguments, "wd", warning)
@@ -65,7 +63,7 @@ class GCCArgumentBuilder {
 		} else if (arguments.Standard == LanguageStandard.CPP17) {
 			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
 		} else if (arguments.Standard == LanguageStandard.CPP20) {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++latest")
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
 		} else {
 			Fiber.abort("Unknown language standard %(arguments.Standard).")
 		}
@@ -133,9 +131,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.ResourceFile.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the source file as input
@@ -165,9 +165,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an interface unit
@@ -191,9 +193,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble
@@ -237,9 +241,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an partition unit
@@ -282,9 +288,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		return commandArguments
@@ -382,6 +390,10 @@ class GCCArgumentBuilder {
 		return commandArguments
 	}
 
+	static AddValue(arguments, value) {
+		arguments.add("%(value)")
+	}
+
 	static AddValueWithQuotes(arguments, value) {
 		arguments.add("\"%(value)\"")
 	}
@@ -399,10 +411,10 @@ class GCCArgumentBuilder {
 	}
 
 	static AddParameter(arguments, name, value) {
-		arguments.add("-%(name):%(value)")
+		arguments.add("-%(name)=%(value)")
 	}
 
 	static AddParameterWithQuotes(arguments, name, value) {
-		arguments.add("-%(name):\"%(value)\"")
+		arguments.add("-%(name)=\"%(value)\"")
 	}
 }

@@ -13,11 +13,11 @@ class GCCArgumentBuilderUnitTests {
 
 	RunTests() {
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
-		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "-std:c++11")
+		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "-std=c++11")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
-		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "-std:c++14")
+		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "-std=c++14")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
-		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "-std:c++17")
+		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "-std=c++17")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
@@ -47,9 +47,9 @@ class GCCArgumentBuilderUnitTests {
 	}
 
 	// [Theory]
-	// [InlineData(LanguageStandard.CPP11, "-std:c++11")]
-	// [InlineData(LanguageStandard.CPP14, "-std:c++14")]
-	// [InlineData(LanguageStandard.CPP17, "-std:c++17")]
+	// [InlineData(LanguageStandard.CPP11, "-std=c++11")]
+	// [InlineData(LanguageStandard.CPP14, "-std=c++14")]
+	// [InlineData(LanguageStandard.CPP17, "-std=c++17")]
 	BSCA_SingleArgument_LanguageStandard(
 		standard,
 		expectedFlag) {
@@ -61,7 +61,6 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
 			expectedFlag,
 			"-O0",
 			"-X",
@@ -82,8 +81,7 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
-			"-std:c++latest",
+			"-std=c++20",
 			"-O0",
 			"-X",
 			"-fexceptions",
@@ -103,8 +101,7 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
-			"-std:c++17",
+			"-std=c++17",
 			"-O0",
 			"-X",
 			"-fexceptions",
@@ -128,8 +125,7 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
-			"-std:c++17",
+			"-std=c++17",
 			expectedFlag,
 			"-X",
 			"-fexceptions",
@@ -151,8 +147,7 @@ class GCCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"-Werror",
-			"-W4",
-			"-std:c++17",
+			"-std=c++17",
 			"-O0",
 			"-X",
 			"-fexceptions",
@@ -174,8 +169,7 @@ class GCCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"-g",
-			"-W4",
-			"-std:c++17",
+			"-std=c++17",
 			"-O0",
 			"-X",
 			"-fexceptions",
@@ -199,8 +193,7 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
-			"-std:c++11",
+			"-std=c++11",
 			"-O0",
 			"-I\"C:/Files/SDK/\"",
 			"-I\"./my files/\"",
@@ -226,8 +219,7 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
-			"-std:c++11",
+			"-std=c++11",
 			"-O0",
 			"-DDEBUG",
 			"-DVERSION=1",
@@ -253,8 +245,7 @@ class GCCArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-W4",
-			"-std:c++11",
+			"-std=c++11",
 			"-O0",
 			"-X",
 			"-fexceptions",
@@ -286,7 +277,8 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-o\"C:/target/module.obj\"",
+			"-o",
+			"C:/target/module.obj",
 			"-interface",
 			"-ifcOutput",
 			"\"C:/target/module.ifc\"",
@@ -313,7 +305,8 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-o\"C:/target/module.obj\"",
+			"-o",
+			"C:/target/module.obj",
 			"-interface",
 			"-ifcOutput",
 			"\"C:/target/module.ifc\"",
@@ -341,7 +334,8 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-o\"C:/target/module.obj\"",
+			"-o",
+			"C:/target/module.obj",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -381,7 +375,8 @@ class GCCArgumentBuilderUnitTests {
 			"-reference",
 			"\"./Module4.ifc\"",
 			"./module.cpp",
-			"-o\"C:/target/module.obj\"",
+			"-o",
+			"C:/target/module.obj",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
