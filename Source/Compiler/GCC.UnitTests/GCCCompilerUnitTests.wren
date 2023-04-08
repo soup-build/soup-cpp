@@ -515,8 +515,8 @@ class GCCCompilerUnitTests {
 			Path.new("C:/bin/mock.lib.exe"),
 			[
 				"-INCREMENTAL=NO",
-				"-machine=X64",
-				"-out=\"./Library.mock.a\"",
+				"-o",
+				"./Library.mock.a",
 				"./File.mock.obj",
 			],
 			[
@@ -559,9 +559,8 @@ class GCCCompilerUnitTests {
 			Path.new("C:/bin/mock.link.exe"),
 			[
 				"-INCREMENTAL=NO",
-				"-subsystem=console",
-				"-machine=X64",
-				"-out=\"./Something.exe\"",
+				"-o",
+				"./Something.exe",
 				"./Library.mock.a",
 				"./File.mock.obj",
 			],
@@ -606,9 +605,8 @@ class GCCCompilerUnitTests {
 			Path.new("C:/bin/mock.link.exe"),
 			[
 				"-INCREMENTAL=NO",
-				"-subsystem=windows",
-				"-machine=X64",
-				"-out=\"./Something.exe\"",
+				"-o",
+				"./Something.exe",
 				"./Library.mock.a",
 				"./File.mock.obj",
 			],

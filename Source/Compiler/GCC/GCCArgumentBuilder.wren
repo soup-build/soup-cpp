@@ -23,10 +23,9 @@ class GCCArgumentBuilder {
 
 	static Linker_ArgumentFlag_DLL { "dll" }
 	static Linker_ArgumentFlag_Verbose { "v" }
-	static Linker_ArgumentParameter_Output { "out" }
+	static Linker_ArgumentParameter_Output { "o" }
 	static Linker_ArgumentParameter_ImplementationLibrary { "implib" }
 	static Linker_ArgumentParameter_LibraryPath { "libpath" }
-	static Linker_ArgumentParameter_Machine { "machine" }
 	static Linker_ArgumentParameter_DefaultLibrary { "defaultlib" }
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
@@ -324,11 +323,6 @@ class GCCArgumentBuilder {
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
 			// Nothing to do
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
-			// TODO: May want to specify the exact value
-			// set the default lib to mutlithreaded
-			// GCCArgumentBuilder.AddParameter(commandArguments, "defaultlib", "libcmt")
-			GCCArgumentBuilder.AddParameter(commandArguments, "subsystem", "console")
-
 			// Create a dynamic library
 			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_DLL)
 
@@ -338,35 +332,26 @@ class GCCArgumentBuilder {
 				GCCArgumentBuilder.Linker_ArgumentParameter_ImplementationLibrary,
 				arguments.ImplementationFile.toString)
 		} else if (arguments.TargetType == LinkTarget.Executable) {
-			// TODO: May want to specify the exact value
-			// set the default lib to multithreaded
-			// GCCArgumentBuilder.AddParameter(commandArguments, "defaultlib", "libcmt")
-			GCCArgumentBuilder.AddParameter(commandArguments, "subsystem", "console")
 		} else if (arguments.TargetType == LinkTarget.WindowsApplication) {
-			// TODO: May want to specify the exact value
-			// set the default lib to multithreaded
-			// GCCArgumentBuilder.AddParameter(commandArguments, "defaultlib", "libcmt")
-			GCCArgumentBuilder.AddParameter(commandArguments, "subsystem", "windows")
 		} else {
 			Fiber.abort("Unknown LinkTarget.")
 		}
 
-		// Add the machine target
-		if (arguments.TargetArchitecture == "x64") {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_Machine, GCCArgumentBuilder.Linker_ArgumentValue_X64)
-		} else if (arguments.TargetArchitecture == "x86") {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_Machine, GCCArgumentBuilder.Linker_ArgumentValue_X86)
-		} else {
-			Fiber.abort("Unknown target architecture.")
-		}
-
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			GCCArgumentBuilder.AddParameterWithQuotes(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_LibraryPath, directory.toString)
+			GCCArgumentBuilder.AddParameterWithQuotes(
+				commandArguments,
+				GCCArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
+				directory.toString)
 		}
 
 		// Add the target as an output
-		GCCArgumentBuilder.AddParameterWithQuotes(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_Output, arguments.TargetFile.toString)
+		GCCArgumentBuilder.AddFlag(
+			commandArguments,
+			GCCArgumentBuilder.Linker_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
+			arguments.TargetFile.toString)
 
 		// Add the library files
 		for (file in arguments.LibraryFiles) {

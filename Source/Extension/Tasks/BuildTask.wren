@@ -200,7 +200,7 @@ class BuildTask is SoupTask {
 		return Fn.new { |activeState|
 			var gcc = activeState["GCC"]
 			var clToolPath = Path.new("/usr/bin/gcc-12")
-			var linkToolPath = Path.new("")
+			var linkToolPath = Path.new("/usr/bin/gcc-12")
 			var libToolPath = Path.new("")
 			var rcToolPath = Path.new("")
 			var mlToolPath = Path.new("")
