@@ -84,7 +84,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -X -fexceptions -c",
+					"-std=c++11 -O0 -c",
 				],
 				[],
 				[
@@ -156,7 +156,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -235,7 +235,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -330,7 +330,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -456,7 +456,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -X -fexceptions -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
 				],
 				[],
 				[
@@ -514,7 +514,6 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.lib.exe"),
 			[
-				"-INCREMENTAL=NO",
 				"-o",
 				"./Library.mock.a",
 				"./File.mock.obj",
@@ -558,7 +557,6 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
 			[
-				"-INCREMENTAL=NO",
 				"-o",
 				"./Something.exe",
 				"./Library.mock.a",
@@ -604,7 +602,6 @@ class GCCCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.link.exe"),
 			[
-				"-INCREMENTAL=NO",
 				"-o",
 				"./Something.exe",
 				"./Library.mock.a",

@@ -12,7 +12,6 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 class GCCArgumentBuilder {
 	static Compiler_ArgumentFlag_GenerateDebugInformation { "g" }
 	static Compiler_ArgumentFlag_CompileOnly { "c" }
-	static Compiler_ArgumentFlag_IgnoreStandardIncludePaths { "X" }
 	static Compiler_ArgumentFlag_Optimization_Disable { "O0" }
 	static Compiler_ArgumentFlag_Optimization_Speed { "O3" }
 	static Compiler_ArgumentFlag_Optimization_Size { "Os" }
@@ -22,7 +21,6 @@ class GCCArgumentBuilder {
 	static Compiler_ArgumentParameter_PreprocessorDefine { "D" }
 
 	static Linker_ArgumentFlag_DLL { "dll" }
-	static Linker_ArgumentFlag_Verbose { "v" }
 	static Linker_ArgumentParameter_Output { "o" }
 	static Linker_ArgumentParameter_ImplementationLibrary { "implib" }
 	static Linker_ArgumentParameter_LibraryPath { "libpath" }
@@ -87,12 +85,6 @@ class GCCArgumentBuilder {
 		for (definition in arguments.PreprocessorDefinitions) {
 			GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
 		}
-
-		// Ignore Standard Include Paths to prevent pulling in accidental headers
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_IgnoreStandardIncludePaths)
-
-		// Enable c++ exceptions
-		GCCArgumentBuilder.AddFlag(commandArguments, "fexceptions")
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
@@ -304,20 +296,6 @@ class GCCArgumentBuilder {
 		}
 
 		var commandArguments = []
-
-		// Disable incremental linking. I believe this is causing issues as the linker reads and writes to the same file
-		GCCArgumentBuilder.AddParameter(commandArguments, "INCREMENTAL", "NO")
-
-		// Disable the default libraries, we will set this up
-		// GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_NoDefaultLibraries)
-
-		// Enable verbose output
-		// GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_Verbose)
-
-		// Generate source debug information
-		if (arguments.GenerateSourceDebugInfo) {
-			GCCArgumentBuilder.AddParameter(commandArguments, "debug", "full")
-		}
 
 		// Calculate object output file
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {

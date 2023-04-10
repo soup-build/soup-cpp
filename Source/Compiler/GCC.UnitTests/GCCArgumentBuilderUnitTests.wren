@@ -63,8 +63,6 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			expectedFlag,
 			"-O0",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -83,8 +81,6 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++20",
 			"-O0",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -103,8 +99,6 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++17",
 			"-O0",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -127,8 +121,6 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++17",
 			expectedFlag,
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -149,8 +141,6 @@ class GCCArgumentBuilderUnitTests {
 			"-Werror",
 			"-std=c++17",
 			"-O0",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -171,8 +161,6 @@ class GCCArgumentBuilderUnitTests {
 			"-g",
 			"-std=c++17",
 			"-O0",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -197,8 +185,6 @@ class GCCArgumentBuilderUnitTests {
 			"-O0",
 			"-I\"C:/Files/SDK/\"",
 			"-I\"./my files/\"",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -223,8 +209,6 @@ class GCCArgumentBuilderUnitTests {
 			"-O0",
 			"-DDEBUG",
 			"-DVERSION=1",
-			"-X",
-			"-fexceptions",
 			"-c",
 		]
 
@@ -247,8 +231,6 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++11",
 			"-O0",
-			"-X",
-			"-fexceptions",
 			"-reference",
 			"\"./Module.pcm\"",
 			"-reference",

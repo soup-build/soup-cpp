@@ -39,7 +39,6 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL=NO",
 			"-o",
 			"./Library.mock.lib",
 		]
@@ -73,7 +72,6 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL=NO",
 			"-o",
 			"./Library.mock.lib",
 			"./File.mock.o",
@@ -98,7 +96,6 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL=NO",
 			"-libpath=\"../libraries/\"",
 			"-o",
 			"./Library.mock.lib",
@@ -122,7 +119,6 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL=NO",
 			"-dll",
 			"-implib=\"./Library.mock.lib\"",
 			"-o",
@@ -149,7 +145,6 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL=NO",
 			"-o",
 			"./out/Something.exe",
 			"./Library.mock.lib",
@@ -175,7 +170,6 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL=NO",
 			"-o",
 			"./out/Something.exe",
 			"./Library.mock.lib",
