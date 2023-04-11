@@ -63,7 +63,7 @@ class RecipeBuildTask is SoupTask {
 
 		var platformPreprocessorDefinitions = []
 		if (build.containsKey("PlatformPreprocessorDefinitions")) {
-			platformPreprocessorDefinitions = ListExtensions.ConvertToPathList(build["PlatformPreprocessorDefinitions"])
+			platformPreprocessorDefinitions = build["PlatformPreprocessorDefinitions"]
 		}
 
 		// Load Recipe properties
