@@ -8,7 +8,7 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		"Soup.Cpp.Compiler@0.7.0"
-		"Soup.Build.Utils@0.4.0"
+		"Soup.Cpp.Compiler@0.7"
+		"Soup.Build.Utils@0.4"
 	]
 }

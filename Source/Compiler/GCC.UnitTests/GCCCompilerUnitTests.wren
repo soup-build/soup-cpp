@@ -252,9 +252,7 @@ class GCCCompilerUnitTests {
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.obj",
-					"-interface",
-					"-ifcOutput",
-					"\"C:/target/obj/File.pcm\"",
+					"-fmodules-ts",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -372,9 +370,7 @@ class GCCCompilerUnitTests {
 					"./File2.cpp",
 					"-o",
 					"C:/target/obj/File2.obj",
-					"-interface",
-					"-ifcOutput",
-					"\"C:/target/obj/File2.pcm\"",
+					"-fmodules-ts",
 				],
 				[
 					Path.new("Module.pcm"),

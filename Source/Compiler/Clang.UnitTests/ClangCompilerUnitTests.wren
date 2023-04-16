@@ -173,8 +173,8 @@ class ClangCompilerUnitTests {
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.obj",
-					"-interface",
-					"-ifcOutput",
+					"--precompile",
+					"-o",
 					"\"C:/target/obj/File.pcm\"",
 				],
 				[
@@ -252,8 +252,8 @@ class ClangCompilerUnitTests {
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.obj",
-					"-interface",
-					"-ifcOutput",
+					"--precompile",
+					"-o",
 					"\"C:/target/obj/File.pcm\"",
 				],
 				[
@@ -347,8 +347,8 @@ class ClangCompilerUnitTests {
 					"./File1.cpp",
 					"-o",
 					"C:/target/obj/File1.obj",
-					"-interface",
-					"-ifcOutput",
+					"--precompile",
+					"-o",
 					"\"C:/target/obj/File1.pcm\"",
 				],
 				[
@@ -372,8 +372,8 @@ class ClangCompilerUnitTests {
 					"./File2.cpp",
 					"-o",
 					"C:/target/obj/File2.obj",
-					"-interface",
-					"-ifcOutput",
+					"--precompile",
+					"-o",
 					"\"C:/target/obj/File2.pcm\"",
 				],
 				[

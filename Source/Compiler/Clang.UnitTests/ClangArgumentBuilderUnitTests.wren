@@ -261,8 +261,8 @@ class ClangArgumentBuilderUnitTests {
 			"./module.cpp",
 			"-o",
 			"C:/target/module.obj",
-			"-interface",
-			"-ifcOutput",
+			"--precompile",
+			"-o",
 			"\"C:/target/module.ifc\"",
 		]
 
@@ -289,8 +289,8 @@ class ClangArgumentBuilderUnitTests {
 			"./module.cpp",
 			"-o",
 			"C:/target/module.obj",
-			"-interface",
-			"-ifcOutput",
+			"--precompile",
+			"-o",
 			"\"C:/target/module.ifc\"",
 		]
 

@@ -289,9 +289,7 @@ class GCCArgumentBuilderUnitTests {
 			"./module.cpp",
 			"-o",
 			"C:/target/module.obj",
-			"-interface",
-			"-ifcOutput",
-			"\"C:/target/module.ifc\"",
+			"-fmodules-ts",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

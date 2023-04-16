@@ -1,4 +1,4 @@
-﻿// <copyright file="GCCArgumentBuilder.wren" company="Soup">
+﻿// <copyright file="ClangArgumentBuilder.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 /// A helper class that builds the correct set of compiler arguments for a given
 /// set of options.
 /// </summary>
-class GCCArgumentBuilder {
+class ClangArgumentBuilder {
 	static Compiler_ArgumentFlag_GenerateDebugInformation { "g" }
 	static Compiler_ArgumentFlag_CompileOnly { "c" }
 	static Compiler_ArgumentFlag_Optimization_Disable { "O0" }
@@ -34,66 +34,66 @@ class GCCArgumentBuilder {
 
 		// Generate source debug information
 		if (arguments.GenerateSourceDebugInfo) {
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
+			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
 		}
 
 		// Disabled individual warnings
 		if (arguments.EnableWarningsAsErrors) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "Werror")
+			ClangArgumentBuilder.AddFlag(commandArguments, "Werror")
 		}
 
 		// Disable any requested warnings
 		for (warning in arguments.DisabledWarnings) {
-			GCCArgumentBuilder.AddFlagValue(commandArguments, "wd", warning)
+			ClangArgumentBuilder.AddFlagValue(commandArguments, "wd", warning)
 		}
 
 		// Enable any requested warnings
 		for (warning in arguments.EnabledWarnings) {
-			GCCArgumentBuilder.AddFlagValue(commandArguments, "w", warning)
+			ClangArgumentBuilder.AddFlagValue(commandArguments, "w", warning)
 		}
 
 		// Set the language standard
 		if (arguments.Standard == LanguageStandard.CPP11) {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
 		} else if (arguments.Standard == LanguageStandard.CPP14) {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++14")
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++14")
 		} else if (arguments.Standard == LanguageStandard.CPP17) {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
 		} else if (arguments.Standard == LanguageStandard.CPP20) {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
 		} else {
 			Fiber.abort("Unknown language standard %(arguments.Standard).")
 		}
 
 		// Set the optimization level
 		if (arguments.Optimize == OptimizationLevel.None) {
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_Optimization_Disable)
+			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_Optimization_Disable)
 		} else if (arguments.Optimize == OptimizationLevel.Speed) {
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_Optimization_Speed)
+			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_Optimization_Speed)
 		} else if (arguments.Optimize == OptimizationLevel.Size) {
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_Optimization_Size)
+			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_Optimization_Size)
 		} else {
 			Fiber.abort("Unknown optimization level %(arguments.Optimize)")
 		}
 
 		// Set the include paths
 		for (directory in arguments.IncludeDirectories) {
-			GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Set the preprocessor definitions
 		for (definition in arguments.PreprocessorDefinitions) {
-			GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
+			ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
 		}
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
+			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Only run preprocessor, compile and assemble
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
 		return commandArguments
 	}
@@ -109,23 +109,23 @@ class GCCArgumentBuilder {
 		var commandArguments = []
 
 		// TODO: Defines?
-		GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "_UNICODE")
-		GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "UNICODE")
+		ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "_UNICODE")
+		ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "UNICODE")
 
 		// Specify default language using language identifier
-		GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, "l", "0x0409")
+		ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, "l", "0x0409")
 
 		// Set the include paths
 		for (directory in arguments.IncludeDirectories) {
-			GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.ResourceFile.TargetFile
-		GCCArgumentBuilder.AddFlag(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
 
@@ -147,8 +147,8 @@ class GCCArgumentBuilder {
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
+			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -156,21 +156,19 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlag(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
 
-		// Add the unique arguments for an interface unit
-		GCCArgumentBuilder.AddFlag(commandArguments, "fmodules-ts")
-
 		// Specify the module interface file output
-		// GCCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
+		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
 
-		// var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		// GCCArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
+		ClangArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -184,25 +182,25 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlag(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
 		// Generate debug information
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
 
 		// Enable warnings
-		GCCArgumentBuilder.AddFlag(commandArguments, "W3")
+		ClangArgumentBuilder.AddFlag(commandArguments, "W3")
 
 		// Set the include paths
 		for (directory in sharedArguments.IncludeDirectories) {
-			GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Add the source file as input
@@ -223,8 +221,8 @@ class GCCArgumentBuilder {
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
+			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -232,21 +230,21 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlag(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an partition unit
-		GCCArgumentBuilder.AddFlag(commandArguments, "interface")
+		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
 
 		// Specify the module interface file output
-		GCCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		GCCArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		ClangArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -264,14 +262,14 @@ class GCCArgumentBuilder {
 
 		// Add the internal module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
+			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the internal module references as input
 		for (moduleFile in internalModules) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
+			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -279,10 +277,10 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlag(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
 
@@ -302,12 +300,12 @@ class GCCArgumentBuilder {
 			// Nothing to do
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
 			// Create a dynamic library
-			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_DLL)
+			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Linker_ArgumentFlag_DLL)
 
 			// Set the output implementation library
-			GCCArgumentBuilder.AddParameterWithQuotes(
+			ClangArgumentBuilder.AddParameterWithQuotes(
 				commandArguments,
-				GCCArgumentBuilder.Linker_ArgumentParameter_ImplementationLibrary,
+				ClangArgumentBuilder.Linker_ArgumentParameter_ImplementationLibrary,
 				arguments.ImplementationFile.toString)
 		} else if (arguments.TargetType == LinkTarget.Executable) {
 		} else if (arguments.TargetType == LinkTarget.WindowsApplication) {
@@ -317,17 +315,17 @@ class GCCArgumentBuilder {
 
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			GCCArgumentBuilder.AddParameterWithQuotes(
+			ClangArgumentBuilder.AddParameterWithQuotes(
 				commandArguments,
-				GCCArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
+				ClangArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
 				directory.toString)
 		}
 
 		// Add the target as an output
-		GCCArgumentBuilder.AddFlag(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Linker_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
+			ClangArgumentBuilder.Linker_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			arguments.TargetFile.toString)
 
@@ -341,7 +339,7 @@ class GCCArgumentBuilder {
 		for (file in arguments.ExternalLibraryFiles) {
 			// Add the external library files as input
 			// TODO: Explicitly ignore these files from the input for now
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary, file.toString)
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary, file.toString)
 		}
 
 		// Add the object files
