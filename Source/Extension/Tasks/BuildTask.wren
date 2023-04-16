@@ -9,6 +9,7 @@ import "Soup.Build.Utils:./ListExtensions" for ListExtensions
 import "Soup.Build.Utils:./MapExtensions" for MapExtensions
 import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
 import "Soup.Cpp.Compiler:./BuildEngine" for BuildEngine
+import "Soup.Cpp.Compiler.Clang:./ClangCompiler" for ClangCompiler
 import "Soup.Cpp.Compiler.GCC:./GCCCompiler" for GCCCompiler
 import "Soup.Cpp.Compiler.MSVC:./MSVCCompiler" for MSVCCompiler
 
@@ -30,8 +31,9 @@ class BuildTask is SoupTask {
 
 	static evaluate() {
 		// Register default compilers
-		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
+		BuildTask.registerCompiler("Clang", BuildTask.createClangCompiler)
 		BuildTask.registerCompiler("GCC", BuildTask.createGCCCompiler)
+		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
 
 		var activeState = Soup.activeState
 		var sharedState = Soup.sharedState
@@ -194,6 +196,23 @@ class BuildTask is SoupTask {
 		}
 
 		Soup.info("Build Generate Done")
+	}
+
+	static createClangCompiler {
+		return Fn.new { |activeState|
+			var clang = activeState["Clang"]
+			var clToolPath = Path.new("/usr/bin/clang++")
+			var linkToolPath = Path.new("/usr/bin/clang++")
+			var libToolPath = Path.new("")
+			var rcToolPath = Path.new("")
+			var mlToolPath = Path.new("")
+			return ClangCompiler.new(
+				clToolPath,
+				linkToolPath,
+				libToolPath,
+				rcToolPath,
+				mlToolPath)
+		}
 	}
 
 	static createGCCCompiler {
