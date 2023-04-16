@@ -1,4 +1,8 @@
 import "./Compiler/Core.UnitTests/BuildEngineUnitTests" for BuildEngineUnitTests
+import "./Compiler/Clang.UnitTests/ClangArgumentBuilderUnitTests" for ClangArgumentBuilderUnitTests
+import "./Compiler/Clang.UnitTests/ClangCompilerUnitTests" for ClangCompilerUnitTests
+import "./Compiler/Clang.UnitTests/ClangLinkerArgumentBuilderUnitTests" for ClangLinkerArgumentBuilderUnitTests
+import "./Compiler/Clang.UnitTests/ClangResourceCompileArgumentBuilderUnitTests" for ClangResourceCompileArgumentBuilderUnitTests
 import "./Compiler/GCC.UnitTests/GCCArgumentBuilderUnitTests" for GCCArgumentBuilderUnitTests
 import "./Compiler/GCC.UnitTests/GCCCompilerUnitTests" for GCCCompilerUnitTests
 import "./Compiler/GCC.UnitTests/GCCLinkerArgumentBuilderUnitTests" for GCCLinkerArgumentBuilderUnitTests
@@ -16,6 +20,16 @@ var uut
 
 // Compiler.Core.UnitTests
 uut = BuildEngineUnitTests.new()
+uut.RunTests()
+
+// Compiler.Clang.UnitTests
+uut = ClangArgumentBuilderUnitTests.new()
+uut.RunTests()
+uut = ClangCompilerUnitTests.new()
+uut.RunTests()
+uut = ClangLinkerArgumentBuilderUnitTests.new()
+uut.RunTests()
+uut = ClangResourceCompileArgumentBuilderUnitTests.new()
 uut.RunTests()
 
 // Compiler.GCC.UnitTests
