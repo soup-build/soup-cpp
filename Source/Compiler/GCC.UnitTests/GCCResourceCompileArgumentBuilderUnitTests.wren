@@ -34,7 +34,8 @@ class GCCResourceCompileArgumentBuilderUnitTests {
 			"-D_UNICODE",
 			"-DUNICODE",
 			"-l\"0x0409\"",
-			"-o\"C:/target/Resources.mock.res\"",
+			"-o",
+			"C:/target/Resources.mock.res",
 			"./Resources.rc",
 		]
 

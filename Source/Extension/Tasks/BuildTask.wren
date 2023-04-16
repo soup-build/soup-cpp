@@ -198,11 +198,12 @@ class BuildTask is SoupTask {
 
 	static createGCCCompiler {
 		return Fn.new { |activeState|
-			var clToolPath = Path.new(activeState["GCC.ClToolPath"])
-			var linkToolPath = Path.new(activeState["GCC.LinkToolPath"])
-			var libToolPath = Path.new(activeState["GCC.LibToolPath"])
-			var rcToolPath = Path.new(activeState["GCC.RCToolPath"])
-			var mlToolPath = Path.new(activeState["GCC.MLToolPath"])
+			var gcc = activeState["GCC"]
+			var clToolPath = Path.new("/usr/bin/g++-12")
+			var linkToolPath = Path.new("/usr/bin/g++-12")
+			var libToolPath = Path.new("")
+			var rcToolPath = Path.new("")
+			var mlToolPath = Path.new("")
 			return GCCCompiler.new(
 				clToolPath,
 				linkToolPath,
@@ -214,11 +215,12 @@ class BuildTask is SoupTask {
 
 	static createMSVCCompiler {
 		return Fn.new { |activeState|
-			var clToolPath = Path.new(activeState["MSVC.ClToolPath"])
-			var linkToolPath = Path.new(activeState["MSVC.LinkToolPath"])
-			var libToolPath = Path.new(activeState["MSVC.LibToolPath"])
-			var rcToolPath = Path.new(activeState["MSVC.RCToolPath"])
-			var mlToolPath = Path.new(activeState["MSVC.MLToolPath"])
+			var msvc = activeState["MSVC"]
+			var clToolPath = Path.new(msvc["ClToolPath"])
+			var linkToolPath = Path.new(msvc["LinkToolPath"])
+			var libToolPath = Path.new(msvc["LibToolPath"])
+			var rcToolPath = Path.new(msvc["RCToolPath"])
+			var mlToolPath = Path.new(msvc["MLToolPath"])
 			return MSVCCompiler.new(
 				clToolPath,
 				linkToolPath,

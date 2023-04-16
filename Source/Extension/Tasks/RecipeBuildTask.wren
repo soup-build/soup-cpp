@@ -45,10 +45,26 @@ class RecipeBuildTask is SoupTask {
 		var compiler = build["Compiler"]
 		var packageRoot = Path.new(context["PackageDirectory"])
 		var flavor = build["Flavor"]
-		var platformLibraries = ListExtensions.ConvertToPathList(activeState["PlatformLibraries"])
-		var platformIncludePaths = ListExtensions.ConvertToPathList(activeState["PlatformIncludePaths"])
-		var platformLibraryPaths = ListExtensions.ConvertToPathList(activeState["PlatformLibraryPaths"])
-		var platformPreprocessorDefinitions = activeState["PlatformPreprocessorDefinitions"]
+
+		var platformLibraries = []
+		if (build.containsKey("PlatformLibraries")) {
+			platformLibraries = ListExtensions.ConvertToPathList(build["PlatformLibraries"])
+		}
+
+		var platformIncludePaths = []
+		if (build.containsKey("PlatformIncludePaths")) {
+			platformIncludePaths = ListExtensions.ConvertToPathList(build["PlatformIncludePaths"])
+		}
+
+		var platformLibraryPaths = []
+		if (build.containsKey("PlatformLibraryPaths")) {
+			platformLibraryPaths = ListExtensions.ConvertToPathList(build["PlatformLibraryPaths"])
+		}
+
+		var platformPreprocessorDefinitions = []
+		if (build.containsKey("PlatformPreprocessorDefinitions")) {
+			platformPreprocessorDefinitions = build["PlatformPreprocessorDefinitions"]
+		}
 
 		// Load Recipe properties
 		var name = recipe["Name"]

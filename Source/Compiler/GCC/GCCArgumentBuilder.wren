@@ -12,7 +12,6 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 class GCCArgumentBuilder {
 	static Compiler_ArgumentFlag_GenerateDebugInformation { "g" }
 	static Compiler_ArgumentFlag_CompileOnly { "c" }
-	static Compiler_ArgumentFlag_IgnoreStandardIncludePaths { "X" }
 	static Compiler_ArgumentFlag_Optimization_Disable { "O0" }
 	static Compiler_ArgumentFlag_Optimization_Speed { "O3" }
 	static Compiler_ArgumentFlag_Optimization_Size { "Os" }
@@ -22,11 +21,9 @@ class GCCArgumentBuilder {
 	static Compiler_ArgumentParameter_PreprocessorDefine { "D" }
 
 	static Linker_ArgumentFlag_DLL { "dll" }
-	static Linker_ArgumentFlag_Verbose { "v" }
-	static Linker_ArgumentParameter_Output { "out" }
+	static Linker_ArgumentParameter_Output { "o" }
 	static Linker_ArgumentParameter_ImplementationLibrary { "implib" }
 	static Linker_ArgumentParameter_LibraryPath { "libpath" }
-	static Linker_ArgumentParameter_Machine { "machine" }
 	static Linker_ArgumentParameter_DefaultLibrary { "defaultlib" }
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
@@ -44,8 +41,6 @@ class GCCArgumentBuilder {
 		if (arguments.EnableWarningsAsErrors) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "Werror")
 		}
-
-		GCCArgumentBuilder.AddFlag(commandArguments, "W4")
 
 		// Disable any requested warnings
 		for (warning in arguments.DisabledWarnings) {
@@ -65,7 +60,7 @@ class GCCArgumentBuilder {
 		} else if (arguments.Standard == LanguageStandard.CPP17) {
 			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
 		} else if (arguments.Standard == LanguageStandard.CPP20) {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++latest")
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
 		} else {
 			Fiber.abort("Unknown language standard %(arguments.Standard).")
 		}
@@ -90,12 +85,6 @@ class GCCArgumentBuilder {
 		for (definition in arguments.PreprocessorDefinitions) {
 			GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
 		}
-
-		// Ignore Standard Include Paths to prevent pulling in accidental headers
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_IgnoreStandardIncludePaths)
-
-		// Enable c++ exceptions
-		GCCArgumentBuilder.AddFlag(commandArguments, "fexceptions")
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
@@ -133,9 +122,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.ResourceFile.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the source file as input
@@ -165,9 +156,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an interface unit
@@ -191,9 +184,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble
@@ -237,9 +232,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Add the unique arguments for an partition unit
@@ -282,9 +279,11 @@ class GCCArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlagValueWithQuotes(
+		GCCArgumentBuilder.AddFlag(
 			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		return commandArguments
@@ -298,29 +297,10 @@ class GCCArgumentBuilder {
 
 		var commandArguments = []
 
-		// Disable incremental linking. I believe this is causing issues as the linker reads and writes to the same file
-		GCCArgumentBuilder.AddParameter(commandArguments, "INCREMENTAL", "NO")
-
-		// Disable the default libraries, we will set this up
-		// GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_NoDefaultLibraries)
-
-		// Enable verbose output
-		// GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_Verbose)
-
-		// Generate source debug information
-		if (arguments.GenerateSourceDebugInfo) {
-			GCCArgumentBuilder.AddParameter(commandArguments, "debug", "full")
-		}
-
 		// Calculate object output file
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
 			// Nothing to do
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
-			// TODO: May want to specify the exact value
-			// set the default lib to mutlithreaded
-			// GCCArgumentBuilder.AddParameter(commandArguments, "defaultlib", "libcmt")
-			GCCArgumentBuilder.AddParameter(commandArguments, "subsystem", "console")
-
 			// Create a dynamic library
 			GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Linker_ArgumentFlag_DLL)
 
@@ -330,35 +310,26 @@ class GCCArgumentBuilder {
 				GCCArgumentBuilder.Linker_ArgumentParameter_ImplementationLibrary,
 				arguments.ImplementationFile.toString)
 		} else if (arguments.TargetType == LinkTarget.Executable) {
-			// TODO: May want to specify the exact value
-			// set the default lib to multithreaded
-			// GCCArgumentBuilder.AddParameter(commandArguments, "defaultlib", "libcmt")
-			GCCArgumentBuilder.AddParameter(commandArguments, "subsystem", "console")
 		} else if (arguments.TargetType == LinkTarget.WindowsApplication) {
-			// TODO: May want to specify the exact value
-			// set the default lib to multithreaded
-			// GCCArgumentBuilder.AddParameter(commandArguments, "defaultlib", "libcmt")
-			GCCArgumentBuilder.AddParameter(commandArguments, "subsystem", "windows")
 		} else {
 			Fiber.abort("Unknown LinkTarget.")
 		}
 
-		// Add the machine target
-		if (arguments.TargetArchitecture == "x64") {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_Machine, GCCArgumentBuilder.Linker_ArgumentValue_X64)
-		} else if (arguments.TargetArchitecture == "x86") {
-			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_Machine, GCCArgumentBuilder.Linker_ArgumentValue_X86)
-		} else {
-			Fiber.abort("Unknown target architecture.")
-		}
-
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			GCCArgumentBuilder.AddParameterWithQuotes(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_LibraryPath, directory.toString)
+			GCCArgumentBuilder.AddParameterWithQuotes(
+				commandArguments,
+				GCCArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
+				directory.toString)
 		}
 
 		// Add the target as an output
-		GCCArgumentBuilder.AddParameterWithQuotes(commandArguments, GCCArgumentBuilder.Linker_ArgumentParameter_Output, arguments.TargetFile.toString)
+		GCCArgumentBuilder.AddFlag(
+			commandArguments,
+			GCCArgumentBuilder.Linker_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
+			arguments.TargetFile.toString)
 
 		// Add the library files
 		for (file in arguments.LibraryFiles) {
@@ -382,6 +353,10 @@ class GCCArgumentBuilder {
 		return commandArguments
 	}
 
+	static AddValue(arguments, value) {
+		arguments.add("%(value)")
+	}
+
 	static AddValueWithQuotes(arguments, value) {
 		arguments.add("\"%(value)\"")
 	}
@@ -399,10 +374,10 @@ class GCCArgumentBuilder {
 	}
 
 	static AddParameter(arguments, name, value) {
-		arguments.add("-%(name):%(value)")
+		arguments.add("-%(name)=%(value)")
 	}
 
 	static AddParameterWithQuotes(arguments, name, value) {
-		arguments.add("-%(name):\"%(value)\"")
+		arguments.add("-%(name)=\"%(value)\"")
 	}
 }

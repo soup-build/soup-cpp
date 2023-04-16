@@ -39,9 +39,8 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL:NO",
-			"-machine:X64",
-			"-out:\"./Library.mock.lib\"",
+			"-o",
+			"./Library.mock.lib",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -73,9 +72,8 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL:NO",
-			"-machine:X64",
-			"-out:\"./Library.mock.lib\"",
+			"-o",
+			"./Library.mock.lib",
 			"./File.mock.o",
 		]
 
@@ -98,10 +96,9 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL:NO",
-			"-machine:X64",
-			"-libpath:\"../libraries/\"",
-			"-out:\"./Library.mock.lib\"",
+			"-libpath=\"../libraries/\"",
+			"-o",
+			"./Library.mock.lib",
 			"./File.mock.o",
 		]
 
@@ -122,12 +119,10 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL:NO",
-			"-subsystem:console",
 			"-dll",
-			"-implib:\"./Library.mock.lib\"",
-			"-machine:X64",
-			"-out:\"./Library.mock.dll\"",
+			"-implib=\"./Library.mock.lib\"",
+			"-o",
+			"./Library.mock.dll",
 			"./File.mock.obj",
 		]
 
@@ -150,10 +145,8 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL:NO",
-			"-subsystem:console",
-			"-machine:X64",
-			"-out:\"./out/Something.exe\"",
+			"-o",
+			"./out/Something.exe",
 			"./Library.mock.lib",
 			"./File.mock.obj",
 		]
@@ -177,10 +170,8 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-INCREMENTAL:NO",
-			"-subsystem:windows",
-			"-machine:X64",
-			"-out:\"./out/Something.exe\"",
+			"-o",
+			"./out/Something.exe",
 			"./Library.mock.lib",
 			"./File.mock.obj",
 		]

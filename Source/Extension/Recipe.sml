@@ -1,6 +1,6 @@
 Name: "Soup.Cpp"
 Language: "Wren|0.1"
-Version: "0.8.0"
+Version: "0.8.2"
 Source: [
 	"Tasks/BuildTask.wren"
 	"Tasks/InitializeDefaultsTask.wren"
