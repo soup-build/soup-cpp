@@ -34,24 +34,24 @@ class ClangCompiler is ICompiler {
 	/// <summary>
 	/// Gets the object file extension for the compiler
 	/// </summary>
-	ObjectFileExtension { "obj" }
+	ObjectFileExtension { "o" }
 
 	/// <summary>
 	/// Gets the module file extension for the compiler
 	/// </summary>
-	ModuleFileExtension { "ifc" }
+	ModuleFileExtension { "pcm" }
 
 	/// <summary>
 	/// Gets the static library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	StaticLibraryFileExtension { "lib" }
+	StaticLibraryFileExtension { "a" }
 
 	/// <summary>
 	/// Gets the dynamic library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	DynamicLibraryFileExtension { "dll" }
+	DynamicLibraryFileExtension { "so" }
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler
