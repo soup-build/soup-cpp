@@ -43,10 +43,10 @@ class ClangCompilerUnitTests {
 			Path.new("C:/bin/mock.rc.exe"),
 			Path.new("C:/bin/mock.ml.exe"))
 		Assert.Equal("Clang", uut.Name)
-		Assert.Equal("obj", uut.ObjectFileExtension)
-		Assert.Equal("ifc", uut.ModuleFileExtension)
-		Assert.Equal("lib", uut.StaticLibraryFileExtension)
-		Assert.Equal("dll", uut.DynamicLibraryFileExtension)
+		Assert.Equal("o", uut.ObjectFileExtension)
+		Assert.Equal("pcm", uut.ModuleFileExtension)
+		Assert.Equal("a", uut.StaticLibraryFileExtension)
+		Assert.Equal("so", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
 	}
 
@@ -68,7 +68,7 @@ class ClangCompilerUnitTests {
 
 		var translationUnitArguments = TranslationUnitCompileArguments.new()
 		translationUnitArguments.SourceFile = Path.new("File.cpp")
-		translationUnitArguments.TargetFile = Path.new("obj/File.obj")
+		translationUnitArguments.TargetFile = Path.new("obj/File.o")
 
 		arguments.ImplementationUnits = [
 			translationUnitArguments,
@@ -98,14 +98,14 @@ class ClangCompilerUnitTests {
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
 					"-o",
-					"C:/target/obj/File.obj",
+					"C:/target/obj/File.o",
 				],
 				[
 					Path.new("File.cpp"),
 					Path.new("C:/target/ObjectDir/SharedCompileArguments.rsp"),
 				],
 				[
-					Path.new("C:/target/obj/File.obj"),
+					Path.new("C:/target/obj/File.o"),
 				]),
 		]
 
@@ -139,7 +139,7 @@ class ClangCompilerUnitTests {
 		arguments.InterfacePartitionUnits = [
 			InterfaceUnitCompileArguments.new(
 				Path.new("File.cpp"),
-				Path.new("obj/File.obj"),
+				Path.new("obj/File.o"),
 				[
 					Path.new("obj/Other.pcm"),
 				],
@@ -172,7 +172,7 @@ class ClangCompilerUnitTests {
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
 					"-o",
-					"C:/target/obj/File.obj",
+					"C:/target/obj/File.o",
 					"--precompile",
 					"-o",
 					"\"C:/target/obj/File.pcm\"",
@@ -184,7 +184,7 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File.obj"),
+					Path.new("C:/target/obj/File.o"),
 					Path.new("C:/target/obj/File.pcm"),
 				]),
 		]
@@ -219,7 +219,7 @@ class ClangCompilerUnitTests {
 
 		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("File.cpp"),
-			Path.new("obj/File.obj"),
+			Path.new("obj/File.o"),
 			[
 				Path.new("obj/Other.pcm")
 			],
@@ -250,11 +250,9 @@ class ClangCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other.pcm\"",
 					"./File.cpp",
-					"-o",
-					"C:/target/obj/File.obj",
 					"--precompile",
 					"-o",
-					"\"C:/target/obj/File.pcm\"",
+					"C:/target/obj/File.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -263,8 +261,22 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File.obj"),
 					Path.new("C:/target/obj/File.pcm"),
+				]),
+			BuildOperation.new(
+				"./obj/File.pcm",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.cl.exe"),
+				[
+					"\"C:/target/obj/File.pcm\"",
+					"-o",
+					"C:/target/obj/File.o",
+				],
+				[
+					Path.new("C:/target/obj/File.pcm"),
+				],
+				[
+					Path.new("C:/target/obj/File.o"),
 				]),
 		]
 
@@ -298,7 +310,7 @@ class ClangCompilerUnitTests {
 		arguments.InterfacePartitionUnits = [
 			InterfaceUnitCompileArguments.new(
 				Path.new("File1.cpp"),
-				Path.new("obj/File1.obj"),
+				Path.new("obj/File1.o"),
 				[
 					Path.new("obj/Other1.pcm")
 				],
@@ -306,7 +318,7 @@ class ClangCompilerUnitTests {
 		]
 		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("File2.cpp"),
-			Path.new("obj/File2.obj"),
+			Path.new("obj/File2.o"),
 			[
 				Path.new("obj/Other2.pcm")
 			],
@@ -314,7 +326,7 @@ class ClangCompilerUnitTests {
 		arguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("File3.cpp"),
-				Path.new("obj/File3.obj"),
+				Path.new("obj/File3.o"),
 				[
 					Path.new("obj/Other3.pcm")
 				])
@@ -346,7 +358,7 @@ class ClangCompilerUnitTests {
 					"\"./obj/Other1.pcm\"",
 					"./File1.cpp",
 					"-o",
-					"C:/target/obj/File1.obj",
+					"C:/target/obj/File1.o",
 					"--precompile",
 					"-o",
 					"\"C:/target/obj/File1.pcm\"",
@@ -358,7 +370,7 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other1.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File1.obj"),
+					Path.new("C:/target/obj/File1.o"),
 					Path.new("C:/target/obj/File1.pcm"),
 				]),
 			BuildOperation.new(
@@ -370,11 +382,9 @@ class ClangCompilerUnitTests {
 					"-reference",
 					"\"./obj/Other2.pcm\"",
 					"./File2.cpp",
-					"-o",
-					"C:/target/obj/File2.obj",
 					"--precompile",
 					"-o",
-					"\"C:/target/obj/File2.pcm\"",
+					"C:/target/obj/File2.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -383,8 +393,22 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other2.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File2.obj"),
 					Path.new("C:/target/obj/File2.pcm"),
+				]),
+			BuildOperation.new(
+				"./obj/File2.pcm",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.cl.exe"),
+				[
+					"\"C:/target/obj/File2.pcm\"",
+					"-o",
+					"C:/target/obj/File2.o",
+				],
+				[
+					Path.new("C:/target/obj/File2.pcm"),
+				],
+				[
+					Path.new("C:/target/obj/File2.o"),
 				]),
 			BuildOperation.new(
 				"./File3.cpp",
@@ -400,7 +424,7 @@ class ClangCompilerUnitTests {
 					"\"C:/target/obj/File2.pcm\"",
 					"./File3.cpp",
 					"-o",
-					"C:/target/obj/File3.obj",
+					"C:/target/obj/File3.o",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -411,7 +435,7 @@ class ClangCompilerUnitTests {
 					Path.new("C:/target/obj/File2.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File3.obj"),
+					Path.new("C:/target/obj/File3.o"),
 				]),
 		]
 
@@ -503,7 +527,7 @@ class ClangCompilerUnitTests {
 		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -516,10 +540,10 @@ class ClangCompilerUnitTests {
 			[
 				"-o",
 				"./Library.mock.a",
-				"./File.mock.obj",
+				"./File.mock.o",
 			],
 			[
-				Path.new("File.mock.obj"),
+				Path.new("File.mock.o"),
 			],
 			[
 				Path.new("C:/target/Library.mock.a"),
@@ -543,7 +567,7 @@ class ClangCompilerUnitTests {
 		arguments.TargetFile = Path.new("Something.exe")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 		arguments.LibraryFiles = [
 			Path.new("Library.mock.a"),
@@ -560,11 +584,11 @@ class ClangCompilerUnitTests {
 				"-o",
 				"./Something.exe",
 				"./Library.mock.a",
-				"./File.mock.obj",
+				"./File.mock.o",
 			],
 			[
 				Path.new("Library.mock.a"),
-				Path.new("File.mock.obj"),
+				Path.new("File.mock.o"),
 			],
 			[
 				Path.new("C:/target/Something.exe"),
@@ -588,7 +612,7 @@ class ClangCompilerUnitTests {
 		arguments.TargetFile = Path.new("Something.exe")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 		arguments.LibraryFiles = [
 			Path.new("Library.mock.a"),
@@ -605,11 +629,11 @@ class ClangCompilerUnitTests {
 				"-o",
 				"./Something.exe",
 				"./Library.mock.a",
-				"./File.mock.obj",
+				"./File.mock.o",
 			],
 			[
 				Path.new("Library.mock.a"),
-				Path.new("File.mock.obj"),
+				Path.new("File.mock.o"),
 			],
 			[
 				Path.new("C:/target/Something.exe"),

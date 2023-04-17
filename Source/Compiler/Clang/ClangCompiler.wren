@@ -146,31 +146,54 @@ class ClangCompiler is ICompiler {
 			var interfaceUnitArguments = arguments.InterfaceUnit
 
 			// Build up the input/output sets
-			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(interfaceUnitArguments.SourceFile)
-			inputFiles.add(absoluteResponseFile)
-			inputFiles = inputFiles + interfaceUnitArguments.IncludeModules
+			var precompileInputFiles = [] + sharedInputFiles
+			precompileInputFiles.add(interfaceUnitArguments.SourceFile)
+			precompileInputFiles.add(absoluteResponseFile)
+			precompileInputFiles = precompileInputFiles + interfaceUnitArguments.IncludeModules
 
-			var outputFiles = [
-				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
+			var precompileOutputFiles = [
 				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
 			]
 
-			// Build the unique arguments for this translation unit
-			var commandArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			// Build the unique arguments to precompile this translation unit
+			var precompileArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
 				arguments.TargetRootDirectory,
 				interfaceUnitArguments,
 				absoluteResponseFile)
 
-			// Generate the operation
-			var buildOperation = BuildOperation.new(
+			// Generate the precompile operation
+			var precompileOperation = BuildOperation.new(
 				interfaceUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				commandArguments,
-				inputFiles,
-				outputFiles)
-			operations.add(buildOperation)
+				precompileArguments,
+				precompileInputFiles,
+				precompileOutputFiles)
+			operations.add(precompileOperation)
+
+			// Build the unique arguments to compile the precompiled module
+			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
+				arguments.TargetRootDirectory,
+				interfaceUnitArguments)
+
+			// Build up the input/output sets
+			var compileInputFiles = [
+				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
+			]
+
+			var compileOutputFiles = [
+				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
+			]
+
+			// Generate the compile operation
+			var compileOperation = BuildOperation.new(
+				interfaceUnitArguments.ModuleInterfaceTarget.toString,
+				arguments.SourceRootDirectory,
+				_compilerExecutable,
+				compileArguments,
+				compileInputFiles,
+				compileOutputFiles)
+			operations.add(compileOperation)
 
 			// Add our module interface back in for the downstream compilers
 			internalModules.add(arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget)

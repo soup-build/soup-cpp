@@ -135,7 +135,7 @@ class ClangArgumentBuilder {
 		return commandArguments
 	}
 
-	static BuildInterfaceUnitCompilerArguments(
+	static BuildInterfaceUnitPrecompileCompilerArguments(
 		targetRootDirectory,
 		arguments,
 		responseFile) {
@@ -154,6 +154,31 @@ class ClangArgumentBuilder {
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)
 
+		// Precompile the module interface
+		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
+
+		// Add the module interface file as outputs
+		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
+		ClangArgumentBuilder.AddFlag(
+			commandArguments,
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
+			commandArguments,
+			absoluteModuleInterfaceFile.toString)
+
+		return commandArguments
+	}
+
+	static BuildInterfaceUnitCompileCompilerArguments(
+		targetRootDirectory,
+		arguments) {
+		// Build the arguments for a standard translation unit
+		var commandArguments = []
+
+		// Reference the single precompiled interface
+		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
+		ClangArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		ClangArgumentBuilder.AddFlag(
@@ -162,13 +187,6 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
-
-		// Specify the module interface file output
-		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
-		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}

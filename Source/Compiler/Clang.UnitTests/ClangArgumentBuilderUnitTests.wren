@@ -38,8 +38,10 @@ class ClangArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_Modules()
 		System.print("ClangArgumentBuilderUnitTests.BuildPartitionUnitCompilerArguments")
 		this.BuildPartitionUnitCompilerArguments()
-		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments")
-		this.BuildInterfaceUnitCompilerArguments()
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitPrecompileCompilerArguments")
+		this.BuildInterfaceUnitPrecompileCompilerArguments()
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompileCompilerArguments")
+		this.BuildInterfaceUnitCompileCompilerArguments()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple")
 		this.BuildTranslationUnitCompilerArguments_Simple()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules")
@@ -246,8 +248,8 @@ class ClangArgumentBuilderUnitTests {
 		var targetRootDirectory = Path.new("C:/target/")
 		var arguments = InterfaceUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.obj")
-		arguments.ModuleInterfaceTarget = Path.new("module.ifc")
+		arguments.TargetFile = Path.new("module.o")
+		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
 
 		var responseFile = Path.new("ResponseFile.txt")
 
@@ -260,26 +262,26 @@ class ClangArgumentBuilderUnitTests {
 			"@./ResponseFile.txt",
 			"./module.cpp",
 			"-o",
-			"C:/target/module.obj",
+			"C:/target/module.o",
 			"--precompile",
 			"-o",
-			"\"C:/target/module.ifc\"",
+			"\"C:/target/module.pcm\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Fact]
-	BuildInterfaceUnitCompilerArguments() {
+	BuildInterfaceUnitPrecompileCompilerArguments() {
 		var targetRootDirectory = Path.new("C:/target/")
 		var arguments = InterfaceUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.obj")
-		arguments.ModuleInterfaceTarget = Path.new("module.ifc")
+		arguments.TargetFile = Path.new("module.o")
+		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
 
 		var responseFile = Path.new("ResponseFile.txt")
 
-		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
 			targetRootDirectory,
 			arguments,
 			responseFile)
@@ -287,11 +289,32 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
-			"-o",
-			"C:/target/module.obj",
 			"--precompile",
 			"-o",
-			"\"C:/target/module.ifc\"",
+			"C:/target/module.pcm",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BuildInterfaceUnitCompileCompilerArguments() {
+		var targetRootDirectory = Path.new("C:/target/")
+		var arguments = InterfaceUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("module.cpp")
+		arguments.TargetFile = Path.new("module.o")
+		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
+
+		var responseFile = Path.new("ResponseFile.txt")
+
+		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
+			targetRootDirectory,
+			arguments)
+
+		var expectedArguments = [
+			"\"C:/target/module.pcm\"",
+			"-o",
+			"C:/target/module.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -302,7 +325,7 @@ class ClangArgumentBuilderUnitTests {
 		var targetRootDirectory = Path.new("C:/target/")
 		var arguments = TranslationUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.obj")
+		arguments.TargetFile = Path.new("module.o")
 
 		var responseFile = Path.new("ResponseFile.txt")
 		var internalModules = []
@@ -317,7 +340,7 @@ class ClangArgumentBuilderUnitTests {
 			"@./ResponseFile.txt",
 			"./module.cpp",
 			"-o",
-			"C:/target/module.obj",
+			"C:/target/module.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -328,16 +351,16 @@ class ClangArgumentBuilderUnitTests {
 		var targetRootDirectory = Path.new("C:/target/")
 		var arguments = TranslationUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.obj")
+		arguments.TargetFile = Path.new("module.o")
 		arguments.IncludeModules = [
-			Path.new("Module1.ifc"),
-			Path.new("Module2.ifc"),
+			Path.new("Module1.pcm"),
+			Path.new("Module2.pcm"),
 		]
 
 		var responseFile = Path.new("ResponseFile.txt")
 		var internalModules = [
-			Path.new("Module3.ifc"),
-			Path.new("Module4.ifc"),
+			Path.new("Module3.pcm"),
+			Path.new("Module4.pcm"),
 		]
 
 		var actualArguments = ClangArgumentBuilder.BuildTranslationUnitCompilerArguments(
@@ -349,16 +372,16 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"-reference",
-			"\"./Module1.ifc\"",
+			"\"./Module1.pcm\"",
 			"-reference",
-			"\"./Module2.ifc\"",
+			"\"./Module2.pcm\"",
 			"-reference",
-			"\"./Module3.ifc\"",
+			"\"./Module3.pcm\"",
 			"-reference",
-			"\"./Module4.ifc\"",
+			"\"./Module4.pcm\"",
 			"./module.cpp",
 			"-o",
-			"C:/target/module.obj",
+			"C:/target/module.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
