@@ -176,12 +176,6 @@ class RecipeBuildTask is SoupTask {
 		var moduleInterfaceSourceFile
 		if (recipe.containsKey("Interface")) {
 			var moduleInterfaceSourceFilePath = Path.new(recipe["Interface"])
-
-			// TODO: Clang requires annoying cppm extension
-			if (compiler == "Clang") {
-				moduleInterfaceSourceFilePath.SetFileExtension("cppm")
-			}
-
 			moduleInterfaceSourceFile = moduleInterfaceSourceFilePath.toString
 		}
 

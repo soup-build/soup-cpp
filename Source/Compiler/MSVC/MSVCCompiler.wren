@@ -52,6 +52,7 @@ class MSVCCompiler is ICompiler {
 	/// TODO: This is platform specific
 	/// </summary>
 	DynamicLibraryFileExtension { "dll" }
+	DynamicLibraryLinkFileExtension { "lib" }
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler

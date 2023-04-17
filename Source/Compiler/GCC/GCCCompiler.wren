@@ -34,7 +34,7 @@ class GCCCompiler is ICompiler {
 	/// <summary>
 	/// Gets the object file extension for the compiler
 	/// </summary>
-	ObjectFileExtension { "obj" }
+	ObjectFileExtension { "o" }
 
 	/// <summary>
 	/// Gets the module file extension for the compiler
@@ -45,13 +45,14 @@ class GCCCompiler is ICompiler {
 	/// Gets the static library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	StaticLibraryFileExtension { "lib" }
+	StaticLibraryFileExtension { "a" }
 
 	/// <summary>
 	/// Gets the dynamic library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	DynamicLibraryFileExtension { "dll" }
+	DynamicLibraryFileExtension { "so" }
+	DynamicLibraryLinkFileExtension { "so" }
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler

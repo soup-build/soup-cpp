@@ -59,6 +59,7 @@ class MockCompiler is ICompiler {
 	/// TODO: This is platform specific
 	/// </summary>
 	DynamicLibraryFileExtension { "mock.dll" }
+	DynamicLibraryLinkFileExtension { "mock.link.dll" }
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler

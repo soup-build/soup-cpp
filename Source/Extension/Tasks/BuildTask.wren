@@ -201,17 +201,11 @@ class BuildTask is SoupTask {
 	static createClangCompiler {
 		return Fn.new { |activeState|
 			var clang = activeState["Clang"]
-			var clToolPath = Path.new("/usr/bin/clang++-17")
-			var linkToolPath = Path.new("/usr/bin/clang++-17")
-			var libToolPath = Path.new("")
-			var rcToolPath = Path.new("")
-			var mlToolPath = Path.new("")
+			var clangToolPath = Path.new("/usr/bin/clang++-17")
+			var archiveToolPath = Path.new("/usr/bin/ar")
 			return ClangCompiler.new(
-				clToolPath,
-				linkToolPath,
-				libToolPath,
-				rcToolPath,
-				mlToolPath)
+				clangToolPath,
+				archiveToolPath)
 		}
 	}
 

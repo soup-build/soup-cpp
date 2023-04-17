@@ -88,49 +88,16 @@ class ClangArgumentBuilder {
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
-			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			var moduleName = moduleFile.GetFileStem()
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				moduleName,
+				moduleFile.toString)
 		}
 
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
-
-		return commandArguments
-	}
-
-	static BuildResourceCompilerArguments(
-		targetRootDirectory,
-		arguments) {
-		if (arguments.ResourceFile == null) {
-			Fiber.abort("Argument null")
-		}
-
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// TODO: Defines?
-		ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "_UNICODE")
-		ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "UNICODE")
-
-		// Specify default language using language identifier
-		ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, "l", "0x0409")
-
-		// Set the include paths
-		for (directory in arguments.IncludeDirectories) {
-			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
-		}
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.ResourceFile.TargetFile
-		ClangArgumentBuilder.AddFlag(
-			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-		ClangArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
-		// Add the source file as input
-		commandArguments.add(arguments.ResourceFile.SourceFile.toString)
 
 		return commandArguments
 	}
@@ -147,9 +114,17 @@ class ClangArgumentBuilder {
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
-			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			var moduleName = moduleFile.GetFileStem()
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				moduleName,
+				moduleFile.toString)
 		}
+
+		// Clang wants to use cppm for their module files, I think this is dumb
+		ClangArgumentBuilder.AddFlag(commandArguments, "x")
+		ClangArgumentBuilder.AddValue(commandArguments, "c++-module")
 
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)
@@ -175,58 +150,25 @@ class ClangArgumentBuilder {
 		// Build the arguments for a standard translation unit
 		var commandArguments = []
 
-		// Reference the single precompiled interface
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		ClangArgumentBuilder.AddFlag(
-			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-		ClangArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
-		return commandArguments
-	}
-
-	static BuildAssemblyUnitCompilerArguments(
-		targetRootDirectory,
-		sharedArguments,
-		arguments) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		ClangArgumentBuilder.AddFlag(
-			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-		ClangArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
-		// Generate debug information
-		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
+		// Reference the single precompiled interface
+		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
+		ClangArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
-		// Enable warnings
-		ClangArgumentBuilder.AddFlag(commandArguments, "W3")
-
-		// Set the include paths
-		for (directory in sharedArguments.IncludeDirectories) {
-			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
-		}
-
-		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.toString)
+		// Add the target file as outputs
+		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
+		ClangArgumentBuilder.AddFlag(
+			commandArguments,
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
+			commandArguments,
+			absoluteTargetFile.toString)
 
 		return commandArguments
 	}
-	
+
 	static BuildPartitionUnitCompilerArguments(
 		targetRootDirectory,
 		arguments,
@@ -239,8 +181,12 @@ class ClangArgumentBuilder {
 
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
-			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			var moduleName = moduleFile.GetFileStem()
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				moduleName,
+				moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -280,14 +226,22 @@ class ClangArgumentBuilder {
 
 		// Add the internal module references as input
 		for (moduleFile in arguments.IncludeModules) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
-			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			var moduleName = moduleFile.GetFileStem()
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				moduleName,
+				moduleFile.toString)
 		}
 
 		// Add the internal module references as input
 		for (moduleFile in internalModules) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "reference")
-			ClangArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			var moduleName = moduleFile.GetFileStem()
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				moduleName,
+				moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -305,7 +259,7 @@ class ClangArgumentBuilder {
 		return commandArguments
 	}
 
-	static BuildLinkerArguments(arguments) {
+	static BuildStaticLibraryLinkerArguments(arguments) {
 		// Verify the input
 		if (arguments.TargetFile.GetFileName() == null) {
 			Fiber.abort("Target file cannot be empty.")
@@ -313,23 +267,34 @@ class ClangArgumentBuilder {
 
 		var commandArguments = []
 
-		// Calculate object output file
-		if (arguments.TargetType == LinkTarget.StaticLibrary) {
-			// Nothing to do
-		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
-			// Create a dynamic library
-			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Linker_ArgumentFlag_DLL)
+		// Create an archive
+		ClangArgumentBuilder.AddFlag(commandArguments, "r")
+		ClangArgumentBuilder.AddValue(
+			commandArguments,
+			arguments.TargetFile.toString)
 
-			// Set the output implementation library
-			ClangArgumentBuilder.AddParameterWithQuotes(
-				commandArguments,
-				ClangArgumentBuilder.Linker_ArgumentParameter_ImplementationLibrary,
-				arguments.ImplementationFile.toString)
-		} else if (arguments.TargetType == LinkTarget.Executable) {
-		} else if (arguments.TargetType == LinkTarget.WindowsApplication) {
-		} else {
-			Fiber.abort("Unknown LinkTarget.")
+		// Add the object files
+		for (file in arguments.ObjectFiles) {
+			// Add the object files as input
+			commandArguments.add(file.toString)
 		}
+
+		return commandArguments
+	}
+
+	static BuildDynamicLibraryLinkerArguments(arguments) {
+		// Verify the input
+		if (arguments.TargetFile.GetFileName() == null) {
+			Fiber.abort("Target file cannot be empty.")
+		}
+
+		var commandArguments = []
+
+		// Create a shared library
+		ClangArgumentBuilder.AddFlag(commandArguments, "shared")
+
+		// Convert absolute addresses to relative addresses
+		ClangArgumentBuilder.AddFlag(commandArguments, "fpic")
 
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
@@ -357,7 +322,59 @@ class ClangArgumentBuilder {
 		for (file in arguments.ExternalLibraryFiles) {
 			// Add the external library files as input
 			// TODO: Explicitly ignore these files from the input for now
-			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary, file.toString)
+			ClangArgumentBuilder.AddParameter(
+				commandArguments,
+				ClangArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary,
+				file.toString)
+		}
+
+		// Add the object files
+		for (file in arguments.ObjectFiles) {
+			// Add the object files as input
+			commandArguments.add(file.toString)
+		}
+
+		return commandArguments
+	}
+
+	static BuildExecutableLinkerArguments(arguments) {
+		// Verify the input
+		if (arguments.TargetFile.GetFileName() == null) {
+			Fiber.abort("Target file cannot be empty.")
+		}
+
+		var commandArguments = []
+
+		// Set the library paths
+		for (directory in arguments.LibraryPaths) {
+			ClangArgumentBuilder.AddParameterWithQuotes(
+				commandArguments,
+				ClangArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
+				directory.toString)
+		}
+
+		// Add the target as an output
+		ClangArgumentBuilder.AddFlag(
+			commandArguments,
+			ClangArgumentBuilder.Linker_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
+			commandArguments,
+			arguments.TargetFile.toString)
+
+		// Add the library files
+		for (file in arguments.LibraryFiles) {
+			// Add the library files as input
+			commandArguments.add(file.toString)
+		}
+
+		// Add the external libraries as default libraries so they are resolved last
+		for (file in arguments.ExternalLibraryFiles) {
+			// Add the external library files as input
+			// TODO: Explicitly ignore these files from the input for now
+			ClangArgumentBuilder.AddParameter(
+				commandArguments,
+				ClangArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary,
+				file.toString)
 		}
 
 		// Add the object files
@@ -395,5 +412,9 @@ class ClangArgumentBuilder {
 
 	static AddParameterWithQuotes(arguments, name, value) {
 		arguments.add("-%(name)=\"%(value)\"")
+	}
+
+	static AddDoubleParameter(arguments, name, value1, value2) {
+		arguments.add("-%(name)=%(value1)=%(value2)")
 	}
 }

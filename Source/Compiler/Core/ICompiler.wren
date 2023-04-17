@@ -32,6 +32,7 @@ class ICompiler {
 	/// TODO: This is platform specific
 	/// </summary>
 	DynamicLibraryFileExtension {}
+	DynamicLibraryLinkFileExtension {}
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler

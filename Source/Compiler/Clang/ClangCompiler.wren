@@ -15,15 +15,9 @@ import "./ClangArgumentBuilder" for ClangArgumentBuilder
 class ClangCompiler is ICompiler {
 	construct new(
 		compilerExecutable,
-		linkerExecutable,
-		libraryExecutable,
-		rcExecutable,
-		mlExecutable) {
+		archiveExecutable) {
 		_compilerExecutable = compilerExecutable
-		_linkerExecutable = linkerExecutable
-		_libraryExecutable = libraryExecutable
-		_rcExecutable = rcExecutable
-		_mlExecutable = mlExecutable
+		_archiveExecutable = archiveExecutable
 	}
 
 	/// <summary>
@@ -52,6 +46,7 @@ class ClangCompiler is ICompiler {
 	/// TODO: This is platform specific
 	/// </summary>
 	DynamicLibraryFileExtension { "so" }
+	DynamicLibraryLinkFileExtension { "so" }
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler
@@ -81,31 +76,7 @@ class ClangCompiler is ICompiler {
 
 		// Generate the resource build operation if present
 		if (arguments.ResourceFile) {
-			var resourceFileArguments = arguments.ResourceFile
-
-			// Build up the input/output sets
-			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(resourceFileArguments.SourceFile)
-			// TODO: The temp files require read access, need a way to tell build operation
-			inputFiles.add(arguments.TargetRootDirectory + Path.new("fake_file"))
-			var outputFiles = [
-				arguments.TargetRootDirectory + resourceFileArguments.TargetFile,
-			]
-
-			// Build the unique arguments for this resource file
-			var commandArguments = ClangArgumentBuilder.BuildResourceCompilerArguments(
-				arguments.TargetRootDirectory,
-				arguments)
-
-			// Generate the operation
-			var buildOperation = BuildOperation.new(
-				resourceFileArguments.SourceFile.toString,
-				arguments.SourceRootDirectory,
-				_rcExecutable,
-				commandArguments,
-				inputFiles,
-				outputFiles)
-			operations.add(buildOperation)
+			Fiber.abort("ResourceFile not supported.")
 		}
 
 		var internalModules = []
@@ -144,6 +115,10 @@ class ClangCompiler is ICompiler {
 		// Generate the interface build operation if present
 		if (arguments.InterfaceUnit) {
 			var interfaceUnitArguments = arguments.InterfaceUnit
+
+			// Clang believes that two phase builds will be faster by precompiling the modue interface
+			// and then compiling the object files
+			// TODO: This needs to be verified.
 
 			// Build up the input/output sets
 			var precompileInputFiles = [] + sharedInputFiles
@@ -230,29 +205,7 @@ class ClangCompiler is ICompiler {
 		}
 
 		for (assemblyUnitArguments in arguments.AssemblyUnits) {
-			// Build up the input/output sets
-			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(assemblyUnitArguments.SourceFile)
-
-			var outputFiles = [
-				arguments.TargetRootDirectory + assemblyUnitArguments.TargetFile,
-			]
-
-			// Build the unique arguments for this assembly unit
-			var commandArguments = ClangArgumentBuilder.BuildAssemblyUnitCompilerArguments(
-				arguments.TargetRootDirectory,
-				arguments,
-				assemblyUnitArguments)
-
-			// Generate the operation
-			var buildOperation = BuildOperation.new(
-				assemblyUnitArguments.SourceFile.toString,
-				arguments.SourceRootDirectory,
-				_mlExecutable,
-				commandArguments,
-				inputFiles,
-				outputFiles)
-			operations.add(buildOperation)
+			Fiber.abort("AssemblyUnits not supported")
 		}
 
 		return operations
@@ -264,14 +217,18 @@ class ClangCompiler is ICompiler {
 	CreateLinkOperation(arguments) {
 		// Select the correct executable for linking libraries or executables
 		var executablePath
+		var commandarguments
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
-			executablePath = _libraryExecutable
-		} else if (arguments.TargetType == LinkTarget.DynamicLibrary ||
-			arguments.TargetType == LinkTarget.Executable ||
-			arguments.TargetType == LinkTarget.WindowsApplication) {
-			executablePath = _linkerExecutable
+			executablePath = _archiveExecutable
+			commandarguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
+		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
+			executablePath = _compilerExecutable
+			commandarguments = ClangArgumentBuilder.BuildDynamicLibraryLinkerArguments(arguments)
+		} else if (arguments.TargetType == LinkTarget.Executable) {
+			executablePath = _compilerExecutable
+			commandarguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
 		} else {
-			Fiber.abort("Unknown LinkTarget.")
+			Fiber.abort("Unknown LinkTarget: %(arguments.TargetType)")
 		}
 
 		// Build the set of input/output files along with the arguments
@@ -281,7 +238,6 @@ class ClangCompiler is ICompiler {
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
-		var commandarguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
 			arguments.TargetFile.toString,

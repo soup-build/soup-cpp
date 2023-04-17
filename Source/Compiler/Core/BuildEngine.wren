@@ -241,7 +241,7 @@ class BuildEngine {
 			targetFile = arguments.BinaryDirectory +
 				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryFileExtension)
 			implementationFile = arguments.BinaryDirectory +
-				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
+				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryLinkFileExtension)
 		} else if (arguments.TargetType == BuildTargetType.Executable ||
 			arguments.TargetType == BuildTargetType.WindowsApplication) {
 			targetFile = arguments.BinaryDirectory + 
