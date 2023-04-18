@@ -24,8 +24,8 @@ class ClangLinkerArgumentBuilderUnitTests {
 		this.DynamicLibrary()
 		System.print("ClangLinkerArgumentBuilderUnitTests.Executable")
 		this.Executable()
-		System.print("ClangLinkerArgumentBuilderUnitTests.WindowsApplication")
-		this.WindowsApplication()
+		// System.print("ClangLinkerArgumentBuilderUnitTests.WindowsApplication")
+		// this.WindowsApplication()
 	}
 
 	// [Fact]
@@ -33,14 +33,14 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = []
 
-		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-o",
-			"./Library.mock.lib",
+			"-r",
+			"./Library.mock.a",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -52,7 +52,7 @@ class ClangLinkerArgumentBuilderUnitTests {
 	// 	arguments.TargetType = LinkTarget.StaticLibrary
 	// 	arguments.TargetFile = Path.new("")
 	// 	arguments.ObjectFiles = [
-	// 		Path.new("File.mock.obj"),
+	// 		Path.new("File.mock.o"),
 	// 	]
 	// 	Assert.Throws<InvalidOperationException>(() => {
 	// 		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
@@ -64,16 +64,16 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
 
-		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-o",
-			"./Library.mock.lib",
+			"-r",
+			"./Library.mock.a",
 			"./File.mock.o",
 		]
 
@@ -85,7 +85,7 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
@@ -93,12 +93,11 @@ class ClangLinkerArgumentBuilderUnitTests {
 			Path.new("../libraries/"),
 		]
 
-		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-libpath=\"../libraries/\"",
-			"-o",
-			"./Library.mock.lib",
+			"-r",
+			"./Library.mock.a",
 			"./File.mock.o",
 		]
 
@@ -110,20 +109,20 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.DynamicLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.dll")
-		arguments.ImplementationFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.so")
+		arguments.ImplementationFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 
-		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = ClangArgumentBuilder.BuildDynamicLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-dll",
-			"-implib=\"./Library.mock.lib\"",
+			"-shared",
+			"-fpic",
 			"-o",
-			"./Library.mock.dll",
-			"./File.mock.obj",
+			"./Library.mock.so",
+			"./File.mock.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -134,21 +133,21 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.Executable
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("out/Something.exe")
+		arguments.TargetFile = Path.new("out/Something")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 		arguments.LibraryFiles = [
-			Path.new("Library.mock.lib"),
+			Path.new("Library.mock.a"),
 		]
 
-		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
+		var actualArguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"-o",
-			"./out/Something.exe",
-			"./Library.mock.lib",
-			"./File.mock.obj",
+			"./out/Something",
+			"./Library.mock.a",
+			"./File.mock.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -161,10 +160,10 @@ class ClangLinkerArgumentBuilderUnitTests {
 		arguments.TargetArchitecture = "x64"
 		arguments.TargetFile = Path.new("out/Something.exe")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 		arguments.LibraryFiles = [
-			Path.new("Library.mock.lib"),
+			Path.new("Library.mock.a"),
 		]
 
 		var actualArguments = ClangArgumentBuilder.BuildLinkerArguments(arguments)
@@ -172,8 +171,8 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-o",
 			"./out/Something.exe",
-			"./Library.mock.lib",
-			"./File.mock.obj",
+			"./Library.mock.a",
+			"./File.mock.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

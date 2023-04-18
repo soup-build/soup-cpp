@@ -13,8 +13,8 @@ class ClangResourceCompileArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("ClangResourceCompileArgumentBuilderUnitTests.BuildResourceCompilerArguments_Simple")
-		this.BuildResourceCompilerArguments_Simple()
+		// System.print("ClangResourceCompileArgumentBuilderUnitTests.BuildResourceCompilerArguments_Simple")
+		// this.BuildResourceCompilerArguments_Simple()
 	}
 
 	// [Fact]

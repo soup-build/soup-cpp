@@ -43,10 +43,10 @@ class GCCCompilerUnitTests {
 			Path.new("C:/bin/mock.rc.exe"),
 			Path.new("C:/bin/mock.ml.exe"))
 		Assert.Equal("GCC", uut.Name)
-		Assert.Equal("obj", uut.ObjectFileExtension)
+		Assert.Equal("o", uut.ObjectFileExtension)
 		Assert.Equal("ifc", uut.ModuleFileExtension)
-		Assert.Equal("lib", uut.StaticLibraryFileExtension)
-		Assert.Equal("dll", uut.DynamicLibraryFileExtension)
+		Assert.Equal("a", uut.StaticLibraryFileExtension)
+		Assert.Equal("so", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
 	}
 

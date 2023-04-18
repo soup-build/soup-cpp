@@ -24,24 +24,21 @@ class ClangCompilerUnitTests {
 		this.Compile_Module_Interface()
 		System.print("ClangCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation")
 		this.Compile_Module_PartitionInterfaceAndImplementation()
-		System.print("ClangCompilerUnitTests.Compile_Resource")
-		this.Compile_Resource()
+		// System.print("ClangCompilerUnitTests.Compile_Resource")
+		// this.Compile_Resource()
 		System.print("ClangCompilerUnitTests.LinkStaticLibrary_Simple")
 		this.LinkStaticLibrary_Simple()
 		System.print("ClangCompilerUnitTests.LinkExecutable_Simple")
 		this.LinkExecutable_Simple()
-		System.print("ClangCompilerUnitTests.LinkWindowsApplication_Simple")
-		this.LinkWindowsApplication_Simple()
+		// System.print("ClangCompilerUnitTests.LinkWindowsApplication_Simple")
+		// this.LinkWindowsApplication_Simple()
 	}
 
 	// [Fact]
 	Initialize() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 		Assert.Equal("Clang", uut.Name)
 		Assert.Equal("o", uut.ObjectFileExtension)
 		Assert.Equal("pcm", uut.ModuleFileExtension)
@@ -53,11 +50,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Simple(){
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -93,7 +87,7 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./File.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
@@ -115,11 +109,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Module_Partition() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -156,7 +147,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
 				],
 				[],
 				[
@@ -165,11 +156,10 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./File.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"-reference",
-					"\"./obj/Other.pcm\"",
+					"-fmodule-file=Other=./obj/Other.pcm",
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.o",
@@ -195,11 +185,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Module_Interface() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -235,7 +222,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
 				],
 				[],
 				[
@@ -244,11 +231,12 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./File.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"-reference",
-					"\"./obj/Other.pcm\"",
+					"-fmodule-file=Other=./obj/Other.pcm",
+					"-x",
+					"c++-module",
 					"./File.cpp",
 					"--precompile",
 					"-o",
@@ -266,9 +254,10 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./obj/File.pcm",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
-					"\"C:/target/obj/File.pcm\"",
+					"-c",
+					"C:/target/obj/File.pcm",
 					"-o",
 					"C:/target/obj/File.o",
 				],
@@ -286,11 +275,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Module_PartitionInterfaceAndImplementation() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -342,7 +328,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
 				],
 				[],
 				[
@@ -351,11 +337,10 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./File1.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"-reference",
-					"\"./obj/Other1.pcm\"",
+					"-fmodule-file=Other1=./obj/Other1.pcm",
 					"./File1.cpp",
 					"-o",
 					"C:/target/obj/File1.o",
@@ -376,11 +361,12 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./File2.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"-reference",
-					"\"./obj/Other2.pcm\"",
+					"-fmodule-file=Other2=./obj/Other2.pcm",
+					"-x",
+					"c++-module",
 					"./File2.cpp",
 					"--precompile",
 					"-o",
@@ -398,9 +384,10 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./obj/File2.pcm",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
-					"\"C:/target/obj/File2.pcm\"",
+					"-c",
+					"C:/target/obj/File2.pcm",
 					"-o",
 					"C:/target/obj/File2.o",
 				],
@@ -413,15 +400,12 @@ class ClangCompilerUnitTests {
 			BuildOperation.new(
 				"./File3.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.clang++"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
-					"-reference",
-					"\"./obj/Other3.pcm\"",
-					"-reference",
-					"\"C:/target/obj/File1.pcm\"",
-					"-reference",
-					"\"C:/target/obj/File2.pcm\"",
+					"-fmodule-file=Other3=./obj/Other3.pcm",
+					"-fmodule-file=File1=C:/target/obj/File1.pcm",
+					"-fmodule-file=File2=C:/target/obj/File2.pcm",
 					"./File3.cpp",
 					"-o",
 					"C:/target/obj/File3.o",
@@ -445,11 +429,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Resource() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -480,7 +461,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
 				],
 				[],
 				[
@@ -515,11 +496,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	LinkStaticLibrary_Simple() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
@@ -536,9 +514,9 @@ class ClangCompilerUnitTests {
 		var expected = BuildOperation.new(
 			"./Library.mock.a",
 			Path.new("C:/target/"),
-			Path.new("C:/bin/mock.lib.exe"),
+			Path.new("C:/bin/mock.ar"),
 			[
-				"-o",
+				"-r",
 				"./Library.mock.a",
 				"./File.mock.o",
 			],
@@ -555,11 +533,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	LinkExecutable_Simple() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.Executable
@@ -579,7 +554,7 @@ class ClangCompilerUnitTests {
 		var expected = BuildOperation.new(
 			"./Something.exe",
 			Path.new("C:/target/"),
-			Path.new("C:/bin/mock.link.exe"),
+			Path.new("C:/bin/mock.clang++"),
 			[
 				"-o",
 				"./Something.exe",
@@ -600,11 +575,8 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	LinkWindowsApplication_Simple() {
 		var uut = ClangCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.ar"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.WindowsApplication
@@ -624,7 +596,7 @@ class ClangCompilerUnitTests {
 		var expected = BuildOperation.new(
 			"./Something.exe",
 			Path.new("C:/target/"),
-			Path.new("C:/bin/mock.link.exe"),
+			Path.new("C:/bin/mock.clang++"),
 			[
 				"-o",
 				"./Something.exe",

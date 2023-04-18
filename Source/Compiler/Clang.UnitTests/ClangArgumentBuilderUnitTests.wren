@@ -233,10 +233,8 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++11",
 			"-O0",
-			"-reference",
-			"\"./Module.pcm\"",
-			"-reference",
-			"\"./Std.pcm\"",
+			"-fmodule-file=Module=./Module.pcm",
+			"-fmodule-file=Std=./Std.pcm",
 			"-c",
 		]
 
@@ -288,6 +286,8 @@ class ClangArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"@./ResponseFile.txt",
+			"-x",
+			"c++-module",
 			"./module.cpp",
 			"--precompile",
 			"-o",
@@ -312,7 +312,8 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"\"C:/target/module.pcm\"",
+			"-c",
+			"C:/target/module.pcm",
 			"-o",
 			"C:/target/module.o",
 		]
@@ -371,14 +372,10 @@ class ClangArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"@./ResponseFile.txt",
-			"-reference",
-			"\"./Module1.pcm\"",
-			"-reference",
-			"\"./Module2.pcm\"",
-			"-reference",
-			"\"./Module3.pcm\"",
-			"-reference",
-			"\"./Module4.pcm\"",
+			"-fmodule-file=Module1=./Module1.pcm",
+			"-fmodule-file=Module2=./Module2.pcm",
+			"-fmodule-file=Module3=./Module3.pcm",
+			"-fmodule-file=Module4=./Module4.pcm",
 			"./module.cpp",
 			"-o",
 			"C:/target/module.o",
