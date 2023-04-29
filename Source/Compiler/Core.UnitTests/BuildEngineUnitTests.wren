@@ -1100,7 +1100,7 @@ class BuildEngineUnitTests {
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
 		expectedCompileModuleArguments.IncludeModules = []
-		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi")
+		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.InterfaceUnit = expectedCompileModuleArguments
 
@@ -1170,20 +1170,6 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/target/"),
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			BuildOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
@@ -1195,7 +1181,7 @@ class BuildEngineUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
 				"MockCompile: 1",
@@ -1411,7 +1397,7 @@ class BuildEngineUnitTests {
 			Path.new("C:/target/obj/TestFile1.mock.bmi"),
 			Path.new("C:/target/obj/TestFile2.mock.bmi"),
 		]
-		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi")
+		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
@@ -1473,20 +1459,6 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/target/"),
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			BuildOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
@@ -1526,7 +1498,7 @@ class BuildEngineUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
 				"MockCompile: 1",
@@ -1747,7 +1719,7 @@ class BuildEngineUnitTests {
 			Path.new("C:/target/obj/TestFile2.mock.bmi"),
 			Path.new("C:/target/obj/TestFile3.mock.bmi")
 		]
-		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi")
+		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
@@ -1805,20 +1777,6 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/target/"),
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			BuildOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
@@ -1872,7 +1830,7 @@ class BuildEngineUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
 				"MockCompile: 1",
@@ -2019,7 +1977,7 @@ class BuildEngineUnitTests {
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
 		expectedCompileModuleArguments.IncludeModules = []
-		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("obj/Public.mock.bmi")
+		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.InterfaceUnit = expectedCompileModuleArguments
 
@@ -2068,20 +2026,6 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("C:/target/"),
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			BuildOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
@@ -2093,7 +2037,7 @@ class BuildEngineUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
 				"MockLink: 1",

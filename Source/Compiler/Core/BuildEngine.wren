@@ -108,9 +108,10 @@ class BuildEngine {
 			for (file in arguments.ModuleInterfacePartitionSourceFiles) {
 				Soup.info("Generate Module Interface Partition Compile Operation: %(file.File)")
 
-				var binaryOutputModuleInterfaceFile =
-					arguments.BinaryDirectory +
-					Path.new(arguments.TargetName + "." + _compiler.ModuleFileExtension)
+				var objectModuleInterfaceFile =
+					arguments.ObjectDirectory +
+					Path.new(file.File.GetFileName())
+				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension)
 
 				var interfaceDependencyClosure = Set.new()
 				this.BuildClosure(interfaceDependencyClosure, file.File, partitionInterfaceDependencyLookup)
@@ -129,12 +130,12 @@ class BuildEngine {
 				compileFileArguments.SourceFile = file.File
 				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.File.GetFileName())
 				compileFileArguments.IncludeModules = partitionImports
-				compileFileArguments.ModuleInterfaceTarget = binaryOutputModuleInterfaceFile
+				compileFileArguments.ModuleInterfaceTarget = objectModuleInterfaceFile
 
 				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
 				compileInterfacePartitionUnits.add(compileFileArguments)
-				allPartitionInterfaces.add(arguments.TargetRootDirectory + binaryOutputModuleInterfaceFile)
+				allPartitionInterfaces.add(arguments.TargetRootDirectory + objectModuleInterfaceFile)
 			}
 
 			// Add all partition unit interface files as module dependencies since MSVC does not

@@ -367,23 +367,23 @@ class GCCArgumentBuilderUnitTests {
 	// [Fact]
 	BuildAssemblyUnitCompilerArguments_Simple() {
 		var targetRootDirectory = Path.new("C:/target/")
+		var sharedArguments = SharedCompileArguments.new()
 		var arguments = TranslationUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.asm")
-		arguments.TargetFile = Path.new("module.obj")
-
-		var responseFile = Path.new("ResponseFile.txt")
-		var internalModules = []
+		arguments.TargetFile = Path.new("module.o")
 
 		var actualArguments = GCCArgumentBuilder.BuildAssemblyUnitCompilerArguments(
 			targetRootDirectory,
-			arguments,
-			responseFile,
-			internalModules)
+			sharedArguments,
+			arguments)
 
 		var expectedArguments = [
-			"@./ResponseFile.txt",
+			"-o",
+			"C:/target/module.o",
+			"-c",
+			"-g",
+			"-W3",
 			"./module.asm",
-			"/Fo\"C:/target/module.obj\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

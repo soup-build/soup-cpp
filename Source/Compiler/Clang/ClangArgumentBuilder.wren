@@ -266,28 +266,19 @@ class ClangArgumentBuilder {
 		// Build the arguments for a standard translation unit
 		var commandArguments = []
 
-		// Disable the logo
-		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
-
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		MSVCArgumentBuilder.AddFlagValueWithQuotes(
+		ClangArgumentBuilder.AddFlagValueWithQuotes(
 			commandArguments,
-			MSVCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output,
 			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble
-		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
-
-		// Generate debug information
-		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
-
-		// Enable warnings
-		MSVCArgumentBuilder.AddFlag(commandArguments, "W3")
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
 		// Set the include paths
 		for (directory in sharedArguments.IncludeDirectories) {
-			MSVCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Add the source file as input

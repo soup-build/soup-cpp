@@ -482,23 +482,23 @@ class MSVCArgumentBuilderUnitTests {
 	// [Fact]
 	BuildAssemblyUnitCompilerArguments_Simple() {
 		var targetRootDirectory = Path.new("C:/target/")
+		var sharedArguments = SharedCompileArguments.new()
 		var arguments = TranslationUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.asm")
 		arguments.TargetFile = Path.new("module.obj")
 
-		var responseFile = Path.new("ResponseFile.txt")
-		var internalModules = []
-
 		var actualArguments = MSVCArgumentBuilder.BuildAssemblyUnitCompilerArguments(
 			targetRootDirectory,
-			arguments,
-			responseFile,
-			internalModules)
+			sharedArguments,
+			arguments)
 
 		var expectedArguments = [
-			"@./ResponseFile.txt",
-			"./module.asm",
+			"/nologo",
 			"/Fo\"C:/target/module.obj\"",
+			"/c",
+			"/Z7",
+			"/W3",
+			"./module.asm",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
