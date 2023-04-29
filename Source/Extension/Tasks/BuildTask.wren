@@ -40,6 +40,17 @@ class BuildTask is SoupTask {
 
 		var buildTable = activeState["Build"]
 
+		// Check if this build should skip this system
+		if (buildTable.containsKey("TargetSystems")) {
+			var targetSystems = buildTable["TargetSystems"]
+			var system = buildTable["System"]
+
+			if (!targetSystems.contains(system)) {
+				Soup.info("Target System is not supported: %(system)")
+				return
+			}
+		}
+
 		var arguments = BuildArguments.new()
 		arguments.TargetArchitecture = buildTable["Architecture"]
 		arguments.TargetName = buildTable["TargetName"]
