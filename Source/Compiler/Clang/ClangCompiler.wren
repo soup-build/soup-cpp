@@ -205,7 +205,29 @@ class ClangCompiler is ICompiler {
 		}
 
 		for (assemblyUnitArguments in arguments.AssemblyUnits) {
-			Fiber.abort("AssemblyUnits not supported")
+			// Build up the input/output sets
+			var inputFiles = [] + sharedInputFiles
+			inputFiles.add(assemblyUnitArguments.SourceFile)
+
+			var outputFiles = [
+				arguments.TargetRootDirectory + assemblyUnitArguments.TargetFile,
+			]
+
+			// Build the unique arguments for this assembly unit
+			var commandArguments = ClangArgumentBuilder.BuildAssemblyUnitCompilerArguments(
+				arguments.TargetRootDirectory,
+				arguments,
+				assemblyUnitArguments)
+
+			// Generate the operation
+			var buildOperation = BuildOperation.new(
+				assemblyUnitArguments.SourceFile.toString,
+				arguments.SourceRootDirectory,
+				_mlExecutable,
+				commandArguments,
+				inputFiles,
+				outputFiles)
+			operations.add(buildOperation)
 		}
 
 		return operations
