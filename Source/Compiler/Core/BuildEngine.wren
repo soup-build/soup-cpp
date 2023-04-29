@@ -150,10 +150,6 @@ class BuildEngine {
 			if (!(arguments.ModuleInterfaceSourceFile is Null)) {
 				Soup.info("Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
 
-				var objectModuleInterfaceFile =
-					arguments.ObjectDirectory +
-					Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
-				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension)
 				var binaryOutputModuleInterfaceFile =
 					arguments.BinaryDirectory +
 					Path.new(arguments.TargetName + "." + _compiler.ModuleFileExtension)
@@ -162,20 +158,12 @@ class BuildEngine {
 				compileModuleFileArguments.SourceFile = arguments.ModuleInterfaceSourceFile
 				compileModuleFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
 				compileModuleFileArguments.IncludeModules = allPartitionInterfaces
-				compileModuleFileArguments.ModuleInterfaceTarget = objectModuleInterfaceFile
+				compileModuleFileArguments.ModuleInterfaceTarget = binaryOutputModuleInterfaceFile
 
 				compileModuleFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
 				// Add the interface unit arguments to the shared build definition
 				compileArguments.InterfaceUnit = compileModuleFileArguments
-
-				// Copy the binary module interface to the binary directory after compiling
-				var copyInterfaceOperation =
-					SharedOperations.CreateCopyFileOperation(
-						arguments.TargetRootDirectory,
-						objectModuleInterfaceFile,
-						binaryOutputModuleInterfaceFile)
-				result.BuildOperations.add(copyInterfaceOperation)
 
 				// Add output module interface to the parent set of modules
 				// This will allow the module implementation units access as well as downstream
