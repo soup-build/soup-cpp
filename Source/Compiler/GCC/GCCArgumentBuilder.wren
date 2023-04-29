@@ -175,42 +175,6 @@ class GCCArgumentBuilder {
 		return commandArguments
 	}
 
-	static BuildAssemblyUnitCompilerArguments(
-		targetRootDirectory,
-		sharedArguments,
-		arguments) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlag(
-			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
-		// Only run preprocessor, compile and assemble
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
-
-		// Generate debug information
-		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
-
-		// Enable warnings
-		GCCArgumentBuilder.AddFlag(commandArguments, "W3")
-
-		// Set the include paths
-		for (directory in sharedArguments.IncludeDirectories) {
-			GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
-		}
-
-		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.toString)
-
-		return commandArguments
-	}
-	
 	static BuildPartitionUnitCompilerArguments(
 		targetRootDirectory,
 		arguments,
@@ -285,6 +249,42 @@ class GCCArgumentBuilder {
 		GCCArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
+
+		return commandArguments
+	}
+
+	static BuildAssemblyUnitCompilerArguments(
+		targetRootDirectory,
+		sharedArguments,
+		arguments) {
+		// Build the arguments for a standard translation unit
+		var commandArguments = []
+
+		// Add the target file as outputs
+		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
+		GCCArgumentBuilder.AddFlag(
+			commandArguments,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
+			absoluteTargetFile.toString)
+
+		// Only run preprocessor, compile and assemble
+		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// Generate debug information
+		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
+
+		// Enable warnings
+		GCCArgumentBuilder.AddFlag(commandArguments, "W3")
+
+		// Set the include paths
+		for (directory in sharedArguments.IncludeDirectories) {
+			GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+		}
+
+		// Add the source file as input
+		commandArguments.add(arguments.SourceFile.toString)
 
 		return commandArguments
 	}

@@ -46,6 +46,8 @@ class ClangArgumentBuilderUnitTests {
 		this.BuildTranslationUnitCompilerArguments_Simple()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules")
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
+		System.print("ClangArgumentBuilderUnitTests.BuildAssemblyUnitCompilerArguments_Simple")
+		this.BuildAssemblyUnitCompilerArguments_Simple()
 	}
 
 	// [Theory]
@@ -379,6 +381,31 @@ class ClangArgumentBuilderUnitTests {
 			"./module.cpp",
 			"-o",
 			"C:/target/module.o",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BuildAssemblyUnitCompilerArguments_Simple() {
+		var targetRootDirectory = Path.new("C:/target/")
+		var arguments = TranslationUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("module.asm")
+		arguments.TargetFile = Path.new("module.obj")
+
+		var responseFile = Path.new("ResponseFile.txt")
+		var internalModules = []
+
+		var actualArguments = ClangArgumentBuilder.BuildAssemblyUnitCompilerArguments(
+			targetRootDirectory,
+			arguments,
+			responseFile,
+			internalModules)
+
+		var expectedArguments = [
+			"@./ResponseFile.txt",
+			"./module.asm",
+			"/Fo\"C:/target/module.obj\"",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

@@ -259,6 +259,43 @@ class ClangArgumentBuilder {
 		return commandArguments
 	}
 
+	static BuildAssemblyUnitCompilerArguments(
+		targetRootDirectory,
+		sharedArguments,
+		arguments) {
+		// Build the arguments for a standard translation unit
+		var commandArguments = []
+
+		// Disable the logo
+		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
+
+		// Add the target file as outputs
+		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
+		MSVCArgumentBuilder.AddFlagValueWithQuotes(
+			commandArguments,
+			MSVCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			absoluteTargetFile.toString)
+
+		// Only run preprocessor, compile and assemble
+		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// Generate debug information
+		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
+
+		// Enable warnings
+		MSVCArgumentBuilder.AddFlag(commandArguments, "W3")
+
+		// Set the include paths
+		for (directory in sharedArguments.IncludeDirectories) {
+			MSVCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+		}
+
+		// Add the source file as input
+		commandArguments.add(arguments.SourceFile.toString)
+
+		return commandArguments
+	}
+
 	static BuildStaticLibraryLinkerArguments(arguments) {
 		// Verify the input
 		if (arguments.TargetFile.GetFileName() == null) {
