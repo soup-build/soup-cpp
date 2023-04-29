@@ -39,7 +39,9 @@ class ClangCompiler is ICompiler {
 	/// Gets the static library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	StaticLibraryFileExtension { "a" }
+	CreateStaticLibraryFileName(name) {
+		return Path.new("lib%(name).a")
+	}
 
 	/// <summary>
 	/// Gets the dynamic library file extension for the compiler

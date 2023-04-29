@@ -52,7 +52,9 @@ class MockCompiler is ICompiler {
 	/// Gets the static library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	StaticLibraryFileExtension { "mock.lib" }
+	CreateStaticLibraryFileName(name) {
+		return Path.new("%(name).mock.lib")
+	}
 
 	/// <summary>
 	/// Gets the dynamic library file extension for the compiler

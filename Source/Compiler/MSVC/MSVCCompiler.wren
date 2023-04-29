@@ -45,7 +45,9 @@ class MSVCCompiler is ICompiler {
 	/// Gets the static library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	StaticLibraryFileExtension { "lib" }
+	CreateStaticLibraryFileName(name) {
+		return Path.new("%(name).lib")
+	}
 
 	/// <summary>
 	/// Gets the dynamic library file extension for the compiler

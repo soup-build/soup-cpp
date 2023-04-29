@@ -224,7 +224,7 @@ class BuildEngine {
 		var implementationFile
 		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
 			targetFile = arguments.BinaryDirectory +
-				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
+				_compiler.CreateStaticLibraryFileName(arguments.TargetName)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			targetFile = arguments.BinaryDirectory +
 				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryFileExtension)
