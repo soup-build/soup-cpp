@@ -37,6 +37,9 @@ class ClangArgumentBuilder {
 			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
 		}
 
+		// Enable verbose output
+		// ClangArgumentBuilder.AddFlag(commandArguments, "v")
+
 		// Disabled individual warnings
 		if (arguments.EnableWarningsAsErrors) {
 			ClangArgumentBuilder.AddFlag(commandArguments, "Werror")
@@ -95,6 +98,13 @@ class ClangArgumentBuilder {
 				moduleName,
 				moduleFile.toString)
 		}
+
+		// Enable SIMD features
+		// TODO: Put behind an optional flag
+		ClangArgumentBuilder.AddFlag(commandArguments, "mpclmul")
+		ClangArgumentBuilder.AddFlag(commandArguments, "maes")
+		ClangArgumentBuilder.AddFlag(commandArguments, "msse4.1")
+		ClangArgumentBuilder.AddFlag(commandArguments, "msha")
 
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
@@ -268,9 +278,11 @@ class ClangArgumentBuilder {
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		ClangArgumentBuilder.AddFlagValueWithQuotes(
+		ClangArgumentBuilder.AddFlag(
 			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output,
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
+			commandArguments,
 			absoluteTargetFile.toString)
 
 		// Only run preprocessor, compile and assemble

@@ -223,7 +223,7 @@ class ClangCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_mlExecutable,
+				_compilerExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)

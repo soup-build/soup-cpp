@@ -167,6 +167,7 @@ class BuildTask is SoupTask {
 
 		// Initialize the compiler to use
 		var compilerName = buildTable["Compiler"]
+		Soup.info("Using Compiler: %(compilerName)")
 		if (!__compilerFactory.containsKey(compilerName)) {
 			Fiber.abort("Unknown compiler: %(compilerName)")
 		}
