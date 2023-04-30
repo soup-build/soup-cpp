@@ -251,30 +251,37 @@ class BuildEngine {
 		// Only resolve link libraries if not a library ourself
 		if (arguments.TargetType != BuildTargetType.StaticLibrary) {
 			linkArguments.ExternalLibraryFiles = arguments.PlatformLinkDependencies
-			linkArguments.LibraryFiles = arguments.LinkDependencies
+			linkArguments.StaticLibraryFiles = arguments.LinkStaticLibraries
+			linkArguments.DynamicLibraryFiles = arguments.LinkDynamicLibraries
 		}
 
 		// Translate the target type into the link target
 		// and determine what dependencies to inject into downstream builds
-
 		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
 			linkArguments.TargetType = LinkTarget.StaticLibrary
 			
 			// Add the library as a link dependency and all recursive libraries
-			result.LinkDependencies = [] + arguments.LinkDependencies
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.LinkDependencies.add(absoluteTargetFile)
+			result.LinkStaticLibraries = arguments.LinkStaticLibraries
+			result.LinkDynamicLibraries = arguments.LinkDynamicLibraries
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.LinkStaticLibraries.add(absoluteTargetFile)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			linkArguments.TargetType = LinkTarget.DynamicLibrary
 
 			// Add the DLL as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// Clear out all previous link dependencies and replace with the 
 			// single implementation library for the DLL
-			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ? linkArguments.ImplementationFile : linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
-			result.LinkDependencies.add(absoluteImplementationFile)
+			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ?
+				linkArguments.ImplementationFile :
+				linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
+			result.DynamicLinkDependencies.add(absoluteImplementationFile)
 
 			// Set the targe file
 			result.TargetFile = absoluteTargetFile
@@ -354,7 +361,6 @@ class BuildEngine {
 
 		// Pass along the link arguments for internal access
 		result.InternalLinkDependencies = []
-		result.InternalLinkDependencies = result.InternalLinkDependencies + arguments.LinkDependencies
 		for (file in linkArguments.ObjectFiles) {
 			result.InternalLinkDependencies.add(file)
 		}

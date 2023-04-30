@@ -332,7 +332,11 @@ class GCCArgumentBuilder {
 			arguments.TargetFile.toString)
 
 		// Add the library files
-		for (file in arguments.LibraryFiles) {
+		for (file in arguments.StaticLibraryFiles) {
+			// Add the library files as input
+			commandArguments.add(file.toString)
+		}
+		for (file in arguments.DynamicLibraryFiles) {
 			// Add the library files as input
 			commandArguments.add(file.toString)
 		}

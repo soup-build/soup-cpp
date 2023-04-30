@@ -107,12 +107,16 @@ class BuildTask is SoupTask {
 			arguments.PlatformLinkDependencies = ListExtensions.ConvertToPathList(buildTable["PlatformLibraries"])
 		}
 
-		if (buildTable.containsKey("LinkLibraries")) {
-			arguments.LinkDependencies = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["LinkLibraries"]))
-		}
-
 		if (buildTable.containsKey("LibraryPaths")) {
 			arguments.LibraryPaths = ListExtensions.ConvertToPathList(buildTable["LibraryPaths"])
+		}
+
+		if (buildTable.containsKey("LinkStaticLibraries")) {
+			arguments.LinkStaticLibraries = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["LinkStaticLibraries"]))
+		}
+
+		if (buildTable.containsKey("LinkDynamicLibraries")) {
+			arguments.LinkDynamicLibraries = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["LinkDynamicLibraries"]))
 		}
 
 		if (buildTable.containsKey("PreprocessorDefinitions")) {
@@ -134,13 +138,6 @@ class BuildTask is SoupTask {
 		// Load the runtime dependencies
 		if (buildTable.containsKey("RuntimeDependencies")) {
 			arguments.RuntimeDependencies = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["RuntimeDependencies"]))
-		}
-
-		// Load the link dependencies
-		if (buildTable.containsKey("LinkDependencies")) {
-			arguments.LinkDependencies = BuildTask.CombineUnique(
-				arguments.LinkDependencies,
-				ListExtensions.ConvertToPathList(buildTable["LinkDependencies"]))
 		}
 
 		// Load the module references
@@ -184,7 +181,8 @@ class BuildTask is SoupTask {
 		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
 		sharedBuildTable["ModuleDependencies"] = ListExtensions.ConvertFromPathList(buildResult.ModuleDependencies)
 		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
-		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
+		sharedBuildTable["LinkStaticLibraries"] = ListExtensions.ConvertFromPathList(buildResult.LinkStaticLibraries)
+		sharedBuildTable["LinkDynamicLibraries"] = ListExtensions.ConvertFromPathList(buildResult.LinkDynamicLibraries)
 
 		if (!(buildResult.TargetFile is Null)) {
 			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
@@ -214,7 +212,7 @@ class BuildTask is SoupTask {
 		return Fn.new { |activeState|
 			var clang = activeState["Clang"]
 			var clangToolPath = Path.new("/usr/bin/clang++-17")
-			var archiveToolPath = Path.new("/usr/bin/ar")
+			var archiveToolPath = Path.new("/usr/bin/llvm-ar-17")
 			return ClangCompiler.new(
 				clangToolPath,
 				archiveToolPath)
