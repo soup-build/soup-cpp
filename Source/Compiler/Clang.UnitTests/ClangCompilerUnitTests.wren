@@ -42,7 +42,7 @@ class ClangCompilerUnitTests {
 		Assert.Equal("Clang", uut.Name)
 		Assert.Equal("o", uut.ObjectFileExtension)
 		Assert.Equal("pcm", uut.ModuleFileExtension)
-		Assert.Equal("a", uut.StaticLibraryFileExtension)
+		Assert.Equal(Path.new("libTest.a"), uut.CreateStaticLibraryFileName("Test"))
 		Assert.Equal("so", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
 	}
@@ -78,7 +78,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -c",
+					"-std=c++11 -O0 -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -147,7 +147,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -222,7 +222,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -328,7 +328,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -461,7 +461,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[

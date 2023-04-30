@@ -67,6 +67,10 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			expectedFlag,
 			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -85,6 +89,10 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++20",
 			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -103,6 +111,10 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++17",
 			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -125,6 +137,10 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-std=c++17",
 			expectedFlag,
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -145,6 +161,10 @@ class ClangArgumentBuilderUnitTests {
 			"-Werror",
 			"-std=c++17",
 			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -165,6 +185,10 @@ class ClangArgumentBuilderUnitTests {
 			"-g",
 			"-std=c++17",
 			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -189,6 +213,10 @@ class ClangArgumentBuilderUnitTests {
 			"-O0",
 			"-I\"C:/Files/SDK/\"",
 			"-I\"./my files/\"",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -213,6 +241,10 @@ class ClangArgumentBuilderUnitTests {
 			"-O0",
 			"-DDEBUG",
 			"-DVERSION=1",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -237,6 +269,10 @@ class ClangArgumentBuilderUnitTests {
 			"-O0",
 			"-fmodule-file=Module=./Module.pcm",
 			"-fmodule-file=Std=./Std.pcm",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
 			"-c",
 		]
 
@@ -400,7 +436,8 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
-			"-o\"C:/target/module.o\"",
+			"-o",
+			"C:/target/module.o",
 			"-c",
 			"./module.asm",
 		]

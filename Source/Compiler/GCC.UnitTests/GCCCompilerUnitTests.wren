@@ -45,7 +45,7 @@ class GCCCompilerUnitTests {
 		Assert.Equal("GCC", uut.Name)
 		Assert.Equal("o", uut.ObjectFileExtension)
 		Assert.Equal("ifc", uut.ModuleFileExtension)
-		Assert.Equal("a", uut.StaticLibraryFileExtension)
+		Assert.Equal(Path.new("libTest.a"), uut.CreateStaticLibraryFileName("Test"))
 		Assert.Equal("so", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
 	}

@@ -74,6 +74,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -219,6 +220,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -375,6 +377,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -590,6 +593,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
@@ -837,6 +841,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
@@ -1102,6 +1107,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
