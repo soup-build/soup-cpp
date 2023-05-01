@@ -33,14 +33,14 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = []
 
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"-o",
-			"./Library.mock.lib",
+			"./Library.mock.a",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -52,7 +52,7 @@ class GCCLinkerArgumentBuilderUnitTests {
 	// 	arguments.TargetType = LinkTarget.StaticLibrary
 	// 	arguments.TargetFile = Path.new("")
 	// 	arguments.ObjectFiles = [
-	// 		Path.new("File.mock.obj"),
+	// 		Path.new("File.mock.o"),
 	// 	]
 	// 	Assert.Throws<InvalidOperationException>(() => {
 	// 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
@@ -64,7 +64,7 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
@@ -73,7 +73,7 @@ class GCCLinkerArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"-o",
-			"./Library.mock.lib",
+			"./Library.mock.a",
 			"./File.mock.o",
 		]
 
@@ -85,7 +85,7 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
@@ -98,7 +98,7 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-libpath=\"../libraries/\"",
 			"-o",
-			"./Library.mock.lib",
+			"./Library.mock.a",
 			"./File.mock.o",
 		]
 
@@ -111,19 +111,19 @@ class GCCLinkerArgumentBuilderUnitTests {
 		arguments.TargetType = LinkTarget.DynamicLibrary
 		arguments.TargetArchitecture = "x64"
 		arguments.TargetFile = Path.new("Library.mock.dll")
-		arguments.ImplementationFile = Path.new("Library.mock.lib")
+		arguments.ImplementationFile = Path.new("Library.mock.a")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
 
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var expectedArguments = [
 			"-dll",
-			"-implib=\"./Library.mock.lib\"",
+			"-implib=\"./Library.mock.a\"",
 			"-o",
 			"./Library.mock.dll",
-			"./File.mock.obj",
+			"./File.mock.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -136,10 +136,13 @@ class GCCLinkerArgumentBuilderUnitTests {
 		arguments.TargetArchitecture = "x64"
 		arguments.TargetFile = Path.new("out/Something.exe")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
-		arguments.LibraryFiles = [
-			Path.new("Library.mock.lib"),
+		arguments.StaticLibraryNames = [
+			"Library",
+		]
+		arguments.StaticLibraryFiles = [
+			Path.new("libLibrary.mock.a"),
 		]
 
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
@@ -147,8 +150,8 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-o",
 			"./out/Something.exe",
-			"./Library.mock.lib",
-			"./File.mock.obj",
+			"./libLibrary.mock.a",
+			"./File.mock.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -161,10 +164,10 @@ class GCCLinkerArgumentBuilderUnitTests {
 		arguments.TargetArchitecture = "x64"
 		arguments.TargetFile = Path.new("out/Something.exe")
 		arguments.ObjectFiles = [
-			Path.new("File.mock.obj"),
+			Path.new("File.mock.o"),
 		]
-		arguments.LibraryFiles = [
-			Path.new("Library.mock.lib"),
+		arguments.StaticLibraryFiles = [
+			Path.new("libLibrary.mock.a"),
 		]
 
 		var actualArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
@@ -172,8 +175,8 @@ class GCCLinkerArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-o",
 			"./out/Something.exe",
-			"./Library.mock.lib",
-			"./File.mock.obj",
+			"./libLibrary.mock.a",
+			"./File.mock.o",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

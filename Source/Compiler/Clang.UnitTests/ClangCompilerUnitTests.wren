@@ -516,7 +516,7 @@ class ClangCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.ar"),
 			[
-				"-r",
+				"rc",
 				"./Library.mock.a",
 				"./File.mock.o",
 			],
@@ -544,8 +544,14 @@ class ClangCompilerUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
-		arguments.LibraryFiles = [
-			Path.new("Library.mock.a"),
+		arguments.StaticLibraryNames = [
+			"Library",
+		]
+		arguments.StaticLibraryFiles = [
+			Path.new("bin/libLibrary.mock.a"),
+		]
+		arguments.LibraryPaths = [
+			Path.new("bin/"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -556,13 +562,14 @@ class ClangCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.clang++"),
 			[
+				"-L./bin/",
 				"-o",
 				"./Something.exe",
-				"./Library.mock.a",
+				"-lLibrary",
 				"./File.mock.o",
 			],
 			[
-				Path.new("Library.mock.a"),
+				Path.new("bin/libLibrary.mock.a"),
 				Path.new("File.mock.o"),
 			],
 			[
@@ -586,8 +593,14 @@ class ClangCompilerUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
-		arguments.LibraryFiles = [
-			Path.new("Library.mock.a"),
+		arguments.StaticLibraryNames = [
+			"Library",
+		]
+		arguments.StaticLibraryFiles = [
+			Path.new("bin/libLibrary.mock.a"),
+		]
+		arguments.LibraryPaths = [
+			Path.new("bin/"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -600,7 +613,7 @@ class ClangCompilerUnitTests {
 			[
 				"-o",
 				"./Something.exe",
-				"./Library.mock.a",
+				"-lLibrary",
 				"./File.mock.o",
 			],
 			[

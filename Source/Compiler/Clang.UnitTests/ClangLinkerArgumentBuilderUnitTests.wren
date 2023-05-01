@@ -39,7 +39,7 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var actualArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-r",
+			"rc",
 			"./Library.mock.a",
 		]
 
@@ -72,7 +72,7 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var actualArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-r",
+			"rc",
 			"./Library.mock.a",
 			"./File.mock.o",
 		]
@@ -96,7 +96,7 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var actualArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 
 		var expectedArguments = [
-			"-r",
+			"rc",
 			"./Library.mock.a",
 			"./File.mock.o",
 		]
@@ -137,16 +137,22 @@ class ClangLinkerArgumentBuilderUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.o"),
 		]
-		arguments.LibraryFiles = [
-			Path.new("Library.mock.a"),
+		arguments.StaticLibraryNames = [
+			"Library",
 		]
-
+		arguments.StaticLibraryFiles = [
+			Path.new("bin/libLibrary.mock.a"),
+		]
+		arguments.LibraryPaths = [
+			Path.new("bin/"),
+		]
 		var actualArguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
 
 		var expectedArguments = [
+			"-L./bin/",
 			"-o",
 			"./out/Something",
-			"./Library.mock.a",
+			"-lLibrary",
 			"./File.mock.o",
 		]
 
