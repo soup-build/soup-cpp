@@ -401,6 +401,12 @@ class ClangArgumentBuilder {
 			commandArguments,
 			arguments.TargetFile.toString)
 
+		// Add the object files
+		for (file in arguments.ObjectFiles) {
+			// Add the object files as input
+			commandArguments.add(file.toString)
+		}
+
 		// Add the library files
 		for (file in arguments.LibraryFiles) {
 			// Add the library files as input
@@ -415,12 +421,6 @@ class ClangArgumentBuilder {
 				commandArguments,
 				ClangArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary,
 				file.toString)
-		}
-
-		// Add the object files
-		for (file in arguments.ObjectFiles) {
-			// Add the object files as input
-			commandArguments.add(file.toString)
 		}
 
 		return commandArguments
