@@ -256,25 +256,32 @@ class BuildEngine {
 
 		// Translate the target type into the link target
 		// and determine what dependencies to inject into downstream builds
-
 		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
 			linkArguments.TargetType = LinkTarget.StaticLibrary
 			
 			// Add the library as a link dependency and all recursive libraries
+			// Ensure we link this library before the other dependencies
 			result.LinkDependencies = [] + arguments.LinkDependencies
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.LinkDependencies.add(absoluteTargetFile)
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.LinkDependencies.insert(0, absoluteTargetFile)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			linkArguments.TargetType = LinkTarget.DynamicLibrary
 
 			// Add the DLL as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// Clear out all previous link dependencies and replace with the 
 			// single implementation library for the DLL
-			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ? linkArguments.ImplementationFile : linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
-			result.LinkDependencies.add(absoluteImplementationFile)
+			// Ensure we link this library before the other dependencies
+			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ?
+				linkArguments.ImplementationFile :
+				linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
+			result.LinkDependencies.insert(0, absoluteImplementationFile)
 
 			// Set the targe file
 			result.TargetFile = absoluteTargetFile
@@ -282,7 +289,9 @@ class BuildEngine {
 			linkArguments.TargetType = LinkTarget.Executable
 
 			// Add the Executable as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// All link dependencies stop here.
@@ -293,7 +302,9 @@ class BuildEngine {
 			linkArguments.TargetType = LinkTarget.WindowsApplication
 
 			// Add the Executable as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// All link dependencies stop here.
