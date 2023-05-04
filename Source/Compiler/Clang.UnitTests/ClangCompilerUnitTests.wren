@@ -558,8 +558,8 @@ class ClangCompilerUnitTests {
 			[
 				"-o",
 				"./Something.exe",
-				"./Library.mock.a",
 				"./File.mock.o",
+				"./Library.mock.a",
 			],
 			[
 				Path.new("Library.mock.a"),

@@ -146,8 +146,8 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-o",
 			"./out/Something",
-			"./Library.mock.a",
 			"./File.mock.o",
+			"./Library.mock.a",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
