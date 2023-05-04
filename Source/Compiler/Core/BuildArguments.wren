@@ -106,7 +106,6 @@ class BuildArguments {
 		_includeDirectories = []
 		_moduleDependencies = []
 		_platformLinkDependencies = []
-		_linkStaticLibraryNames = []
 		_linkStaticLibraries = []
 		_linkDynamicLibraries = []
 		_libraryPaths = []
@@ -232,8 +231,6 @@ class BuildArguments {
 	/// <summary>
 	/// Gets or sets the list of link libraries
 	/// </summary>
-	LinkStaticLibraryNames { _linkStaticLibraryNames }
-	LinkStaticLibraryNames=(value) { _linkStaticLibraryNames = value }
 	LinkStaticLibraries { _linkStaticLibraries }
 	LinkStaticLibraries=(value) { _linkStaticLibraries = value }
 

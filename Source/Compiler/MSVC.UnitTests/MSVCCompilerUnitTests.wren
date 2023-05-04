@@ -494,7 +494,7 @@ class MSVCCompilerUnitTests {
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
 		arguments.TargetArchitecture = "x64"
-		arguments.TargetFile = Path.new("Library.mock.lib")
+		arguments.TargetFile = Path.new("Library.mock.a")
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
@@ -504,21 +504,21 @@ class MSVCCompilerUnitTests {
 
 		// Verify result
 		var expected = BuildOperation.new(
-			"./Library.mock.lib",
+			"./Library.mock.a",
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.lib.exe"),
 			[
 				"/nologo",
 				"/INCREMENTAL:NO",
 				"/machine:X64",
-				"/out:\"./Library.mock.lib\"",
+				"/out:\"./Library.mock.a\"",
 				"./File.mock.obj",
 			],
 			[
 				Path.new("File.mock.obj"),
 			],
 			[
-				Path.new("C:/target/Library.mock.lib"),
+				Path.new("C:/target/Library.mock.a"),
 			])
 
 		Assert.Equal(expected, result)
@@ -541,8 +541,8 @@ class MSVCCompilerUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
 		]
-		arguments.StaticLibraryFiles = [
-			Path.new("libLibrary.mock.lib"),
+		arguments.LibraryFiles = [
+			Path.new("Library.mock.a"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -558,11 +558,11 @@ class MSVCCompilerUnitTests {
 				"/subsystem:console",
 				"/machine:X64",
 				"/out:\"./Something.exe\"",
-				"./libLibrary.mock.lib",
+				"./Library.mock.a",
 				"./File.mock.obj",
 			],
 			[
-				Path.new("libLibrary.mock.lib"),
+				Path.new("Library.mock.a"),
 				Path.new("File.mock.obj"),
 			],
 			[
@@ -589,8 +589,8 @@ class MSVCCompilerUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
 		]
-		arguments.StaticLibraryFiles = [
-			Path.new("Library.mock.lib"),
+		arguments.LibraryFiles = [
+			Path.new("Library.mock.a"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -606,11 +606,11 @@ class MSVCCompilerUnitTests {
 				"/subsystem:windows",
 				"/machine:X64",
 				"/out:\"./Something.exe\"",
-				"./Library.mock.lib",
+				"./Library.mock.a",
 				"./File.mock.obj",
 			],
 			[
-				Path.new("Library.mock.lib"),
+				Path.new("Library.mock.a"),
 				Path.new("File.mock.obj"),
 			],
 			[

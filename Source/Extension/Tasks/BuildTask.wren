@@ -111,10 +111,6 @@ class BuildTask is SoupTask {
 			arguments.LibraryPaths = ListExtensions.ConvertToPathList(buildTable["LibraryPaths"])
 		}
 
-		if (buildTable.containsKey("LinkStaticLibraryNames")) {
-			arguments.LinkStaticLibraryNames = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["LinkStaticLibraryNames"]))
-		}
-
 		if (buildTable.containsKey("LinkStaticLibraries")) {
 			arguments.LinkStaticLibraries = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["LinkStaticLibraries"]))
 		}
@@ -185,7 +181,6 @@ class BuildTask is SoupTask {
 		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
 		sharedBuildTable["ModuleDependencies"] = ListExtensions.ConvertFromPathList(buildResult.ModuleDependencies)
 		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
-		sharedBuildTable["LinkStaticLibraryNames"] = ListExtensions.ConvertFromPathList(buildResult.LinkStaticLibraryNames)
 		sharedBuildTable["LinkStaticLibraries"] = ListExtensions.ConvertFromPathList(buildResult.LinkStaticLibraries)
 		sharedBuildTable["LinkDynamicLibraries"] = ListExtensions.ConvertFromPathList(buildResult.LinkDynamicLibraries)
 

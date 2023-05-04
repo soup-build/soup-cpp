@@ -80,9 +80,9 @@ class BuildEngineUnitTests {
 			Path.new("TestFile.cpp"),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		var uut = BuildEngine.new(compiler)
@@ -121,9 +121,9 @@ class BuildEngineUnitTests {
 		expectedLinkArguments.ObjectFiles = [
 			Path.new("obj/TestFile.mock.obj"),
 		]
-		expectedLinkArguments.StaticLibraryFiles = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		expectedLinkArguments.LibraryFiles = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		// Verify expected compiler calls
@@ -197,11 +197,7 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[
@@ -244,9 +240,9 @@ class BuildEngineUnitTests {
 		]
 		arguments.ResourceFile = Path.new("Resources.rc")
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		var uut = BuildEngine.new(compiler)
@@ -290,9 +286,9 @@ class BuildEngineUnitTests {
 			Path.new("obj/Resources.mock.res"),
 			Path.new("obj/TestFile.mock.obj"),
 		]
-		expectedLinkArguments.StaticLibraryFiles = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		expectedLinkArguments.LibraryFiles = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		// Verify expected compiler calls
@@ -368,11 +364,7 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[
@@ -414,9 +406,9 @@ class BuildEngineUnitTests {
 			Path.new("TestFile.cpp"),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		var uut = BuildEngine.new(compiler)
@@ -454,9 +446,9 @@ class BuildEngineUnitTests {
 		expectedLinkArguments.ObjectFiles = [
 				Path.new("obj/TestFile.mock.obj"),
 		]
-		expectedLinkArguments.StaticLibraryFiles = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		expectedLinkArguments.LibraryFiles = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		// Verify expected compiler calls
@@ -532,11 +524,7 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[
@@ -597,9 +585,9 @@ class BuildEngineUnitTests {
 			Path.new("../Other/bin/OtherModule1.mock.bmi"),
 			Path.new("../OtherModule2.mock.bmi"),
 		]
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		var uut = BuildEngine.new(compiler)
@@ -651,7 +639,7 @@ class BuildEngineUnitTests {
 		]
 
 		// Note: There is no need to send along the static libraries for a static library linking
-		expectedLinkArguments.StaticLibraryFiles = []
+		expectedLinkArguments.LibraryFiles = []
 
 		// Verify expected compiler calls
 		Assert.ListEqual(
@@ -769,15 +757,11 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
-				Path.new("../Other/bin/OtherModule1.mock.lib"),
-				Path.new("../OtherModule2.mock.lib"),
+				Path.new("../Other/bin/OtherModule1.mock.a"),
+				Path.new("../OtherModule2.mock.a"),
 				Path.new("C:/target/bin/Library.mock.lib"),
 			],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[],
@@ -831,9 +815,9 @@ class BuildEngineUnitTests {
 			Path.new("../Other/bin/OtherModule1.mock.bmi"),
 			Path.new("../OtherModule2.mock.bmi"),
 		]
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		var uut = BuildEngine.new(compiler)
@@ -896,7 +880,7 @@ class BuildEngineUnitTests {
 		]
 
 		// Note: There is no need to send along the static libraries for a static library linking
-		expectedLinkArguments.StaticLibraryFiles = []
+		expectedLinkArguments.LibraryFiles = []
 
 		// Verify expected compiler calls
 		Assert.ListEqual(
@@ -1001,15 +985,11 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
-				Path.new("../Other/bin/OtherModule1.mock.lib"),
-				Path.new("../OtherModule2.mock.lib"),
+				Path.new("../Other/bin/OtherModule1.mock.a"),
+				Path.new("../OtherModule2.mock.a"),
 				Path.new("C:/target/bin/Library.mock.lib"),
 			],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[],
@@ -1071,9 +1051,9 @@ class BuildEngineUnitTests {
 			Path.new("../Other/bin/OtherModule1.mock.bmi"),
 			Path.new("../OtherModule2.mock.bmi"),
 		]
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
@@ -1271,15 +1251,11 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
-				Path.new("../Other/bin/OtherModule1.mock.lib"),
-				Path.new("../OtherModule2.mock.lib"),
+				Path.new("../Other/bin/OtherModule1.mock.a"),
+				Path.new("../OtherModule2.mock.a"),
 				Path.new("C:/target/bin/Library.mock.lib"),
 			],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[],
@@ -1350,9 +1326,9 @@ class BuildEngineUnitTests {
 			Path.new("../Other/bin/OtherModule1.mock.bmi"),
 			Path.new("../OtherModule2.mock.bmi"),
 		]
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
@@ -1581,15 +1557,11 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
-				Path.new("../Other/bin/OtherModule1.mock.lib"),
-				Path.new("../OtherModule2.mock.lib"),
+				Path.new("../Other/bin/OtherModule1.mock.a"),
+				Path.new("../OtherModule2.mock.a"),
 				Path.new("C:/target/bin/Library.mock.lib"),
 			],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[],
@@ -1664,9 +1636,9 @@ class BuildEngineUnitTests {
 			Path.new("../Other/bin/OtherModule1.mock.bmi"),
 			Path.new("../OtherModule2.mock.bmi"),
 		]
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
@@ -1905,15 +1877,11 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
-				Path.new("../Other/bin/OtherModule1.mock.lib"),
-				Path.new("../OtherModule2.mock.lib"),
+				Path.new("../Other/bin/OtherModule1.mock.a"),
+				Path.new("../OtherModule2.mock.a"),
 				Path.new("C:/target/bin/Library.mock.lib"),
 			],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[],
@@ -1971,9 +1939,9 @@ class BuildEngineUnitTests {
 			Path.new("../Other/bin/OtherModule1.mock.bmi"),
 			Path.new("../OtherModule2.mock.bmi"),
 		]
-		arguments.LinkStaticLibraries = [
-			Path.new("../Other/bin/OtherModule1.mock.lib"),
-			Path.new("../OtherModule2.mock.lib"),
+		arguments.LinkDependencies = [
+			Path.new("../Other/bin/OtherModule1.mock.a"),
+			Path.new("../OtherModule2.mock.a"),
 		]
 
 		var uut = BuildEngine.new(compiler)
@@ -2100,15 +2068,11 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
-				Path.new("../Other/bin/OtherModule1.mock.lib"),
-				Path.new("../OtherModule2.mock.lib"),
+				Path.new("../Other/bin/OtherModule1.mock.a"),
+				Path.new("../OtherModule2.mock.a"),
 				Path.new("C:/target/bin/Library.mock.lib"),
 			],
-			result.LinkStaticLibraries)
-
-		Assert.ListEqual(
-			[],
-			result.LinkDynamicLibraries)
+			result.LinkDependencies)
 
 		Assert.ListEqual(
 			[],

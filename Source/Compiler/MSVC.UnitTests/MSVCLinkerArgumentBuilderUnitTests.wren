@@ -147,7 +147,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
 		]
-		arguments.StaticLibraryFiles = [
+		arguments.LibraryFiles = [
 			Path.new("Library.mock.lib"),
 		]
 
@@ -175,7 +175,7 @@ class MSVCLinkerArgumentBuilderUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
 		]
-		arguments.StaticLibraryFiles = [
+		arguments.LibraryFiles = [
 			Path.new("Library.mock.lib"),
 		]
 

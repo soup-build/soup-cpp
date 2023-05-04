@@ -251,7 +251,6 @@ class BuildEngine {
 		// Only resolve link libraries if not a library ourself
 		if (arguments.TargetType != BuildTargetType.StaticLibrary) {
 			linkArguments.ExternalLibraryFiles = arguments.PlatformLinkDependencies
-			linkArguments.StaticLibraryNames = arguments.LinkStaticLibraryNames
 			linkArguments.StaticLibraryFiles = arguments.LinkStaticLibraries
 			linkArguments.DynamicLibraryFiles = arguments.LinkDynamicLibraries
 		}
@@ -262,13 +261,11 @@ class BuildEngine {
 			linkArguments.TargetType = LinkTarget.StaticLibrary
 			
 			// Add the library as a link dependency and all recursive libraries
-			result.LinkStaticLibraryNames = arguments.LinkStaticLibraryNames
 			result.LinkStaticLibraries = arguments.LinkStaticLibraries
 			result.LinkDynamicLibraries = arguments.LinkDynamicLibraries
 			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
 				linkArguments.TargetFile :
 				linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.LinkStaticLibraryNames.add(arguments.TargetName)
 			result.LinkStaticLibraries.add(absoluteTargetFile)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			linkArguments.TargetType = LinkTarget.DynamicLibrary

@@ -66,13 +66,6 @@ class ResolveDependenciesTask is SoupTask {
 								libraryPaths)
 						}
 
-						if (dependencyBuildTable.containsKey("LinkStaticLibraryNames")) {
-							var linkStaticLibraryNames = dependencyBuildTable["LinkStaticLibraryNames"]
-							ListExtensions.Append(
-								MapExtensions.EnsureList(buildTable, "LinkStaticLibraryNames"),
-								linkStaticLibraryNames)
-						}
-
 						if (dependencyBuildTable.containsKey("LinkStaticLibraries")) {
 							var linkStaticLibraries = dependencyBuildTable["LinkStaticLibraries"]
 							ListExtensions.Append(

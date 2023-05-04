@@ -9,7 +9,6 @@ class BuildResult {
 	construct new() {
 		_buildOperations = []
 		_moduleDependencies = []
-		_linkStaticLibraryNames = []
 		_linkStaticLibraries = []
 		_linkDynamicLibraries = []
 		_linkDyn = []
@@ -33,8 +32,6 @@ class BuildResult {
 	/// <summary>
 	/// Gets or sets the list of link static libraries that downstream builds should use when linking
 	/// </summary>
-	LinkStaticLibraryNames { _linkStaticLibraryNames }
-	LinkStaticLibraryNames=(value) { _linkStaticLibraryNames = value }
 	LinkStaticLibraries { _linkStaticLibraries }
 	LinkStaticLibraries=(value) { _linkStaticLibraries = value }
 

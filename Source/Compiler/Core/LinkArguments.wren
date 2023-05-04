@@ -40,7 +40,6 @@ class LinkArguments {
 		_targetRootDirectory = null
 		_targetArchitecture = null
 		_objectFiles = []
-		_staticLibraryNames = []
 		_staticLibraryFiles = []
 		_dynamicLibraryFiles = []
 		_externalLibraryFiles = []
@@ -87,8 +86,6 @@ class LinkArguments {
 	/// <summary>
 	/// Gets or sets the list of static library files
 	/// </summary>
-	StaticLibraryNames { _staticLibraryNames }
-	StaticLibraryNames=(value) { _staticLibraryNames = value }
 	StaticLibraryFiles { _staticLibraryFiles }
 	StaticLibraryFiles=(value) { _staticLibraryFiles = value }
 
@@ -128,7 +125,6 @@ class LinkArguments {
 			this.TargetRootDirectory == other.TargetRootDirectory &&
 			this.TargetArchitecture == other.TargetArchitecture &&
 			ListExtensions.SequenceEqual(this.ObjectFiles, other.ObjectFiles) &&
-			ListExtensions.SequenceEqual(this.StaticLibraryNames, other.StaticLibraryNames) &&
 			ListExtensions.SequenceEqual(this.StaticLibraryFiles, other.StaticLibraryFiles) &&
 			ListExtensions.SequenceEqual(this.DynamicLibraryFiles, other.DynamicLibraryFiles) &&
 			ListExtensions.SequenceEqual(this.ExternalLibraryFiles, other.ExternalLibraryFiles) &&
@@ -137,6 +133,6 @@ class LinkArguments {
 	}
 
 	toString {
-		return "LinkArguments { TargetFile=%(_targetFile), TargetType=%(_targetType), ImplementationFile=%(_implementationFile), TargetRootDirectory=%(_targetRootDirectory), TargetArchitecture=%(_targetArchitecture), ObjectFiles=%(_objectFiles), StaticLibraryNames=%(_staticLibraryNames), StaticLibraryFiles=%(_staticLibraryFiles), DynamicLibraryFiles=%(_dynamicLibraryFiles), ExternalLibraryFiles=%(_externalLibraryFiles), LibraryPaths=%(_libraryPaths), GenerateSourceDebugInfo=%(_generateSourceDebugInfo) }"
+		return "LinkArguments { TargetFile=%(_targetFile), TargetType=%(_targetType), ImplementationFile=%(_implementationFile), TargetRootDirectory=%(_targetRootDirectory), TargetArchitecture=%(_targetArchitecture), ObjectFiles=%(_objectFiles), StaticLibraryFiles=%(_staticLibraryFiles), DynamicLibraryFiles=%(_dynamicLibraryFiles), ExternalLibraryFiles=%(_externalLibraryFiles), LibraryPaths=%(_libraryPaths), GenerateSourceDebugInfo=%(_generateSourceDebugInfo) }"
 	}
 }

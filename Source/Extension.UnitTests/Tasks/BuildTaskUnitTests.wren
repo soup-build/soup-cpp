@@ -429,7 +429,7 @@ class BuildTaskUnitTests {
 			Path.new("obj/TestFile2.mock.obj"),
 			Path.new("obj/TestFile3.mock.obj"),
 		]
-		expectedLinkArguments.StaticLibraryFiles = []
+		expectedLinkArguments.LibraryFiles = []
 
 		// Verify expected compiler calls
 		Assert.ListEqual(
@@ -655,6 +655,7 @@ class BuildTaskUnitTests {
 			Path.new("obj/TestFile2.mock.obj"),
 			Path.new("obj/TestFile3.mock.obj"),
 		]
+		expectedLinkArguments.LibraryFiles = []
 
 		// Verify expected compiler calls
 		Assert.ListEqual(
@@ -917,6 +918,7 @@ class BuildTaskUnitTests {
 			Path.new("obj/TestFile3.mock.obj"),
 			Path.new("obj/TestFile4.mock.obj"),
 		]
+		expectedLinkArguments.LibraryFiles = []
 
 		// Verify expected compiler calls
 		Assert.ListEqual(
@@ -1147,6 +1149,7 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.ObjectFiles = [
 			Path.new("obj/Public.mock.obj"),
 		]
+		expectedLinkArguments.LibraryFiles = []
 
 		// Verify expected compiler calls
 		Assert.ListEqual(

@@ -23,6 +23,7 @@ class ClangArgumentBuilder {
 	static Linker_ArgumentFlag_DLL { "dll" }
 	static Linker_ArgumentParameter_Output { "o" }
 	static Linker_ArgumentParameter_ImplementationLibrary { "implib" }
+	static Linker_ArgumentParameter_LibraryPath { "libpath" }
 	static Linker_ArgumentParameter_DefaultLibrary { "defaultlib" }
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
@@ -337,7 +338,10 @@ class ClangArgumentBuilder {
 
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "L%(directory.toString)")
+			ClangArgumentBuilder.AddParameterWithQuotes(
+				commandArguments,
+				ClangArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
+				directory.toString)
 		}
 
 		// Add the target as an output
@@ -348,13 +352,11 @@ class ClangArgumentBuilder {
 			commandArguments,
 			arguments.TargetFile.toString)
 
-		// Add library references while will expand to "lib[name].a"
-		for (file in arguments.StaticLibraryNames) {
-			// Add the library name
-			ClangArgumentBuilder.AddFlag(commandArguments, "l%(file.toString)")
+		// Add the library files
+		for (file in arguments.StaticLibraryFiles) {
+			// Add the library files as input
+			commandArguments.add(file.toString)
 		}
-
-		// Directly reference the dynamic libraries
 		for (file in arguments.DynamicLibraryFiles) {
 			// Add the library files as input
 			commandArguments.add(file.toString)
@@ -388,11 +390,14 @@ class ClangArgumentBuilder {
 		var commandArguments = []
 
 		// Enable verbose output
-		// ClangArgumentBuilder.AddFlag(commandArguments, "v")
+		ClangArgumentBuilder.AddFlag(commandArguments, "v")
 
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			ClangArgumentBuilder.AddFlag(commandArguments, "L%(directory.toString)")
+			ClangArgumentBuilder.AddParameterWithQuotes(
+				commandArguments,
+				ClangArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
+				directory.toString)
 		}
 
 		// Add the target as an output
@@ -403,13 +408,11 @@ class ClangArgumentBuilder {
 			commandArguments,
 			arguments.TargetFile.toString)
 
-		// Add library references while will expand to "lib[name].a"
-		for (file in arguments.StaticLibraryNames) {
-			// Add the library name
-			ClangArgumentBuilder.AddFlag(commandArguments, "l%(file.toString)")
+		// Add the library files
+		for (file in arguments.StaticLibraryFiles) {
+			// Add the library files as input
+			commandArguments.add(file.toString)
 		}
-
-		// Directly reference the dynamic libraries
 		for (file in arguments.DynamicLibraryFiles) {
 			// Add the library files as input
 			commandArguments.add(file.toString)

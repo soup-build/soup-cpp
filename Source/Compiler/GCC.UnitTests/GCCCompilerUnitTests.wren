@@ -541,11 +541,8 @@ class GCCCompilerUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
 		]
-		arguments.StaticLibraryNames = [
-			"Library",
-		]
-		arguments.StaticLibraryFiles = [
-			Path.new("libLibrary.mock.a"),
+		arguments.LibraryFiles = [
+			Path.new("Library.mock.a"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -558,11 +555,11 @@ class GCCCompilerUnitTests {
 			[
 				"-o",
 				"./Something.exe",
-				"./libLibrary.mock.a",
+				"./Library.mock.a",
 				"./File.mock.obj",
 			],
 			[
-				Path.new("libLibrary.mock.a"),
+				Path.new("Library.mock.a"),
 				Path.new("File.mock.obj"),
 			],
 			[
@@ -589,11 +586,8 @@ class GCCCompilerUnitTests {
 		arguments.ObjectFiles = [
 			Path.new("File.mock.obj"),
 		]
-		arguments.StaticLibraryNames = [
-			"Library",
-		]
-		arguments.StaticLibraryFiles = [
-			Path.new("libLibrary.mock.a"),
+		arguments.LibraryFiles = [
+			Path.new("Library.mock.a"),
 		]
 
 		var result = uut.CreateLinkOperation(arguments)
@@ -606,11 +600,11 @@ class GCCCompilerUnitTests {
 			[
 				"-o",
 				"./Something.exe",
-				"./libLibrary.mock.a",
+				"./Library.mock.a",
 				"./File.mock.obj",
 			],
 			[
-				Path.new("libLibrary.mock.a"),
+				Path.new("Library.mock.a"),
 				Path.new("File.mock.obj"),
 			],
 			[
