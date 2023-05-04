@@ -106,8 +106,7 @@ class BuildArguments {
 		_includeDirectories = []
 		_moduleDependencies = []
 		_platformLinkDependencies = []
-		_linkStaticLibraries = []
-		_linkDynamicLibraries = []
+		_linkDependencies = []
 		_libraryPaths = []
 		_preprocessorDefinitions = []
 		_runtimeDependencies = []
@@ -231,14 +230,8 @@ class BuildArguments {
 	/// <summary>
 	/// Gets or sets the list of link libraries
 	/// </summary>
-	LinkStaticLibraries { _linkStaticLibraries }
-	LinkStaticLibraries=(value) { _linkStaticLibraries = value }
-
-	/// <summary>
-	/// Gets or sets the list of link libraries
-	/// </summary>
-	LinkDynamicLibraries { _linkDynamicLibraries }
-	LinkDynamicLibraries=(value) { _linkDynamicLibraries = value }
+	LinkDependencies { _linkDependencies }
+	LinkDependencies=(value) { _linkDependencies = value }
 
 	/// <summary>
 	/// Gets or sets the list of library paths

@@ -9,10 +9,9 @@ class BuildResult {
 	construct new() {
 		_buildOperations = []
 		_moduleDependencies = []
-		_linkStaticLibraries = []
-		_linkDynamicLibraries = []
-		_linkDyn = []
+		_linkDependencies = []
 		_internalLinkDependencies = []
+		_runtimeDependencies = []
 		_runtimeDependencies = []
 		_targetFile = null
 	}
@@ -30,16 +29,10 @@ class BuildResult {
 	ModuleDependencies=(value) { _moduleDependencies = value }
 
 	/// <summary>
-	/// Gets or sets the list of link static libraries that downstream builds should use when linking
+	/// Gets or sets the list of link libraries that downstream builds should use when linking
 	/// </summary>
-	LinkStaticLibraries { _linkStaticLibraries }
-	LinkStaticLibraries=(value) { _linkStaticLibraries = value }
-
-	/// <summary>
-	/// Gets or sets the list of link dynamic libraries that downstream builds should use when linking
-	/// </summary>
-	LinkDynamicLibraries { _linkDynamicLibraries }
-	LinkDynamicLibraries=(value) { _linkDynamicLibraries = value }
+	LinkDependencies { _linkDependencies }
+	LinkDependencies=(value) { _linkDependencies = value }
 
 	/// <summary>
 	/// Gets or sets the list of internal link libraries that were used to link the final result

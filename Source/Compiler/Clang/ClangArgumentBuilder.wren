@@ -308,7 +308,7 @@ class ClangArgumentBuilder {
 		var commandArguments = []
 
 		// Create an archive
-		ClangArgumentBuilder.AddValue(commandArguments, "rc")
+		ClangArgumentBuilder.AddFlag(commandArguments, "r")
 		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			arguments.TargetFile.toString)
@@ -353,11 +353,7 @@ class ClangArgumentBuilder {
 			arguments.TargetFile.toString)
 
 		// Add the library files
-		for (file in arguments.StaticLibraryFiles) {
-			// Add the library files as input
-			commandArguments.add(file.toString)
-		}
-		for (file in arguments.DynamicLibraryFiles) {
+		for (file in arguments.LibraryFiles) {
 			// Add the library files as input
 			commandArguments.add(file.toString)
 		}
@@ -389,9 +385,6 @@ class ClangArgumentBuilder {
 
 		var commandArguments = []
 
-		// Enable verbose output
-		ClangArgumentBuilder.AddFlag(commandArguments, "v")
-
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
 			ClangArgumentBuilder.AddParameterWithQuotes(
@@ -409,11 +402,7 @@ class ClangArgumentBuilder {
 			arguments.TargetFile.toString)
 
 		// Add the library files
-		for (file in arguments.StaticLibraryFiles) {
-			// Add the library files as input
-			commandArguments.add(file.toString)
-		}
-		for (file in arguments.DynamicLibraryFiles) {
+		for (file in arguments.LibraryFiles) {
 			// Add the library files as input
 			commandArguments.add(file.toString)
 		}

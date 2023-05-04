@@ -59,25 +59,11 @@ class ResolveDependenciesTask is SoupTask {
 								runtimeDependencies)
 						}
 
-						if (dependencyBuildTable.containsKey("LibraryPaths")) {
-							var libraryPaths = dependencyBuildTable["LibraryPaths"]
+						if (dependencyBuildTable.containsKey("LinkDependencies")) {
+							var linkDependencies = dependencyBuildTable["LinkDependencies"]
 							ListExtensions.Append(
-								MapExtensions.EnsureList(buildTable, "LibraryPaths"),
-								libraryPaths)
-						}
-
-						if (dependencyBuildTable.containsKey("LinkStaticLibraries")) {
-							var linkStaticLibraries = dependencyBuildTable["LinkStaticLibraries"]
-							ListExtensions.Append(
-								MapExtensions.EnsureList(buildTable, "LinkStaticLibraries"),
-								linkStaticLibraries)
-						}
-
-						if (dependencyBuildTable.containsKey("LinkDynamicLibraries")) {
-							var linkDynamicLibraries = dependencyBuildTable["LinkDynamicLibraries"]
-							ListExtensions.Append(
-								MapExtensions.EnsureList(buildTable, "LinkDynamicLibraries"),
-								linkDynamicLibraries)
+								MapExtensions.EnsureList(buildTable, "LinkDependencies"),
+								linkDependencies)
 						}
 
 						if (dependencyBuildTable.containsKey("PublicInclude")) {

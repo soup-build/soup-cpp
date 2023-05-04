@@ -256,8 +256,7 @@ class GCCCompiler is ICompiler {
 
 		// Build the set of input/output files along with the arguments
 		var inputFiles = []
-		inputFiles = inputFiles + arguments.StaticLibraryFiles
-		inputFiles = inputFiles + arguments.DynamicLibraryFiles
+		inputFiles = inputFiles + arguments.LibraryFiles
 		inputFiles = inputFiles + arguments.ObjectFiles
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
