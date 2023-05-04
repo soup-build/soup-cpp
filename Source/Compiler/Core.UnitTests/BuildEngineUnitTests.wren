@@ -757,9 +757,9 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
+				Path.new("C:/target/bin/Library.mock.lib"),
 				Path.new("../Other/bin/OtherModule1.mock.a"),
 				Path.new("../OtherModule2.mock.a"),
-				Path.new("C:/target/bin/Library.mock.lib"),
 			],
 			result.LinkDependencies)
 
@@ -985,9 +985,9 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
+				Path.new("C:/target/bin/Library.mock.lib"),
 				Path.new("../Other/bin/OtherModule1.mock.a"),
 				Path.new("../OtherModule2.mock.a"),
-				Path.new("C:/target/bin/Library.mock.lib"),
 			],
 			result.LinkDependencies)
 
@@ -1251,9 +1251,9 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
+				Path.new("C:/target/bin/Library.mock.lib"),
 				Path.new("../Other/bin/OtherModule1.mock.a"),
 				Path.new("../OtherModule2.mock.a"),
-				Path.new("C:/target/bin/Library.mock.lib"),
 			],
 			result.LinkDependencies)
 
@@ -1557,9 +1557,9 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
+				Path.new("C:/target/bin/Library.mock.lib"),
 				Path.new("../Other/bin/OtherModule1.mock.a"),
 				Path.new("../OtherModule2.mock.a"),
-				Path.new("C:/target/bin/Library.mock.lib"),
 			],
 			result.LinkDependencies)
 
@@ -1877,9 +1877,9 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
+				Path.new("C:/target/bin/Library.mock.lib"),
 				Path.new("../Other/bin/OtherModule1.mock.a"),
 				Path.new("../OtherModule2.mock.a"),
-				Path.new("C:/target/bin/Library.mock.lib"),
 			],
 			result.LinkDependencies)
 
@@ -2068,9 +2068,9 @@ class BuildEngineUnitTests {
 
 		Assert.ListEqual(
 			[
+				Path.new("C:/target/bin/Library.mock.lib"),
 				Path.new("../Other/bin/OtherModule1.mock.a"),
 				Path.new("../OtherModule2.mock.a"),
-				Path.new("C:/target/bin/Library.mock.lib"),
 			],
 			result.LinkDependencies)
 
