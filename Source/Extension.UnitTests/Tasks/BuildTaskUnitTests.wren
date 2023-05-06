@@ -74,6 +74,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -219,6 +220,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./TestFile.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -375,6 +377,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -590,6 +593,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
@@ -624,7 +628,7 @@ class BuildTaskUnitTests {
 			Path.new("Public.cpp"),
 			Path.new("obj/Public.mock.obj"),
 			[],
-			Path.new("obj/Public.mock.bmi"))
+			Path.new("bin/Library.mock.bmi"))
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
@@ -690,20 +694,6 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				Path.new("C:/target/"),
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			SoupTestOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
 				[
@@ -715,7 +705,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -851,6 +841,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
@@ -903,7 +894,7 @@ class BuildTaskUnitTests {
 				Path.new("C:/target/obj/TestFile1.mock.bmi"),
 				Path.new("C:/target/obj/TestFile2.mock.bmi"),
 			],
-			Path.new("obj/Public.mock.bmi"))
+			Path.new("bin/Library.mock.bmi"))
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
@@ -966,20 +957,6 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				Path.new("C:/target/"),
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			SoupTestOperation.new(
 				"MockCompilePartition: 1",
 				Path.new("MockCompiler.exe"),
 				[
@@ -1019,7 +996,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -1130,6 +1107,7 @@ class BuildTaskUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
+				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -1161,7 +1139,7 @@ class BuildTaskUnitTests {
 			Path.new("./Public.cpp"),
 			Path.new("./obj/Public.mock.obj"),
 			[],
-			Path.new("./obj/Public.mock.bmi"))
+			Path.new("./bin/Library.mock.bmi"))
 
 		var expectedLinkArguments = LinkArguments.new()
 		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
@@ -1210,20 +1188,6 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"Copy [./obj/Public.mock.bmi] -> [./bin/Library.mock.bmi]",
-				Path.new("/TARGET/copy.exe"),
-				[
-					"./obj/Public.mock.bmi",
-					"./bin/Library.mock.bmi",
-				],
-				Path.new("C:/target/"),
-				[
-					Path.new("obj/Public.mock.bmi"),
-				],
-				[
-					Path.new("bin/Library.mock.bmi"),
-				]),
-			SoupTestOperation.new(
 				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
 				[
@@ -1235,7 +1199,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/Public.mock.obj"),
-					Path.new("obj/Public.mock.bmi"),
+					Path.new("bin/Library.mock.bmi"),
 				]),
 				SoupTestOperation.new(
 				"MockLink: 1",

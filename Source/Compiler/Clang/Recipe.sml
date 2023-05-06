@@ -1,9 +1,9 @@
-Name: "Soup.Cpp.Compiler.GCC"
+Name: "Soup.Cpp.Compiler.Clang"
 Language: "Wren|0.1"
-Version: "0.1.1"
+Version: "0.1.0"
 Source: [
-	"GCCArgumentBuilder.wren"
-	"GCCCompiler.wren"
+	"ClangArgumentBuilder.wren"
+	"ClangCompiler.wren"
 ]
 
 Dependencies: {

@@ -47,7 +47,7 @@ class InitializeDefaultsTask is SoupTask {
 			system = "Win32"
 		} else if (hostPlatform == "Linux") {
 			architecture = "x64"
-			compiler = "GCC"
+			compiler = "Clang"
 			system = "Unix"
 		} else {
 			Fiber.abort("Unsupported Platform: %(hostPlatform).")

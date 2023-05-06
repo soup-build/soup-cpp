@@ -150,10 +150,6 @@ class BuildEngine {
 			if (!(arguments.ModuleInterfaceSourceFile is Null)) {
 				Soup.info("Generate Module Interface Unit Compile: %(arguments.ModuleInterfaceSourceFile)")
 
-				var objectModuleInterfaceFile =
-					arguments.ObjectDirectory +
-					Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
-				objectModuleInterfaceFile.SetFileExtension(_compiler.ModuleFileExtension)
 				var binaryOutputModuleInterfaceFile =
 					arguments.BinaryDirectory +
 					Path.new(arguments.TargetName + "." + _compiler.ModuleFileExtension)
@@ -162,20 +158,12 @@ class BuildEngine {
 				compileModuleFileArguments.SourceFile = arguments.ModuleInterfaceSourceFile
 				compileModuleFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
 				compileModuleFileArguments.IncludeModules = allPartitionInterfaces
-				compileModuleFileArguments.ModuleInterfaceTarget = objectModuleInterfaceFile
+				compileModuleFileArguments.ModuleInterfaceTarget = binaryOutputModuleInterfaceFile
 
 				compileModuleFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
 				// Add the interface unit arguments to the shared build definition
 				compileArguments.InterfaceUnit = compileModuleFileArguments
-
-				// Copy the binary module interface to the binary directory after compiling
-				var copyInterfaceOperation =
-					SharedOperations.CreateCopyFileOperation(
-						arguments.TargetRootDirectory,
-						objectModuleInterfaceFile,
-						binaryOutputModuleInterfaceFile)
-				result.BuildOperations.add(copyInterfaceOperation)
 
 				// Add output module interface to the parent set of modules
 				// This will allow the module implementation units access as well as downstream
@@ -236,12 +224,12 @@ class BuildEngine {
 		var implementationFile
 		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
 			targetFile = arguments.BinaryDirectory +
-				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
+				_compiler.CreateStaticLibraryFileName(arguments.TargetName)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			targetFile = arguments.BinaryDirectory +
 				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryFileExtension)
 			implementationFile = arguments.BinaryDirectory +
-				Path.new(arguments.TargetName + "." + _compiler.StaticLibraryFileExtension)
+				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryLinkFileExtension)
 		} else if (arguments.TargetType == BuildTargetType.Executable ||
 			arguments.TargetType == BuildTargetType.WindowsApplication) {
 			targetFile = arguments.BinaryDirectory + 
@@ -268,25 +256,32 @@ class BuildEngine {
 
 		// Translate the target type into the link target
 		// and determine what dependencies to inject into downstream builds
-
 		if (arguments.TargetType == BuildTargetType.StaticLibrary) {
 			linkArguments.TargetType = LinkTarget.StaticLibrary
 			
 			// Add the library as a link dependency and all recursive libraries
+			// Ensure we link this library before the other dependencies
 			result.LinkDependencies = [] + arguments.LinkDependencies
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.LinkDependencies.add(absoluteTargetFile)
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			result.LinkDependencies.insert(0, absoluteTargetFile)
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			linkArguments.TargetType = LinkTarget.DynamicLibrary
 
 			// Add the DLL as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// Clear out all previous link dependencies and replace with the 
 			// single implementation library for the DLL
-			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ? linkArguments.ImplementationFile : linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
-			result.LinkDependencies.add(absoluteImplementationFile)
+			// Ensure we link this library before the other dependencies
+			var absoluteImplementationFile = linkArguments.ImplementationFile.HasRoot ?
+				linkArguments.ImplementationFile :
+				linkArguments.TargetRootDirectory + linkArguments.ImplementationFile
+			result.LinkDependencies.insert(0, absoluteImplementationFile)
 
 			// Set the targe file
 			result.TargetFile = absoluteTargetFile
@@ -294,7 +289,9 @@ class BuildEngine {
 			linkArguments.TargetType = LinkTarget.Executable
 
 			// Add the Executable as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// All link dependencies stop here.
@@ -305,7 +302,9 @@ class BuildEngine {
 			linkArguments.TargetType = LinkTarget.WindowsApplication
 
 			// Add the Executable as a runtime dependency
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ? linkArguments.TargetFile : linkArguments.TargetRootDirectory + linkArguments.TargetFile
+			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+				linkArguments.TargetFile :
+				linkArguments.TargetRootDirectory + linkArguments.TargetFile
 			result.RuntimeDependencies.add(absoluteTargetFile)
 
 			// All link dependencies stop here.

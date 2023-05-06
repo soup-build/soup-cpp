@@ -45,7 +45,7 @@ class MSVCCompilerUnitTests {
 		Assert.Equal("MSVC", uut.Name)
 		Assert.Equal("obj", uut.ObjectFileExtension)
 		Assert.Equal("ifc", uut.ModuleFileExtension)
-		Assert.Equal("lib", uut.StaticLibraryFileExtension)
+		Assert.Equal(Path.new("Test.lib"), uut.CreateStaticLibraryFileName("Test"))
 		Assert.Equal("dll", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
 	}

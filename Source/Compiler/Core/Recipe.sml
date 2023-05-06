@@ -13,6 +13,6 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		"Soup.Build.Utils@0.1.0"
+		"Soup.Build.Utils@0.1"
 	]
 }

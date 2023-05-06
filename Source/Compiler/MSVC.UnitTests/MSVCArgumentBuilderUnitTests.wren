@@ -44,6 +44,8 @@ class MSVCArgumentBuilderUnitTests {
 		this.BuildTranslationUnitCompilerArguments_Simple()
 		System.print("MSVCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules")
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
+		System.print("MSVCArgumentBuilderUnitTests.BuildAssemblyUnitCompilerArguments_Simple")
+		this.BuildAssemblyUnitCompilerArguments_Simple()
 	}
 
 	// [Theory]
@@ -472,6 +474,31 @@ class MSVCArgumentBuilderUnitTests {
 			"\"./Module4.ifc\"",
 			"./module.cpp",
 			"/Fo\"C:/target/module.obj\"",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BuildAssemblyUnitCompilerArguments_Simple() {
+		var targetRootDirectory = Path.new("C:/target/")
+		var sharedArguments = SharedCompileArguments.new()
+		var arguments = TranslationUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("module.asm")
+		arguments.TargetFile = Path.new("module.obj")
+
+		var actualArguments = MSVCArgumentBuilder.BuildAssemblyUnitCompilerArguments(
+			targetRootDirectory,
+			sharedArguments,
+			arguments)
+
+		var expectedArguments = [
+			"/nologo",
+			"/Fo\"C:/target/module.obj\"",
+			"/c",
+			"/Z7",
+			"/W3",
+			"./module.asm",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

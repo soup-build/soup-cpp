@@ -1,4 +1,4 @@
-﻿// <copyright file="GCCCompiler.wren" company="Soup">
+﻿// <copyright file="ClangCompiler.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -7,29 +7,23 @@ import "Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
 import "Soup.Build.Utils:./BuildOperation" for BuildOperation
 import "Soup.Build.Utils:./SharedOperations" for SharedOperations
 import "Soup.Build.Utils:./Path" for Path
-import "./GCCArgumentBuilder" for GCCArgumentBuilder
+import "./ClangArgumentBuilder" for ClangArgumentBuilder
 
 /// <summary>
-/// The GCC compiler implementation
+/// The Clang compiler implementation
 /// </summary>
-class GCCCompiler is ICompiler {
+class ClangCompiler is ICompiler {
 	construct new(
 		compilerExecutable,
-		linkerExecutable,
-		libraryExecutable,
-		rcExecutable,
-		mlExecutable) {
+		archiveExecutable) {
 		_compilerExecutable = compilerExecutable
-		_linkerExecutable = linkerExecutable
-		_libraryExecutable = libraryExecutable
-		_rcExecutable = rcExecutable
-		_mlExecutable = mlExecutable
+		_archiveExecutable = archiveExecutable
 	}
 
 	/// <summary>
 	/// Gets the unique name for the compiler
 	/// </summary>
-	Name { "GCC" }
+	Name { "Clang" }
 
 	/// <summary>
 	/// Gets the object file extension for the compiler
@@ -39,7 +33,7 @@ class GCCCompiler is ICompiler {
 	/// <summary>
 	/// Gets the module file extension for the compiler
 	/// </summary>
-	ModuleFileExtension { "ifc" }
+	ModuleFileExtension { "pcm" }
 
 	/// <summary>
 	/// Gets the static library file extension for the compiler
@@ -69,11 +63,11 @@ class GCCCompiler is ICompiler {
 
 		// Write the shared arguments to the response file
 		var responseFile = arguments.ObjectDirectory + Path.new("SharedCompileArguments.rsp")
-		var sharedCommandArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(arguments)
+		var sharedCommandArguments = ClangArgumentBuilder.BuildSharedCompilerArguments(arguments)
 		var writeSharedArgumentsOperation = SharedOperations.CreateWriteFileOperation(
 			arguments.TargetRootDirectory,
 			responseFile,
-			GCCCompiler.CombineArguments(sharedCommandArguments))
+			ClangCompiler.CombineArguments(sharedCommandArguments))
 		operations.add(writeSharedArgumentsOperation)
 
 		// Initialize a shared input set
@@ -84,31 +78,7 @@ class GCCCompiler is ICompiler {
 
 		// Generate the resource build operation if present
 		if (arguments.ResourceFile) {
-			var resourceFileArguments = arguments.ResourceFile
-
-			// Build up the input/output sets
-			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(resourceFileArguments.SourceFile)
-			// TODO: The temp files require read access, need a way to tell build operation
-			inputFiles.add(arguments.TargetRootDirectory + Path.new("fake_file"))
-			var outputFiles = [
-				arguments.TargetRootDirectory + resourceFileArguments.TargetFile,
-			]
-
-			// Build the unique arguments for this resource file
-			var commandArguments = GCCArgumentBuilder.BuildResourceCompilerArguments(
-				arguments.TargetRootDirectory,
-				arguments)
-
-			// Generate the operation
-			var buildOperation = BuildOperation.new(
-				resourceFileArguments.SourceFile.toString,
-				arguments.SourceRootDirectory,
-				_rcExecutable,
-				commandArguments,
-				inputFiles,
-				outputFiles)
-			operations.add(buildOperation)
+			Fiber.abort("ResourceFile not supported.")
 		}
 
 		var internalModules = []
@@ -125,7 +95,7 @@ class GCCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = GCCArgumentBuilder.BuildPartitionUnitCompilerArguments(
+			var commandArguments = ClangArgumentBuilder.BuildPartitionUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				partitionUnitArguments,
 				absoluteResponseFile)
@@ -148,32 +118,59 @@ class GCCCompiler is ICompiler {
 		if (arguments.InterfaceUnit) {
 			var interfaceUnitArguments = arguments.InterfaceUnit
 
-			// Build up the input/output sets
-			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(interfaceUnitArguments.SourceFile)
-			inputFiles.add(absoluteResponseFile)
-			inputFiles = inputFiles + interfaceUnitArguments.IncludeModules
+			// Clang believes that two phase builds will be faster by precompiling the modue interface
+			// and then compiling the object files
+			// TODO: This needs to be verified.
 
-			var outputFiles = [
-				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
+			// Build up the input/output sets
+			var precompileInputFiles = [] + sharedInputFiles
+			precompileInputFiles.add(interfaceUnitArguments.SourceFile)
+			precompileInputFiles.add(absoluteResponseFile)
+			precompileInputFiles = precompileInputFiles + interfaceUnitArguments.IncludeModules
+
+			var precompileOutputFiles = [
 				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
 			]
 
-			// Build the unique arguments for this translation unit
-			var commandArguments = GCCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			// Build the unique arguments to precompile this translation unit
+			var precompileArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
 				arguments.TargetRootDirectory,
 				interfaceUnitArguments,
 				absoluteResponseFile)
 
-			// Generate the operation
-			var buildOperation = BuildOperation.new(
+			// Generate the precompile operation
+			var precompileOperation = BuildOperation.new(
 				interfaceUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
-				commandArguments,
-				inputFiles,
-				outputFiles)
-			operations.add(buildOperation)
+				precompileArguments,
+				precompileInputFiles,
+				precompileOutputFiles)
+			operations.add(precompileOperation)
+
+			// Build the unique arguments to compile the precompiled module
+			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
+				arguments.TargetRootDirectory,
+				interfaceUnitArguments)
+
+			// Build up the input/output sets
+			var compileInputFiles = [
+				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
+			]
+
+			var compileOutputFiles = [
+				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
+			]
+
+			// Generate the compile operation
+			var compileOperation = BuildOperation.new(
+				interfaceUnitArguments.ModuleInterfaceTarget.toString,
+				arguments.SourceRootDirectory,
+				_compilerExecutable,
+				compileArguments,
+				compileInputFiles,
+				compileOutputFiles)
+			operations.add(compileOperation)
 
 			// Add our module interface back in for the downstream compilers
 			internalModules.add(arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget)
@@ -192,7 +189,7 @@ class GCCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
+			var commandArguments = ClangArgumentBuilder.BuildTranslationUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				implementationUnitArguments,
 				absoluteResponseFile,
@@ -219,7 +216,7 @@ class GCCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this assembly unit
-			var commandArguments = GCCArgumentBuilder.BuildAssemblyUnitCompilerArguments(
+			var commandArguments = ClangArgumentBuilder.BuildAssemblyUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				arguments,
 				assemblyUnitArguments)
@@ -228,7 +225,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_mlExecutable,
+				_compilerExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -244,14 +241,18 @@ class GCCCompiler is ICompiler {
 	CreateLinkOperation(arguments) {
 		// Select the correct executable for linking libraries or executables
 		var executablePath
+		var commandarguments
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
-			executablePath = _libraryExecutable
-		} else if (arguments.TargetType == LinkTarget.DynamicLibrary ||
-			arguments.TargetType == LinkTarget.Executable ||
-			arguments.TargetType == LinkTarget.WindowsApplication) {
-			executablePath = _linkerExecutable
+			executablePath = _archiveExecutable
+			commandarguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
+		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
+			executablePath = _compilerExecutable
+			commandarguments = ClangArgumentBuilder.BuildDynamicLibraryLinkerArguments(arguments)
+		} else if (arguments.TargetType == LinkTarget.Executable) {
+			executablePath = _compilerExecutable
+			commandarguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
 		} else {
-			Fiber.abort("Unknown LinkTarget.")
+			Fiber.abort("Unknown LinkTarget: %(arguments.TargetType)")
 		}
 
 		// Build the set of input/output files along with the arguments
@@ -261,7 +262,6 @@ class GCCCompiler is ICompiler {
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
-		var commandarguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
 			arguments.TargetFile.toString,

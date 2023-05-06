@@ -25,13 +25,14 @@ class ICompiler {
 	/// Gets the static library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
-	StaticLibraryFileExtension {}
+	CreateStaticLibraryFileName(name) {}
 
 	/// <summary>
 	/// Gets the dynamic library file extension for the compiler
 	/// TODO: This is platform specific
 	/// </summary>
 	DynamicLibraryFileExtension {}
+	DynamicLibraryLinkFileExtension {}
 
 	/// <summary>
 	/// Gets the resource file extension for the compiler

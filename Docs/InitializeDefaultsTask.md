@@ -22,6 +22,6 @@ None
 * Active State
   * **Build**
     * **Architecture** - The target architecture (x64, x86, etc)
-    * **Compiler** - The compiler to use (MSVC, GCC, etc).
+    * **Compiler** - The compiler to use (MSVC, GCC, Clang, etc).
     * **Flavor** -The high level build flavor (Debug, Release, etc)
     * **System** - The target system (Win32, etc)

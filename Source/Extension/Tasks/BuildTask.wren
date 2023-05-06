@@ -9,6 +9,7 @@ import "Soup.Build.Utils:./ListExtensions" for ListExtensions
 import "Soup.Build.Utils:./MapExtensions" for MapExtensions
 import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
 import "Soup.Cpp.Compiler:./BuildEngine" for BuildEngine
+import "Soup.Cpp.Compiler.Clang:./ClangCompiler" for ClangCompiler
 import "Soup.Cpp.Compiler.GCC:./GCCCompiler" for GCCCompiler
 import "Soup.Cpp.Compiler.MSVC:./MSVCCompiler" for MSVCCompiler
 
@@ -30,13 +31,25 @@ class BuildTask is SoupTask {
 
 	static evaluate() {
 		// Register default compilers
-		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
+		BuildTask.registerCompiler("Clang", BuildTask.createClangCompiler)
 		BuildTask.registerCompiler("GCC", BuildTask.createGCCCompiler)
+		BuildTask.registerCompiler("MSVC", BuildTask.createMSVCCompiler)
 
 		var activeState = Soup.activeState
 		var sharedState = Soup.sharedState
 
 		var buildTable = activeState["Build"]
+
+		// Check if this build should skip this system
+		if (buildTable.containsKey("TargetSystems")) {
+			var targetSystems = buildTable["TargetSystems"]
+			var system = buildTable["System"]
+
+			if (!targetSystems.contains(system)) {
+				Soup.info("Target System is not supported: %(system)")
+				return
+			}
+		}
 
 		var arguments = BuildArguments.new()
 		arguments.TargetArchitecture = buildTable["Architecture"]
@@ -154,6 +167,7 @@ class BuildTask is SoupTask {
 
 		// Initialize the compiler to use
 		var compilerName = buildTable["Compiler"]
+		Soup.info("Using Compiler: %(compilerName)")
 		if (!__compilerFactory.containsKey(compilerName)) {
 			Fiber.abort("Unknown compiler: %(compilerName)")
 		}
@@ -194,6 +208,17 @@ class BuildTask is SoupTask {
 		}
 
 		Soup.info("Build Generate Done")
+	}
+
+	static createClangCompiler {
+		return Fn.new { |activeState|
+			var clang = activeState["Clang"]
+			var clangToolPath = Path.new("/usr/bin/clang++-17")
+			var archiveToolPath = Path.new("/usr/bin/ar")
+			return ClangCompiler.new(
+				clangToolPath,
+				archiveToolPath)
+		}
 	}
 
 	static createGCCCompiler {

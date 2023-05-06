@@ -69,6 +69,12 @@ class RecipeBuildTask is SoupTask {
 		// Load Recipe properties
 		var name = recipe["Name"]
 
+		// Load the target systems if present
+		var targetSystems
+		if (recipe.containsKey("TargetSystems")) {
+			targetSystems = recipe["TargetSystems"]
+		}
+
 		// Add any explicit platform dependencies that were added in the recipe
 		if (recipe.containsKey("PlatformLibraries")) {
 			for (value in ListExtensions.ConvertToPathList(recipe["PlatformLibraries"])) {
@@ -176,12 +182,6 @@ class RecipeBuildTask is SoupTask {
 		var moduleInterfaceSourceFile
 		if (recipe.containsKey("Interface")) {
 			var moduleInterfaceSourceFilePath = Path.new(recipe["Interface"])
-
-			// TODO: Clang requires annoying cppm extension
-			if (compiler == "Clang") {
-				moduleInterfaceSourceFilePath.SetFileExtension("cppm")
-			}
-
 			moduleInterfaceSourceFile = moduleInterfaceSourceFilePath.toString
 		}
 
@@ -231,6 +231,9 @@ class RecipeBuildTask is SoupTask {
 		build["TargetRootDirectory"] = targetDirectory.toString
 		build["ObjectDirectory"] = objectDirectory.toString
 		build["BinaryDirectory"] = binaryDirectory.toString
+		if (!(targetSystems is Null)) {
+			build["TargetSystems"] = targetSystems
+		}
 		if (!(resourcesFile is Null)) {
 			build["ResourcesFile"] = resourcesFile
 		}
@@ -242,6 +245,7 @@ class RecipeBuildTask is SoupTask {
 		}
 		build["OptimizationLevel"] = optimizationLevel
 		build["GenerateSourceDebugInfo"] = generateSourceDebugInfo
+
 
 		ListExtensions.Append(
 			MapExtensions.EnsureList(build, "PlatformLibraries"),
