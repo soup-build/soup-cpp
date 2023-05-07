@@ -11,10 +11,10 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		"Soup.Cpp.Compiler@0.6"
+		"Soup.Cpp.Compiler@0.8"
 		"Soup.Cpp.Compiler.Clang@0.1"
-		"Soup.Cpp.Compiler.GCC@0.1"
-		"Soup.Cpp.Compiler.MSVC@0.6"
+		"Soup.Cpp.Compiler.GCC@0.2"
+		"Soup.Cpp.Compiler.MSVC@0.8"
 		"Soup.Build.Utils@0.3"
 	]
 	Tool: [

@@ -64,6 +64,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -95,6 +96,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -126,6 +128,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -161,6 +164,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -193,6 +197,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -226,6 +231,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -262,6 +268,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -299,6 +306,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",
@@ -336,6 +344,7 @@ class MSVCArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"/nologo",
+			"/TP",
 			"/FC",
 			"/permissive-",
 			"/Zc:__cplusplus",

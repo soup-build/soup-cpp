@@ -48,6 +48,9 @@ class MSVCArgumentBuilder {
 		// Disable the logo
 		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
 
+		// Treat all files as C++
+		MSVCArgumentBuilder.AddFlag(commandArguments, "TP")
+
 		// Enable full paths for errors
 		MSVCArgumentBuilder.AddFlag(commandArguments, "FC")
 
