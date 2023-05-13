@@ -1,4 +1,5 @@
 import "Soup.Build.Utils:./ListExtensions" for ListExtensions
+import "Soup.Build.Utils:./MapExtensions" for MapExtensions
 
 class Assert {
 	static True(value) {
@@ -15,6 +16,14 @@ class Assert {
 
 	static ListEqual(expected, actual) {
 		if (!ListExtensions.SequenceEqual(expected, actual)) {
+			System.print("Expected: %(expected)")
+			System.print("Actual  : %(actual)")
+			Fiber.abort("Values must be equal")
+		}
+	}
+
+	static MapEqual(expected, actual) {
+		if (!MapExtensions.Equal(expected, actual)) {
 			System.print("Expected: %(expected)")
 			System.print("Actual  : %(actual)")
 			Fiber.abort("Values must be equal")
