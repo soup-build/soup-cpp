@@ -14,16 +14,8 @@ import "./GCCArgumentBuilder" for GCCArgumentBuilder
 /// </summary>
 class GCCCompiler is ICompiler {
 	construct new(
-		compilerExecutable,
-		linkerExecutable,
-		libraryExecutable,
-		rcExecutable,
-		mlExecutable) {
-		_compilerExecutable = compilerExecutable
-		_linkerExecutable = linkerExecutable
-		_libraryExecutable = libraryExecutable
-		_rcExecutable = rcExecutable
-		_mlExecutable = mlExecutable
+		gccExecutable) {
+		_gccExecutable = gccExecutable
 	}
 
 	/// <summary>
@@ -104,7 +96,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				resourceFileArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_rcExecutable,
+				_gccExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -134,7 +126,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				partitionUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_compilerExecutable,
+				_gccExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -169,7 +161,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				interfaceUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_compilerExecutable,
+				_gccExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -202,7 +194,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				implementationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_compilerExecutable,
+				_gccExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -228,7 +220,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_mlExecutable,
+				_gccExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -245,11 +237,11 @@ class GCCCompiler is ICompiler {
 		// Select the correct executable for linking libraries or executables
 		var executablePath
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
-			executablePath = _libraryExecutable
+			executablePath = _gccExecutable
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary ||
 			arguments.TargetType == LinkTarget.Executable ||
 			arguments.TargetType == LinkTarget.WindowsApplication) {
-			executablePath = _linkerExecutable
+			executablePath = _gccExecutable
 		} else {
 			Fiber.abort("Unknown LinkTarget.")
 		}

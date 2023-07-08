@@ -212,9 +212,10 @@ class BuildTask is SoupTask {
 
 	static createClangCompiler {
 		return Fn.new { |activeState|
+			Soup.info("%(activeState)")
 			var clang = activeState["Clang"]
-			var clangToolPath = Path.new("/usr/bin/clang++-17")
-			var archiveToolPath = Path.new("/usr/bin/ar")
+			var clangToolPath = Path.new(clang["CppCompiler"])
+			var archiveToolPath = Path.new(clang["Archiver"])
 			return ClangCompiler.new(
 				clangToolPath,
 				archiveToolPath)
@@ -224,17 +225,9 @@ class BuildTask is SoupTask {
 	static createGCCCompiler {
 		return Fn.new { |activeState|
 			var gcc = activeState["GCC"]
-			var clToolPath = Path.new("/usr/bin/g++-12")
-			var linkToolPath = Path.new("/usr/bin/g++-12")
-			var libToolPath = Path.new("")
-			var rcToolPath = Path.new("")
-			var mlToolPath = Path.new("")
+			var gccToolPath = Path.new(gcc["CppCompiler"])
 			return GCCCompiler.new(
-				clToolPath,
-				linkToolPath,
-				libToolPath,
-				rcToolPath,
-				mlToolPath)
+				gccToolPath)
 		}
 	}
 
