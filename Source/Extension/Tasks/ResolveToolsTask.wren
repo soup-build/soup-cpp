@@ -38,7 +38,7 @@ class ResolveToolsTask is SoupTask {
 		if (system == "Win32") {
 			ResolveToolsTask.LoadMSVC(globalState, activeState)
 		} else if (system == "Unix") {
-			// N/A
+			ResolveToolsTask.LoadClang(globalState, activeState)
 		} else {
 			Soup.info("Unknown system: %(system)")
 		}
@@ -192,6 +192,23 @@ class ResolveToolsTask is SoupTask {
 		build["PlatformLibraryPaths"] = ListExtensions.ConvertFromPathList(platformLibraryPaths)
 		build["PlatformLibraries"] = ListExtensions.ConvertFromPathList(platformLibraries)
 		build["PlatformPreprocessorDefinitions"] = platformPreprocessorDefinitions
+	}
+
+	static LoadClang(globalState, activeState) {
+		var clang = MapExtensions.EnsureTable(activeState, "Clang")
+
+		// Find the Clang SDK
+			Soup.info("%(globalState)")
+		var clangSDKProperties = ResolveToolsTask.GetSDKProperties("Clang", globalState)
+
+		var cCompilerPath = Path.new(clangSDKProperties["CCompiler"])
+		var cppCompilerPath = Path.new(clangSDKProperties["CppCompiler"])
+		var archiverPath = Path.new(clangSDKProperties["Archiver"])
+
+		// Save the build properties
+		clang["CCompiler"] = cCompilerPath.toString
+		clang["CppCompiler"] = cppCompilerPath.toString
+		clang["Archiver"] = archiverPath.toString
 	}
 
 	static GetSDKProperties(name, globalState) {
