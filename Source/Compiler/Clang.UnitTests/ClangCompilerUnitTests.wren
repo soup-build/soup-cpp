@@ -165,7 +165,7 @@ class ClangCompilerUnitTests {
 					"C:/target/obj/File.o",
 					"--precompile",
 					"-o",
-					"\"C:/target/obj/File.pcm\"",
+					"C:/target/obj/File.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -346,7 +346,7 @@ class ClangCompilerUnitTests {
 					"C:/target/obj/File1.o",
 					"--precompile",
 					"-o",
-					"\"C:/target/obj/File1.pcm\"",
+					"C:/target/obj/File1.pcm",
 				],
 				[
 					Path.new("Module.pcm"),

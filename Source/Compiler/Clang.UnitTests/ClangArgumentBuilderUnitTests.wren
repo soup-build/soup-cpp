@@ -301,7 +301,7 @@ class ClangArgumentBuilderUnitTests {
 			"C:/target/module.o",
 			"--precompile",
 			"-o",
-			"\"C:/target/module.pcm\"",
+			"C:/target/module.pcm",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

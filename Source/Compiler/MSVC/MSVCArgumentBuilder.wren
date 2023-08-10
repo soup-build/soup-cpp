@@ -48,6 +48,9 @@ class MSVCArgumentBuilder {
 		// Disable the logo
 		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
 
+		// Treat all files as C++
+		MSVCArgumentBuilder.AddFlag(commandArguments, "TP")
+
 		// Enable full paths for errors
 		MSVCArgumentBuilder.AddFlag(commandArguments, "FC")
 
@@ -151,7 +154,7 @@ class MSVCArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// TODO: For now we allow exports to be large
@@ -214,7 +217,7 @@ class MSVCArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -234,7 +237,7 @@ class MSVCArgumentBuilder {
 		MSVCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		MSVCArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -252,7 +255,7 @@ class MSVCArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -272,7 +275,7 @@ class MSVCArgumentBuilder {
 		MSVCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		MSVCArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -291,13 +294,13 @@ class MSVCArgumentBuilder {
 		// Add the internal module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the internal module references as input
 		for (moduleFile in internalModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -445,8 +448,8 @@ class MSVCArgumentBuilder {
 		return commandArguments
 	}
 
-	static AddValueWithQuotes(arguments, value) {
-		arguments.add("\"%(value)\"")
+	static AddValue(arguments, value) {
+		arguments.add("%(value)")
 	}
 
 	static AddFlag(arguments, flag) {

@@ -218,7 +218,7 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		ClangArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -428,10 +428,6 @@ class ClangArgumentBuilder {
 
 	static AddValue(arguments, value) {
 		arguments.add("%(value)")
-	}
-
-	static AddValueWithQuotes(arguments, value) {
-		arguments.add("\"%(value)\"")
 	}
 
 	static AddFlag(arguments, flag) {
