@@ -155,7 +155,7 @@ class MSVCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference ./Module.pcm /bigobj /c",
 				],
 				[],
 				[
@@ -168,12 +168,12 @@ class MSVCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"/reference",
-					"\"./obj/Other.pcm\"",
+					"./obj/Other.pcm",
 					"./File.cpp",
 					"/Fo\"C:/target/obj/File.obj\"",
 					"/interface",
 					"/ifcOutput",
-					"\"C:/target/obj/File.pcm\"",
+					"C:/target/obj/File.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -233,7 +233,7 @@ class MSVCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference ./Module.pcm /bigobj /c",
 				],
 				[],
 				[
@@ -246,12 +246,12 @@ class MSVCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"/reference",
-					"\"./obj/Other.pcm\"",
+					"./obj/Other.pcm",
 					"./File.cpp",
 					"/Fo\"C:/target/obj/File.obj\"",
 					"/interface",
 					"/ifcOutput",
-					"\"C:/target/obj/File.pcm\"",
+					"C:/target/obj/File.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -327,7 +327,7 @@ class MSVCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference ./Module.pcm /bigobj /c",
 				],
 				[],
 				[
@@ -340,12 +340,12 @@ class MSVCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"/reference",
-					"\"./obj/Other1.pcm\"",
+					"./obj/Other1.pcm",
 					"./File1.cpp",
 					"/Fo\"C:/target/obj/File1.obj\"",
 					"/interface",
 					"/ifcOutput",
-					"\"C:/target/obj/File1.pcm\"",
+					"C:/target/obj/File1.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -364,12 +364,12 @@ class MSVCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"/reference",
-					"\"./obj/Other2.pcm\"",
+					"./obj/Other2.pcm",
 					"./File2.cpp",
 					"/Fo\"C:/target/obj/File2.obj\"",
 					"/interface",
 					"/ifcOutput",
-					"\"C:/target/obj/File2.pcm\"",
+					"C:/target/obj/File2.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -388,11 +388,11 @@ class MSVCCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"/reference",
-					"\"./obj/Other3.pcm\"",
+					"./obj/Other3.pcm",
 					"/reference",
-					"\"C:/target/obj/File1.pcm\"",
+					"C:/target/obj/File1.pcm",
 					"/reference",
-					"\"C:/target/obj/File2.pcm\"",
+					"C:/target/obj/File2.pcm",
 					"./File3.cpp",
 					"/Fo\"C:/target/obj/File3.obj\"",
 				],
@@ -450,7 +450,7 @@ class MSVCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference \"./Module.pcm\" /bigobj /c",
+					"/nologo /TP /FC /permissive- /Zc:__cplusplus /Zc:externConstexpr /Zc:inline /Zc:throwingNew /W4 /std:c++11 /Od /I\"./Includes\" /DDEBUG /X /RTC1 /EHsc /MT /reference ./Module.pcm /bigobj /c",
 				],
 				[],
 				[

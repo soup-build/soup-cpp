@@ -89,7 +89,7 @@ class GCCArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Only run preprocessor, compile and assemble
@@ -148,7 +148,7 @@ class GCCArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -170,7 +170,7 @@ class GCCArgumentBuilder {
 		// GCCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
 
 		// var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		// GCCArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		// GCCArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -188,7 +188,7 @@ class GCCArgumentBuilder {
 		// Add the module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -210,7 +210,7 @@ class GCCArgumentBuilder {
 		GCCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
 
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		GCCArgumentBuilder.AddValueWithQuotes(commandArguments, absoluteModuleInterfaceFile.toString)
+		GCCArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}
@@ -229,13 +229,13 @@ class GCCArgumentBuilder {
 		// Add the internal module references as input
 		for (moduleFile in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the internal module references as input
 		for (moduleFile in internalModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValueWithQuotes(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
 		}
 
 		// Add the source file as input
@@ -355,10 +355,6 @@ class GCCArgumentBuilder {
 
 	static AddValue(arguments, value) {
 		arguments.add("%(value)")
-	}
-
-	static AddValueWithQuotes(arguments, value) {
-		arguments.add("\"%(value)\"")
 	}
 
 	static AddFlag(arguments, flag) {

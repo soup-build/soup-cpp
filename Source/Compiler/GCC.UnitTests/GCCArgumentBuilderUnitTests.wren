@@ -234,9 +234,9 @@ class GCCArgumentBuilderUnitTests {
 			"-std=c++11",
 			"-O0",
 			"-reference",
-			"\"./Module.pcm\"",
+			"./Module.pcm",
 			"-reference",
-			"\"./Std.pcm\"",
+			"./Std.pcm",
 			"-c",
 		]
 
@@ -265,7 +265,7 @@ class GCCArgumentBuilderUnitTests {
 			"C:/target/module.obj",
 			"-interface",
 			"-ifcOutput",
-			"\"C:/target/module.ifc\"",
+			"C:/target/module.ifc",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -349,13 +349,13 @@ class GCCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"-reference",
-			"\"./Module1.ifc\"",
+			"./Module1.ifc",
 			"-reference",
-			"\"./Module2.ifc\"",
+			"./Module2.ifc",
 			"-reference",
-			"\"./Module3.ifc\"",
+			"./Module3.ifc",
 			"-reference",
-			"\"./Module4.ifc\"",
+			"./Module4.ifc",
 			"./module.cpp",
 			"-o",
 			"C:/target/module.obj",

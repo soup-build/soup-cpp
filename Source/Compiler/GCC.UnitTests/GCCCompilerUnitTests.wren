@@ -37,11 +37,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	Initialize() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 		Assert.Equal("GCC", uut.Name)
 		Assert.Equal("o", uut.ObjectFileExtension)
 		Assert.Equal("ifc", uut.ModuleFileExtension)
@@ -53,11 +49,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	Compile_Simple(){
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -93,7 +85,7 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./File.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
@@ -115,11 +107,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	Compile_Module_Partition() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -156,7 +144,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference ./Module.pcm -c",
 				],
 				[],
 				[
@@ -165,17 +153,17 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./File.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-reference",
-					"\"./obj/Other.pcm\"",
+					"./obj/Other.pcm",
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.obj",
 					"-interface",
 					"-ifcOutput",
-					"\"C:/target/obj/File.pcm\"",
+					"C:/target/obj/File.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -195,11 +183,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	Compile_Module_Interface() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -235,7 +219,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference ./Module.pcm -c",
 				],
 				[],
 				[
@@ -244,11 +228,11 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./File.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-reference",
-					"\"./obj/Other.pcm\"",
+					"./obj/Other.pcm",
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.obj",
@@ -272,11 +256,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	Compile_Module_PartitionInterfaceAndImplementation() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -328,7 +308,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference ./Module.pcm -c",
 				],
 				[],
 				[
@@ -337,17 +317,17 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./File1.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-reference",
-					"\"./obj/Other1.pcm\"",
+					"./obj/Other1.pcm",
 					"./File1.cpp",
 					"-o",
 					"C:/target/obj/File1.obj",
 					"-interface",
 					"-ifcOutput",
-					"\"C:/target/obj/File1.pcm\"",
+					"C:/target/obj/File1.pcm",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -362,11 +342,11 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./File2.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-reference",
-					"\"./obj/Other2.pcm\"",
+					"./obj/Other2.pcm",
 					"./File2.cpp",
 					"-o",
 					"C:/target/obj/File2.obj",
@@ -385,15 +365,15 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./File3.cpp",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.cl.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-reference",
-					"\"./obj/Other3.pcm\"",
+					"./obj/Other3.pcm",
 					"-reference",
-					"\"C:/target/obj/File1.pcm\"",
+					"C:/target/obj/File1.pcm",
 					"-reference",
-					"\"C:/target/obj/File2.pcm\"",
+					"C:/target/obj/File2.pcm",
 					"./File3.cpp",
 					"-o",
 					"C:/target/obj/File3.obj",
@@ -417,11 +397,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	Compile_Resource() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -452,7 +428,7 @@ class GCCCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference \"./Module.pcm\" -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -reference ./Module.pcm -c",
 				],
 				[],
 				[
@@ -461,7 +437,7 @@ class GCCCompilerUnitTests {
 			BuildOperation.new(
 				"./Resources.rc",
 				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.rc.exe"),
+				Path.new("C:/bin/mock.gcc.exe"),
 				[
 					"-D_UNICODE",
 					"-DUNICODE",
@@ -487,11 +463,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	LinkStaticLibrary_Simple() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
@@ -508,7 +480,7 @@ class GCCCompilerUnitTests {
 		var expected = BuildOperation.new(
 			"./Library.mock.a",
 			Path.new("C:/target/"),
-			Path.new("C:/bin/mock.lib.exe"),
+			Path.new("C:/bin/mock.gcc.exe"),
 			[
 				"-o",
 				"./Library.mock.a",
@@ -527,11 +499,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	LinkExecutable_Simple() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.Executable
@@ -551,7 +519,7 @@ class GCCCompilerUnitTests {
 		var expected = BuildOperation.new(
 			"./Something.exe",
 			Path.new("C:/target/"),
-			Path.new("C:/bin/mock.link.exe"),
+			Path.new("C:/bin/mock.gcc.exe"),
 			[
 				"-o",
 				"./Something.exe",
@@ -572,11 +540,7 @@ class GCCCompilerUnitTests {
 	// [Fact]
 	LinkWindowsApplication_Simple() {
 		var uut = GCCCompiler.new(
-			Path.new("C:/bin/mock.cl.exe"),
-			Path.new("C:/bin/mock.link.exe"),
-			Path.new("C:/bin/mock.lib.exe"),
-			Path.new("C:/bin/mock.rc.exe"),
-			Path.new("C:/bin/mock.ml.exe"))
+			Path.new("C:/bin/mock.gcc.exe"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.WindowsApplication
@@ -596,7 +560,7 @@ class GCCCompilerUnitTests {
 		var expected = BuildOperation.new(
 			"./Something.exe",
 			Path.new("C:/target/"),
-			Path.new("C:/bin/mock.link.exe"),
+			Path.new("C:/bin/mock.gcc.exe"),
 			[
 				"-o",
 				"./Something.exe",
