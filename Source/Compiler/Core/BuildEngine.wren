@@ -401,18 +401,31 @@ class BuildEngine {
 	/// Copy public headers
 	/// </summary>
 	CopyPublicHeaders(arguments, result) {
-		if (arguments.PublicHeaderFiles.count > 0) {
+		if (arguments.PublicHeaderSets.count > 0) {
 			Soup.info("Setup Public Headers")
 			var includeDirectory = Path.new("include/")
 
 			// Pass along the output include folder
 			result.PublicInclude = arguments.TargetRootDirectory + includeDirectory
 
-			// Discover all unique sub folders
 			var folderSet = Set.new()
 			folderSet.add(includeDirectory)
-			for (file in arguments.PublicHeaderFiles) {
-				folderSet.add(includeDirectory + file.GetParent())
+
+			for (fileSet in arguments.PublicHeaderSets) {
+				Soup.info("Copy Header Set: %(fileSet.Root)")
+				for (file in fileSet.Files) {
+					// Track all unique sub folders
+					folderSet.add(includeDirectory + file.GetParent())
+					
+					// Copy the script files to the output
+					Soup.info("Generate Copy Header: %(file)")
+					var operation = SharedOperations.CreateCopyFileOperation(
+							arguments.TargetRootDirectory,
+							arguments.SourceRootDirectory + fileSet.Root + file,
+							includeDirectory + file)
+							
+						result.BuildOperations.add(operation)
+				}
 			}
 
 			// Ensure the output directories exists
@@ -421,17 +434,6 @@ class BuildEngine {
 					SharedOperations.CreateCreateDirectoryOperation(
 						arguments.TargetRootDirectory,
 						folder))
-			}
-
-			// Copy the script files to the output
-			for (file in arguments.PublicHeaderFiles) {
-				Soup.info("Generate Copy Header: %(file)")
-				var operation = SharedOperations.CreateCopyFileOperation(
-						arguments.TargetRootDirectory,
-						arguments.SourceRootDirectory + file,
-						includeDirectory + file)
-						
-					result.BuildOperations.add(operation)
 			}
 		}
 	}

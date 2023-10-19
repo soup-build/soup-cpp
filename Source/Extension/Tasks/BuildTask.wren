@@ -7,7 +7,7 @@ import "Soup.Build.Utils:./Path" for Path
 import "Soup.Build.Utils:./Set" for Set
 import "Soup.Build.Utils:./ListExtensions" for ListExtensions
 import "Soup.Build.Utils:./MapExtensions" for MapExtensions
-import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
+import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile, HeaderFileSet
 import "Soup.Cpp.Compiler:./BuildEngine" for BuildEngine
 import "Soup.Cpp.Compiler.Clang:./ClangCompiler" for ClangCompiler
 import "Soup.Cpp.Compiler.GCC:./GCCCompiler" for GCCCompiler
@@ -95,8 +95,15 @@ class BuildTask is SoupTask {
 			arguments.AssemblySourceFiles = ListExtensions.ConvertToPathList(buildTable["AssemblySource"])
 		}
 
-		if (buildTable.containsKey("PublicHeaders")) {
-			arguments.PublicHeaderFiles = ListExtensions.ConvertToPathList(buildTable["PublicHeaders"])
+		if (buildTable.containsKey("PublicHeaderSets")) {
+			var publicHeaderSets = []
+			for (value in buildTable["PublicHeaderSets"]) {
+				publicHeaderSets.add(HeaderFileSet.new(
+					Path.new(value["Root"].toString),
+					ListExtensions.ConvertToPathList(value["Files"])))
+			}
+
+			arguments.PublicHeaderSets = publicHeaderSets
 		}
 
 		if (buildTable.containsKey("IncludeDirectories")) {
