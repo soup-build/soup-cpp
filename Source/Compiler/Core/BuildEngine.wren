@@ -413,16 +413,21 @@ class BuildEngine {
 
 			for (fileSet in arguments.PublicHeaderSets) {
 				Soup.info("Copy Header Set: %(fileSet.Root)")
+				var includeSetDirectory = includeDirectory
+				if (!(fileSet.Target is Null)) {
+					includeSetDirectory = includeSetDirectory + fileSet.Target
+				}
+
 				for (file in fileSet.Files) {
 					// Track all unique sub folders
-					folderSet.add(includeDirectory + file.GetParent())
+					folderSet.add(includeSetDirectory + file.GetParent())
 					
 					// Copy the script files to the output
 					Soup.info("Generate Copy Header: %(file)")
 					var operation = SharedOperations.CreateCopyFileOperation(
 							arguments.TargetRootDirectory,
 							arguments.SourceRootDirectory + fileSet.Root + file,
-							includeDirectory + file)
+							includeSetDirectory + file)
 							
 						result.BuildOperations.add(operation)
 				}

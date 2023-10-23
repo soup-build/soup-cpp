@@ -90,16 +90,21 @@ class PartitionSourceFile {
 class HeaderFileSet {
 	construct new() {
 		_root = null
+		_target = null
 		_files = []
 	}
 
-	construct new(root, files) {
+	construct new(root, target, files) {
 		_root = root
+		_target = target
 		_files = files
 	}
 
 	Root { _root }
 	Root=(value) { _root = value }
+
+	Target { _target }
+	Target=(value) { _target = value }
 
 	Files { _files }
 	Files=(value) { _files = value }

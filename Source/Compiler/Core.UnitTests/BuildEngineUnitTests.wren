@@ -575,12 +575,14 @@ class BuildEngineUnitTests {
 		arguments.PublicHeaderSets = [
 			HeaderFileSet.new(
 				Path.new("./"),
+				null,
 				[
 					Path.new("TestFile1.h"),
 					Path.new("TestFile2.h"),
 				]),
 			HeaderFileSet.new(
 				Path.new("SubFolder/"),
+				Path.new("TargetFolder/"),
 				[
 					Path.new("TestFile3.h"),
 				]),
@@ -744,18 +746,18 @@ class BuildEngineUnitTests {
 					Path.new("include/TestFile2.h"),
 				]),
 			BuildOperation.new(
-				"Copy [C:/source/SubFolder/TestFile3.h] -> [./include/TestFile3.h]",
+				"Copy [C:/source/SubFolder/TestFile3.h] -> [./include/TargetFolder/TestFile3.h]",
 				Path.new("C:/target/"),
 				Path.new("/TARGET/copy.exe"),
 				[
 					"C:/source/SubFolder/TestFile3.h",
-					"./include/TestFile3.h",
+					"./include/TargetFolder/TestFile3.h",
 				],
 				[
 					Path.new("C:/source/SubFolder/TestFile3.h"),
 				],
 				[
-					Path.new("include/TestFile3.h"),
+					Path.new("include/TargetFolder/TestFile3.h"),
 				]),
 			BuildOperation.new(
 				"MakeDir [./include/]",
@@ -767,6 +769,17 @@ class BuildEngineUnitTests {
 				[],
 				[
 					Path.new("./include/"),
+				]),
+			BuildOperation.new(
+				"MakeDir [./include/TargetFolder/]",
+				Path.new("C:/target/"),
+				Path.new("/TARGET/mkdir.exe"),
+				[
+					"./include/TargetFolder/",
+				],
+				[],
+				[
+					Path.new("./include/TargetFolder/"),
 				]),
 		]
 

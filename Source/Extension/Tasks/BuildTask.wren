@@ -98,9 +98,15 @@ class BuildTask is SoupTask {
 		if (buildTable.containsKey("PublicHeaderSets")) {
 			var publicHeaderSets = []
 			for (value in buildTable["PublicHeaderSets"]) {
-				publicHeaderSets.add(HeaderFileSet.new(
-					Path.new(value["Root"].toString),
-					ListExtensions.ConvertToPathList(value["Files"])))
+				var root = Path.new(value["Root"].toString)
+				var target = null
+				var files = ListExtensions.ConvertToPathList(value["Files"])
+
+				if (value.containsKey("Target")) {
+					target = Path.new(value["Target"].toString)
+				}
+
+				publicHeaderSets.add(HeaderFileSet.new(root, target, files))
 			}
 
 			arguments.PublicHeaderSets = publicHeaderSets
