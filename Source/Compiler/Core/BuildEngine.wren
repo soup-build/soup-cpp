@@ -248,6 +248,50 @@ class BuildEngine {
 		linkArguments.LibraryPaths = arguments.LibraryPaths
 		linkArguments.GenerateSourceDebugInfo = arguments.GenerateSourceDebugInfo
 
+		// Build up the set of object files
+		var objectFiles = []
+
+		// Add the resource file if present
+		if (!(arguments.ResourceFile is Null)) {
+			var compiledResourceFile =
+				arguments.ObjectDirectory +
+				Path.new(arguments.ResourceFile.GetFileName())
+			compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension)
+
+			objectFiles.add(compiledResourceFile)
+		}
+
+		// Add the partition object files
+		for (sourceFile in arguments.ModuleInterfacePartitionSourceFiles) {
+			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.File.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.add(objectFile)
+		}
+
+		// Add the module interface object file if present
+		if (!(arguments.ModuleInterfaceSourceFile is Null)) {
+			var objectFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.add(objectFile)
+		}
+
+		// Add the implementation unit object files
+		for (sourceFile in arguments.SourceFiles) {
+			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.add(objectFile)
+		}
+
+		// Add the assembly unit object files
+		for (sourceFile in arguments.AssemblySourceFiles) {
+			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
+			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+			objectFiles.add(objectFile)
+		}
+
+		linkArguments.ObjectFiles = objectFiles
+
+
 		// Only resolve link libraries if not a library ourself
 		if (arguments.TargetType != BuildTargetType.StaticLibrary) {
 			linkArguments.ExternalLibraryFiles = arguments.PlatformLinkDependencies
@@ -262,10 +306,14 @@ class BuildEngine {
 			// Add the library as a link dependency and all recursive libraries
 			// Ensure we link this library before the other dependencies
 			result.LinkDependencies = [] + arguments.LinkDependencies
-			var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
-				linkArguments.TargetFile :
-				linkArguments.TargetRootDirectory + linkArguments.TargetFile
-			result.LinkDependencies.insert(0, absoluteTargetFile)
+			if (objectFiles.count != 0) { 
+				var absoluteTargetFile = linkArguments.TargetFile.HasRoot ?
+					linkArguments.TargetFile :
+					linkArguments.TargetRootDirectory + linkArguments.TargetFile
+				result.LinkDependencies.insert(0, absoluteTargetFile)
+			} else {
+				Soup.info("Skipping link dependency target with no object files")
+			}
 		} else if (arguments.TargetType == BuildTargetType.DynamicLibrary) {
 			linkArguments.TargetType = LinkTarget.DynamicLibrary
 
@@ -314,49 +362,6 @@ class BuildEngine {
 		} else {
 			Fiber.abort("Unknown build target type.")
 		}
-
-		// Build up the set of object files
-		var objectFiles = []
-
-		// Add the resource file if present
-		if (!(arguments.ResourceFile is Null)) {
-			var compiledResourceFile =
-				arguments.ObjectDirectory +
-				Path.new(arguments.ResourceFile.GetFileName())
-			compiledResourceFile.SetFileExtension(_compiler.ResourceFileExtension)
-
-			objectFiles.add(compiledResourceFile)
-		}
-
-		// Add the partition object files
-		for (sourceFile in arguments.ModuleInterfacePartitionSourceFiles) {
-			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.File.GetFileName())
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.add(objectFile)
-		}
-
-		// Add the module interface object file if present
-		if (!(arguments.ModuleInterfaceSourceFile is Null)) {
-			var objectFile = arguments.ObjectDirectory + Path.new(arguments.ModuleInterfaceSourceFile.GetFileName())
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.add(objectFile)
-		}
-
-		// Add the implementation unit object files
-		for (sourceFile in arguments.SourceFiles) {
-			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.add(objectFile)
-		}
-
-		// Add the assembly unit object files
-		for (sourceFile in arguments.AssemblySourceFiles) {
-			var objectFile = arguments.ObjectDirectory + Path.new(sourceFile.GetFileName())
-			objectFile.SetFileExtension(_compiler.ObjectFileExtension)
-			objectFiles.add(objectFile)
-		}
-
-		linkArguments.ObjectFiles = objectFiles
 
 		// Perform the link
 		Soup.info("Generate Link Operation: %(linkArguments.TargetFile)")
