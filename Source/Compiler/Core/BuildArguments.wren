@@ -85,6 +85,32 @@ class PartitionSourceFile {
 }
 
 /// <summary>
+/// The header file set
+/// </summary>
+class HeaderFileSet {
+	construct new() {
+		_root = null
+		_target = null
+		_files = []
+	}
+
+	construct new(root, target, files) {
+		_root = root
+		_target = target
+		_files = files
+	}
+
+	Root { _root }
+	Root=(value) { _root = value }
+
+	Target { _target }
+	Target=(value) { _target = value }
+
+	Files { _files }
+	Files=(value) { _files = value }
+}
+
+/// <summary>
 /// The set of build arguments
 /// </summary>
 class BuildArguments {
@@ -102,7 +128,7 @@ class BuildArguments {
 		_resourceFile = null
 		_sourceFiles = []
 		_assemblySourceFiles = []
-		_publicHeaderFiles = []
+		_publicHeaderSets = []
 		_includeDirectories = []
 		_moduleDependencies = []
 		_platformLinkDependencies = []
@@ -202,10 +228,10 @@ class BuildArguments {
 	AssemblySourceFiles=(value) { _assemblySourceFiles = value }
 
 	/// <summary>
-	/// Gets or sets the list of public headers files
+	/// Gets or sets the list of public headers file sets
 	/// </summary>
-	PublicHeaderFiles { _publicHeaderFiles }
-	PublicHeaderFiles=(value) { _publicHeaderFiles = value }
+	PublicHeaderSets { _publicHeaderSets }
+	PublicHeaderSets=(value) { _publicHeaderSets = value }
 
 	/// <summary>
 	/// Gets or sets the list of include directories

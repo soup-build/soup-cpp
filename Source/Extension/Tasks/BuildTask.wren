@@ -7,7 +7,7 @@ import "Soup.Build.Utils:./Path" for Path
 import "Soup.Build.Utils:./Set" for Set
 import "Soup.Build.Utils:./ListExtensions" for ListExtensions
 import "Soup.Build.Utils:./MapExtensions" for MapExtensions
-import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile
+import "Soup.Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile, HeaderFileSet
 import "Soup.Cpp.Compiler:./BuildEngine" for BuildEngine
 import "Soup.Cpp.Compiler.Clang:./ClangCompiler" for ClangCompiler
 import "Soup.Cpp.Compiler.GCC:./GCCCompiler" for GCCCompiler
@@ -95,8 +95,21 @@ class BuildTask is SoupTask {
 			arguments.AssemblySourceFiles = ListExtensions.ConvertToPathList(buildTable["AssemblySource"])
 		}
 
-		if (buildTable.containsKey("PublicHeaders")) {
-			arguments.PublicHeaderFiles = ListExtensions.ConvertToPathList(buildTable["PublicHeaders"])
+		if (buildTable.containsKey("PublicHeaderSets")) {
+			var publicHeaderSets = []
+			for (value in buildTable["PublicHeaderSets"]) {
+				var root = Path.new(value["Root"].toString)
+				var target = null
+				var files = ListExtensions.ConvertToPathList(value["Files"])
+
+				if (value.containsKey("Target")) {
+					target = Path.new(value["Target"].toString)
+				}
+
+				publicHeaderSets.add(HeaderFileSet.new(root, target, files))
+			}
+
+			arguments.PublicHeaderSets = publicHeaderSets
 		}
 
 		if (buildTable.containsKey("IncludeDirectories")) {
