@@ -3,9 +3,9 @@
 // </copyright>
 
 import "soup" for Soup, SoupTask
-import "Soup.Build.Utils:./Path" for Path
-import "Soup.Build.Utils:./ListExtensions" for ListExtensions
-import "Soup.Build.Utils:./MapExtensions" for MapExtensions
+import "mwasplund|Soup.Build.Utils:./Path" for Path
+import "mwasplund|Soup.Build.Utils:./ListExtensions" for ListExtensions
+import "mwasplund|Soup.Build.Utils:./MapExtensions" for MapExtensions
 
 /// <summary>
 /// The initialize defaults task that knows how to initialize default values for a given host environment
