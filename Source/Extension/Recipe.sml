@@ -1,5 +1,5 @@
 Name: "Soup.Cpp"
-Language: "Wren|0.1"
+Language: "Wren|0"
 Version: "0.11.0"
 Source: [
 	"Tasks/BuildTask.wren"
@@ -18,7 +18,7 @@ Dependencies: {
 		"mwasplund|Soup.Build.Utils@0"
 	]
 	Tool: [
-		"[C++]mwasplund|copy@1.0"
-		"[C++]mwasplund|mkdir@1.0"
+		"[C++]mwasplund|copy@1"
+		"[C++]mwasplund|mkdir@1"
 	]
 }
