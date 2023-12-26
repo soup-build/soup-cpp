@@ -3,7 +3,7 @@
 // </copyright>
 
 import "../GCC/GCCArgumentBuilder" for GCCArgumentBuilder
-import "Soup.Build.Utils:./Path" for Path
+import "mwasplund|Soup.Build.Utils:./Path" for Path
 import "../../Test/Assert" for Assert
 import "../Core/LinkArguments" for LinkArguments, LinkTarget
 
