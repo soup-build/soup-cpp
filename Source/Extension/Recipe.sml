@@ -1,24 +1,24 @@
-Name: "Soup.Cpp"
-Language: "Wren|0"
-Version: "0.11.0"
+Name: 'Soup.Cpp'
+Language: 'Wren|0'
+Version: '0.12.0'
 Source: [
-	"Tasks/BuildTask.wren"
-	"Tasks/InitializeDefaultsTask.wren"
-	"Tasks/RecipeBuildTask.wren"
-	"Tasks/ResolveDependenciesTask.wren"
-	"Tasks/ResolveToolsTask.wren"
+	'Tasks/BuildTask.wren'
+	'Tasks/InitializeDefaultsTask.wren'
+	'Tasks/RecipeBuildTask.wren'
+	'Tasks/ResolveDependenciesTask.wren'
+	'Tasks/ResolveToolsTask.wren'
 ]
 
 Dependencies: {
 	Runtime: [
-		"mwasplund|Soup.Cpp.Compiler@0"
-		"mwasplund|Soup.Cpp.Compiler.Clang@0"
-		"mwasplund|Soup.Cpp.Compiler.GCC@0"
-		"mwasplund|Soup.Cpp.Compiler.MSVC@0"
-		"mwasplund|Soup.Build.Utils@0"
+		'mwasplund|Soup.Cpp.Compiler@0'
+		'mwasplund|Soup.Cpp.Compiler.Clang@0'
+		'mwasplund|Soup.Cpp.Compiler.GCC@0'
+		'mwasplund|Soup.Cpp.Compiler.MSVC@0'
+		'mwasplund|Soup.Build.Utils@0'
 	]
 	Tool: [
-		"[C++]mwasplund|copy@1"
-		"[C++]mwasplund|mkdir@1"
+		'[C++]mwasplund|copy@1'
+		'[C++]mwasplund|mkdir@1'
 	]
 }
