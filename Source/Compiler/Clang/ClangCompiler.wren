@@ -150,7 +150,7 @@ class ClangCompiler is ICompiler {
 
 			// Build the unique arguments to compile the precompiled module
 			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
-				arguments.TargetRootDirectory,
+				arguments,
 				interfaceUnitArguments)
 
 			// Build up the input/output sets
