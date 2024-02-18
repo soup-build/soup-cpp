@@ -155,7 +155,7 @@ class ClangArgumentBuilder {
 	}
 
 	static BuildInterfaceUnitCompileCompilerArguments(
-		targetRootDirectory,
+		sharedArguments,
 		arguments) {
 		// Build the arguments for a standard translation unit
 		var commandArguments = []
@@ -163,12 +163,22 @@ class ClangArgumentBuilder {
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
+		// Add the module references as input
+		for (moduleFile in sharedArguments.IncludeModules) {
+			var moduleName = moduleFile.GetFileStem()
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				moduleName,
+				moduleFile.toString)
+		}
+
 		// Reference the single precompiled interface
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
+		var absoluteModuleInterfaceFile = sharedArguments.TargetRootDirectory + arguments.ModuleInterfaceTarget
 		ClangArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
+		var absoluteTargetFile = sharedArguments.TargetRootDirectory + arguments.TargetFile
 		ClangArgumentBuilder.AddFlag(
 			commandArguments,
 			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
