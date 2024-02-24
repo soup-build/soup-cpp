@@ -55,6 +55,9 @@ class ClangArgumentBuilder {
 			ClangArgumentBuilder.AddFlagValue(commandArguments, "w", warning)
 		}
 
+		// Convert absolute addresses to relative addresses
+		ClangArgumentBuilder.AddFlag(commandArguments, "fpic")
+		
 		// Set the language standard
 		if (arguments.Standard == LanguageStandard.CPP11) {
 			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
@@ -162,6 +165,11 @@ class ClangArgumentBuilder {
 
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// Generate source debug information
+		if (sharedArguments.GenerateSourceDebugInfo) {
+			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
+		}
 
 		// Add the module references as input
 		for (moduleFile in sharedArguments.IncludeModules) {
@@ -362,6 +370,12 @@ class ClangArgumentBuilder {
 			commandArguments,
 			arguments.TargetFile.toString)
 
+		// Add the object files
+		for (file in arguments.ObjectFiles) {
+			// Add the object files as input
+			commandArguments.add(file.toString)
+		}
+
 		// Add the library files
 		for (file in arguments.LibraryFiles) {
 			// Add the library files as input
@@ -376,12 +390,6 @@ class ClangArgumentBuilder {
 				commandArguments,
 				ClangArgumentBuilder.Linker_ArgumentParameter_DefaultLibrary,
 				file.toString)
-		}
-
-		// Add the object files
-		for (file in arguments.ObjectFiles) {
-			// Add the object files as input
-			commandArguments.add(file.toString)
 		}
 
 		return commandArguments
