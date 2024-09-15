@@ -110,7 +110,9 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddFlag(commandArguments, "msha")
 
 		// Only run preprocessor, compile and assemble
-		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+		// ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// option ClangArgumentBuilder.AddParameter(commandArguments, "stdlib", "libc++")
 
 		return commandArguments
 	}
