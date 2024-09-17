@@ -17,8 +17,8 @@ class MSVCArgumentBuilder {
 	static Compiler_ArgumentFlag_CompileOnly { "c" }
 	static Compiler_ArgumentFlag_IgnoreStandardIncludePaths { "X" }
 	static Compiler_ArgumentFlag_Optimization_Disable { "Od" }
-	static Compiler_ArgumentFlag_Optimization_Speed { "Ot" }
-	static Compiler_ArgumentFlag_Optimization_Size { "Os" }
+	static Compiler_ArgumentFlag_Optimization_Speed { "O2" }
+	static Compiler_ArgumentFlag_Optimization_Size { "O1" }
 	static Compiler_ArgumentFlag_RuntimeChecks { "RTC1" }
 	static Compiler_ArgumentFlag_Runtime_MultithreadedDynamic_Debug { "MDd" }
 	static Compiler_ArgumentFlag_Runtime_MultithreadedDynamic_Release { "MD" }
@@ -138,8 +138,10 @@ class MSVCArgumentBuilder {
 		// Ignore Standard Include Paths to prevent pulling in accidental headers
 		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_IgnoreStandardIncludePaths)
 
-		// Enable basic runtime checks
-		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_RuntimeChecks)
+		if (arguments.Optimize != OptimizationLevel.Speed) {
+			// Enable basic runtime checks
+			MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_RuntimeChecks)
+		}
 
 		// Enable c++ exceptions
 		MSVCArgumentBuilder.AddFlag(commandArguments, "EHsc")
