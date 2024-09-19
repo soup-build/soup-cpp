@@ -246,7 +246,6 @@ class RecipeBuildTask is SoupTask {
 		build["OptimizationLevel"] = optimizationLevel
 		build["GenerateSourceDebugInfo"] = generateSourceDebugInfo
 
-
 		ListExtensions.Append(
 			MapExtensions.EnsureList(build, "PlatformLibraries"),
 			ListExtensions.ConvertFromPathList(platformLibraries))
