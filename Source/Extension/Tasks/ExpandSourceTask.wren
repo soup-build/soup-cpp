@@ -34,28 +34,35 @@ class ExpandSourceTask is SoupTask {
 
 		var buildTable = activeState["Build"]
 
-		var sourceFiles = []
-		if (buildTable.containsKey("Source")) {
-			sourceFiles = ListExtensions.ConvertToPathList(buildTable["Source"])
-		}
-
-		if (sourceFiles.count == 0) {
-			Soup.info("Expand Source: %(sourceFiles)")
-			sourceFiles = ExpandSourceTask.DiscoverCompileFiles(globalState)
+		Soup.info("Check Expand Source")
+		if (!buildTable.containsKey("Source")) {
+			Soup.info("Expand Source")
+			var filesystem = globalState["FileSystem"]
+			var sourceFiles = ExpandSourceTask.DiscoverCompileFiles(filesystem, Path.new())
 
 			ListExtensions.Append(
 				MapExtensions.EnsureList(buildTable, "Source"),
-				sourceFiles)
+				ListExtensions.ConvertFromPathList(sourceFiles))
 		}
 	}
 
-	static DiscoverCompileFiles(globalState) {
+	static DiscoverCompileFiles(currentDirectory, workingDirectory) {
+		Soup.info("Discover Files %(workingDirectory)")
 		var files = []
-		var filesystem = globalState["FileSystem"]
-		for (directoryEntity in filesystem) {
-			if (directoryEntity.endsWith(".cpp")) {
-				Soup.info("Found Cpp File: %(directoryEntity)")
-				files.add(directoryEntity)
+		for (directoryEntity in currentDirectory) {
+			if (directoryEntity is String) {
+				if (directoryEntity.endsWith(".cpp")) {
+					var file = workingDirectory + Path.new(directoryEntity)
+					Soup.info("Found Cpp File: %(file)")
+					files.add(file)
+				}
+			} else {
+				for (child in directoryEntity) {
+					var directory = workingDirectory + Path.new(child.key)
+					Soup.info("Found Directory: %(directory)")
+					var subFiles = ExpandSourceTask.DiscoverCompileFiles(child.value, directory)
+					ListExtensions.Append(files, subFiles)
+				}
 			}
 		}
 

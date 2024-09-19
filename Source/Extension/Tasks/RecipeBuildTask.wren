@@ -186,7 +186,7 @@ class RecipeBuildTask is SoupTask {
 		}
 
 		// Load the source files if present
-		var sourceFiles = []
+		var sourceFiles = null
 		if (recipe.containsKey("Source")) {
 			sourceFiles = recipe["Source"]
 		}
@@ -261,9 +261,11 @@ class RecipeBuildTask is SoupTask {
 		ListExtensions.Append(
 			MapExtensions.EnsureList(build, "LibraryPaths"),
 			ListExtensions.ConvertFromPathList(libraryPaths))
-		ListExtensions.Append(
-			MapExtensions.EnsureList(build, "Source"),
-			sourceFiles)
+		if (sourceFiles != null) {
+			ListExtensions.Append(
+				MapExtensions.EnsureList(build, "Source"),
+				sourceFiles)
+		}
 		ListExtensions.Append(
 			MapExtensions.EnsureList(build, "AssemblySource"),
 			assemblySourceFiles)
