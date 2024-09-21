@@ -43,6 +43,7 @@ class RecipeBuildTask is SoupTask {
 
 		// Load the input properties
 		var compiler = build["Compiler"]
+		var system = build["System"]
 		var packageRoot = Path.new(context["PackageDirectory"])
 		var flavor = build["Flavor"]
 
@@ -194,7 +195,7 @@ class RecipeBuildTask is SoupTask {
 		// Load the assembly source files if present
 		var assemblySourceFiles = []
 		if (recipe.containsKey("AssemblySource")) {
-			assemblySourceFiles = recipe["AssemblySource"]
+			assemblySourceFiles = RecipeBuildTask.ParseSourceFiles(recipe["AssemblySource"], system)
 		}
 
 		// Load the public header files if present
@@ -290,6 +291,40 @@ class RecipeBuildTask is SoupTask {
 		}
 
 		build["LanguageStandard"] = languageStandard
+	}
+
+	static ParseSourceFiles(files, system) {
+		var result = []
+		for (file in files) {
+			if (file is String) {
+				result.add(file)
+			} else if (file is Map) {
+				if (!file.containsKey("Filter")) {
+					Fiber.abort("File group must have Filter.")
+				}
+				
+				if (!file.containsKey("Files")) {
+					Fiber.abort("File group must have Files.")
+				}
+
+				var isIncluded = true
+
+				var filter = file["Filter"]
+				if (filter.containsKey("System")) {
+					if (system != filter["System"]) {
+						isIncluded = false
+					}
+				}
+
+				if (isIncluded) {
+					ListExtensions.Append(result, file["Files"])
+				}
+			} else {
+				Fiber.abort("Unknown file type.")
+			}
+		}
+
+		return result
 	}
 
 	static ParseType(value) {
