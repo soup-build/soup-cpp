@@ -3,9 +3,9 @@
 // </copyright>
 
 import "soup" for Soup, SoupTask
-import "mwasplund|Soup.Build.Utils:./Path" for Path
-import "mwasplund|Soup.Build.Utils:./ListExtensions" for ListExtensions
-import "mwasplund|Soup.Build.Utils:./MapExtensions" for MapExtensions
+import "Soup|Build.Utils:./Path" for Path
+import "Soup|Build.Utils:./ListExtensions" for ListExtensions
+import "Soup|Build.Utils:./MapExtensions" for MapExtensions
 
 /// <summary>
 /// The expand source task that knows how to discover source files from the file system state
