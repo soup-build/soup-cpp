@@ -1,6 +1,6 @@
 Name: 'Soup.Cpp.Compiler.MSVC'
 Language: 'Wren|0'
-Version: '0.10.0'
+Version: '0.11.0'
 Source: [
 	'MSVCArgumentBuilder.wren'
 	'MSVCCompiler.wren'

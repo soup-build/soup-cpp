@@ -29,6 +29,9 @@ class BuildTask is SoupTask {
 		__compilerFactory[name] = factory
 	}
 
+	/// <summary>
+	/// The Core Execute task
+	/// </summary>
 	static evaluate() {
 		// Register default compilers
 		BuildTask.registerCompiler("Clang", BuildTask.createClangCompiler)
