@@ -1,6 +1,6 @@
-Name: 'Soup.Cpp.Compiler.Clang'
+Name: 'Cpp.Compiler.Clang'
 Language: 'Wren|0'
-Version: '0.3.2'
+Version: '0.3.3'
 Source: [
 	'ClangArgumentBuilder.wren'
 	'ClangCompiler.wren'
@@ -8,7 +8,7 @@ Source: [
 
 Dependencies: {
 	Runtime: [
-		'Soup.Cpp.Compiler@0'
-		'Soup.Build.Utils@0'
+		'Soup|Cpp.Compiler@0'
+		'Soup|Build.Utils@0'
 	]
 }

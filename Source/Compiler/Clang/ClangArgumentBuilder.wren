@@ -2,8 +2,8 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "mwasplund|Soup.Cpp.Compiler:./CompileArguments" for LanguageStandard, OptimizationLevel
-import "mwasplund|Soup.Cpp.Compiler:./LinkArguments" for LinkTarget
+import "Soup|Cpp.Compiler:./CompileArguments" for LanguageStandard, OptimizationLevel
+import "Soup|Cpp.Compiler:./LinkArguments" for LinkTarget
 
 /// <summary>
 /// A helper class that builds the correct set of compiler arguments for a given
@@ -110,7 +110,7 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddFlag(commandArguments, "msha")
 
 		// Only run preprocessor, compile and assemble
-		// ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
 		// option ClangArgumentBuilder.AddParameter(commandArguments, "stdlib", "libc++")
 

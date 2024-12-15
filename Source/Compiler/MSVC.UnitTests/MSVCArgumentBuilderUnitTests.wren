@@ -3,7 +3,7 @@
 // </copyright>
 
 import "../MSVC/MSVCArgumentBuilder" for MSVCArgumentBuilder
-import "mwasplund|Soup.Build.Utils:./Path" for Path
+import "Soup|Build.Utils:./Path" for Path
 import "../../Test/Assert" for Assert
 import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 

@@ -2,8 +2,8 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "mwasplund|Soup.Build.Utils:./BuildOperation" for BuildOperation
-import "mwasplund|Soup.Build.Utils:./Path" for Path
+import "Soup|Build.Utils:./BuildOperation" for BuildOperation
+import "Soup|Build.Utils:./Path" for Path
 import "./ICompiler" for ICompiler
 
 /// <summary>
