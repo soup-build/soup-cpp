@@ -2,12 +2,12 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../GCC/GCCCompiler" for GCCCompiler
+import "../gcc/GCCCompiler" for GCCCompiler
 import "Soup|Build.Utils:./Path" for Path
-import "../../Test/Assert" for Assert
+import "../../test/Assert" for Assert
 import "Soup|Build.Utils:./BuildOperation" for BuildOperation
-import "../Core/LinkArguments" for LinkArguments, LinkTarget
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
+import "../core/LinkArguments" for LinkArguments, LinkTarget
+import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
 class GCCCompilerUnitTests {
 	construct new() {

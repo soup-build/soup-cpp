@@ -2,12 +2,12 @@ Name: 'Cpp'
 Language: 'Wren|0'
 Version: '0.13.2'
 Source: [
-	'Tasks/BuildTask.wren'
-	'Tasks/ExpandSourceTask.wren'
-	'Tasks/InitializeDefaultsTask.wren'
-	'Tasks/RecipeBuildTask.wren'
-	'Tasks/ResolveDependenciesTask.wren'
-	'Tasks/ResolveToolsTask.wren'
+	'tasks/BuildTask.wren'
+	'tasks/ExpandSourceTask.wren'
+	'tasks/InitializeDefaultsTask.wren'
+	'tasks/RecipeBuildTask.wren'
+	'tasks/ResolveDependenciesTask.wren'
+	'tasks/ResolveToolsTask.wren'
 ]
 
 Dependencies: {

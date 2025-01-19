@@ -3,8 +3,8 @@
 // </copyright>
 
 import "soup-test" for SoupTest
-import "../../Extension/Tasks/InitializeDefaultsTask" for InitializeDefaultsTask
-import "../../Test/Assert" for Assert
+import "../../extension/tasks/InitializeDefaultsTask" for InitializeDefaultsTask
+import "../../test/Assert" for Assert
 
 class InitializeDefaultsTaskUnitTests {
 	construct new() {

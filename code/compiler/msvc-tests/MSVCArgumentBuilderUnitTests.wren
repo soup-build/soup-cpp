@@ -2,10 +2,10 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../MSVC/MSVCArgumentBuilder" for MSVCArgumentBuilder
+import "../msvc/MSVCArgumentBuilder" for MSVCArgumentBuilder
 import "Soup|Build.Utils:./Path" for Path
-import "../../Test/Assert" for Assert
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../../test/Assert" for Assert
+import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 
 class MSVCArgumentBuilderUnitTests {
 	construct new() {

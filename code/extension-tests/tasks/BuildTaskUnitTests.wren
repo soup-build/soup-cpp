@@ -3,13 +3,13 @@
 // </copyright>
 
 import "soup-test" for SoupTest, SoupTestOperation
-import "../../Extension/Tasks/BuildTask" for BuildTask
-import "../../Compiler/Core/BuildArguments" for BuildOptimizationLevel, BuildTargetType
-import "../../Compiler/Core/LinkArguments" for LinkArguments, LinkTarget
-import "../../Compiler/Core/MockCompiler" for MockCompiler
-import "../../Compiler/Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../../extension/tasks/BuildTask" for BuildTask
+import "../../compiler/core/BuildArguments" for BuildOptimizationLevel, BuildTargetType
+import "../../compiler/core/LinkArguments" for LinkArguments, LinkTarget
+import "../../compiler/core/MockCompiler" for MockCompiler
+import "../../compiler/core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 import "Soup|Build.Utils:./Path" for Path
-import "../../Test/Assert" for Assert
+import "../../test/Assert" for Assert
 
 class BuildTaskUnitTests {
 	construct new() {
@@ -56,7 +56,7 @@ class BuildTaskUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -202,7 +202,7 @@ class BuildTaskUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -359,7 +359,7 @@ class BuildTaskUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -568,14 +568,14 @@ class BuildTaskUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -816,14 +816,14 @@ class BuildTaskUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -1082,14 +1082,14 @@ class BuildTaskUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"

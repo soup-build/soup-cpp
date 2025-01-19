@@ -3,9 +3,9 @@
 // </copyright>
 
 import "Soup|Build.Utils:./Path" for Path
-import "../Clang/ClangArgumentBuilder" for ClangArgumentBuilder
-import "../../Test/Assert" for Assert
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../clang/ClangArgumentBuilder" for ClangArgumentBuilder
+import "../../test/Assert" for Assert
+import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 
 class ClangArgumentBuilderUnitTests {
 	construct new() {
@@ -65,6 +65,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			expectedFlag,
 			"-O0",
 			"-mpclmul",
@@ -87,6 +88,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			"-std=c++20",
 			"-O0",
 			"-mpclmul",
@@ -109,6 +111,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			"-std=c++17",
 			"-O0",
 			"-mpclmul",
@@ -135,6 +138,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			"-std=c++17",
 			expectedFlag,
 			"-mpclmul",
@@ -159,6 +163,7 @@ class ClangArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"-Werror",
+			"-fpic",
 			"-std=c++17",
 			"-O0",
 			"-mpclmul",
@@ -183,6 +188,7 @@ class ClangArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"-g",
+			"-fpic",
 			"-std=c++17",
 			"-O0",
 			"-mpclmul",
@@ -209,6 +215,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			"-std=c++11",
 			"-O0",
 			"-I\"C:/Files/SDK/\"",
@@ -237,6 +244,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			"-std=c++11",
 			"-O0",
 			"-DDEBUG",
@@ -265,6 +273,7 @@ class ClangArgumentBuilderUnitTests {
 			arguments)
 
 		var expectedArguments = [
+			"-fpic",
 			"-std=c++11",
 			"-O0",
 			"-fmodule-file=Module=./Module.pcm",

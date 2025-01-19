@@ -2,10 +2,10 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../GCC/GCCArgumentBuilder" for GCCArgumentBuilder
+import "../gcc/GCCArgumentBuilder" for GCCArgumentBuilder
 import "Soup|Build.Utils:./Path" for Path
-import "../../Test/Assert" for Assert
-import "../Core/LinkArguments" for LinkArguments, LinkTarget
+import "../../test/Assert" for Assert
+import "../core/LinkArguments" for LinkArguments, LinkTarget
 
 class GCCLinkerArgumentBuilderUnitTests {
 	construct new() {

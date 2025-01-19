@@ -1,20 +1,20 @@
-import "./Compiler/Core.UnitTests/BuildEngineUnitTests" for BuildEngineUnitTests
-import "./Compiler/Clang.UnitTests/ClangArgumentBuilderUnitTests" for ClangArgumentBuilderUnitTests
-import "./Compiler/Clang.UnitTests/ClangCompilerUnitTests" for ClangCompilerUnitTests
-import "./Compiler/Clang.UnitTests/ClangLinkerArgumentBuilderUnitTests" for ClangLinkerArgumentBuilderUnitTests
-import "./Compiler/Clang.UnitTests/ClangResourceCompileArgumentBuilderUnitTests" for ClangResourceCompileArgumentBuilderUnitTests
-import "./Compiler/GCC.UnitTests/GCCArgumentBuilderUnitTests" for GCCArgumentBuilderUnitTests
-import "./Compiler/GCC.UnitTests/GCCCompilerUnitTests" for GCCCompilerUnitTests
-import "./Compiler/GCC.UnitTests/GCCLinkerArgumentBuilderUnitTests" for GCCLinkerArgumentBuilderUnitTests
-import "./Compiler/GCC.UnitTests/GCCResourceCompileArgumentBuilderUnitTests" for GCCResourceCompileArgumentBuilderUnitTests
-import "./Compiler/MSVC.UnitTests/MSVCArgumentBuilderUnitTests" for MSVCArgumentBuilderUnitTests
-import "./Compiler/MSVC.UnitTests/MSVCCompilerUnitTests" for MSVCCompilerUnitTests
-import "./Compiler/MSVC.UnitTests/MSVCLinkerArgumentBuilderUnitTests" for MSVCLinkerArgumentBuilderUnitTests
-import "./Compiler/MSVC.UnitTests/MSVCResourceCompileArgumentBuilderUnitTests" for MSVCResourceCompileArgumentBuilderUnitTests
-import "./Extension.UnitTests/Tasks/BuildTaskUnitTests" for BuildTaskUnitTests
-import "./Extension.UnitTests/Tasks/InitializeDefaultsTaskUnitTests" for InitializeDefaultsTaskUnitTests
-import "./Extension.UnitTests/Tasks/RecipeBuildTaskUnitTests" for RecipeBuildTaskUnitTests
-import "./Extension.UnitTests/Tasks/ResolveToolsTaskUnitTests" for ResolveToolsTaskUnitTests
+import "./compiler/core-tests/BuildEngineUnitTests" for BuildEngineUnitTests
+import "./compiler/clang-tests/ClangArgumentBuilderUnitTests" for ClangArgumentBuilderUnitTests
+import "./compiler/clang-tests/ClangCompilerUnitTests" for ClangCompilerUnitTests
+import "./compiler/clang-tests/ClangLinkerArgumentBuilderUnitTests" for ClangLinkerArgumentBuilderUnitTests
+import "./compiler/clang-tests/ClangResourceCompileArgumentBuilderUnitTests" for ClangResourceCompileArgumentBuilderUnitTests
+import "./compiler/gcc-tests/GCCArgumentBuilderUnitTests" for GCCArgumentBuilderUnitTests
+import "./compiler/gcc-tests/GCCCompilerUnitTests" for GCCCompilerUnitTests
+import "./compiler/gcc-tests/GCCLinkerArgumentBuilderUnitTests" for GCCLinkerArgumentBuilderUnitTests
+import "./compiler/gcc-tests/GCCResourceCompileArgumentBuilderUnitTests" for GCCResourceCompileArgumentBuilderUnitTests
+import "./compiler/msvc-tests/MSVCArgumentBuilderUnitTests" for MSVCArgumentBuilderUnitTests
+import "./compiler/msvc-tests/MSVCCompilerUnitTests" for MSVCCompilerUnitTests
+import "./compiler/msvc-tests/MSVCLinkerArgumentBuilderUnitTests" for MSVCLinkerArgumentBuilderUnitTests
+import "./compiler/msvc-tests/MSVCResourceCompileArgumentBuilderUnitTests" for MSVCResourceCompileArgumentBuilderUnitTests
+import "./extension-tests/tasks/BuildTaskUnitTests" for BuildTaskUnitTests
+import "./extension-tests/tasks/InitializeDefaultsTaskUnitTests" for InitializeDefaultsTaskUnitTests
+import "./extension-tests/tasks/RecipeBuildTaskUnitTests" for RecipeBuildTaskUnitTests
+import "./extension-tests/tasks/ResolveToolsTaskUnitTests" for ResolveToolsTaskUnitTests
 
 var uut
 

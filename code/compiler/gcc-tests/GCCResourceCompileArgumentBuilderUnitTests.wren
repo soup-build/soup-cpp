@@ -2,10 +2,10 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../GCC/GCCArgumentBuilder" for GCCArgumentBuilder
+import "../gcc/GCCArgumentBuilder" for GCCArgumentBuilder
 import "Soup|Build.Utils:./Path" for Path
-import "../../Test/Assert" for Assert
-import "../Core/CompileArguments" for SharedCompileArguments, ResourceCompileArguments
+import "../../test/Assert" for Assert
+import "../core/CompileArguments" for SharedCompileArguments, ResourceCompileArguments
 
 
 class GCCResourceCompileArgumentBuilderUnitTests {

@@ -5,12 +5,12 @@
 import "soup-test" for SoupTest
 import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./BuildOperation" for BuildOperation
-import "../../Test/Assert" for Assert
-import "../Core/BuildEngine" for BuildEngine
-import "../Core/MockCompiler" for MockCompiler
-import "../Core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, PartitionSourceFile, SourceFile, HeaderFileSet
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
-import "../Core/LinkArguments" for LinkArguments, LinkTarget
+import "../../test/Assert" for Assert
+import "../core/BuildEngine" for BuildEngine
+import "../core/MockCompiler" for MockCompiler
+import "../core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, PartitionSourceFile, SourceFile, HeaderFileSet
+import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "../core/LinkArguments" for LinkArguments, LinkTarget
 
 class BuildEngineUnitTests {
 	construct new() {
@@ -214,7 +214,7 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -381,7 +381,7 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -541,14 +541,14 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -819,7 +819,7 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -1047,14 +1047,14 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -1313,14 +1313,14 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -1619,14 +1619,14 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"
@@ -1939,14 +1939,14 @@ class BuildEngineUnitTests {
 		var dependenciesTable = {}
 		globalState["Dependencies"] = dependenciesTable
 		dependenciesTable["Tool"] = {
-			"copy": {
+			"mwasplund|copy": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/copy.exe"
 					}
 				}
 			},
-			"mkdir": {
+			"mwasplund|mkdir": {
 				"SharedState": {
 					"Build": {
 						"RunExecutable": "/TARGET/mkdir.exe"

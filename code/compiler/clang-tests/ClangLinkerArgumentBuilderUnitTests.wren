@@ -3,9 +3,9 @@
 // </copyright>
 
 import "Soup|Build.Utils:./Path" for Path
-import "../Clang/ClangArgumentBuilder" for ClangArgumentBuilder
-import "../../Test/Assert" for Assert
-import "../Core/LinkArguments" for LinkArguments, LinkTarget
+import "../clang/ClangArgumentBuilder" for ClangArgumentBuilder
+import "../../test/Assert" for Assert
+import "../core/LinkArguments" for LinkArguments, LinkTarget
 
 class ClangLinkerArgumentBuilderUnitTests {
 	construct new() {

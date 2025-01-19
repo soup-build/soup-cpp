@@ -2,12 +2,12 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "../Clang/ClangCompiler" for ClangCompiler
+import "../clang/ClangCompiler" for ClangCompiler
 import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./BuildOperation" for BuildOperation
-import "../../Test/Assert" for Assert
-import "../Core/LinkArguments" for LinkArguments, LinkTarget
-import "../Core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
+import "../../test/Assert" for Assert
+import "../core/LinkArguments" for LinkArguments, LinkTarget
+import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
 class ClangCompilerUnitTests {
 	construct new() {
