@@ -58,6 +58,10 @@ class ClangArgumentBuilder {
 		// Convert absolute addresses to relative addresses
 		ClangArgumentBuilder.AddFlag(commandArguments, "fpic")
 		
+		// Uncomment to enable memory checks
+		// ClangArgumentBuilder.AddParameter(commandArguments, "fsanitize", "address")
+		// ClangArgumentBuilder.AddFlag(commandArguments, "fno-omit-frame-pointer")
+
 		// Set the language standard
 		if (arguments.Standard == LanguageStandard.CPP11) {
 			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
@@ -405,6 +409,10 @@ class ClangArgumentBuilder {
 
 		var commandArguments = []
 
+		// Memory checks
+		ClangArgumentBuilder.AddParameter(commandArguments, "fsanitize", "address")
+		ClangArgumentBuilder.AddFlag(commandArguments, "fno-omit-frame-pointer")
+		
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
 			ClangArgumentBuilder.AddParameterWithQuotes(

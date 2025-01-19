@@ -52,6 +52,9 @@ class GCCArgumentBuilder {
 			GCCArgumentBuilder.AddFlagValue(commandArguments, "w", warning)
 		}
 
+		// Uncomment to enable memory checks
+		// GCCArgumentBuilder.AddParameter(commandArguments, "fsanitize", "address")
+		
 		// Set the language standard
 		if (arguments.Standard == LanguageStandard.CPP11) {
 			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
