@@ -144,6 +144,8 @@ class ClangLinkerArgumentBuilderUnitTests {
 		var actualArguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
 
 		var expectedArguments = [
+			"-fsanitize=address",
+			"-fno-omit-frame-pointer",
 			"-o",
 			"./out/Something",
 			"./File.mock.o",

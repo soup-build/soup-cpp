@@ -78,7 +78,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -147,7 +147,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -222,7 +222,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -257,6 +257,7 @@ class ClangCompilerUnitTests {
 				Path.new("C:/bin/mock.clang++"),
 				[
 					"-c",
+					"-fmodule-file=Module=./Module.pcm",
 					"C:/target/obj/File.pcm",
 					"-o",
 					"C:/target/obj/File.o",
@@ -328,7 +329,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
 				],
 				[],
 				[
@@ -387,6 +388,7 @@ class ClangCompilerUnitTests {
 				Path.new("C:/bin/mock.clang++"),
 				[
 					"-c",
+					"-fmodule-file=Module=./Module.pcm",
 					"C:/target/obj/File2.pcm",
 					"-o",
 					"C:/target/obj/File2.o",
@@ -556,6 +558,8 @@ class ClangCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.clang++"),
 			[
+				"-fsanitize=address",
+				"-fno-omit-frame-pointer",
 				"-o",
 				"./Something.exe",
 				"./File.mock.o",

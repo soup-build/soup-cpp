@@ -22,10 +22,10 @@ class MSVCArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
 		this.BSCA_SingleArgument_OptimizationLevel_Disabled()
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
-		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, "/Os")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
-		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "/Ot")
+		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Size")
+		this.BSCA_SingleArgument_OptimizationLevel_Size()
+		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Speed")
+		this.BSCA_SingleArgument_OptimizationLevel_Speed()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors")
 		this.BSCA_SingleArgument_EnableWarningsAsErrors()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation")
@@ -149,15 +149,11 @@ class MSVCArgumentBuilderUnitTests {
 		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
-	// [Theory]
-	// [InlineData(OptimizationLevel.Size, "/Os")]
-	// [InlineData(OptimizationLevel.Speed, "/Ot")]
-	BSCA_SingleArgument_OptimizationLevel(
-		level,
-		expectedFlag) {
+	// [Fact]
+	BSCA_SingleArgument_OptimizationLevel_Size() {
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP17
-		arguments.Optimize = level
+		arguments.Optimize = OptimizationLevel.Size
 
 		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
@@ -173,9 +169,40 @@ class MSVCArgumentBuilderUnitTests {
 			"/Zc:throwingNew",
 			"/W4",
 			"/std:c++17",
-			expectedFlag,
+			"/O1",
 			"/X",
 			"/RTC1",
+			"/EHsc",
+			"/MT",
+			"/bigobj",
+			"/c",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BSCA_SingleArgument_OptimizationLevel_Speed() {
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP17
+		arguments.Optimize = OptimizationLevel.Speed
+
+		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+			arguments)
+
+		var expectedArguments = [
+			"/nologo",
+			"/TP",
+			"/FC",
+			"/permissive-",
+			"/Zc:__cplusplus",
+			"/Zc:externConstexpr",
+			"/Zc:inline",
+			"/Zc:throwingNew",
+			"/W4",
+			"/std:c++17",
+			"/O2",
+			"/X",
 			"/EHsc",
 			"/MT",
 			"/bigobj",

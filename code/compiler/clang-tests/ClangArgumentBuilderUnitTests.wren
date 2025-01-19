@@ -346,17 +346,20 @@ class ClangArgumentBuilderUnitTests {
 
 	// [Fact]
 	BuildInterfaceUnitCompileCompilerArguments() {
-		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = InterfaceUnitCompileArguments.new()
-		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.o")
-		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
+
+		var sharedArguments = SharedCompileArguments.new()
+		sharedArguments.TargetRootDirectory = Path.new("C:/target/")
+
+		var interfaceArguments = InterfaceUnitCompileArguments.new()
+		interfaceArguments.SourceFile = Path.new("module.cpp")
+		interfaceArguments.TargetFile = Path.new("module.o")
+		interfaceArguments.ModuleInterfaceTarget = Path.new("module.pcm")
 
 		var responseFile = Path.new("ResponseFile.txt")
 
 		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
-			targetRootDirectory,
-			arguments)
+			sharedArguments,
+			interfaceArguments)
 
 		var expectedArguments = [
 			"-c",
