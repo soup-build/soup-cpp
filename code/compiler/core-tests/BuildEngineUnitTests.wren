@@ -191,8 +191,8 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[],
+		Assert.MapEqual(
+			{},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -358,8 +358,8 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[],
+		Assert.MapEqual(
+			{},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -518,8 +518,8 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[],
+		Assert.MapEqual(
+			{},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -592,10 +592,10 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		arguments.ModuleDependencies = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		arguments.ModuleDependencies = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		arguments.LinkDependencies = [
 			Path.new("../Other/bin/OtherModule1.mock.a"),
 			Path.new("../OtherModule2.mock.a"),
@@ -628,13 +628,13 @@ class BuildEngineUnitTests {
 		expectedCompileArguments.SourceRootDirectory = Path.new("C:/source/")
 		expectedCompileArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedCompileArguments.IncludeDirectories = [
-				Path.new("Folder"),
-				Path.new("AnotherFolder/Sub"),
+			Path.new("Folder"),
+			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 
 		var expectedTranslationUnit1Arguments = TranslationUnitCompileArguments.new()
 		expectedTranslationUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
@@ -649,7 +649,7 @@ class BuildEngineUnitTests {
 		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-				Path.new("obj/TestFile1.mock.obj"),
+			Path.new("obj/TestFile1.mock.obj"),
 		]
 
 		// Note: There is no need to send along the static libraries for a static library linking
@@ -787,11 +787,11 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[
-				Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				Path.new("../OtherModule2.mock.bmi"),
-			],
+		Assert.MapEqual(
+			{
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+			},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -850,10 +850,10 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		arguments.ModuleDependencies = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		arguments.ModuleDependencies = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		arguments.LinkDependencies = [
 			Path.new("../Other/bin/OtherModule1.mock.a"),
 			Path.new("../OtherModule2.mock.a"),
@@ -882,13 +882,13 @@ class BuildEngineUnitTests {
 		expectedCompileArguments.SourceRootDirectory = Path.new("C:/source/")
 		expectedCompileArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedCompileArguments.IncludeDirectories = [
-				Path.new("Folder"),
-				Path.new("AnotherFolder/Sub"),
+			Path.new("Folder"),
+			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 
 		var expectedTranslationUnit1Arguments = TranslationUnitCompileArguments.new()
 		expectedTranslationUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
@@ -913,9 +913,9 @@ class BuildEngineUnitTests {
 		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-				Path.new("obj/TestFile1.mock.obj"),
-				Path.new("obj/TestFile2.mock.obj"),
-				Path.new("obj/TestFile3.mock.obj"),
+			Path.new("obj/TestFile1.mock.obj"),
+			Path.new("obj/TestFile2.mock.obj"),
+			Path.new("obj/TestFile3.mock.obj"),
 		]
 
 		// Note: There is no need to send along the static libraries for a static library linking
@@ -1015,11 +1015,11 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[
-				Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				Path.new("../OtherModule2.mock.bmi"),
-			],
+		Assert.MapEqual(
+			{
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+			},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -1086,10 +1086,10 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		arguments.ModuleDependencies = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		arguments.ModuleDependencies = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		arguments.LinkDependencies = [
 			Path.new("../Other/bin/OtherModule1.mock.a"),
 			Path.new("../OtherModule2.mock.a"),
@@ -1126,19 +1126,20 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		expectedCompileArguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"AWESOME",
 		]
 
 		var expectedCompileModuleArguments = InterfaceUnitCompileArguments.new()
+		expectedCompileModuleArguments.ModuleName = "Library"
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
-		expectedCompileModuleArguments.IncludeModules = []
+		expectedCompileModuleArguments.IncludeModules = {}
 		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.InterfaceUnit = expectedCompileModuleArguments
@@ -1280,12 +1281,12 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[
-				Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				Path.new("../OtherModule2.mock.bmi"),
-				Path.new("C:/target/bin/Library.mock.bmi"),
-			],
+		Assert.MapEqual(
+			{
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+				"Library": Path.new("C:/target/bin/Library.mock.bmi"),
+			},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -1361,10 +1362,10 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		arguments.ModuleDependencies = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		arguments.ModuleDependencies = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		arguments.LinkDependencies = [
 			Path.new("../Other/bin/OtherModule1.mock.a"),
 			Path.new("../OtherModule2.mock.a"),
@@ -1402,26 +1403,28 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		expectedCompileArguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"AWESOME",
 		]
 
 		var expectedInterfacePartitionUnit1Arguments = InterfaceUnitCompileArguments.new()
+		expectedInterfacePartitionUnit1Arguments.ModuleName = "Library:TestFile1"
 		expectedInterfacePartitionUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
 		expectedInterfacePartitionUnit1Arguments.TargetFile = Path.new("obj/TestFile1.mock.obj")
 		expectedInterfacePartitionUnit1Arguments.ModuleInterfaceTarget = Path.new("obj/TestFile1.mock.bmi")
 
 		var expectedInterfacePartitionUnit2Arguments = InterfaceUnitCompileArguments.new()
+		expectedInterfacePartitionUnit2Arguments.ModuleName = "Library:TestFile2"
 		expectedInterfacePartitionUnit2Arguments.SourceFile = Path.new("TestFile2.cpp")
 		expectedInterfacePartitionUnit2Arguments.TargetFile = Path.new("obj/TestFile2.mock.obj")
-		expectedInterfacePartitionUnit2Arguments.IncludeModules = [
-			Path.new("C:/target/obj/TestFile1.mock.bmi"),
-		]
+		expectedInterfacePartitionUnit2Arguments.IncludeModules = {
+			"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
+		}
 		expectedInterfacePartitionUnit2Arguments.ModuleInterfaceTarget = Path.new("obj/TestFile2.mock.bmi")
 
 		expectedCompileArguments.InterfacePartitionUnits = [
@@ -1430,23 +1433,24 @@ class BuildEngineUnitTests {
 		]
 
 		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new()
+		expectedCompileArguments.InterfaceUnit.ModuleName = "Library"
 		expectedCompileArguments.InterfaceUnit.SourceFile = Path.new("Public.cpp")
 		expectedCompileArguments.InterfaceUnit.TargetFile = Path.new("obj/Public.mock.obj")
-		expectedCompileArguments.InterfaceUnit.IncludeModules = [
-			Path.new("C:/target/obj/TestFile1.mock.bmi"),
-			Path.new("C:/target/obj/TestFile2.mock.bmi"),
-		]
+		expectedCompileArguments.InterfaceUnit.IncludeModules = {
+			"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
+			"Library:TestFile2": Path.new("C:/target/obj/TestFile2.mock.bmi"),
+		}
 		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
 				Path.new("obj/TestFile3.mock.obj"),
-				[]),
+				{}),
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile4.cpp"),
 				Path.new("obj/TestFile4.mock.obj"),
-				[]),
+				{}),
 		]
 
 		var expectedLinkArguments = LinkArguments.new()
@@ -1584,14 +1588,14 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[
-				Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				Path.new("../OtherModule2.mock.bmi"),
-				Path.new("C:/target/obj/TestFile1.mock.bmi"),
-				Path.new("C:/target/obj/TestFile2.mock.bmi"),
-				Path.new("C:/target/bin/Library.mock.bmi"),
-			],
+		Assert.MapEqual(
+			{
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+				"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
+				"Library:TestFile2": Path.new("C:/target/obj/TestFile2.mock.bmi"),
+				"Library": Path.new("C:/target/bin/Library.mock.bmi"),
+			},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -1671,10 +1675,10 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		arguments.ModuleDependencies = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		arguments.ModuleDependencies = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		arguments.LinkDependencies = [
 			Path.new("../Other/bin/OtherModule1.mock.a"),
 			Path.new("../OtherModule2.mock.a"),
@@ -1712,36 +1716,39 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		expectedCompileArguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"AWESOME",
 		]
 
 		var expectedInterfacePartitionUnit1 = InterfaceUnitCompileArguments.new()
+		expectedInterfacePartitionUnit1.ModuleName = "Library:TestFile1"
 		expectedInterfacePartitionUnit1.SourceFile = Path.new("TestFile1.cpp")
 		expectedInterfacePartitionUnit1.TargetFile = Path.new("obj/TestFile1.mock.obj")
-		expectedInterfacePartitionUnit1.IncludeModules = []
+		expectedInterfacePartitionUnit1.IncludeModules = {}
 		expectedInterfacePartitionUnit1.ModuleInterfaceTarget = Path.new("obj/TestFile1.mock.bmi")
 
 		var expectedInterfacePartitionUnit2 = InterfaceUnitCompileArguments.new()
+		expectedInterfacePartitionUnit2.ModuleName = "Library:TestFile2"
 		expectedInterfacePartitionUnit2.SourceFile = Path.new("TestFile2.cpp")
 		expectedInterfacePartitionUnit2.TargetFile = Path.new("obj/TestFile2.mock.obj")
-		expectedInterfacePartitionUnit2.IncludeModules = [
-			Path.new("C:/target/obj/TestFile1.mock.bmi")
-		]
+		expectedInterfacePartitionUnit2.IncludeModules = {
+			"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi")
+		}
 		expectedInterfacePartitionUnit2.ModuleInterfaceTarget = Path.new("obj/TestFile2.mock.bmi")
 
 		var expectedInterfacePartitionUnit3 = InterfaceUnitCompileArguments.new()
+		expectedInterfacePartitionUnit3.ModuleName = "Library:TestFile3"
 		expectedInterfacePartitionUnit3.SourceFile = Path.new("TestFile3.cpp")
 		expectedInterfacePartitionUnit3.TargetFile = Path.new("obj/TestFile3.mock.obj")
-		expectedInterfacePartitionUnit3.IncludeModules = [
-			Path.new("C:/target/obj/TestFile2.mock.bmi"),
-			Path.new("C:/target/obj/TestFile1.mock.bmi")
-		]
+		expectedInterfacePartitionUnit3.IncludeModules = {
+			"Library:TestFile2": Path.new("C:/target/obj/TestFile2.mock.bmi"),
+			"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi")
+		}
 		expectedInterfacePartitionUnit3.ModuleInterfaceTarget = Path.new("obj/TestFile3.mock.bmi")
 
 		expectedCompileArguments.InterfacePartitionUnits = [
@@ -1751,20 +1758,21 @@ class BuildEngineUnitTests {
 		]
 
 		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new()
+		expectedCompileArguments.InterfaceUnit.ModuleName = "Library"
 		expectedCompileArguments.InterfaceUnit.SourceFile = Path.new("Public.cpp")
 		expectedCompileArguments.InterfaceUnit.TargetFile = Path.new("obj/Public.mock.obj")
-		expectedCompileArguments.InterfaceUnit.IncludeModules = [
-			Path.new("C:/target/obj/TestFile1.mock.bmi"),
-			Path.new("C:/target/obj/TestFile2.mock.bmi"),
-			Path.new("C:/target/obj/TestFile3.mock.bmi")
-		]
+		expectedCompileArguments.InterfaceUnit.IncludeModules = {
+			"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
+			"Library:TestFile2": Path.new("C:/target/obj/TestFile2.mock.bmi"),
+			"Library:TestFile3": Path.new("C:/target/obj/TestFile3.mock.bmi")
+		}
 		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile4.cpp"),
 				Path.new("obj/TestFile4.mock.obj"),
-				[])
+				{})
 		]
 
 		var expectedLinkArguments = LinkArguments.new()
@@ -1903,15 +1911,15 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[
-				Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				Path.new("../OtherModule2.mock.bmi"),
-				Path.new("C:/target/obj/TestFile1.mock.bmi"),
-				Path.new("C:/target/obj/TestFile2.mock.bmi"),
-				Path.new("C:/target/obj/TestFile3.mock.bmi"),
-				Path.new("C:/target/bin/Library.mock.bmi"),
-			],
+		Assert.MapEqual(
+			{
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+				"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
+				"Library:TestFile2": Path.new("C:/target/obj/TestFile2.mock.bmi"),
+				"Library:TestFile3": Path.new("C:/target/obj/TestFile3.mock.bmi"),
+				"Library": Path.new("C:/target/bin/Library.mock.bmi"),
+			},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(
@@ -1974,10 +1982,10 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		arguments.ModuleDependencies = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		arguments.ModuleDependencies = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		arguments.LinkDependencies = [
 			Path.new("../Other/bin/OtherModule1.mock.a"),
 			Path.new("../OtherModule2.mock.a"),
@@ -2007,15 +2015,16 @@ class BuildEngineUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 
 		var expectedCompileModuleArguments = InterfaceUnitCompileArguments.new()
+		expectedCompileModuleArguments.ModuleName = "Library"
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
-		expectedCompileModuleArguments.IncludeModules = []
+		expectedCompileModuleArguments.IncludeModules = {}
 		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
 		expectedCompileArguments.InterfaceUnit = expectedCompileModuleArguments
@@ -2097,12 +2106,12 @@ class BuildEngineUnitTests {
 			expectedBuildOperations,
 			result.BuildOperations)
 
-		Assert.ListEqual(
-			[
-				Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				Path.new("../OtherModule2.mock.bmi"),
-				Path.new("C:/target/bin/Library.mock.bmi"),
-			],
+		Assert.MapEqual(
+			{
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+				"Library": Path.new("C:/target/bin/Library.mock.bmi"),
+			},
 			result.ModuleDependencies)
 
 		Assert.ListEqual(

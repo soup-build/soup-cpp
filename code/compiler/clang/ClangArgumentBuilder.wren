@@ -97,13 +97,12 @@ class ClangArgumentBuilder {
 		}
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Enable SIMD features
@@ -132,13 +131,12 @@ class ClangArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Clang wants to use cppm for their module files, I think this is dumb
@@ -178,13 +176,12 @@ class ClangArgumentBuilder {
 		}
 
 		// Add the module references as input
-		for (moduleFile in sharedArguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in sharedArguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Reference the single precompiled interface
@@ -214,13 +211,12 @@ class ClangArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Add the source file as input
@@ -259,23 +255,21 @@ class ClangArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the internal module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Add the internal module references as input
-		for (moduleFile in internalModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in internalModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Add the source file as input

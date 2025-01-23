@@ -70,7 +70,10 @@ class GCCCompiler is ICompiler {
 
 		// Initialize a shared input set
 		var sharedInputFiles = []
-		sharedInputFiles = sharedInputFiles + arguments.IncludeModules
+
+		for (module in arguments.IncludeModules) {
+			sharedInputFiles.add(module.value)
+		}
 
 		var absoluteResponseFile = arguments.TargetRootDirectory + responseFile
 
@@ -103,13 +106,16 @@ class GCCCompiler is ICompiler {
 			operations.add(buildOperation)
 		}
 
-		var internalModules = []
+		var internalModules = {}
 		for (partitionUnitArguments in arguments.InterfacePartitionUnits) {
 			// Build up the input/output sets
 			var inputFiles = [] + sharedInputFiles
 			inputFiles.add(partitionUnitArguments.SourceFile)
 			inputFiles.add(absoluteResponseFile)
-			inputFiles = inputFiles + partitionUnitArguments.IncludeModules
+
+			for (module in partitionUnitArguments.IncludeModules) {
+				inputFiles.add(module.value)
+			}
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + partitionUnitArguments.TargetFile,
@@ -133,7 +139,7 @@ class GCCCompiler is ICompiler {
 			operations.add(buildOperation)
 
 			// Add our module interface back in for the downstream compilers
-			internalModules.add(arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget)
+			internalModules[partitionUnitArguments.ModuleName] = arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget
 		}
 
 		// Generate the interface build operation if present
@@ -144,7 +150,10 @@ class GCCCompiler is ICompiler {
 			var inputFiles = [] + sharedInputFiles
 			inputFiles.add(interfaceUnitArguments.SourceFile)
 			inputFiles.add(absoluteResponseFile)
-			inputFiles = inputFiles + interfaceUnitArguments.IncludeModules
+
+			for (module in interfaceUnitArguments.IncludeModules) {
+				inputFiles.add(module.value)
+			}
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
@@ -168,7 +177,7 @@ class GCCCompiler is ICompiler {
 			operations.add(buildOperation)
 
 			// Add our module interface back in for the downstream compilers
-			internalModules.add(arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget)
+			internalModules[interfaceUnitArguments.ModuleName] = arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget
 		}
 
 		for (implementationUnitArguments in arguments.ImplementationUnits) {
@@ -176,8 +185,14 @@ class GCCCompiler is ICompiler {
 			var inputFiles = [] + sharedInputFiles
 			inputFiles.add(implementationUnitArguments.SourceFile)
 			inputFiles.add(absoluteResponseFile)
-			inputFiles = inputFiles + implementationUnitArguments.IncludeModules
-			inputFiles = inputFiles + internalModules
+
+			for (module in implementationUnitArguments.IncludeModules) {
+				inputFiles.add(module.value)
+			}
+
+			for (module in internalModules) {
+				inputFiles.add(module.value)
+			}
 
 			var outputFiles = [
 				arguments.TargetRootDirectory + implementationUnitArguments.TargetFile,

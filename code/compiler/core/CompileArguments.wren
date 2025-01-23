@@ -57,7 +57,7 @@ class TranslationUnitCompileArguments {
 	construct new() {
 		_sourceFile = null
 		_targetFile = null
-		_includeModules = []
+		_includeModules = {}
 	}
 
 	construct new(sourceFile, targetFile, includeModules) {
@@ -92,7 +92,7 @@ class TranslationUnitCompileArguments {
 
 		return this.SourceFile == other.SourceFile &&
 			this.TargetFile == other.TargetFile &&
-			ListExtensions.SequenceEqual(this.IncludeModules, other.IncludeModules)
+			MapExtensions.Equal(this.IncludeModules, other.IncludeModules)
 	}
 
 	toString {
@@ -106,16 +106,24 @@ class TranslationUnitCompileArguments {
 class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 	construct new() {
 		super()
+		_moduleName = null
 		_moduleInterfaceTarget = null
 	}
 
-	construct new(sourceFile, targetFile, includeModules, moduleInterfaceTarget) {
+	construct new(sourceFile, targetFile, includeModules, moduleName, moduleInterfaceTarget) {
 		super(sourceFile, targetFile, includeModules)
+		_moduleName = moduleName
 		_moduleInterfaceTarget = moduleInterfaceTarget
 	}
 
 	/// <summary>
-	/// Gets or sets the source file
+	/// Gets or sets the module name
+	/// </summary>
+	ModuleName { _moduleName }
+	ModuleName=(value) { _moduleName = value }
+
+	/// <summary>
+	/// Gets or sets the module interface target
 	/// </summary>
 	ModuleInterfaceTarget { _moduleInterfaceTarget }
 	ModuleInterfaceTarget=(value) { _moduleInterfaceTarget = value }
@@ -128,12 +136,13 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 
 		return this.SourceFile == other.SourceFile &&
 			this.TargetFile == other.TargetFile &&
-			ListExtensions.SequenceEqual(this.IncludeModules, other.IncludeModules) &&
+			MapExtensions.Equal(this.IncludeModules, other.IncludeModules) &&
+			this.ModuleName == other.ModuleName &&
 			this.ModuleInterfaceTarget == other.ModuleInterfaceTarget
 	}
 
 	toString {
-		return "InterfaceUnitCompileArguments { SourceFile=%(_sourceFile), TargetFile=%(_targetFile), IncludeModules=%(_includeModules), ModuleInterfaceTarget=%(_moduleInterfaceTarget) }"
+		return "InterfaceUnitCompileArguments { SourceFile=%(this.SourceFile), TargetFile=%(this.TargetFile), IncludeModules=%(this.IncludeModules), ModuleName=%(this.ModuleName) ModuleInterfaceTarget=%(this.ModuleInterfaceTarget) }"
 	}
 }
 
@@ -149,7 +158,7 @@ class SharedCompileArguments {
 		_objectDirectory = null
 		_preprocessorDefinitions = []
 		_includeDirectories = []
-		_includeModules = []
+		_includeModules = {}
 		_generateSourceDebugInfo = false
 		_interfacePartitionUnits = []
 		_interfaceUnit = null
@@ -283,7 +292,7 @@ class SharedCompileArguments {
 			this.ObjectDirectory == other.ObjectDirectory &&
 			ListExtensions.SequenceEqual(this.PreprocessorDefinitions, other.PreprocessorDefinitions) &&
 			ListExtensions.SequenceEqual(this.IncludeDirectories, other.IncludeDirectories) &&
-			ListExtensions.SequenceEqual(this.IncludeModules, other.IncludeModules) &&
+			MapExtensions.Equal(this.IncludeModules, other.IncludeModules) &&
 			this.GenerateSourceDebugInfo == other.GenerateSourceDebugInfo &&
 			ListExtensions.SequenceEqual(this.InterfacePartitionUnits, other.InterfacePartitionUnits) &&
 			this.InterfaceUnit == other.InterfaceUnit &&

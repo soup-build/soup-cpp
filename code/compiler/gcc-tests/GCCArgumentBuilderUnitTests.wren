@@ -222,10 +222,10 @@ class GCCArgumentBuilderUnitTests {
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
 		arguments.Optimize = OptimizationLevel.None
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-			Path.new("Std.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+			"Std": Path.new("Std.pcm"),
+		}
 
 		var actualArguments = GCCArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
@@ -234,9 +234,9 @@ class GCCArgumentBuilderUnitTests {
 			"-std=c++11",
 			"-O0",
 			"-reference",
-			"./Module.pcm",
-			"-reference",
 			"./Std.pcm",
+			"-reference",
+			"./Module.pcm",
 			"-c",
 		]
 
@@ -305,7 +305,7 @@ class GCCArgumentBuilderUnitTests {
 		arguments.TargetFile = Path.new("module.obj")
 
 		var responseFile = Path.new("ResponseFile.txt")
-		var internalModules = []
+		var internalModules = {}
 
 		var actualArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
 			targetRootDirectory,
@@ -329,16 +329,16 @@ class GCCArgumentBuilderUnitTests {
 		var arguments = TranslationUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
 		arguments.TargetFile = Path.new("module.obj")
-		arguments.IncludeModules = [
-			Path.new("Module1.ifc"),
-			Path.new("Module2.ifc"),
-		]
+		arguments.IncludeModules = {
+			"Module1": Path.new("Module1.ifc"),
+			"Module2": Path.new("Module2.ifc"),
+		}
 
 		var responseFile = Path.new("ResponseFile.txt")
-		var internalModules = [
-			Path.new("Module3.ifc"),
-			Path.new("Module4.ifc"),
-		]
+		var internalModules = {
+			"Module3": Path.new("Module3.ifc"),
+			"Module4": Path.new("Module4.ifc"),
+		}
 
 		var actualArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
 			targetRootDirectory,

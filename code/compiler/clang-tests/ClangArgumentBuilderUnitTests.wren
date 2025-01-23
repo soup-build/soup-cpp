@@ -264,10 +264,10 @@ class ClangArgumentBuilderUnitTests {
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
 		arguments.Optimize = OptimizationLevel.None
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-			Path.new("Std.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+			"Std": Path.new("Std.pcm"),
+		}
 
 		var actualArguments = ClangArgumentBuilder.BuildSharedCompilerArguments(
 			arguments)
@@ -276,8 +276,8 @@ class ClangArgumentBuilderUnitTests {
 			"-fpic",
 			"-std=c++11",
 			"-O0",
-			"-fmodule-file=Module=./Module.pcm",
 			"-fmodule-file=Std=./Std.pcm",
+			"-fmodule-file=Module=./Module.pcm",
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
@@ -379,7 +379,7 @@ class ClangArgumentBuilderUnitTests {
 		arguments.TargetFile = Path.new("module.o")
 
 		var responseFile = Path.new("ResponseFile.txt")
-		var internalModules = []
+		var internalModules = {}
 
 		var actualArguments = ClangArgumentBuilder.BuildTranslationUnitCompilerArguments(
 			targetRootDirectory,
@@ -403,16 +403,16 @@ class ClangArgumentBuilderUnitTests {
 		var arguments = TranslationUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
 		arguments.TargetFile = Path.new("module.o")
-		arguments.IncludeModules = [
-			Path.new("Module1.pcm"),
-			Path.new("Module2.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module1": Path.new("Module1.pcm"),
+			"Module2": Path.new("Module2.pcm"),
+		}
 
 		var responseFile = Path.new("ResponseFile.txt")
-		var internalModules = [
-			Path.new("Module3.pcm"),
-			Path.new("Module4.pcm"),
-		]
+		var internalModules = {
+			"Module3": Path.new("Module3.pcm"),
+			"Module4": Path.new("Module4.pcm"),
+		}
 
 		var actualArguments = ClangArgumentBuilder.BuildTranslationUnitCompilerArguments(
 			targetRootDirectory,

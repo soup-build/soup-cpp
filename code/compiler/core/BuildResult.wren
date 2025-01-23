@@ -8,7 +8,7 @@
 class BuildResult {
 	construct new() {
 		_buildOperations = []
-		_moduleDependencies = []
+		_moduleDependencies = {}
 		_linkDependencies = []
 		_internalLinkDependencies = []
 		_runtimeDependencies = []

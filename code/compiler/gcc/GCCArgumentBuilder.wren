@@ -90,9 +90,9 @@ class GCCArgumentBuilder {
 		}
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Only run preprocessor, compile and assemble
@@ -149,9 +149,9 @@ class GCCArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the source file as input
@@ -189,9 +189,9 @@ class GCCArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the source file as input
@@ -230,15 +230,15 @@ class GCCArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the internal module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the internal module references as input
-		for (moduleFile in internalModules) {
+		for (module in internalModules) {
 			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			GCCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the source file as input
