@@ -880,22 +880,22 @@ class BuildTaskUnitTests {
 				Path.new("obj/TestFile1.mock.obj"),
 				{},
 				"Library:TestFile1",
-				Path.new("obj/TestFile1.mock.bmi")),
+				Path.new("obj/Library-TestFile1.mock.bmi")),
 			InterfaceUnitCompileArguments.new(
 				Path.new("TestFile2.cpp"),
 				Path.new("obj/TestFile2.mock.obj"),
 				{
-					"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
+					"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
 				},
 				"Library:TestFile2",
-				Path.new("obj/TestFile2.mock.bmi")),
+				Path.new("obj/Library-TestFile2.mock.bmi")),
 		]
 		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("Public.cpp"),
 			Path.new("obj/Public.mock.obj"),
 			{
-				"Library:TestFile1": Path.new("C:/target/obj/TestFile1.mock.bmi"),
-				"Library:TestFile2": Path.new("C:/target/obj/TestFile2.mock.bmi"),
+				"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+				"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
 			},
 			"Library",
 			Path.new("bin/Library.mock.bmi"))
@@ -972,7 +972,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/TestFile1.mock.obj"),
-					Path.new("obj/TestFile1.mock.bmi"),
+					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompilePartition: 1",
@@ -986,7 +986,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/TestFile2.mock.obj"),
-					Path.new("obj/TestFile2.mock.bmi"),
+					Path.new("obj/Library-TestFile2.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompileModule: 1",

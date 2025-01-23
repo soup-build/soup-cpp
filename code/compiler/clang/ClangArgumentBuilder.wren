@@ -176,7 +176,7 @@ class ClangArgumentBuilder {
 		}
 
 		// Add the module references as input
-		for (module in sharedArguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
@@ -218,6 +218,10 @@ class ClangArgumentBuilder {
 				module.key,
 				module.value.toString)
 		}
+
+		// Clang wants to use cppm for their module files, I think this is dumb
+		ClangArgumentBuilder.AddFlag(commandArguments, "x")
+		ClangArgumentBuilder.AddValue(commandArguments, "c++-module")
 
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)

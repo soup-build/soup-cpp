@@ -305,6 +305,8 @@ class ClangArgumentBuilderUnitTests {
 
 		var expectedArguments = [
 			"@./ResponseFile.txt",
+			"-x",
+			"c++-module",
 			"./module.cpp",
 			"-o",
 			"C:/target/module.o",

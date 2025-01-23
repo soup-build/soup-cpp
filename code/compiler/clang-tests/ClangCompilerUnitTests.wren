@@ -161,6 +161,8 @@ class ClangCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-fmodule-file=Other=./obj/Other.pcm",
+					"-x",
+					"c++-module",
 					"./File.cpp",
 					"-o",
 					"C:/target/obj/File.o",
@@ -346,6 +348,8 @@ class ClangCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-fmodule-file=Other1=./obj/Other1.pcm",
+					"-x",
+					"c++-module",
 					"./File1.cpp",
 					"-o",
 					"C:/target/obj/File1.o",

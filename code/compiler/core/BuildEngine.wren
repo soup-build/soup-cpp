@@ -111,9 +111,11 @@ class BuildEngine {
 
 				var partitionName = file.File.GetFileStem()
 				var moduleName = "%(arguments.TargetName):%(partitionName)"
+
+				// TODO: Tell clang they are need to stop forcing a file naming convension when we already tell them the module name...
 				var objectModuleInterfaceFile =
 					arguments.ObjectDirectory +
-					Path.new("%(partitionName).%(_compiler.ModuleFileExtension)")
+					Path.new("%(arguments.TargetName)-%(partitionName).%(_compiler.ModuleFileExtension)")
 
 				var interfaceDependencyClosure = Set.new()
 				this.BuildClosure(interfaceDependencyClosure, file.File, partitionInterfaceDependencyLookup)
@@ -125,7 +127,7 @@ class BuildEngine {
 				for (dependency in interfaceDependencyClosure.list) {
 					var partitionName = dependency.GetFileStem()
 					var dependencyName = "%(arguments.TargetName):%(partitionName)"
-					var importInterface = arguments.ObjectDirectory + Path.new("%(partitionName).%(_compiler.ModuleFileExtension)")
+					var importInterface = arguments.ObjectDirectory + Path.new("%(arguments.TargetName)-%(partitionName).%(_compiler.ModuleFileExtension)")
 					partitionImports[dependencyName] = arguments.TargetRootDirectory + importInterface
 				}
 
