@@ -164,8 +164,6 @@ class ClangCompilerUnitTests {
 					"-x",
 					"c++-module",
 					"./File.cpp",
-					"-o",
-					"C:/target/obj/File.o",
 					"--precompile",
 					"-o",
 					"C:/target/obj/File.pcm",
@@ -177,8 +175,26 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File.o"),
 					Path.new("C:/target/obj/File.pcm"),
+				]),
+			BuildOperation.new(
+				"./obj/File.pcm",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.clang++"),
+				[
+					"-c",
+					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other=./obj/Other.pcm",
+					"C:/target/obj/File.pcm",
+					"-o",
+					"C:/target/obj/File.o",
+				],
+				[
+					Path.new("C:/target/obj/File.pcm"),
+					Path.new("./obj/Other.pcm"),
+				],
+				[
+					Path.new("C:/target/obj/File.o"),
 				]),
 		]
 
@@ -262,12 +278,14 @@ class ClangCompilerUnitTests {
 				[
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other=./obj/Other.pcm",
 					"C:/target/obj/File.pcm",
 					"-o",
 					"C:/target/obj/File.o",
 				],
 				[
 					Path.new("C:/target/obj/File.pcm"),
+					Path.new("./obj/Other.pcm"),
 				],
 				[
 					Path.new("C:/target/obj/File.o"),
@@ -351,8 +369,6 @@ class ClangCompilerUnitTests {
 					"-x",
 					"c++-module",
 					"./File1.cpp",
-					"-o",
-					"C:/target/obj/File1.o",
 					"--precompile",
 					"-o",
 					"C:/target/obj/File1.pcm",
@@ -364,8 +380,26 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other1.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File1.o"),
 					Path.new("C:/target/obj/File1.pcm"),
+				]),
+			BuildOperation.new(
+				"./obj/File1.pcm",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.clang++"),
+				[
+					"-c",
+					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other1=./obj/Other1.pcm",
+					"C:/target/obj/File1.pcm",
+					"-o",
+					"C:/target/obj/File1.o",
+				],
+				[
+					Path.new("C:/target/obj/File1.pcm"),
+					Path.new("./obj/Other1.pcm"),
+				],
+				[
+					Path.new("C:/target/obj/File1.o"),
 				]),
 			BuildOperation.new(
 				"./File2.cpp",
@@ -397,12 +431,14 @@ class ClangCompilerUnitTests {
 				[
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other2=./obj/Other2.pcm",
 					"C:/target/obj/File2.pcm",
 					"-o",
 					"C:/target/obj/File2.o",
 				],
 				[
 					Path.new("C:/target/obj/File2.pcm"),
+					Path.new("./obj/Other2.pcm"),
 				],
 				[
 					Path.new("C:/target/obj/File2.o"),

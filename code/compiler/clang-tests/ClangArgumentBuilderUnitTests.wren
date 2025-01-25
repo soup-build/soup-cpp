@@ -36,8 +36,6 @@ class ClangArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_PreprocessorDefinitions()
 		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_Modules")
 		this.BSCA_SingleArgument_Modules()
-		System.print("ClangArgumentBuilderUnitTests.BuildPartitionUnitCompilerArguments")
-		this.BuildPartitionUnitCompilerArguments()
 		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitPrecompileCompilerArguments")
 		this.BuildInterfaceUnitPrecompileCompilerArguments()
 		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompileCompilerArguments")
@@ -283,36 +281,6 @@ class ClangArgumentBuilderUnitTests {
 			"-msse4.1",
 			"-msha", 
 			"-c",
-		]
-
-		Assert.ListEqual(expectedArguments, actualArguments)
-	}
-
-	// [Fact]
-	BuildPartitionUnitCompilerArguments() {
-		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = InterfaceUnitCompileArguments.new()
-		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.o")
-		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
-
-		var responseFile = Path.new("ResponseFile.txt")
-
-		var actualArguments = ClangArgumentBuilder.BuildPartitionUnitCompilerArguments(
-			targetRootDirectory,
-			arguments,
-			responseFile)
-
-		var expectedArguments = [
-			"@./ResponseFile.txt",
-			"-x",
-			"c++-module",
-			"./module.cpp",
-			"-o",
-			"C:/target/module.o",
-			"--precompile",
-			"-o",
-			"C:/target/module.pcm",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

@@ -175,6 +175,15 @@ class ClangArgumentBuilder {
 			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
 		}
 
+		// Add the shared module references as input
+		for (module in sharedArguments.IncludeModules) {
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				module.key,
+				module.value.toString)
+		}
+
 		// Add the module references as input
 		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
@@ -196,53 +205,6 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddValue(
 			commandArguments,
 			absoluteTargetFile.toString)
-
-		return commandArguments
-	}
-
-	static BuildPartitionUnitCompilerArguments(
-		targetRootDirectory,
-		arguments,
-		responseFile) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Add the response file
-		commandArguments.add("@" + responseFile.toString)
-
-		// Add the module references as input
-		for (module in arguments.IncludeModules) {
-			ClangArgumentBuilder.AddDoubleParameter(
-				commandArguments,
-				"fmodule-file",
-				module.key,
-				module.value.toString)
-		}
-
-		// Clang wants to use cppm for their module files, I think this is dumb
-		ClangArgumentBuilder.AddFlag(commandArguments, "x")
-		ClangArgumentBuilder.AddValue(commandArguments, "c++-module")
-
-		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.toString)
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		ClangArgumentBuilder.AddFlag(
-			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-		ClangArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
-		// Add the unique arguments for an partition unit
-		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
-
-		// Specify the module interface file output
-		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
 
 		return commandArguments
 	}

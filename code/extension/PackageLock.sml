@@ -3,7 +3,7 @@ Closures: {
 	Root: {
 		Wren: {
 			Cpp: { Version: './', Build: 'Build0', Tool: 'Tool0' }
-			'Soup|Build.Utils': { Version: 0.7.0, Build: 'Build0', Tool: 'Tool0' }
+			'Soup|Build.Utils': { Version: 0.8.0, Build: 'Build0', Tool: 'Tool0' }
 			'Soup|Cpp': { Version: './', Build: 'Build0', Tool: 'Tool0' }
 			'Soup|Cpp.Compiler': { Version: '../compiler/core/', Build: 'Build0', Tool: 'Tool0' }
 			'Soup|Cpp.Compiler.Clang': { Version: '../compiler/clang/', Build: 'Build0', Tool: 'Tool0' }
