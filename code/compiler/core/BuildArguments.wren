@@ -130,7 +130,7 @@ class BuildArguments {
 		_assemblySourceFiles = []
 		_publicHeaderSets = []
 		_includeDirectories = []
-		_moduleDependencies = []
+		_moduleDependencies = {}
 		_platformLinkDependencies = []
 		_linkDependencies = []
 		_libraryPaths = []
@@ -240,7 +240,7 @@ class BuildArguments {
 	IncludeDirectories=(value) { _includeDirectories = value }
 
 	/// <summary>
-	/// Gets or sets the list of module dependencies
+	/// Gets or sets the set of module dependencies
 	/// </summary>
 	ModuleDependencies { _moduleDependencies }
 	ModuleDependencies=(value) { _moduleDependencies = value }

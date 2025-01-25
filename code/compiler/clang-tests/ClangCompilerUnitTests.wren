@@ -121,9 +121,9 @@ class ClangCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
@@ -131,9 +131,10 @@ class ClangCompilerUnitTests {
 			InterfaceUnitCompileArguments.new(
 				Path.new("File.cpp"),
 				Path.new("obj/File.o"),
-				[
-					Path.new("obj/Other.pcm"),
-				],
+				{
+					"Other": Path.new("obj/Other.pcm"),
+				},
+				"Module1:File",
 				Path.new("obj/File.pcm")),
 		]
 
@@ -160,9 +161,9 @@ class ClangCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-fmodule-file=Other=./obj/Other.pcm",
+					"-x",
+					"c++-module",
 					"./File.cpp",
-					"-o",
-					"C:/target/obj/File.o",
 					"--precompile",
 					"-o",
 					"C:/target/obj/File.pcm",
@@ -174,8 +175,26 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File.o"),
 					Path.new("C:/target/obj/File.pcm"),
+				]),
+			BuildOperation.new(
+				"./obj/File.pcm",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.clang++"),
+				[
+					"-c",
+					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other=./obj/Other.pcm",
+					"C:/target/obj/File.pcm",
+					"-o",
+					"C:/target/obj/File.o",
+				],
+				[
+					Path.new("C:/target/obj/File.pcm"),
+					Path.new("./obj/Other.pcm"),
+				],
+				[
+					Path.new("C:/target/obj/File.o"),
 				]),
 		]
 
@@ -197,9 +216,9 @@ class ClangCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
@@ -207,9 +226,10 @@ class ClangCompilerUnitTests {
 		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("File.cpp"),
 			Path.new("obj/File.o"),
-			[
-				Path.new("obj/Other.pcm")
-			],
+			{
+				"Other": Path.new("obj/Other.pcm")
+			},
+			"Module1",
 			Path.new("obj/File.pcm"))
 
 		var result = uut.CreateCompileOperations(arguments)
@@ -258,12 +278,14 @@ class ClangCompilerUnitTests {
 				[
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other=./obj/Other.pcm",
 					"C:/target/obj/File.pcm",
 					"-o",
 					"C:/target/obj/File.o",
 				],
 				[
 					Path.new("C:/target/obj/File.pcm"),
+					Path.new("./obj/Other.pcm"),
 				],
 				[
 					Path.new("C:/target/obj/File.o"),
@@ -288,9 +310,9 @@ class ClangCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
@@ -298,25 +320,27 @@ class ClangCompilerUnitTests {
 			InterfaceUnitCompileArguments.new(
 				Path.new("File1.cpp"),
 				Path.new("obj/File1.o"),
-				[
-					Path.new("obj/Other1.pcm")
-				],
+				{
+					"Other1": Path.new("obj/Other1.pcm")
+				},
+				"Module1:File1",
 				Path.new("obj/File1.pcm")),
 		]
 		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("File2.cpp"),
 			Path.new("obj/File2.o"),
-			[
-				Path.new("obj/Other2.pcm")
-			],
+			{
+				"Other2": Path.new("obj/Other2.pcm")
+			},
+			"Module1",
 			Path.new("obj/File2.pcm"))
 		arguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("File3.cpp"),
 				Path.new("obj/File3.o"),
-				[
-					Path.new("obj/Other3.pcm")
-				])
+				{
+					"Other3": Path.new("obj/Other3.pcm")
+				})
 		]
 
 		var result = uut.CreateCompileOperations(arguments)
@@ -342,9 +366,9 @@ class ClangCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-fmodule-file=Other1=./obj/Other1.pcm",
+					"-x",
+					"c++-module",
 					"./File1.cpp",
-					"-o",
-					"C:/target/obj/File1.o",
 					"--precompile",
 					"-o",
 					"C:/target/obj/File1.pcm",
@@ -356,8 +380,26 @@ class ClangCompilerUnitTests {
 					Path.new("obj/Other1.pcm"),
 				],
 				[
-					Path.new("C:/target/obj/File1.o"),
 					Path.new("C:/target/obj/File1.pcm"),
+				]),
+			BuildOperation.new(
+				"./obj/File1.pcm",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.clang++"),
+				[
+					"-c",
+					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other1=./obj/Other1.pcm",
+					"C:/target/obj/File1.pcm",
+					"-o",
+					"C:/target/obj/File1.o",
+				],
+				[
+					Path.new("C:/target/obj/File1.pcm"),
+					Path.new("./obj/Other1.pcm"),
+				],
+				[
+					Path.new("C:/target/obj/File1.o"),
 				]),
 			BuildOperation.new(
 				"./File2.cpp",
@@ -389,12 +431,14 @@ class ClangCompilerUnitTests {
 				[
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
+					"-fmodule-file=Other2=./obj/Other2.pcm",
 					"C:/target/obj/File2.pcm",
 					"-o",
 					"C:/target/obj/File2.o",
 				],
 				[
 					Path.new("C:/target/obj/File2.pcm"),
+					Path.new("./obj/Other2.pcm"),
 				],
 				[
 					Path.new("C:/target/obj/File2.o"),
@@ -406,8 +450,8 @@ class ClangCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"-fmodule-file=Other3=./obj/Other3.pcm",
-					"-fmodule-file=File1=C:/target/obj/File1.pcm",
-					"-fmodule-file=File2=C:/target/obj/File2.pcm",
+					"-fmodule-file=Module1=C:/target/obj/File2.pcm",
+					"-fmodule-file=Module1:File1=C:/target/obj/File1.pcm",
 					"./File3.cpp",
 					"-o",
 					"C:/target/obj/File3.o",
@@ -417,8 +461,8 @@ class ClangCompilerUnitTests {
 					Path.new("File3.cpp"),
 					Path.new("C:/target/ObjectDir/SharedCompileArguments.rsp"),
 					Path.new("obj/Other3.pcm"),
-					Path.new("C:/target/obj/File1.pcm"),
 					Path.new("C:/target/obj/File2.pcm"),
+					Path.new("C:/target/obj/File1.pcm"),
 				],
 				[
 					Path.new("C:/target/obj/File3.o"),
@@ -443,9 +487,9 @@ class ClangCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG"
 		]

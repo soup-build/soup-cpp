@@ -47,8 +47,8 @@ class ResolveDependenciesTask is SoupTask {
 
 						if (dependencyBuildTable.containsKey("ModuleDependencies")) {
 							var moduleDependencies = dependencyBuildTable["ModuleDependencies"]
-							ListExtensions.Append(
-								MapExtensions.EnsureList(buildTable, "ModuleDependencies"),
+							MapExtensions.Append(
+								MapExtensions.EnsureTable(buildTable, "ModuleDependencies"),
 								moduleDependencies)
 						}
 

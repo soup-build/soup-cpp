@@ -154,9 +154,9 @@ class MSVCArgumentBuilder {
 		}
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// TODO: For now we allow exports to be large
@@ -217,9 +217,9 @@ class MSVCArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the source file as input
@@ -255,9 +255,9 @@ class MSVCArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the source file as input
@@ -294,15 +294,15 @@ class MSVCArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the internal module references as input
-		for (moduleFile in arguments.IncludeModules) {
+		for (module in arguments.IncludeModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the internal module references as input
-		for (moduleFile in internalModules) {
+		for (module in internalModules) {
 			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValue(commandArguments, moduleFile.toString)
+			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
 		// Add the source file as input

@@ -349,10 +349,10 @@ class BuildTaskUnitTests {
 			"Folder",
 			"AnotherFolder/Sub",
 		]
-		buildTable["ModuleDependencies"] = [
-			"../Other/bin/OtherModule1.mock.bmi",
-			"../OtherModule2.mock.bmi",
-		]
+		buildTable["ModuleDependencies"] = {
+			"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+			"OtherModule2": "../OtherModule2.mock.bmi",
+		}
 		buildTable["OptimizationLevel"] = BuildOptimizationLevel.None
 
 		// Setup dependencies table
@@ -399,24 +399,24 @@ class BuildTaskUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
-				[]),
+				{}),
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile2.cpp"),
 				Path.new("obj/TestFile2.mock.obj"),
-				[]),
+				{}),
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
 				Path.new("obj/TestFile3.mock.obj"),
-				[]),
+				{}),
 		]
 
 		var expectedLinkArguments = LinkArguments.new()
@@ -554,10 +554,10 @@ class BuildTaskUnitTests {
 			"Folder",
 			"AnotherFolder/Sub",
 		]
-		buildTable["ModuleDependencies"] = [
-			"../Other/bin/OtherModule1.mock.bmi",
-			"../OtherModule2.mock.bmi",
-		]
+		buildTable["ModuleDependencies"] = {
+			"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+			"OtherModule2": "../OtherModule2.mock.bmi",
+		}
 		buildTable["OptimizationLevel"] = BuildOptimizationLevel.None
 		buildTable["PreprocessorDefinitions"] = [
 			"DEBUG",
@@ -616,10 +616,10 @@ class BuildTaskUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		expectedCompileArguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"AWESOME",
@@ -627,21 +627,22 @@ class BuildTaskUnitTests {
 		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("Public.cpp"),
 			Path.new("obj/Public.mock.obj"),
-			[],
+			{},
+			"Library",
 			Path.new("bin/Library.mock.bmi"))
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
-				[]),
+				{}),
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile2.cpp"),
 				Path.new("obj/TestFile2.mock.obj"),
-				[]),
+				{}),
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
 				Path.new("obj/TestFile3.mock.obj"),
-				[]),
+				{}),
 		]
 
 		var expectedLinkArguments = LinkArguments.new()
@@ -802,10 +803,10 @@ class BuildTaskUnitTests {
 			"Folder",
 			"AnotherFolder/Sub",
 		]
-		buildTable["ModuleDependencies"] = [
-			"../Other/bin/OtherModule1.mock.bmi",
-			"../OtherModule2.mock.bmi",
-		]
+		buildTable["ModuleDependencies"] = {
+			"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+			"OtherModule2": "../OtherModule2.mock.bmi",
+		}
 		buildTable["OptimizationLevel"] = BuildOptimizationLevel.None
 		buildTable["PreprocessorDefinitions"] = [
 			"DEBUG",
@@ -865,10 +866,10 @@ class BuildTaskUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		expectedCompileArguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"AWESOME",
@@ -877,33 +878,36 @@ class BuildTaskUnitTests {
 			InterfaceUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
-				[],
-				Path.new("obj/TestFile1.mock.bmi")),
+				{},
+				"Library:TestFile1",
+				Path.new("obj/Library-TestFile1.mock.bmi")),
 			InterfaceUnitCompileArguments.new(
 				Path.new("TestFile2.cpp"),
 				Path.new("obj/TestFile2.mock.obj"),
-				[
-					Path.new("C:/target/obj/TestFile1.mock.bmi"),
-				],
-				Path.new("obj/TestFile2.mock.bmi")),
+				{
+					"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+				},
+				"Library:TestFile2",
+				Path.new("obj/Library-TestFile2.mock.bmi")),
 		]
 		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("Public.cpp"),
 			Path.new("obj/Public.mock.obj"),
-			[
-				Path.new("C:/target/obj/TestFile1.mock.bmi"),
-				Path.new("C:/target/obj/TestFile2.mock.bmi"),
-			],
+			{
+				"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+				"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
+			},
+			"Library",
 			Path.new("bin/Library.mock.bmi"))
 		expectedCompileArguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
 				Path.new("obj/TestFile3.mock.obj"),
-				[]),
+				{}),
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile4.cpp"),
 				Path.new("obj/TestFile4.mock.obj"),
-				[]),
+				{}),
 		]
 
 		var expectedLinkArguments = LinkArguments.new()
@@ -968,7 +972,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/TestFile1.mock.obj"),
-					Path.new("obj/TestFile1.mock.bmi"),
+					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompilePartition: 1",
@@ -982,7 +986,7 @@ class BuildTaskUnitTests {
 				],
 				[
 					Path.new("obj/TestFile2.mock.obj"),
-					Path.new("obj/TestFile2.mock.bmi"),
+					Path.new("obj/Library-TestFile2.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompileModule: 1",
@@ -1068,10 +1072,10 @@ class BuildTaskUnitTests {
 			"Folder",
 			"AnotherFolder/Sub",
 		]
-		buildTable["ModuleDependencies"] = [
-			"../Other/bin/OtherModule1.mock.bmi",
-			"../OtherModule2.mock.bmi",
-		]
+		buildTable["ModuleDependencies"] = {
+			"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+			"OtherModule2": "../OtherModule2.mock.bmi",
+		}
 		buildTable["OptimizationLevel"] = BuildOptimizationLevel.None
 		buildTable["PreprocessorDefinitions"] = [
 			"DEBUG",
@@ -1127,10 +1131,10 @@ class BuildTaskUnitTests {
 			Path.new("Folder"),
 			Path.new("AnotherFolder/Sub"),
 		]
-		expectedCompileArguments.IncludeModules = [
-			Path.new("../Other/bin/OtherModule1.mock.bmi"),
-			Path.new("../OtherModule2.mock.bmi"),
-		]
+		expectedCompileArguments.IncludeModules = {
+			"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+		}
 		expectedCompileArguments.PreprocessorDefinitions = [
 			"DEBUG",
 			"AWESOME",
@@ -1138,7 +1142,8 @@ class BuildTaskUnitTests {
 		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("./Public.cpp"),
 			Path.new("./obj/Public.mock.obj"),
-			[],
+			{},
+			"Library",
 			Path.new("./bin/Library.mock.bmi"))
 
 		var expectedLinkArguments = LinkArguments.new()

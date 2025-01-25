@@ -161,7 +161,7 @@ class BuildTask is SoupTask {
 
 		// Load the module references
 		if (buildTable.containsKey("ModuleDependencies")) {
-			arguments.ModuleDependencies = BuildTask.MakeUnique(ListExtensions.ConvertToPathList(buildTable["ModuleDependencies"]))
+			arguments.ModuleDependencies = MapExtensions.ConvertToPathMap(buildTable["ModuleDependencies"])
 		}
 
 		// Load the list of disabled warnings
@@ -198,7 +198,7 @@ class BuildTask is SoupTask {
 
 		// Always pass along required input to shared build tasks
 		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
-		sharedBuildTable["ModuleDependencies"] = ListExtensions.ConvertFromPathList(buildResult.ModuleDependencies)
+		sharedBuildTable["ModuleDependencies"] = MapExtensions.ConvertFromPathMap(buildResult.ModuleDependencies)
 		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
 		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
 

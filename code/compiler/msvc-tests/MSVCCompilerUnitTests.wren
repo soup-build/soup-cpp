@@ -129,9 +129,9 @@ class MSVCCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
@@ -139,9 +139,10 @@ class MSVCCompilerUnitTests {
 			InterfaceUnitCompileArguments.new(
 				Path.new("File.cpp"),
 				Path.new("obj/File.obj"),
-				[
-					Path.new("obj/Other.pcm"),
-				],
+				{
+					"Other": Path.new("obj/Other.pcm"),
+				},
+				"Module1:File",
 				Path.new("obj/File.pcm")),
 		]
 
@@ -208,9 +209,9 @@ class MSVCCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
@@ -218,9 +219,10 @@ class MSVCCompilerUnitTests {
 		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("File.cpp"),
 			Path.new("obj/File.obj"),
-			[
-				Path.new("obj/Other.pcm")
-			],
+			{
+				"Other": Path.new("obj/Other.pcm")
+			},
+			"Module1",
 			Path.new("obj/File.pcm"))
 
 		var result = uut.CreateCompileOperations(arguments)
@@ -286,9 +288,9 @@ class MSVCCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
@@ -296,25 +298,27 @@ class MSVCCompilerUnitTests {
 			InterfaceUnitCompileArguments.new(
 				Path.new("File1.cpp"),
 				Path.new("obj/File1.obj"),
-				[
-					Path.new("obj/Other1.pcm")
-				],
+				{
+					"Other1": Path.new("obj/Other1.pcm")
+				},
+				"Module1:File1",
 				Path.new("obj/File1.pcm")),
 		]
 		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
 			Path.new("File2.cpp"),
 			Path.new("obj/File2.obj"),
-			[
-				Path.new("obj/Other2.pcm")
-			],
+			{
+				"Other2": Path.new("obj/Other2.pcm")
+			},
+			"Module1",
 			Path.new("obj/File2.pcm"))
 		arguments.ImplementationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("File3.cpp"),
 				Path.new("obj/File3.obj"),
-				[
-					Path.new("obj/Other3.pcm")
-				])
+				{
+					"Other3": Path.new("obj/Other3.pcm")
+				})
 		]
 
 		var result = uut.CreateCompileOperations(arguments)
@@ -390,9 +394,9 @@ class MSVCCompilerUnitTests {
 					"/reference",
 					"./obj/Other3.pcm",
 					"/reference",
-					"C:/target/obj/File1.pcm",
-					"/reference",
 					"C:/target/obj/File2.pcm",
+					"/reference",
+					"C:/target/obj/File1.pcm",
 					"./File3.cpp",
 					"/Fo\"C:/target/obj/File3.obj\"",
 				],
@@ -401,8 +405,8 @@ class MSVCCompilerUnitTests {
 					Path.new("File3.cpp"),
 					Path.new("C:/target/ObjectDir/SharedCompileArguments.rsp"),
 					Path.new("obj/Other3.pcm"),
-					Path.new("C:/target/obj/File1.pcm"),
 					Path.new("C:/target/obj/File2.pcm"),
+					Path.new("C:/target/obj/File1.pcm"),
 				],
 				[
 					Path.new("C:/target/obj/File3.obj"),
@@ -430,9 +434,9 @@ class MSVCCompilerUnitTests {
 		arguments.IncludeDirectories = [
 			Path.new("Includes"),
 		]
-		arguments.IncludeModules = [
-			Path.new("Module.pcm"),
-		]
+		arguments.IncludeModules = {
+			"Module": Path.new("Module.pcm"),
+		}
 		arguments.PreprocessorDefinitions = [
 			"DEBUG"
 		]

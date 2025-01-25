@@ -97,13 +97,12 @@ class ClangArgumentBuilder {
 		}
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Enable SIMD features
@@ -132,13 +131,12 @@ class ClangArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Clang wants to use cppm for their module files, I think this is dumb
@@ -177,14 +175,22 @@ class ClangArgumentBuilder {
 			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
 		}
 
-		// Add the module references as input
-		for (moduleFile in sharedArguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		// Add the shared module references as input
+		for (module in sharedArguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
+		}
+
+		// Add the module references as input
+		for (module in arguments.IncludeModules) {
+			ClangArgumentBuilder.AddDoubleParameter(
+				commandArguments,
+				"fmodule-file",
+				module.key,
+				module.value.toString)
 		}
 
 		// Reference the single precompiled interface
@@ -203,50 +209,6 @@ class ClangArgumentBuilder {
 		return commandArguments
 	}
 
-	static BuildPartitionUnitCompilerArguments(
-		targetRootDirectory,
-		arguments,
-		responseFile) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Add the response file
-		commandArguments.add("@" + responseFile.toString)
-
-		// Add the module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
-			ClangArgumentBuilder.AddDoubleParameter(
-				commandArguments,
-				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
-		}
-
-		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.toString)
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		ClangArgumentBuilder.AddFlag(
-			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-		ClangArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
-		// Add the unique arguments for an partition unit
-		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
-
-		// Specify the module interface file output
-		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
-
-		return commandArguments
-	}
-
 	static BuildTranslationUnitCompilerArguments(
 		targetRootDirectory,
 		arguments,
@@ -259,23 +221,21 @@ class ClangArgumentBuilder {
 		commandArguments.add("@" + responseFile.toString)
 
 		// Add the internal module references as input
-		for (moduleFile in arguments.IncludeModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in arguments.IncludeModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Add the internal module references as input
-		for (moduleFile in internalModules) {
-			var moduleName = moduleFile.GetFileStem()
+		for (module in internalModules) {
 			ClangArgumentBuilder.AddDoubleParameter(
 				commandArguments,
 				"fmodule-file",
-				moduleName,
-				moduleFile.toString)
+				module.key,
+				module.value.toString)
 		}
 
 		// Add the source file as input
