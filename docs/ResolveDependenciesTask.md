@@ -1,5 +1,4 @@
 ## Resolve Dependencies
-
 This task reads in the global state dependencies to reference required dependencies compiler time and runtime resources.
 
 ### Run Before

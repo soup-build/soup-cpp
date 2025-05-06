@@ -1,5 +1,4 @@
 ## Initialize Defaults
-
 This task reads in the global state context and parameters to initialize the default build parameters for the current host platform. It then allows the user to override the defaults by checking for matching parameters passed in through the command line interface. 
 
 For example this task will select the default compiler and system based on the host platform. On Windows it will use the MSVC compiler to target Win32.
