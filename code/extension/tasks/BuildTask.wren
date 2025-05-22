@@ -222,6 +222,19 @@ class BuildTask is SoupTask {
 				ListExtensions.ConvertFromPathList(operation.DeclaredInput),
 				ListExtensions.ConvertFromPathList(operation.DeclaredOutput))
 		}
+		
+		// Register the operation proxies
+		for (operation in buildResult.OperationProxies) {
+			Soup.createOperationProxy(
+				operation.Title,
+				operation.Executable.toString,
+				operation.Arguments,
+				operation.WorkingDirectory.toString,
+				ListExtensions.ConvertFromPathList(operation.DeclaredInput),
+				operation.ResultFile.toString,
+				operation.FinalizerTask,
+				operation.FinalizerState)
+		}
 
 		Soup.info("Build Generate Done")
 	}

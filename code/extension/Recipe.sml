@@ -5,6 +5,7 @@ Source: [
 	'tasks/BuildTask.wren'
 	'tasks/ExpandSourceTask.wren'
 	'tasks/InitializeDefaultsTask.wren'
+	'tasks/ParseModuleFinalizerTask.wren'
 	'tasks/RecipeBuildTask.wren'
 	'tasks/ResolveDependenciesTask.wren'
 	'tasks/ResolveToolsTask.wren'
@@ -21,5 +22,6 @@ Dependencies: {
 	Tool: [
 		'[C++]mwasplund|copy@1'
 		'[C++]mwasplund|mkdir@1'
+		'[C++]mwasplund|parse.module@1'
 	]
 }

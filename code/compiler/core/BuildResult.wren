@@ -8,6 +8,7 @@
 class BuildResult {
 	construct new() {
 		_buildOperations = []
+		_operationProxies = []
 		_moduleDependencies = {}
 		_linkDependencies = []
 		_internalLinkDependencies = []
@@ -21,6 +22,12 @@ class BuildResult {
 	/// </summary>
 	BuildOperations { _buildOperations }
 	BuildOperations=(value) { _buildOperations = value }
+
+	/// <summary>
+	/// Gets or sets the resulting root generate operations
+	/// </summary>
+	OperationProxies { _operationProxies }
+	OperationProxies=(value) { _operationProxies = value }
 
 	/// <summary>
 	/// Gets or sets the list of module dependencies
