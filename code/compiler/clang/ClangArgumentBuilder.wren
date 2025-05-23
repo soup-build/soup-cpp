@@ -167,6 +167,9 @@ class ClangArgumentBuilder {
 		// Build the arguments for a standard translation unit
 		var commandArguments = []
 
+		// Convert absolute addresses to relative addresses
+		ClangArgumentBuilder.AddFlag(commandArguments, "fpic")
+
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
@@ -369,9 +372,12 @@ class ClangArgumentBuilder {
 
 		var commandArguments = []
 
+		// Enable verbose output
+		// ClangArgumentBuilder.AddFlag(commandArguments, "v")
+
 		// Memory checks
-		ClangArgumentBuilder.AddParameter(commandArguments, "fsanitize", "address")
-		ClangArgumentBuilder.AddFlag(commandArguments, "fno-omit-frame-pointer")
+		// ClangArgumentBuilder.AddParameter(commandArguments, "fsanitize", "address")
+		// ClangArgumentBuilder.AddFlag(commandArguments, "fno-omit-frame-pointer")
 		
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
