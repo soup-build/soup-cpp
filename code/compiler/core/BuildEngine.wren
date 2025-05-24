@@ -7,7 +7,6 @@ import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
 import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
-import "Soup|Build.Utils:./BuildOperationProxy" for BuildOperationProxy
 import "Soup|Build.Utils:./MapExtensions" for MapExtensions
 import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./Set" for Set
@@ -181,38 +180,17 @@ class BuildEngine {
 					arguments.TargetRootDirectory + binaryOutputModuleInterfaceFile
 			}
 
-			// Discover the dependency tool
-			var parseModuleExecutable = SharedOperations.ResolveRuntimeDependencyRunExecutable("mwasplund|parse.module")
-
 			// Compile the individual translation units
 			var compileImplementationUnits = []
 			for (file in arguments.SourceFiles) {
 				Soup.info("Generate Compile Operation: %(file)")
 
-				var title = "Parser Module: %(file)"
+				var compileFileArguments = TranslationUnitCompileArguments.new()
+				compileFileArguments.SourceFile = file
+				compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(file.GetFileName())
+				compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-				var program = Path.new(parseModuleExecutable)
-				var targetFile = arguments.TargetRootDirectory + arguments.ObjectDirectory + Path.new(file.GetFileName())
-				targetFile.SetFileExtension("txt")
-
-				var finalizerState = {}
-				finalizerState["SourceFile"] = file.toString
-				finalizerState["TargetFile"] = targetFile.toString
-
-				result.OperationProxies.add(BuildOperationProxy.new(
-					title,
-					arguments.SourceRootDirectory,
-					program,
-					[
-						targetFile.toString,
-						file.toString
-					],
-					[
-						file.toString
-					],
-					targetFile,
-					"ParseModuleFinalizerTask",
-					finalizerState))
+				compileImplementationUnits.add(compileFileArguments)
 			}
 
 			compileArguments.ImplementationUnits = compileImplementationUnits

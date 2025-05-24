@@ -5,7 +5,7 @@ Source: [
 	'tasks/BuildTask.wren'
 	'tasks/ExpandSourceTask.wren'
 	'tasks/InitializeDefaultsTask.wren'
-	'tasks/ParseModuleFinalizerTask.wren'
+	'tasks/ParseModulePreprocessorTask.wren'
 	'tasks/RecipeBuildTask.wren'
 	'tasks/ResolveDependenciesTask.wren'
 	'tasks/ResolveToolsTask.wren'
