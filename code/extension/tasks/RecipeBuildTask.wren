@@ -152,40 +152,6 @@ class RecipeBuildTask is SoupTask {
 			resourcesFile = resourcesFilePath.toString
 		}
 
-		// Load the module interface partition files if present
-		var moduleInterfacePartitionSourceFiles = []
-		if (recipe.containsKey("Partitions")) {
-			for (partition in recipe["Partitions"]) {
-				var targetPartitionTable = {}
-				if (partition is String) {
-					targetPartitionTable["Source"] = partition
-				} else if (partition is Map) {
-					var partitionTable = partition
-					if (partitionTable.containsKey("Source")) {
-						targetPartitionTable["Source"] = partitionTable["Source"]
-					} else {
-						Fiber.abort("Partition table missing Source")
-					}
-
-					if (partitionTable.containsKey("Imports")) {
-						var partitionImports = partitionTable["Imports"]
-						targetPartitionTable["Imports"] = partitionImports
-					}
-				} else {
-					Fiber.abort("Unknown partition type.")
-				}
-
-				moduleInterfacePartitionSourceFiles.add(targetPartitionTable)
-			}
-		}
-
-		// Load the module interface file if present
-		var moduleInterfaceSourceFile
-		if (recipe.containsKey("Interface")) {
-			var moduleInterfaceSourceFilePath = Path.new(recipe["Interface"])
-			moduleInterfaceSourceFile = moduleInterfaceSourceFilePath.toString
-		}
-
 		// Load the source files if present
 		var sourceFiles = null
 		if (recipe.containsKey("Source")) {
@@ -237,12 +203,6 @@ class RecipeBuildTask is SoupTask {
 		}
 		if (!(resourcesFile is Null)) {
 			build["ResourcesFile"] = resourcesFile
-		}
-		ListExtensions.Append(
-			MapExtensions.EnsureList(build, "ModuleInterfacePartitionSourceFiles"),
-			moduleInterfacePartitionSourceFiles)
-		if (!(moduleInterfaceSourceFile is Null)) {
-			build["ModuleInterfaceSourceFile"] = moduleInterfaceSourceFile
 		}
 		build["OptimizationLevel"] = optimizationLevel
 		build["GenerateSourceDebugInfo"] = generateSourceDebugInfo

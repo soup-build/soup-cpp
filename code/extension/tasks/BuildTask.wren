@@ -7,7 +7,7 @@ import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./Set" for Set
 import "Soup|Build.Utils:./ListExtensions" for ListExtensions
 import "Soup|Build.Utils:./MapExtensions" for MapExtensions
-import "Soup|Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, PartitionSourceFile, HeaderFileSet
+import "Soup|Cpp.Compiler:./BuildArguments" for BuildArguments, BuildOptimizationLevel, SourceFile, HeaderFileSet
 import "Soup|Cpp.Compiler:./BuildEngine" for BuildEngine
 import "Soup|Cpp.Compiler.Clang:./ClangCompiler" for ClangCompiler
 import "Soup|Cpp.Compiler.GCC:./GCCCompiler" for GCCCompiler
@@ -68,30 +68,34 @@ class BuildTask is SoupTask {
 			arguments.ResourceFile = Path.new(buildTable["ResourcesFile"])
 		}
 
-		if (buildTable.containsKey("ModuleInterfacePartitionSourceFiles")) {
-			var paritionTargets = []
-			for (partition in buildTable["ModuleInterfacePartitionSourceFiles"]) {
-				var partitionTable = partition
+		if (buildTable.containsKey("Source")) {
+			var sourceFiles = []
+			for (source in buildTable["Source"]) {
+				var file = Path.new(source["File"])
 
-				var partitionImports = []
-				if (partitionTable.containsKey("Imports")) {
-					partitionImports = ListExtensions.ConvertToPathList(partitionTable["Imports"])
+				var module = null
+				if (source.containsKey("Module")) {
+					module = source["Module"]
 				}
 
-				paritionTargets.add(PartitionSourceFile.new(
-					Path.new(partitionTable["Source"]),
-					partitionImports))
+				var partition = null
+				if (source.containsKey("Partition")) {
+					partition = source["Partition"]
+				}
+
+				var imports = []
+				if (source.containsKey("Imports")) {
+					imports = source["Imports"]
+				}
+
+				sourceFiles.add(SourceFile.new(
+					file,
+					module,
+					partition,
+					imports))
 			}
 
-			arguments.ModuleInterfacePartitionSourceFiles = paritionTargets
-		}
-
-		if (buildTable.containsKey("ModuleInterfaceSourceFile")) {
-			arguments.ModuleInterfaceSourceFile = Path.new(buildTable["ModuleInterfaceSourceFile"])
-		}
-
-		if (buildTable.containsKey("Source")) {
-			arguments.SourceFiles = ListExtensions.ConvertToPathList(buildTable["Source"])
+			arguments.SourceFiles = sourceFiles
 		}
 
 		if (buildTable.containsKey("AssemblySource")) {

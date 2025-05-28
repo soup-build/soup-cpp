@@ -53,35 +53,33 @@ class BuildTargetType {
 class SourceFile {
 	construct new() {
 		_file = null
-		_isModule = false
-	}
-
-	File { _file }
-	File=(value) { _file = value }
-
-	IsModule { _isModule }
-	IsModule=(value) { _isModule = value }
-}
-
-/// <summary>
-/// The partition source file definition
-/// </summary>
-class PartitionSourceFile {
-	construct new() {
-		_file = null
+		_module = null
+		_partition = null
 		_imports = []
 	}
 
-	construct new(file, imports) {
+	construct new(file, module, partition, imports) {
 		_file = file
+		_module = module
+		_partition = partition
 		_imports = imports
 	}
 
 	File { _file }
 	File=(value) { _file = value }
 
+	Module { _module }
+	Module=(value) { _module = value }
+
+	Partition { _partition }
+	Partition=(value) { _partition = value }
+
 	Imports { _imports }
 	Imports=(value) { _imports = value }
+
+	getFullModuleName() {
+		return _partition is Null ? _module : "%(_module):%(_partition)"
+	}
 }
 
 /// <summary>
@@ -191,20 +189,6 @@ class BuildArguments {
 	/// </summary>
 	BinaryDirectory { _binaryDirectory }
 	BinaryDirectory=(value) { _binaryDirectory = value }
-
-	/// <summary>
-	/// Gets or sets the list of module interface partition source files
-	/// Note: These files can be plain old translation units 
-	/// or they can be module implementation units
-	/// </summary>
-	ModuleInterfacePartitionSourceFiles { _moduleInterfacePartitionSourceFiles }
-	ModuleInterfacePartitionSourceFiles=(value) { _moduleInterfacePartitionSourceFiles = value }
-
-	/// <summary>
-	/// Gets or sets the single module interface source file
-	/// </summary>
-	ModuleInterfaceSourceFile { _moduleInterfaceSourceFile }
-	ModuleInterfaceSourceFile=(value) { _moduleInterfaceSourceFile = value }
 
 	/// <summary>
 	/// Gets or sets the MSVC Resrouce file

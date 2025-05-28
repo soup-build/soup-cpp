@@ -28,6 +28,18 @@ class ParseModulePreprocessorTask is SoupPreprocessorTask {
 		// Discover the dependency tool
 		var parseModuleExecutable = SharedOperations.ResolveRuntimeDependencyRunExecutable("mwasplund|parse.module")
 
+		// Ensure the output directories exists as the first step
+		var createObjectDirectory = SharedOperations.CreateCreateDirectoryOperation(
+			targetDirectory,
+			objectDirectory)
+		Soup.createOperation(
+			createObjectDirectory.Title,
+			createObjectDirectory.Executable.toString,
+			createObjectDirectory.Arguments,
+			createObjectDirectory.WorkingDirectory.toString,
+			ListExtensions.ConvertFromPathList(createObjectDirectory.DeclaredInput),
+			ListExtensions.ConvertFromPathList(createObjectDirectory.DeclaredOutput))
+
 		for (sourceFile in sourceFiles) {
 			var targetFile = targetDirectory + objectDirectory + Path.new(sourceFile.GetFileName())
 			targetFile.SetFileExtension("txt")
