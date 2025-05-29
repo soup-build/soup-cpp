@@ -101,6 +101,8 @@ class BuildEngine {
 			for (source in arguments.SourceFiles) {
 				if (!(source.Module is Null)) {
 					var moduleName = source.getFullModuleName()
+
+					// TODO: Tell clang they are need to stop forcing a file naming convension when we already tell them the module name...
 					var interfaceFile = source.Partition is Null ?
 						Path.new("%(source.Module).%(_compiler.ModuleFileExtension)") :
 						Path.new("%(source.Module)-%(source.Partition).%(_compiler.ModuleFileExtension)")
@@ -122,10 +124,7 @@ class BuildEngine {
 					var objectFile = arguments.ObjectDirectory + Path.new(source.File.GetFileName())
 					objectFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-					// TODO: Tell clang they are need to stop forcing a file naming convension when we already tell them the module name...
-					var objectModuleInterfaceFile =
-						arguments.ObjectDirectory +
-						Path.new("%(source.Module)-%(source.Partition).%(_compiler.ModuleFileExtension)")
+					var moduleInterfaceFile = moduleInterfaceFileLookup[moduleName]
 
 					var dependencyClosure = Set.new()
 					this.BuildClosure(dependencyClosure, moduleName, moduleDependencyLookup)
@@ -135,7 +134,7 @@ class BuildEngine {
 
 					var partitionImports = {}
 					for (dependencyModule in dependencyClosure.list) {
-						partitionImports[dependencyModule] = moduleInterfaceFileLookup[dependencyModule]
+						partitionImports[dependencyModule] = arguments.TargetRootDirectory + moduleInterfaceFileLookup[dependencyModule]
 					}
 
 					var compileFileArguments = InterfaceUnitCompileArguments.new()
@@ -143,10 +142,10 @@ class BuildEngine {
 					compileFileArguments.SourceFile = source.File
 					compileFileArguments.TargetFile = objectFile
 					compileFileArguments.IncludeModules = partitionImports
-					compileFileArguments.ModuleInterfaceTarget = objectModuleInterfaceFile
+					compileFileArguments.ModuleInterfaceTarget = moduleInterfaceFile
 
 					compileInterfacePartitionUnits.add(compileFileArguments)
-					allPartitionInterfaces[source.Module] = arguments.TargetRootDirectory + objectModuleInterfaceFile
+					allPartitionInterfaces[source.Module] = arguments.TargetRootDirectory + moduleInterfaceFile
 				} else {
 					// Compile as a standard TU
 					var compileFileArguments = TranslationUnitCompileArguments.new()
@@ -413,9 +412,18 @@ class BuildEngine {
 	}
 
 	BuildClosure(closure, module, moduleDependencyLookup) {
-		for (childModule in moduleDependencyLookup[module]) {
-			closure.add(childModule)
-			this.BuildClosure(closure, childModule, moduleDependencyLookup)
+		if (moduleDependencyLookup.containsKey(module)) {
+			var moduleParts = module.split(":")
+			for (childModule in moduleDependencyLookup[module]) {
+				var fullChildModule = childModule
+				if (childModule.startsWith(":")) {
+					fullChildModule = moduleParts[0] + childModule
+				}
+				closure.add(fullChildModule)
+				this.BuildClosure(closure, fullChildModule, moduleDependencyLookup)
+			}
+		} else {
+			Fiber.abort("Import an unknown module %(module) %(moduleDependencyLookup)")
 		}
 	}
 
