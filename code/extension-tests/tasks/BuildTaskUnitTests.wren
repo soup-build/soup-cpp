@@ -7,7 +7,7 @@ import "../../extension/tasks/BuildTask" for BuildTask
 import "../../compiler/core/BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "../../compiler/core/LinkArguments" for LinkArguments, LinkTarget
 import "../../compiler/core/MockCompiler" for MockCompiler
-import "../../compiler/core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../../compiler/core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 import "Soup|Build.Utils:./Path" for Path
 import "../../test/Assert" for Assert
 
@@ -94,7 +94,7 @@ class BuildTaskUnitTests {
 		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
 		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
 		]
 
@@ -240,7 +240,7 @@ class BuildTaskUnitTests {
 		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
 		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
 		]
 
@@ -404,7 +404,7 @@ class BuildTaskUnitTests {
 			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
 		}
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
@@ -544,8 +544,8 @@ class BuildTaskUnitTests {
 		buildTable["TargetRootDirectory"] = "C:/target/"
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
-		buildTable["ModuleInterfaceSourceFile"] = "Public.cpp"
 		buildTable["Source"] = [
+			"Public.cpp",
 			"TestFile1.cpp",
 			"TestFile2.cpp",
 			"TestFile3.cpp",
@@ -594,7 +594,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -624,13 +624,15 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
-		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("Public.cpp"),
-			Path.new("obj/Public.mock.obj"),
-			{},
-			"Library",
-			Path.new("bin/Library.mock.bmi"))
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
+				Path.new("Public.cpp"),
+				Path.new("obj/Public.mock.obj"),
+				{},
+				"Library",
+				Path.new("bin/Library.mock.bmi")),
+		]
+		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
@@ -785,17 +787,15 @@ class BuildTaskUnitTests {
 		buildTable["TargetRootDirectory"] = "C:/target/"
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
-		buildTable["ModuleInterfacePartitionSourceFiles"] = [
+		buildTable["SourceFiles"] = [
+			"Public.cpp",
 			{
-				"Source": "TestFile1.cpp",
+				"File": "TestFile1.cpp",
 			},
 			{
-				"Source": "TestFile2.cpp",
+				"File": "TestFile2.cpp",
 				"Imports": [ "TestFile1.cpp", ],
 			},
-		]
-		buildTable["ModuleInterfaceSourceFile"] = "Public.cpp"
-		buildTable["Source"] = [
 			"TestFile3.cpp",
 			"TestFile4.cpp",
 		]
@@ -843,9 +843,9 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
@@ -874,14 +874,23 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
-		expectedCompileArguments.InterfacePartitionUnits = [
-			InterfaceUnitCompileArguments.new(
+		expectedCompileArguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
+				Path.new("Public.cpp"),
+				Path.new("obj/Public.mock.obj"),
+				{
+					"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+					"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
+				},
+				"Library",
+				Path.new("bin/Library.mock.bmi")),
+			ModuleUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
 				{},
 				"Library:TestFile1",
 				Path.new("obj/Library-TestFile1.mock.bmi")),
-			InterfaceUnitCompileArguments.new(
+			ModuleUnitCompileArguments.new(
 				Path.new("TestFile2.cpp"),
 				Path.new("obj/TestFile2.mock.obj"),
 				{
@@ -890,16 +899,7 @@ class BuildTaskUnitTests {
 				"Library:TestFile2",
 				Path.new("obj/Library-TestFile2.mock.bmi")),
 		]
-		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("Public.cpp"),
-			Path.new("obj/Public.mock.obj"),
-			{
-				"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
-				"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
-			},
-			"Library",
-			Path.new("bin/Library.mock.bmi"))
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
 				Path.new("obj/TestFile3.mock.obj"),
@@ -961,7 +961,7 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",
@@ -975,7 +975,7 @@ class BuildTaskUnitTests {
 					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			SoupTestOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",
@@ -1066,8 +1066,9 @@ class BuildTaskUnitTests {
 		buildTable["TargetRootDirectory"] = "C:/target/"
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
-		buildTable["ModuleInterfaceSourceFile"] = "Public.cpp"
-		activeState["SourceFiles"] = []
+		activeState["SourceFiles"] = [
+			"Public.cpp",
+		]
 		buildTable["IncludeDirectories"] = [
 			"Folder",
 			"AnotherFolder/Sub",
@@ -1112,7 +1113,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Operation: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -1139,12 +1140,14 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
-		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("./Public.cpp"),
-			Path.new("./obj/Public.mock.obj"),
-			{},
-			"Library",
-			Path.new("./bin/Library.mock.bmi"))
+		expectedCompileArguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
+				Path.new("./Public.cpp"),
+				Path.new("./obj/Public.mock.obj"),
+				{},
+				"Library",
+				Path.new("./bin/Library.mock.bmi")),
+		]
 
 		var expectedLinkArguments = LinkArguments.new()
 		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")

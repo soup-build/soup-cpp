@@ -8,8 +8,8 @@ import "Soup|Build.Utils:./BuildOperation" for BuildOperation
 import "../../test/Assert" for Assert
 import "../core/BuildEngine" for BuildEngine
 import "../core/MockCompiler" for MockCompiler
-import "../core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, PartitionSourceFile, SourceFile, HeaderFileSet
-import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "../core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, SourceFile, HeaderFileSet
+import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
 import "../core/LinkArguments" for LinkArguments, LinkTarget
 
 class BuildEngineUnitTests {
@@ -77,7 +77,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			Path.new("TestFile.cpp"),
+			SourceFile.new(Path.new("TestFile.cpp"), null, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.LinkDependencies = [
@@ -110,7 +110,7 @@ class BuildEngineUnitTests {
 		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
 		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
 		]
 
@@ -236,7 +236,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			Path.new("TestFile.cpp"),
+			SourceFile.new(Path.new("TestFile.cpp"), null, null, []),
 		]
 		arguments.ResourceFile = Path.new("Resources.rc")
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
@@ -270,7 +270,7 @@ class BuildEngineUnitTests {
 		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
 		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
 		]
 
@@ -403,7 +403,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			Path.new("TestFile.cpp"),
+			SourceFile.new(Path.new("TestFile.cpp"), null, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.LinkDependencies = [
@@ -435,7 +435,7 @@ class BuildEngineUnitTests {
 		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
 		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
 		]
 
@@ -570,7 +570,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			Path.new("TestFile1.cpp"),
+			SourceFile.new(Path.new("TestFile1.cpp"), null, null, []),
 		]
 		arguments.PublicHeaderSets = [
 			HeaderFileSet.new(
@@ -640,7 +640,7 @@ class BuildEngineUnitTests {
 		expectedTranslationUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
 		expectedTranslationUnit1Arguments.TargetFile = Path.new("obj/TestFile1.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnit1Arguments,
 		]
 
@@ -841,9 +841,9 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			Path.new("TestFile1.cpp"),
-			Path.new("TestFile2.cpp"),
-			Path.new("TestFile3.cpp"),
+			SourceFile.new(Path.new("TestFile1.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), null, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.Size
 		arguments.IncludeDirectories = [
@@ -902,7 +902,7 @@ class BuildEngineUnitTests {
 		expectedTranslationUnit3Arguments.SourceFile = Path.new("TestFile3.cpp")
 		expectedTranslationUnit3Arguments.TargetFile = Path.new("obj/TestFile3.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnit1Arguments,
 			expectedTranslationUnit2Arguments,
 			expectedTranslationUnit3Arguments,
@@ -1075,11 +1075,11 @@ class BuildEngineUnitTests {
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
-		arguments.ModuleInterfaceSourceFile = Path.new("Public.cpp")
 		arguments.SourceFiles = [
-			Path.new("TestFile1.cpp"),
-			Path.new("TestFile2.cpp"),
-			Path.new("TestFile3.cpp"),
+			SourceFile.new(Path.new("Public.cpp"), "Library", null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), null, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1105,7 +1105,7 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -1135,14 +1135,16 @@ class BuildEngineUnitTests {
 			"AWESOME",
 		]
 
-		var expectedCompileModuleArguments = InterfaceUnitCompileArguments.new()
+		var expectedCompileModuleArguments = ModuleUnitCompileArguments.new()
 		expectedCompileModuleArguments.ModuleName = "Library"
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
 		expectedCompileModuleArguments.IncludeModules = {}
 		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
-		expectedCompileArguments.InterfaceUnit = expectedCompileModuleArguments
+		expectedCompileArguments.ModuleUnits = [
+			expectedCompileModuleArguments,
+		]
 
 		var expectedTranslationUnit1Arguments = TranslationUnitCompileArguments.new()
 		expectedTranslationUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
@@ -1156,7 +1158,7 @@ class BuildEngineUnitTests {
 		expectedTranslationUnit3Arguments.SourceFile = Path.new("TestFile3.cpp")
 		expectedTranslationUnit3Arguments.TargetFile = Path.new("obj/TestFile3.mock.obj")
 
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnit1Arguments,
 			expectedTranslationUnit2Arguments,
 			expectedTranslationUnit3Arguments,
@@ -1342,20 +1344,29 @@ class BuildEngineUnitTests {
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
-		arguments.ModuleInterfacePartitionSourceFiles = [
-			PartitionSourceFile.new(
-				Path.new("TestFile1.cpp"),
-				[]),
-			PartitionSourceFile.new(
-				Path.new("TestFile2.cpp"),
-				[
-					Path.new("TestFile1.cpp"),
-				]),
-		]
-		arguments.ModuleInterfaceSourceFile = Path.new("Public.cpp")
 		arguments.SourceFiles = [
-			Path.new("TestFile3.cpp"),
-			Path.new("TestFile4.cpp"),
+			SourceFile.new(
+				Path.new("Public.cpp"),
+				"Library",
+				null,
+				[
+					":TestFile1",
+					":TestFile2",
+				]),
+			SourceFile.new(
+				Path.new("TestFile1.cpp"),
+				"Library",
+				"TestFile1",
+				[]),
+			SourceFile.new(
+				Path.new("TestFile2.cpp"),
+				"Library",
+				"TestFile2",
+				[
+					":TestFile1",
+				]),
+			SourceFile.new(Path.new("TestFile3.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile4.cpp"), null, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1381,9 +1392,9 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
@@ -1412,13 +1423,23 @@ class BuildEngineUnitTests {
 			"AWESOME",
 		]
 
-		var expectedInterfacePartitionUnit1Arguments = InterfaceUnitCompileArguments.new()
+		var expectedInterfaceUnitArguments = ModuleUnitCompileArguments.new()
+		expectedInterfaceUnitArguments.ModuleName = "Library"
+		expectedInterfaceUnitArguments.SourceFile = Path.new("Public.cpp")
+		expectedInterfaceUnitArguments.TargetFile = Path.new("obj/Public.mock.obj")
+		expectedInterfaceUnitArguments.IncludeModules = {
+			"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+			"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
+		}
+		expectedInterfaceUnitArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
+
+		var expectedInterfacePartitionUnit1Arguments = ModuleUnitCompileArguments.new()
 		expectedInterfacePartitionUnit1Arguments.ModuleName = "Library:TestFile1"
 		expectedInterfacePartitionUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
 		expectedInterfacePartitionUnit1Arguments.TargetFile = Path.new("obj/TestFile1.mock.obj")
 		expectedInterfacePartitionUnit1Arguments.ModuleInterfaceTarget = Path.new("obj/Library-TestFile1.mock.bmi")
 
-		var expectedInterfacePartitionUnit2Arguments = InterfaceUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit2Arguments = ModuleUnitCompileArguments.new()
 		expectedInterfacePartitionUnit2Arguments.ModuleName = "Library:TestFile2"
 		expectedInterfacePartitionUnit2Arguments.SourceFile = Path.new("TestFile2.cpp")
 		expectedInterfacePartitionUnit2Arguments.TargetFile = Path.new("obj/TestFile2.mock.obj")
@@ -1427,22 +1448,13 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfacePartitionUnit2Arguments.ModuleInterfaceTarget = Path.new("obj/Library-TestFile2.mock.bmi")
 
-		expectedCompileArguments.InterfacePartitionUnits = [
+		expectedCompileArguments.ModuleUnits = [
+			expectedInterfaceUnitArguments,
 			expectedInterfacePartitionUnit1Arguments,
 			expectedInterfacePartitionUnit2Arguments
 		]
 
-		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new()
-		expectedCompileArguments.InterfaceUnit.ModuleName = "Library"
-		expectedCompileArguments.InterfaceUnit.SourceFile = Path.new("Public.cpp")
-		expectedCompileArguments.InterfaceUnit.TargetFile = Path.new("obj/Public.mock.obj")
-		expectedCompileArguments.InterfaceUnit.IncludeModules = {
-			"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
-			"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
-		}
-		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
-
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile3.cpp"),
 				Path.new("obj/TestFile3.mock.obj"),
@@ -1458,9 +1470,9 @@ class BuildEngineUnitTests {
 		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
+			Path.new("obj/Public.mock.obj"),
 			Path.new("obj/TestFile1.mock.obj"),
 			Path.new("obj/TestFile2.mock.obj"),
-			Path.new("obj/Public.mock.obj"),
 			Path.new("obj/TestFile3.mock.obj"),
 			Path.new("obj/TestFile4.mock.obj"),
 		]
@@ -1502,7 +1514,21 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
+				[
+					"Arguments",
+				],
+				[
+					Path.new("Public.cpp"),
+				],
+				[
+					Path.new("obj/Public.mock.obj"),
+					Path.new("bin/Library.mock.bmi"),
+				]),
+			BuildOperation.new(
+				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1516,7 +1542,7 @@ class BuildEngineUnitTests {
 					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1528,20 +1554,6 @@ class BuildEngineUnitTests {
 				[
 					Path.new("obj/TestFile2.mock.obj"),
 					Path.new("obj/Library-TestFile2.mock.bmi"),
-				]),
-			BuildOperation.new(
-				"MockCompileModule: 1",
-				Path.new("MockWorkingDirectory"),
-				Path.new("MockCompiler.exe"),
-				[
-					"Arguments",
-				],
-				[
-					Path.new("Public.cpp"),
-				],
-				[
-					Path.new("obj/Public.mock.obj"),
-					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
 				"MockCompile: 1",
@@ -1590,11 +1602,11 @@ class BuildEngineUnitTests {
 
 		Assert.MapEqual(
 			{
-				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
-				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
+				"Library": Path.new("C:/target/bin/Library.mock.bmi"),
 				"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
 				"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
-				"Library": Path.new("C:/target/bin/Library.mock.bmi"),
+				"OtherModule1": Path.new("../Other/bin/OtherModule1.mock.bmi"),
+				"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
 			},
 			result.ModuleDependencies)
 
@@ -1651,24 +1663,36 @@ class BuildEngineUnitTests {
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
-		arguments.ModuleInterfacePartitionSourceFiles = [
-			PartitionSourceFile.new(
-				Path.new("TestFile1.cpp"),
-				[]),
-			PartitionSourceFile.new(
-				Path.new("TestFile2.cpp"),
-				[
-					Path.new("TestFile1.cpp"),
-				]),
-			PartitionSourceFile.new(
-				Path.new("TestFile3.cpp"),
-				[
-					Path.new("TestFile2.cpp"),
-				]),
-		]
-		arguments.ModuleInterfaceSourceFile = Path.new("Public.cpp")
 		arguments.SourceFiles = [
-			Path.new("TestFile4.cpp"),
+			SourceFile.new(
+				Path.new("Public.cpp"),
+				"Library",
+				null,
+				[
+					":TestFile1",
+					":TestFile2",
+					":TestFile3",
+				]),
+			SourceFile.new(
+				Path.new("TestFile1.cpp"),
+				"Library",
+				"TestFile1",
+				[]),
+			SourceFile.new(
+				Path.new("TestFile2.cpp"),
+				"Library",
+				"TestFile2",
+				[
+					":TestFile1",
+				]),
+			SourceFile.new(
+				Path.new("TestFile3.cpp"),
+				"Library",
+				"TestFile3",
+				[
+					":TestFile2",
+				]),
+			SourceFile.new(Path.new("TestFile4.cpp"), null, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1694,10 +1718,10 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile1.cpp",
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile2.cpp",
-				"INFO: Generate Module Interface Partition Compile Operation: ./TestFile3.cpp",
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Module Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -1725,14 +1749,25 @@ class BuildEngineUnitTests {
 			"AWESOME",
 		]
 
-		var expectedInterfacePartitionUnit1 = InterfaceUnitCompileArguments.new()
+		var expectedInterfaceUnit = ModuleUnitCompileArguments.new()
+		expectedInterfaceUnit.ModuleName = "Library"
+		expectedInterfaceUnit.SourceFile = Path.new("Public.cpp")
+		expectedInterfaceUnit.TargetFile = Path.new("obj/Public.mock.obj")
+		expectedInterfaceUnit.IncludeModules = {
+			"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+			"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
+			"Library:TestFile3": Path.new("C:/target/obj/Library-TestFile3.mock.bmi")
+		}
+		expectedInterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
+
+		var expectedInterfacePartitionUnit1 = ModuleUnitCompileArguments.new()
 		expectedInterfacePartitionUnit1.ModuleName = "Library:TestFile1"
 		expectedInterfacePartitionUnit1.SourceFile = Path.new("TestFile1.cpp")
 		expectedInterfacePartitionUnit1.TargetFile = Path.new("obj/TestFile1.mock.obj")
 		expectedInterfacePartitionUnit1.IncludeModules = {}
 		expectedInterfacePartitionUnit1.ModuleInterfaceTarget = Path.new("obj/Library-TestFile1.mock.bmi")
 
-		var expectedInterfacePartitionUnit2 = InterfaceUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit2 = ModuleUnitCompileArguments.new()
 		expectedInterfacePartitionUnit2.ModuleName = "Library:TestFile2"
 		expectedInterfacePartitionUnit2.SourceFile = Path.new("TestFile2.cpp")
 		expectedInterfacePartitionUnit2.TargetFile = Path.new("obj/TestFile2.mock.obj")
@@ -1741,7 +1776,7 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfacePartitionUnit2.ModuleInterfaceTarget = Path.new("obj/Library-TestFile2.mock.bmi")
 
-		var expectedInterfacePartitionUnit3 = InterfaceUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit3 = ModuleUnitCompileArguments.new()
 		expectedInterfacePartitionUnit3.ModuleName = "Library:TestFile3"
 		expectedInterfacePartitionUnit3.SourceFile = Path.new("TestFile3.cpp")
 		expectedInterfacePartitionUnit3.TargetFile = Path.new("obj/TestFile3.mock.obj")
@@ -1751,24 +1786,14 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfacePartitionUnit3.ModuleInterfaceTarget = Path.new("obj/Library-TestFile3.mock.bmi")
 
-		expectedCompileArguments.InterfacePartitionUnits = [
+		expectedCompileArguments.ModuleUnits = [
+			expectedInterfaceUnit,
 			expectedInterfacePartitionUnit1,
 			expectedInterfacePartitionUnit2,
 			expectedInterfacePartitionUnit3
 		]
 
-		expectedCompileArguments.InterfaceUnit = InterfaceUnitCompileArguments.new()
-		expectedCompileArguments.InterfaceUnit.ModuleName = "Library"
-		expectedCompileArguments.InterfaceUnit.SourceFile = Path.new("Public.cpp")
-		expectedCompileArguments.InterfaceUnit.TargetFile = Path.new("obj/Public.mock.obj")
-		expectedCompileArguments.InterfaceUnit.IncludeModules = {
-			"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
-			"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
-			"Library:TestFile3": Path.new("C:/target/obj/Library-TestFile3.mock.bmi")
-		}
-		expectedCompileArguments.InterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
-
-		expectedCompileArguments.ImplementationUnits = [
+		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("TestFile4.cpp"),
 				Path.new("obj/TestFile4.mock.obj"),
@@ -1780,10 +1805,10 @@ class BuildEngineUnitTests {
 		expectedLinkArguments.TargetFile = Path.new("bin/Library.mock.lib")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
+			Path.new("obj/Public.mock.obj"),
 			Path.new("obj/TestFile1.mock.obj"),
 			Path.new("obj/TestFile2.mock.obj"),
 			Path.new("obj/TestFile3.mock.obj"),
-			Path.new("obj/Public.mock.obj"),
 			Path.new("obj/TestFile4.mock.obj"),
 		]
 
@@ -1824,7 +1849,21 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
+				Path.new("MockWorkingDirectory"),
+				Path.new("MockCompiler.exe"),
+				[
+					"Arguments",
+				],
+				[
+					Path.new("Public.cpp"),
+				],
+				[
+					Path.new("obj/Public.mock.obj"),
+					Path.new("bin/Library.mock.bmi"),
+				]),
+			BuildOperation.new(
+				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1838,7 +1877,7 @@ class BuildEngineUnitTests {
 					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1852,7 +1891,7 @@ class BuildEngineUnitTests {
 					Path.new("obj/Library-TestFile2.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompilePartition: 1",
+				"MockCompileModule: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1864,20 +1903,6 @@ class BuildEngineUnitTests {
 				[
 					Path.new("obj/TestFile3.mock.obj"),
 					Path.new("obj/Library-TestFile3.mock.bmi"),
-				]),
-			BuildOperation.new(
-				"MockCompileModule: 1",
-				Path.new("MockWorkingDirectory"),
-				Path.new("MockCompiler.exe"),
-				[
-					"Arguments",
-				],
-				[
-					Path.new("Public.cpp"),
-				],
-				[
-					Path.new("obj/Public.mock.obj"),
-					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
 				"MockCompile: 1",
@@ -1975,8 +2000,9 @@ class BuildEngineUnitTests {
 		arguments.TargetRootDirectory = Path.new("C:/target/")
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
-		arguments.ModuleInterfaceSourceFile = Path.new("Public.cpp")
-		arguments.SourceFiles = []
+		arguments.SourceFiles = [
+			SourceFile.new(Path.new("Public.cpp"), "Library", null, []),
+		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.Size
 		arguments.IncludeDirectories = [
 			Path.new("Folder"),
@@ -1997,7 +2023,7 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Module Interface Unit Compile: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -2020,14 +2046,16 @@ class BuildEngineUnitTests {
 			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
 		}
 
-		var expectedCompileModuleArguments = InterfaceUnitCompileArguments.new()
+		var expectedCompileModuleArguments = ModuleUnitCompileArguments.new()
 		expectedCompileModuleArguments.ModuleName = "Library"
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
 		expectedCompileModuleArguments.IncludeModules = {}
 		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
-		expectedCompileArguments.InterfaceUnit = expectedCompileModuleArguments
+		expectedCompileArguments.ModuleUnits = [
+			expectedCompileModuleArguments,
+		]
 
 		var expectedLinkArguments = LinkArguments.new()
 		expectedLinkArguments.TargetType = LinkTarget.StaticLibrary

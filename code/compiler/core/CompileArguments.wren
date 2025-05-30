@@ -51,7 +51,7 @@ class OptimizationLevel {
 }
 
 /// <summary>
-/// The set of file specific compiler arguments
+/// The set of file specific compiler arguments for a translation unit
 /// </summary>
 class TranslationUnitCompileArguments {
 	construct new() {
@@ -101,9 +101,9 @@ class TranslationUnitCompileArguments {
 }
 
 /// <summary>
-/// The set of file specific compiler arguments
+/// The set of file specific compiler arguments for a module unit
 /// </summary>
-class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
+class ModuleUnitCompileArguments is TranslationUnitCompileArguments {
 	construct new() {
 		super()
 		_moduleName = null
@@ -129,7 +129,7 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 	ModuleInterfaceTarget=(value) { _moduleInterfaceTarget = value }
 
 	==(other) {
-		// System.print("InterfaceUnitCompileArguments==")
+		// System.print("ModuleUnitCompileArguments==")
 		if (other is Null) {
 			return false
 		}
@@ -142,7 +142,7 @@ class InterfaceUnitCompileArguments is TranslationUnitCompileArguments {
 	}
 
 	toString {
-		return "InterfaceUnitCompileArguments { SourceFile=%(this.SourceFile), TargetFile=%(this.TargetFile), IncludeModules=%(this.IncludeModules), ModuleName=%(this.ModuleName) ModuleInterfaceTarget=%(this.ModuleInterfaceTarget) }"
+		return "ModuleUnitCompileArguments { SourceFile=%(this.SourceFile), TargetFile=%(this.TargetFile), IncludeModules=%(this.IncludeModules), ModuleName=%(this.ModuleName) ModuleInterfaceTarget=%(this.ModuleInterfaceTarget) }"
 	}
 }
 
@@ -160,9 +160,8 @@ class SharedCompileArguments {
 		_includeDirectories = []
 		_includeModules = {}
 		_generateSourceDebugInfo = false
-		_interfacePartitionUnits = []
-		_interfaceUnit = null
-		_implementationUnits = []
+		_moduleUnits = []
+		_translationUnits = []
 		_assemblyUnits = []
 		_resourceFile = null
 		_enableWarningsAsErrors = false
@@ -226,25 +225,19 @@ class SharedCompileArguments {
 	GenerateSourceDebugInfo=(value) { _generateSourceDebugInfo = value }
 
 	/// <summary>
-	/// Gets or sets the list of interface partition translation units to compile
+	/// Gets or sets the list of module translation units to compile
 	/// </summary>
-	InterfacePartitionUnits { _interfacePartitionUnits }
-	InterfacePartitionUnits=(value) { _interfacePartitionUnits = value }
+	ModuleUnits { _moduleUnits }
+	ModuleUnits=(value) { _moduleUnits = value }
 
 	/// <summary>
-	/// Gets or sets the single optional interface unit to compile
+	/// Gets or sets the list of translation units to compile
 	/// </summary>
-	InterfaceUnit { _interfaceUnit }
-	InterfaceUnit=(value) { _interfaceUnit = value }
+	TranslationUnits { _translationUnits }
+	TranslationUnits=(value) { _translationUnits = value }
 
 	/// <summary>
-	/// Gets or sets the list of individual translation units to compile
-	/// </summary>
-	ImplementationUnits { _implementationUnits }
-	ImplementationUnits=(value) { _implementationUnits = value }
-
-	/// <summary>
-	/// Gets or sets the list of individual assembly units to compile
+	/// Gets or sets the list of assembly units to compile
 	/// </summary>
 	AssemblyUnits { _assemblyUnits }
 	AssemblyUnits=(value) { _assemblyUnits = value }
@@ -294,9 +287,8 @@ class SharedCompileArguments {
 			ListExtensions.SequenceEqual(this.IncludeDirectories, other.IncludeDirectories) &&
 			MapExtensions.Equal(this.IncludeModules, other.IncludeModules) &&
 			this.GenerateSourceDebugInfo == other.GenerateSourceDebugInfo &&
-			ListExtensions.SequenceEqual(this.InterfacePartitionUnits, other.InterfacePartitionUnits) &&
-			this.InterfaceUnit == other.InterfaceUnit &&
-			ListExtensions.SequenceEqual(this.ImplementationUnits, other.ImplementationUnits) &&
+			ListExtensions.SequenceEqual(this.ModuleUnits, other.ModuleUnits) &&
+			ListExtensions.SequenceEqual(this.TranslationUnits, other.TranslationUnits) &&
 			ListExtensions.SequenceEqual(this.AssemblyUnits, other.AssemblyUnits) &&
 			this.ResourceFile == other.ResourceFile &&
 			this.EnableWarningsAsErrors == other.EnableWarningsAsErrors &&
@@ -306,7 +298,7 @@ class SharedCompileArguments {
 	}
 
 	toString {
-		return "SharedCompileArguments { Standard=%(_standard), Optimize=%(_optimize), SourceRootDirectory=%(_sourceRootDirectory), TargetRootDirectory=%(_targetRootDirectory), ObjectDirectory=%(_objectDirectory), PreprocessorDefinitions=%(_preprocessorDefinitions), IncludeDirectories=%(_includeDirectories), IncludeModules=%(_includeModules), GenerateSourceDebugInfo=%(_generateSourceDebugInfo), InterfacePartitionUnits=%(_interfacePartitionUnits), InterfaceUnit=%(_interfaceUnit), ImplementationUnits=%(_implementationUnits), AssemblyUnits=%(_assemblyUnits), ResourceFile=%(_resourceFile), EnableWarningsAsErrors=%(_enableWarningsAsErrors), DisabledWarnings=%(_disabledWarnings), EnabledWarnings=%(_enabledWarnings), CustomProperties=%(_customProperties) }"
+		return "SharedCompileArguments { Standard=%(_standard), Optimize=%(_optimize), SourceRootDirectory=%(_sourceRootDirectory), TargetRootDirectory=%(_targetRootDirectory), ObjectDirectory=%(_objectDirectory), PreprocessorDefinitions=%(_preprocessorDefinitions), IncludeDirectories=%(_includeDirectories), IncludeModules=%(_includeModules), GenerateSourceDebugInfo=%(_generateSourceDebugInfo), ModuleUnits=%(_moduleUnits), TranslationUnits=%(_translationUnits), AssemblyUnits=%(_assemblyUnits), ResourceFile=%(_resourceFile), EnableWarningsAsErrors=%(_enableWarningsAsErrors), DisabledWarnings=%(_disabledWarnings), EnabledWarnings=%(_enabledWarnings), CustomProperties=%(_customProperties) }"
 	}
 }
 

@@ -76,25 +76,7 @@ class MockCompiler is ICompiler {
 
 		var result = []
 
-		for (fileArguments in arguments.InterfacePartitionUnits) {
-			result.add(
-				BuildOperation.new(
-					"MockCompilePartition: %(_compileRequests.count)",
-					Path.new("MockWorkingDirectory"),
-					Path.new("MockCompiler.exe"),
-					[
-						"Arguments",
-					],
-					[
-						fileArguments.SourceFile,
-					],
-					[
-						fileArguments.TargetFile,
-						fileArguments.ModuleInterfaceTarget,
-					]))
-		}
-
-		if (!(arguments.InterfaceUnit is Null)) {
+		for (moduleUnitArguments in arguments.ModuleUnits) {
 			result.add(
 				BuildOperation.new(
 					"MockCompileModule: %(_compileRequests.count)",
@@ -104,15 +86,15 @@ class MockCompiler is ICompiler {
 						"Arguments",
 					],
 					[
-						arguments.InterfaceUnit.SourceFile,
+						moduleUnitArguments.SourceFile,
 					],
 					[
-						arguments.InterfaceUnit.TargetFile,
-						arguments.InterfaceUnit.ModuleInterfaceTarget,
+						moduleUnitArguments.TargetFile,
+						moduleUnitArguments.ModuleInterfaceTarget,
 					]))
 		}
 
-		for (fileArguments in arguments.ImplementationUnits) {
+		for (translationUnitArguments in arguments.TranslationUnits) {
 			result.add(
 				BuildOperation.new(
 					"MockCompile: %(_compileRequests.count)",
@@ -122,10 +104,10 @@ class MockCompiler is ICompiler {
 						"Arguments",
 					],
 					[
-						fileArguments.SourceFile,
+						translationUnitArguments.SourceFile,
 					],
 					[
-						fileArguments.TargetFile,
+						translationUnitArguments.TargetFile,
 					]))
 		}
 

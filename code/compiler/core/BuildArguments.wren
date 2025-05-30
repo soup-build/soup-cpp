@@ -121,8 +121,6 @@ class BuildArguments {
 		_targetRootDirectory = null
 		_objectDirectory = null
 		_binaryDirectory = null
-		_moduleInterfacePartitionSourceFiles = []
-		_moduleInterfaceSourceFile = null
 		_resourceFile = null
 		_sourceFiles = []
 		_assemblySourceFiles = []

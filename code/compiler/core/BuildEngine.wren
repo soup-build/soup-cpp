@@ -6,7 +6,7 @@ import "soup" for Soup
 import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
-import "./CompileArguments" for InterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "./CompileArguments" for ModuleUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
 import "Soup|Build.Utils:./MapExtensions" for MapExtensions
 import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./Set" for Set
@@ -103,23 +103,25 @@ class BuildEngine {
 					var moduleName = source.getFullModuleName()
 
 					// TODO: Tell clang they are need to stop forcing a file naming convension when we already tell them the module name...
+					// Place the partition interface files in the object directory as they are intermediate results
 					var interfaceFile = source.Partition is Null ?
-						Path.new("%(source.Module).%(_compiler.ModuleFileExtension)") :
-						Path.new("%(source.Module)-%(source.Partition).%(_compiler.ModuleFileExtension)")
+						arguments.BinaryDirectory + Path.new("%(source.Module).%(_compiler.ModuleFileExtension)") :
+						arguments.ObjectDirectory + Path.new("%(source.Module)-%(source.Partition).%(_compiler.ModuleFileExtension)")
 
-					moduleInterfaceFileLookup[moduleName] = arguments.ObjectDirectory + interfaceFile
+					moduleInterfaceFileLookup[moduleName] = interfaceFile
 					moduleDependencyLookup[moduleName] = source.Imports
 				}
 			}
 
 			// Compile the individual module interface partition translation units
-			var compileInterfacePartitionUnits = []
-			var compileImplementationUnits = []
+			var compileModuleUnits = []
+			var compileTranslationUnits = []
 			var allPartitionInterfaces = {}
 			for (source in arguments.SourceFiles) {
-				Soup.info("Generate Compile Operation: %(source.File)")
-
 				if (!(source.Module is Null)) {
+					// Compile the module unit
+					Soup.info("Generate Compile Module Operation: %(source.File)")
+
 					var moduleName = source.getFullModuleName()
 					var objectFile = arguments.ObjectDirectory + Path.new(source.File.GetFileName())
 					objectFile.SetFileExtension(_compiler.ObjectFileExtension)
@@ -137,23 +139,25 @@ class BuildEngine {
 						partitionImports[dependencyModule] = arguments.TargetRootDirectory + moduleInterfaceFileLookup[dependencyModule]
 					}
 
-					var compileFileArguments = InterfaceUnitCompileArguments.new()
+					var compileFileArguments = ModuleUnitCompileArguments.new()
 					compileFileArguments.ModuleName = moduleName
 					compileFileArguments.SourceFile = source.File
 					compileFileArguments.TargetFile = objectFile
 					compileFileArguments.IncludeModules = partitionImports
 					compileFileArguments.ModuleInterfaceTarget = moduleInterfaceFile
 
-					compileInterfacePartitionUnits.add(compileFileArguments)
-					allPartitionInterfaces[source.Module] = arguments.TargetRootDirectory + moduleInterfaceFile
+					compileModuleUnits.add(compileFileArguments)
+					allPartitionInterfaces[moduleName] = arguments.TargetRootDirectory + moduleInterfaceFile
 				} else {
 					// Compile as a standard TU
+					Soup.info("Generate Compile Operation: %(source.File)")
+
 					var compileFileArguments = TranslationUnitCompileArguments.new()
 					compileFileArguments.SourceFile = source.File
 					compileFileArguments.TargetFile = arguments.ObjectDirectory + Path.new(source.File.GetFileName())
 					compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-					compileImplementationUnits.add(compileFileArguments)
+					compileTranslationUnits.add(compileFileArguments)
 				}
 			}
 
@@ -163,8 +167,8 @@ class BuildEngine {
 				result.ModuleDependencies[module.key] = module.value
 			}
 
-			compileArguments.InterfacePartitionUnits = compileInterfacePartitionUnits
-			compileArguments.ImplementationUnits = compileImplementationUnits
+			compileArguments.ModuleUnits = compileModuleUnits
+			compileArguments.TranslationUnits = compileTranslationUnits
 
 			// Compile the individual assembly units
 			var compileAssemblyUnits = []

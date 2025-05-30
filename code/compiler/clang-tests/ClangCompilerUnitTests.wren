@@ -7,7 +7,7 @@ import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./BuildOperation" for BuildOperation
 import "../../test/Assert" for Assert
 import "../core/LinkArguments" for LinkArguments, LinkTarget
-import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
+import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
 class ClangCompilerUnitTests {
 	construct new() {
@@ -64,7 +64,7 @@ class ClangCompilerUnitTests {
 		translationUnitArguments.SourceFile = Path.new("File.cpp")
 		translationUnitArguments.TargetFile = Path.new("obj/File.o")
 
-		arguments.ImplementationUnits = [
+		arguments.TranslationUnits = [
 			translationUnitArguments,
 		]
 
@@ -127,8 +127,8 @@ class ClangCompilerUnitTests {
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
-		arguments.InterfacePartitionUnits = [
-			InterfaceUnitCompileArguments.new(
+		arguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
 				Path.new("File.cpp"),
 				Path.new("obj/File.o"),
 				{
@@ -182,6 +182,7 @@ class ClangCompilerUnitTests {
 				Path.new("C:/source/"),
 				Path.new("C:/bin/mock.clang++"),
 				[
+					"-fpic",
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
 					"-fmodule-file=Other=./obj/Other.pcm",
@@ -223,14 +224,16 @@ class ClangCompilerUnitTests {
 			"DEBUG",
 		]
 
-		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("File.cpp"),
-			Path.new("obj/File.o"),
-			{
-				"Other": Path.new("obj/Other.pcm")
-			},
-			"Module1",
-			Path.new("obj/File.pcm"))
+		arguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
+				Path.new("File.cpp"),
+				Path.new("obj/File.o"),
+				{
+					"Other": Path.new("obj/Other.pcm")
+				},
+				"Module1",
+				Path.new("obj/File.pcm"))
+		]
 
 		var result = uut.CreateCompileOperations(arguments)
 
@@ -276,6 +279,7 @@ class ClangCompilerUnitTests {
 				Path.new("C:/source/"),
 				Path.new("C:/bin/mock.clang++"),
 				[
+					"-fpic",
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
 					"-fmodule-file=Other=./obj/Other.pcm",
@@ -316,8 +320,8 @@ class ClangCompilerUnitTests {
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
-		arguments.InterfacePartitionUnits = [
-			InterfaceUnitCompileArguments.new(
+		arguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
 				Path.new("File1.cpp"),
 				Path.new("obj/File1.o"),
 				{
@@ -325,16 +329,16 @@ class ClangCompilerUnitTests {
 				},
 				"Module1:File1",
 				Path.new("obj/File1.pcm")),
+			ModuleUnitCompileArguments.new(
+				Path.new("File2.cpp"),
+				Path.new("obj/File2.o"),
+				{
+					"Other2": Path.new("obj/Other2.pcm")
+				},
+				"Module1",
+				Path.new("obj/File2.pcm")),
 		]
-		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("File2.cpp"),
-			Path.new("obj/File2.o"),
-			{
-				"Other2": Path.new("obj/Other2.pcm")
-			},
-			"Module1",
-			Path.new("obj/File2.pcm"))
-		arguments.ImplementationUnits = [
+		arguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("File3.cpp"),
 				Path.new("obj/File3.o"),
@@ -387,6 +391,7 @@ class ClangCompilerUnitTests {
 				Path.new("C:/source/"),
 				Path.new("C:/bin/mock.clang++"),
 				[
+					"-fpic",
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
 					"-fmodule-file=Other1=./obj/Other1.pcm",
@@ -429,6 +434,7 @@ class ClangCompilerUnitTests {
 				Path.new("C:/source/"),
 				Path.new("C:/bin/mock.clang++"),
 				[
+					"-fpic",
 					"-c",
 					"-fmodule-file=Module=./Module.pcm",
 					"-fmodule-file=Other2=./obj/Other2.pcm",
@@ -602,8 +608,6 @@ class ClangCompilerUnitTests {
 			Path.new("C:/target/"),
 			Path.new("C:/bin/mock.clang++"),
 			[
-				"-fsanitize=address",
-				"-fno-omit-frame-pointer",
 				"-o",
 				"./Something.exe",
 				"./File.mock.o",
