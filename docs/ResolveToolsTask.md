@@ -1,5 +1,4 @@
 ## Resolve Tools
-
 This task reads in the global state SDKs to reference required platform resources and Compiler information.
 
 ### Run Before

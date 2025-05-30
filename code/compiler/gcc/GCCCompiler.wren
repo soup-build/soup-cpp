@@ -107,30 +107,30 @@ class GCCCompiler is ICompiler {
 		}
 
 		var internalModules = {}
-		for (partitionUnitArguments in arguments.InterfacePartitionUnits) {
+		for (moduleUnitArguments in arguments.ModuleUnits) {
 			// Build up the input/output sets
 			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(partitionUnitArguments.SourceFile)
+			inputFiles.add(moduleUnitArguments.SourceFile)
 			inputFiles.add(absoluteResponseFile)
 
-			for (module in partitionUnitArguments.IncludeModules) {
+			for (module in moduleUnitArguments.IncludeModules) {
 				inputFiles.add(module.value)
 			}
 
 			var outputFiles = [
-				arguments.TargetRootDirectory + partitionUnitArguments.TargetFile,
-				arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget,
+				arguments.TargetRootDirectory + moduleUnitArguments.TargetFile,
+				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
 			]
 
 			// Build the unique arguments for this translation unit
 			var commandArguments = GCCArgumentBuilder.BuildPartitionUnitCompilerArguments(
 				arguments.TargetRootDirectory,
-				partitionUnitArguments,
+				moduleUnitArguments,
 				absoluteResponseFile)
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				partitionUnitArguments.SourceFile.toString,
+				moduleUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_gccExecutable,
 				commandArguments,
@@ -139,54 +139,16 @@ class GCCCompiler is ICompiler {
 			operations.add(buildOperation)
 
 			// Add our module interface back in for the downstream compilers
-			internalModules[partitionUnitArguments.ModuleName] = arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget
+			internalModules[moduleUnitArguments.ModuleName] = arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget
 		}
 
-		// Generate the interface build operation if present
-		if (arguments.InterfaceUnit) {
-			var interfaceUnitArguments = arguments.InterfaceUnit
-
+		for (translationUnitArguments in arguments.TranslationUnits) {
 			// Build up the input/output sets
 			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(interfaceUnitArguments.SourceFile)
+			inputFiles.add(translationUnitArguments.SourceFile)
 			inputFiles.add(absoluteResponseFile)
 
-			for (module in interfaceUnitArguments.IncludeModules) {
-				inputFiles.add(module.value)
-			}
-
-			var outputFiles = [
-				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
-				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
-			]
-
-			// Build the unique arguments for this translation unit
-			var commandArguments = GCCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
-				arguments.TargetRootDirectory,
-				interfaceUnitArguments,
-				absoluteResponseFile)
-
-			// Generate the operation
-			var buildOperation = BuildOperation.new(
-				interfaceUnitArguments.SourceFile.toString,
-				arguments.SourceRootDirectory,
-				_gccExecutable,
-				commandArguments,
-				inputFiles,
-				outputFiles)
-			operations.add(buildOperation)
-
-			// Add our module interface back in for the downstream compilers
-			internalModules[interfaceUnitArguments.ModuleName] = arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget
-		}
-
-		for (implementationUnitArguments in arguments.ImplementationUnits) {
-			// Build up the input/output sets
-			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(implementationUnitArguments.SourceFile)
-			inputFiles.add(absoluteResponseFile)
-
-			for (module in implementationUnitArguments.IncludeModules) {
+			for (module in translationUnitArguments.IncludeModules) {
 				inputFiles.add(module.value)
 			}
 
@@ -195,19 +157,19 @@ class GCCCompiler is ICompiler {
 			}
 
 			var outputFiles = [
-				arguments.TargetRootDirectory + implementationUnitArguments.TargetFile,
+				arguments.TargetRootDirectory + translationUnitArguments.TargetFile,
 			]
 
 			// Build the unique arguments for this translation unit
 			var commandArguments = GCCArgumentBuilder.BuildTranslationUnitCompilerArguments(
 				arguments.TargetRootDirectory,
-				implementationUnitArguments,
+				translationUnitArguments,
 				absoluteResponseFile,
 				internalModules)
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				implementationUnitArguments.SourceFile.toString,
+				translationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_gccExecutable,
 				commandArguments,

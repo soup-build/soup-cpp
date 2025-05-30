@@ -7,7 +7,7 @@ import "Soup|Build.Utils:./Path" for Path
 import "../../test/Assert" for Assert
 import "Soup|Build.Utils:./BuildOperation" for BuildOperation
 import "../core/LinkArguments" for LinkArguments, LinkTarget
-import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
+import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
 class MSVCCompilerUnitTests {
 	construct new() {
@@ -70,7 +70,7 @@ class MSVCCompilerUnitTests {
 		translationUnitArguments.SourceFile = Path.new("File.cpp")
 		translationUnitArguments.TargetFile = Path.new("obj/File.obj")
 
-		arguments.ImplementationUnits = [
+		arguments.TranslationUnits = [
 			translationUnitArguments,
 		]
 
@@ -135,8 +135,8 @@ class MSVCCompilerUnitTests {
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
-		arguments.InterfacePartitionUnits = [
-			InterfaceUnitCompileArguments.new(
+		arguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
 				Path.new("File.cpp"),
 				Path.new("obj/File.obj"),
 				{
@@ -216,14 +216,16 @@ class MSVCCompilerUnitTests {
 			"DEBUG",
 		]
 
-		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("File.cpp"),
-			Path.new("obj/File.obj"),
-			{
-				"Other": Path.new("obj/Other.pcm")
-			},
-			"Module1",
-			Path.new("obj/File.pcm"))
+		arguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
+				Path.new("File.cpp"),
+				Path.new("obj/File.obj"),
+				{
+					"Other": Path.new("obj/Other.pcm")
+				},
+				"Module1",
+				Path.new("obj/File.pcm")),
+		]
 
 		var result = uut.CreateCompileOperations(arguments)
 
@@ -294,8 +296,8 @@ class MSVCCompilerUnitTests {
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
-		arguments.InterfacePartitionUnits = [
-			InterfaceUnitCompileArguments.new(
+		arguments.ModuleUnits = [
+			ModuleUnitCompileArguments.new(
 				Path.new("File1.cpp"),
 				Path.new("obj/File1.obj"),
 				{
@@ -303,16 +305,16 @@ class MSVCCompilerUnitTests {
 				},
 				"Module1:File1",
 				Path.new("obj/File1.pcm")),
+			ModuleUnitCompileArguments.new(
+				Path.new("File2.cpp"),
+				Path.new("obj/File2.obj"),
+				{
+					"Other2": Path.new("obj/Other2.pcm")
+				},
+				"Module1",
+				Path.new("obj/File2.pcm")),
 		]
-		arguments.InterfaceUnit = InterfaceUnitCompileArguments.new(
-			Path.new("File2.cpp"),
-			Path.new("obj/File2.obj"),
-			{
-				"Other2": Path.new("obj/Other2.pcm")
-			},
-			"Module1",
-			Path.new("obj/File2.pcm"))
-		arguments.ImplementationUnits = [
+		arguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
 				Path.new("File3.cpp"),
 				Path.new("obj/File3.obj"),

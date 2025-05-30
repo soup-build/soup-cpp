@@ -5,7 +5,7 @@
 import "../gcc/GCCArgumentBuilder" for GCCArgumentBuilder
 import "Soup|Build.Utils:./Path" for Path
 import "../../test/Assert" for Assert
-import "../core/CompileArguments" for InterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 
 class GCCArgumentBuilderUnitTests {
 	construct new() {
@@ -246,7 +246,7 @@ class GCCArgumentBuilderUnitTests {
 	// [Fact]
 	BuildPartitionUnitCompilerArguments() {
 		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = InterfaceUnitCompileArguments.new()
+		var arguments = ModuleUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
 		arguments.TargetFile = Path.new("module.obj")
 		arguments.ModuleInterfaceTarget = Path.new("module.ifc")
@@ -274,7 +274,7 @@ class GCCArgumentBuilderUnitTests {
 	// [Fact]
 	BuildInterfaceUnitCompilerArguments() {
 		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = InterfaceUnitCompileArguments.new()
+		var arguments = ModuleUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
 		arguments.TargetFile = Path.new("module.obj")
 		arguments.ModuleInterfaceTarget = Path.new("module.ifc")

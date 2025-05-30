@@ -1,6 +1,6 @@
 Name: 'Cpp.Compiler.MSVC'
 Language: 'Wren|0'
-Version: 0.12.0
+Version: 0.13.0
 Source: [
 	'MSVCArgumentBuilder.wren'
 	'MSVCCompiler.wren'

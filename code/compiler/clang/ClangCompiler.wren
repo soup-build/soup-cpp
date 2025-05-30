@@ -84,28 +84,28 @@ class ClangCompiler is ICompiler {
 		}
 
 		var internalModules = {}
-		for (partitionUnitArguments in arguments.InterfacePartitionUnits) {
+		for (moduleUnitArguments in arguments.ModuleUnits) {
 			// Build up the input/output sets
 			var precompileInputFiles = [] + sharedInputFiles
-			precompileInputFiles.add(partitionUnitArguments.SourceFile)
+			precompileInputFiles.add(moduleUnitArguments.SourceFile)
 			precompileInputFiles.add(absoluteResponseFile)
-			for (module in partitionUnitArguments.IncludeModules) {
+			for (module in moduleUnitArguments.IncludeModules) {
 				precompileInputFiles.add(module.value)
 			}
 
 			var precompileOutputFiles = [
-				arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget,
+				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
 			]
 
 			// Build the unique arguments to precompile this translation unit
 			var precompileArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
 				arguments.TargetRootDirectory,
-				partitionUnitArguments,
+				moduleUnitArguments,
 				absoluteResponseFile)
 
 			// Generate the precompile operation
 			var precompileOperation = BuildOperation.new(
-				partitionUnitArguments.SourceFile.toString,
+				moduleUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				precompileArguments,
@@ -116,23 +116,23 @@ class ClangCompiler is ICompiler {
 			// Build the unique arguments to compile the precompiled module
 			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
 				arguments,
-				partitionUnitArguments)
+				moduleUnitArguments)
 
 			// Build up the input/output sets
 			var compileInputFiles = [
-				arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget,
+				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
 			]
-			for (module in partitionUnitArguments.IncludeModules) {
+			for (module in moduleUnitArguments.IncludeModules) {
 				compileInputFiles.add(module.value)
 			}
 
 			var compileOutputFiles = [
-				arguments.TargetRootDirectory + partitionUnitArguments.TargetFile,
+				arguments.TargetRootDirectory + moduleUnitArguments.TargetFile,
 			]
 
 			// Generate the compile operation
 			var compileOperation = BuildOperation.new(
-				partitionUnitArguments.ModuleInterfaceTarget.toString,
+				moduleUnitArguments.ModuleInterfaceTarget.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				compileArguments,
@@ -141,83 +141,16 @@ class ClangCompiler is ICompiler {
 			operations.add(compileOperation)
 
 			// Add our module interface back in for the downstream compilers
-			internalModules[partitionUnitArguments.ModuleName] = arguments.TargetRootDirectory + partitionUnitArguments.ModuleInterfaceTarget
+			internalModules[moduleUnitArguments.ModuleName] = arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget
 		}
 
-		// Generate the interface build operation if present
-		if (arguments.InterfaceUnit) {
-			var interfaceUnitArguments = arguments.InterfaceUnit
-
-			// Clang believes that two phase builds will be faster by precompiling the modue interface
-			// and then compiling the object files
-			// TODO: This needs to be verified.
-
-			// Build up the input/output sets
-			var precompileInputFiles = [] + sharedInputFiles
-			precompileInputFiles.add(interfaceUnitArguments.SourceFile)
-			precompileInputFiles.add(absoluteResponseFile)
-			for (module in interfaceUnitArguments.IncludeModules) {
-				precompileInputFiles.add(module.value)
-			}
-
-			var precompileOutputFiles = [
-				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
-			]
-
-			// Build the unique arguments to precompile this translation unit
-			var precompileArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
-				arguments.TargetRootDirectory,
-				interfaceUnitArguments,
-				absoluteResponseFile)
-
-			// Generate the precompile operation
-			var precompileOperation = BuildOperation.new(
-				interfaceUnitArguments.SourceFile.toString,
-				arguments.SourceRootDirectory,
-				_compilerExecutable,
-				precompileArguments,
-				precompileInputFiles,
-				precompileOutputFiles)
-			operations.add(precompileOperation)
-
-			// Build the unique arguments to compile the precompiled module
-			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
-				arguments,
-				interfaceUnitArguments)
-
-			// Build up the input/output sets
-			var compileInputFiles = [
-				arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget,
-			]
-			for (module in interfaceUnitArguments.IncludeModules) {
-				compileInputFiles.add(module.value)
-			}
-
-			var compileOutputFiles = [
-				arguments.TargetRootDirectory + interfaceUnitArguments.TargetFile,
-			]
-
-			// Generate the compile operation
-			var compileOperation = BuildOperation.new(
-				interfaceUnitArguments.ModuleInterfaceTarget.toString,
-				arguments.SourceRootDirectory,
-				_compilerExecutable,
-				compileArguments,
-				compileInputFiles,
-				compileOutputFiles)
-			operations.add(compileOperation)
-
-			// Add our module interface back in for the downstream compilers
-			internalModules[interfaceUnitArguments.ModuleName] = arguments.TargetRootDirectory + interfaceUnitArguments.ModuleInterfaceTarget
-		}
-
-		for (implementationUnitArguments in arguments.ImplementationUnits) {
+		for (translationUnitArguments in arguments.TranslationUnits) {
 			// Build up the input/output sets
 			var inputFiles = [] + sharedInputFiles
-			inputFiles.add(implementationUnitArguments.SourceFile)
+			inputFiles.add(translationUnitArguments.SourceFile)
 			inputFiles.add(absoluteResponseFile)
 
-			for (module in implementationUnitArguments.IncludeModules) {
+			for (module in translationUnitArguments.IncludeModules) {
 				inputFiles.add(module.value)
 			}
 
@@ -226,19 +159,19 @@ class ClangCompiler is ICompiler {
 			}
 
 			var outputFiles = [
-				arguments.TargetRootDirectory + implementationUnitArguments.TargetFile,
+				arguments.TargetRootDirectory + translationUnitArguments.TargetFile,
 			]
 
 			// Build the unique arguments for this translation unit
 			var commandArguments = ClangArgumentBuilder.BuildTranslationUnitCompilerArguments(
 				arguments.TargetRootDirectory,
-				implementationUnitArguments,
+				translationUnitArguments,
 				absoluteResponseFile,
 				internalModules)
 
 			// Generate the operation
 			var buildOperation = BuildOperation.new(
-				implementationUnitArguments.SourceFile.toString,
+				translationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				commandArguments,

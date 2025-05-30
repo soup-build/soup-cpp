@@ -1,5 +1,4 @@
 ## Recipe Build
-
 This task reads in the global state Recipe to translate the declared build into the input build state for the Build task.
 
 ### Run Before
