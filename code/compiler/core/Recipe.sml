@@ -1,6 +1,6 @@
 Name: 'Cpp.Compiler'
 Language: 'Wren|0'
-Version: 0.12.0
+Version: 0.13.0
 Source: [
 	'BuildArguments.wren'
 	'BuildEngine.wren'
@@ -10,7 +10,6 @@ Source: [
 	'LinkArguments.wren'
 	'MockCompiler.wren'
 ]
-
 Dependencies: {
 	Runtime: [
 		'Soup|Build.Utils@0'

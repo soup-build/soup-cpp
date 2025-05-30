@@ -1,6 +1,6 @@
 Name: 'Cpp'
 Language: 'Wren|0'
-Version: 0.14.0
+Version: 0.15.0
 Source: [
 	'tasks/BuildTask.wren'
 	'tasks/ExpandSourceTask.wren'
