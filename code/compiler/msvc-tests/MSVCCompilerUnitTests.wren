@@ -298,14 +298,6 @@ class MSVCCompilerUnitTests {
 		]
 		arguments.ModuleUnits = [
 			ModuleUnitCompileArguments.new(
-				Path.new("File2.cpp"),
-				Path.new("obj/File2.obj"),
-				{
-					"Other2": Path.new("obj/Other2.pcm")
-				},
-				"Module1",
-				Path.new("obj/File2.pcm")),
-			ModuleUnitCompileArguments.new(
 				Path.new("File1.cpp"),
 				Path.new("obj/File1.obj"),
 				{
@@ -313,6 +305,14 @@ class MSVCCompilerUnitTests {
 				},
 				"Module1:File1",
 				Path.new("obj/File1.pcm")),
+			ModuleUnitCompileArguments.new(
+				Path.new("File2.cpp"),
+				Path.new("obj/File2.obj"),
+				{
+					"Other2": Path.new("obj/Other2.pcm")
+				},
+				"Module1",
+				Path.new("obj/File2.pcm")),
 		]
 		arguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(

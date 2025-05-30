@@ -49,7 +49,9 @@ class BuildTaskUnitTests {
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
-			"TestFile.cpp",
+			{
+				"File": "TestFile.cpp",
+			},
 		]
 
 		// Setup dependencies table
@@ -195,7 +197,9 @@ class BuildTaskUnitTests {
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
-			"TestFile.cpp",
+			{
+				"File": "TestFile.cpp",
+			},
 		]
 
 		// Setup dependencies table
@@ -341,9 +345,15 @@ class BuildTaskUnitTests {
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
-			"TestFile1.cpp",
-			"TestFile2.cpp",
-			"TestFile3.cpp",
+			{
+				"File": "TestFile1.cpp",
+			},
+			{
+				"File": "TestFile2.cpp",
+			},
+			{
+				"File": "TestFile3.cpp",
+			},
 		]
 		buildTable["IncludeDirectories"] = [
 			"Folder",
@@ -545,10 +555,19 @@ class BuildTaskUnitTests {
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
-			"Public.cpp",
-			"TestFile1.cpp",
-			"TestFile2.cpp",
-			"TestFile3.cpp",
+			{
+				"File": "Public.cpp",
+				"Module": "Library",
+			},
+			{
+				"File": "TestFile1.cpp",
+			},
+			{
+				"File": "TestFile2.cpp",
+			},
+			{
+				"File": "TestFile3.cpp",
+			},
 		]
 		buildTable["IncludeDirectories"] = [
 			"Folder",
@@ -594,7 +613,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -787,17 +806,32 @@ class BuildTaskUnitTests {
 		buildTable["TargetRootDirectory"] = "C:/target/"
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
-		buildTable["SourceFiles"] = [
-			"Public.cpp",
+		buildTable["Source"] = [
+			{
+				"File": "Public.cpp",
+				"Module": "Library",
+				"Imports": [
+					":TestFile1",
+					":TestFile2",
+				],
+			},
 			{
 				"File": "TestFile1.cpp",
+				"Module": "Library",
+				"Partition": "TestFile1",
 			},
 			{
 				"File": "TestFile2.cpp",
-				"Imports": [ "TestFile1.cpp", ],
+				"Module": "Library",
+				"Partition": "TestFile2",
+				"Imports": [ ":TestFile1", ],
 			},
-			"TestFile3.cpp",
-			"TestFile4.cpp",
+			{
+				"File": "TestFile3.cpp",
+			},
+			{
+				"File": "TestFile4.cpp",
+			},
 		]
 		buildTable["IncludeDirectories"] = [
 			"Folder",
@@ -843,9 +877,9 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
 				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
-				"INFO: Generate Compile Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
@@ -916,9 +950,9 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.TargetArchitecture = "x64"
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
+			Path.new("obj/Public.mock.obj"),
 			Path.new("obj/TestFile1.mock.obj"),
 			Path.new("obj/TestFile2.mock.obj"),
-			Path.new("obj/Public.mock.obj"),
 			Path.new("obj/TestFile3.mock.obj"),
 			Path.new("obj/TestFile4.mock.obj"),
 		]
@@ -968,6 +1002,20 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
+					Path.new("Public.cpp"),
+				],
+				[
+					Path.new("obj/Public.mock.obj"),
+					Path.new("bin/Library.mock.bmi"),
+				]),
+			SoupTestOperation.new(
+				"MockCompileModule: 1",
+				Path.new("MockCompiler.exe"),
+				[
+					"Arguments",
+				],
+				Path.new("MockWorkingDirectory"),
+				[
 					Path.new("TestFile1.cpp"),
 				],
 				[
@@ -987,20 +1035,6 @@ class BuildTaskUnitTests {
 				[
 					Path.new("obj/TestFile2.mock.obj"),
 					Path.new("obj/Library-TestFile2.mock.bmi"),
-				]),
-			SoupTestOperation.new(
-				"MockCompileModule: 1",
-				Path.new("MockCompiler.exe"),
-				[
-					"Arguments",
-				],
-				Path.new("MockWorkingDirectory"),
-				[
-					Path.new("Public.cpp"),
-				],
-				[
-					Path.new("obj/Public.mock.obj"),
-					Path.new("bin/Library.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -1066,8 +1100,11 @@ class BuildTaskUnitTests {
 		buildTable["TargetRootDirectory"] = "C:/target/"
 		buildTable["ObjectDirectory"] = "obj/"
 		buildTable["BinaryDirectory"] = "bin/"
-		activeState["SourceFiles"] = [
-			"Public.cpp",
+		buildTable["Source"] = [
+			{
+				"File": "Public.cpp",
+				"Module": "Library",
+			}
 		]
 		buildTable["IncludeDirectories"] = [
 			"Folder",
@@ -1113,7 +1150,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Operation: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
