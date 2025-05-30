@@ -1,6 +1,6 @@
 Name: 'Cpp.Compiler.Clang'
 Language: 'Wren|0'
-Version: 0.4.2
+Version: 0.5.0
 Source: [
 	'ClangArgumentBuilder.wren'
 	'ClangCompiler.wren'
