@@ -1,6 +1,6 @@
 Name: 'Cpp'
 Language: 'Wren|0'
-Version: 0.15.0
+Version: 0.15.1
 Source: [
 	'tasks/BuildTask.wren'
 	'tasks/ExpandSourceTask.wren'
@@ -22,6 +22,6 @@ Dependencies: {
 	Tool: [
 		'[C++]mwasplund|copy@1'
 		'[C++]mwasplund|mkdir@1'
-		'[C++]mwasplund|parse.module@1'
+		'[C++]mwasplund|parse.modules@1'
 	]
 }
