@@ -35,7 +35,13 @@ class ExpandSourceTask is SoupTask {
 		var buildTable = activeState["Build"]
 
 		Soup.info("Check Expand Source")
-		if (!buildTable.containsKey("Source")) {
+		if (buildTable.containsKey("Source")) {
+			// Fill in the info on existing source files
+			var sourceFiles = buildTable["Source"]
+			var preprocessors = globalState["Preprocessors"]
+			ExpandSourceTask.UpdateCompileFiles(sourceFiles, preprocessors)
+		} else {
+			// Expand the source from all discovered files
 			Soup.info("Expand Source")
 			var filesystem = globalState["FileSystem"]
 			var preprocessors = globalState["Preprocessors"]
@@ -44,6 +50,13 @@ class ExpandSourceTask is SoupTask {
 			ListExtensions.Append(
 				MapExtensions.EnsureList(buildTable, "Source"),
 				sourceFiles)
+		}
+	}
+
+	static UpdateCompileFiles(sourceFiles, preprocessors) {
+		Soup.info("Update Files")
+		for (sourceInfo in sourceFiles) {
+			ExpandSourceTask.UpdateSourceInfo(sourceInfo, preprocessors)
 		}
 	}
 
@@ -66,6 +79,44 @@ class ExpandSourceTask is SoupTask {
 		}
 
 		return files
+	}
+
+	static UpdateSourceInfo(sourceInfo, preprocessors) {
+		var file = Path.new(sourceInfo["File"])
+		Soup.info("Update Source File: %(file)")
+
+		var preprocessorResult = ExpandSourceTask.ResolvePreprocessorResult(file, preprocessors)
+		var imports = []
+		for (entry in preprocessorResult["Result"]) {
+			var parseResult = entry.split(" ")
+			if (parseResult.count == 0) {
+				Fiber.abort("Found empty parse result")
+			}
+
+			var resultType = parseResult[0]
+			if (resultType == "import") {
+				if (parseResult.count == 2) {
+					imports.add(parseResult[1])
+				} else {
+					Fiber.abort("Import result must have exactly two values")
+				}
+			} else if (resultType == "module") {
+				if (parseResult.count == 2) {
+					var module = parseResult[1].split(":")
+					sourceInfo["Module"] = module[0]
+					if (module.count == 2) {
+						sourceInfo["Partition"] = module[1]
+					}
+				} else {
+					Fiber.abort("Module result must have exactly two values")
+				}
+
+			} else {
+				Fiber.abort("Unknown parser result type %(resultType)")
+			}
+		}
+
+		sourceInfo["Imports"] = imports
 	}
 
 	static CreateSourceInfo(workingDirectory, directoryEntity, preprocessors) {
@@ -120,6 +171,6 @@ class ExpandSourceTask is SoupTask {
 			}
 		}
 
-		Fiber.abort("Preprocessor result missing for %(file)")
+		Fiber.abort("Preprocessor result missing for %(file) -> %(preprocessors)")
 	}
 }

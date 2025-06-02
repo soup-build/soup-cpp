@@ -155,7 +155,12 @@ class RecipeBuildTask is SoupTask {
 		// Load the source files if present
 		var sourceFiles = null
 		if (recipe.containsKey("Source")) {
-			sourceFiles = recipe["Source"]
+			sourceFiles = []
+			for (file in recipe["Source"]) {
+				var sourceInfo = {}
+				sourceInfo["File"] = file
+				sourceFiles.add(sourceInfo)
+			}
 		}
 
 		// Load the assembly source files if present
