@@ -1,6 +1,6 @@
 Name: 'Cpp.Compiler'
 Language: 'Wren|0'
-Version: 0.13.0
+Version: 0.13.1
 Source: [
 	'BuildArguments.wren'
 	'BuildEngine.wren'

@@ -7,7 +7,7 @@ import "../../extension/tasks/BuildTask" for BuildTask
 import "../../compiler/core/BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "../../compiler/core/LinkArguments" for LinkArguments, LinkTarget
 import "../../compiler/core/MockCompiler" for MockCompiler
-import "../../compiler/core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../../compiler/core/CompileArguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 import "Soup|Build.Utils:./Path" for Path
 import "../../test/Assert" for Assert
 
@@ -643,8 +643,8 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
-		expectedCompileArguments.ModuleUnits = [
-			ModuleUnitCompileArguments.new(
+		expectedCompileArguments.ModuleInterfaceUnits = [
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("Public.cpp"),
 				Path.new("obj/Public.mock.obj"),
 				{},
@@ -908,8 +908,8 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
-		expectedCompileArguments.ModuleUnits = [
-			ModuleUnitCompileArguments.new(
+		expectedCompileArguments.ModuleInterfaceUnits = [
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("Public.cpp"),
 				Path.new("obj/Public.mock.obj"),
 				{
@@ -918,13 +918,13 @@ class BuildTaskUnitTests {
 				},
 				"Library",
 				Path.new("bin/Library.mock.bmi")),
-			ModuleUnitCompileArguments.new(
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("TestFile1.cpp"),
 				Path.new("obj/TestFile1.mock.obj"),
 				{},
 				"Library:TestFile1",
 				Path.new("obj/Library-TestFile1.mock.bmi")),
-			ModuleUnitCompileArguments.new(
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("TestFile2.cpp"),
 				Path.new("obj/TestFile2.mock.obj"),
 				{
@@ -1177,8 +1177,8 @@ class BuildTaskUnitTests {
 			"DEBUG",
 			"AWESOME",
 		]
-		expectedCompileArguments.ModuleUnits = [
-			ModuleUnitCompileArguments.new(
+		expectedCompileArguments.ModuleInterfaceUnits = [
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("./Public.cpp"),
 				Path.new("./obj/Public.mock.obj"),
 				{},

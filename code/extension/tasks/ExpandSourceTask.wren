@@ -100,9 +100,22 @@ class ExpandSourceTask is SoupTask {
 				} else {
 					Fiber.abort("Import result must have exactly two values")
 				}
-			} else if (resultType == "module") {
+			} else if (resultType == "module-implementation") {
 				if (parseResult.count == 2) {
 					var module = parseResult[1].split(":")
+					sourceInfo["IsInterface"] = false
+					sourceInfo["Module"] = module[0]
+					if (module.count == 2) {
+						sourceInfo["Partition"] = module[1]
+					}
+				} else {
+					Fiber.abort("Module result must have exactly two values")
+				}
+
+			} else if (resultType == "module-interface") {
+				if (parseResult.count == 2) {
+					var module = parseResult[1].split(":")
+					sourceInfo["IsInterface"] = true
 					sourceInfo["Module"] = module[0]
 					if (module.count == 2) {
 						sourceInfo["Partition"] = module[1]
@@ -140,9 +153,22 @@ class ExpandSourceTask is SoupTask {
 				} else {
 					Fiber.abort("Import result must have exactly two values")
 				}
-			} else if (resultType == "module") {
+			} else if (resultType == "module-implementation") {
 				if (parseResult.count == 2) {
 					var module = parseResult[1].split(":")
+					sourceInfo["IsInterface"] = false
+					sourceInfo["Module"] = module[0]
+					if (module.count == 2) {
+						sourceInfo["Partition"] = module[1]
+					}
+				} else {
+					Fiber.abort("Module result must have exactly two values")
+				}
+
+			} else if (resultType == "module-interface") {
+				if (parseResult.count == 2) {
+					var module = parseResult[1].split(":")
+					sourceInfo["IsInterface"] = true
 					sourceInfo["Module"] = module[0]
 					if (module.count == 2) {
 						sourceInfo["Partition"] = module[1]

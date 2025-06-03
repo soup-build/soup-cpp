@@ -84,7 +84,7 @@ class ClangCompiler is ICompiler {
 		}
 
 		var internalModules = {}
-		for (moduleUnitArguments in arguments.ModuleUnits) {
+		for (moduleUnitArguments in arguments.ModuleInterfaceUnits) {
 			// Build up the input/output sets
 			var precompileInputFiles = [] + sharedInputFiles
 			precompileInputFiles.add(moduleUnitArguments.SourceFile)

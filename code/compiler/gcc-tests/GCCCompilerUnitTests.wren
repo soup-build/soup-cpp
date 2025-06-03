@@ -7,7 +7,7 @@ import "Soup|Build.Utils:./Path" for Path
 import "../../test/Assert" for Assert
 import "Soup|Build.Utils:./BuildOperation" for BuildOperation
 import "../core/LinkArguments" for LinkArguments, LinkTarget
-import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
+import "../core/CompileArguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments
 
 class GCCCompilerUnitTests {
 	construct new() {
@@ -124,8 +124,8 @@ class GCCCompilerUnitTests {
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
-		arguments.ModuleUnits = [
-			ModuleUnitCompileArguments.new(
+		arguments.ModuleInterfaceUnits = [
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("File.cpp"),
 				Path.new("obj/File.obj"),
 				{
@@ -202,8 +202,8 @@ class GCCCompilerUnitTests {
 			"DEBUG",
 		]
 
-		arguments.ModuleUnits = [
-			ModuleUnitCompileArguments.new(
+		arguments.ModuleInterfaceUnits = [
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("File.cpp"),
 				Path.new("obj/File.obj"),
 				{
@@ -279,8 +279,8 @@ class GCCCompilerUnitTests {
 		arguments.PreprocessorDefinitions = [
 			"DEBUG",
 		]
-		arguments.ModuleUnits = [
-			ModuleUnitCompileArguments.new(
+		arguments.ModuleInterfaceUnits = [
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("File1.cpp"),
 				Path.new("obj/File1.obj"),
 				{
@@ -288,7 +288,7 @@ class GCCCompilerUnitTests {
 				},
 				"Module1:File1",
 				Path.new("obj/File1.pcm")),
-			ModuleUnitCompileArguments.new(
+			ModuleInterfaceUnitCompileArguments.new(
 				Path.new("File2.cpp"),
 				Path.new("obj/File2.obj"),
 				{

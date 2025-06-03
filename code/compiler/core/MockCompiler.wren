@@ -76,21 +76,21 @@ class MockCompiler is ICompiler {
 
 		var result = []
 
-		for (moduleUnitArguments in arguments.ModuleUnits) {
+		for (moduleInterfaceUnitArguments in arguments.ModuleInterfaceUnits) {
 			result.add(
 				BuildOperation.new(
-					"MockCompileModule: %(_compileRequests.count)",
+					"MockCompileModuleInterface: %(_compileRequests.count)",
 					Path.new("MockWorkingDirectory"),
 					Path.new("MockCompiler.exe"),
 					[
 						"Arguments",
 					],
 					[
-						moduleUnitArguments.SourceFile,
+						moduleInterfaceUnitArguments.SourceFile,
 					],
 					[
-						moduleUnitArguments.TargetFile,
-						moduleUnitArguments.ModuleInterfaceTarget,
+						moduleInterfaceUnitArguments.TargetFile,
+						moduleInterfaceUnitArguments.ModuleInterfaceTarget,
 					]))
 		}
 

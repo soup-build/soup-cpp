@@ -78,6 +78,11 @@ class BuildTask is SoupTask {
 					module = source["Module"]
 				}
 
+				var isInterface = null
+				if (source.containsKey("IsInterface")) {
+					isInterface = source["IsInterface"]
+				}
+
 				var partition = null
 				if (source.containsKey("Partition")) {
 					partition = source["Partition"]
@@ -91,6 +96,7 @@ class BuildTask is SoupTask {
 				sourceFiles.add(SourceFile.new(
 					file,
 					module,
+					isInterface,
 					partition,
 					imports))
 			}

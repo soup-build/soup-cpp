@@ -114,7 +114,7 @@ class MSVCCompiler is ICompiler {
 		}
 
 		var internalModules = {}
-		for (moduleUnitArguments in arguments.ModuleUnits) {
+		for (moduleUnitArguments in arguments.ModuleInterfaceUnits) {
 			// Build up the input/output sets
 			var inputFiles = [] + sharedInputFiles
 			inputFiles.add(moduleUnitArguments.SourceFile)
