@@ -9,7 +9,7 @@ import "../../test/Assert" for Assert
 import "../core/BuildEngine" for BuildEngine
 import "../core/MockCompiler" for MockCompiler
 import "../core/BuildArguments" for BuildArguments, BuildOptimizationLevel, BuildTargetType, SourceFile, HeaderFileSet
-import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "../core/CompileArguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
 import "../core/LinkArguments" for LinkArguments, LinkTarget
 
 class BuildEngineUnitTests {
@@ -1135,14 +1135,14 @@ class BuildEngineUnitTests {
 			"AWESOME",
 		]
 
-		var expectedCompileModuleArguments = ModuleUnitCompileArguments.new()
+		var expectedCompileModuleArguments = ModuleInterfaceUnitCompileArguments.new()
 		expectedCompileModuleArguments.ModuleName = "Library"
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
 		expectedCompileModuleArguments.IncludeModules = {}
 		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
-		expectedCompileArguments.ModuleUnits = [
+		expectedCompileArguments.ModuleInterfaceUnits = [
 			expectedCompileModuleArguments,
 		]
 
@@ -1423,7 +1423,7 @@ class BuildEngineUnitTests {
 			"AWESOME",
 		]
 
-		var expectedInterfaceUnitArguments = ModuleUnitCompileArguments.new()
+		var expectedInterfaceUnitArguments = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfaceUnitArguments.ModuleName = "Library"
 		expectedInterfaceUnitArguments.SourceFile = Path.new("Public.cpp")
 		expectedInterfaceUnitArguments.TargetFile = Path.new("obj/Public.mock.obj")
@@ -1433,13 +1433,13 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfaceUnitArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
-		var expectedInterfacePartitionUnit1Arguments = ModuleUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit1Arguments = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfacePartitionUnit1Arguments.ModuleName = "Library:TestFile1"
 		expectedInterfacePartitionUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
 		expectedInterfacePartitionUnit1Arguments.TargetFile = Path.new("obj/TestFile1.mock.obj")
 		expectedInterfacePartitionUnit1Arguments.ModuleInterfaceTarget = Path.new("obj/Library-TestFile1.mock.bmi")
 
-		var expectedInterfacePartitionUnit2Arguments = ModuleUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit2Arguments = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfacePartitionUnit2Arguments.ModuleName = "Library:TestFile2"
 		expectedInterfacePartitionUnit2Arguments.SourceFile = Path.new("TestFile2.cpp")
 		expectedInterfacePartitionUnit2Arguments.TargetFile = Path.new("obj/TestFile2.mock.obj")
@@ -1448,7 +1448,7 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfacePartitionUnit2Arguments.ModuleInterfaceTarget = Path.new("obj/Library-TestFile2.mock.bmi")
 
-		expectedCompileArguments.ModuleUnits = [
+		expectedCompileArguments.ModuleInterfaceUnits = [
 			expectedInterfaceUnitArguments,
 			expectedInterfacePartitionUnit1Arguments,
 			expectedInterfacePartitionUnit2Arguments
@@ -1749,7 +1749,7 @@ class BuildEngineUnitTests {
 			"AWESOME",
 		]
 
-		var expectedInterfaceUnit = ModuleUnitCompileArguments.new()
+		var expectedInterfaceUnit = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfaceUnit.ModuleName = "Library"
 		expectedInterfaceUnit.SourceFile = Path.new("Public.cpp")
 		expectedInterfaceUnit.TargetFile = Path.new("obj/Public.mock.obj")
@@ -1760,14 +1760,14 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfaceUnit.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
-		var expectedInterfacePartitionUnit1 = ModuleUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit1 = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfacePartitionUnit1.ModuleName = "Library:TestFile1"
 		expectedInterfacePartitionUnit1.SourceFile = Path.new("TestFile1.cpp")
 		expectedInterfacePartitionUnit1.TargetFile = Path.new("obj/TestFile1.mock.obj")
 		expectedInterfacePartitionUnit1.IncludeModules = {}
 		expectedInterfacePartitionUnit1.ModuleInterfaceTarget = Path.new("obj/Library-TestFile1.mock.bmi")
 
-		var expectedInterfacePartitionUnit2 = ModuleUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit2 = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfacePartitionUnit2.ModuleName = "Library:TestFile2"
 		expectedInterfacePartitionUnit2.SourceFile = Path.new("TestFile2.cpp")
 		expectedInterfacePartitionUnit2.TargetFile = Path.new("obj/TestFile2.mock.obj")
@@ -1776,7 +1776,7 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfacePartitionUnit2.ModuleInterfaceTarget = Path.new("obj/Library-TestFile2.mock.bmi")
 
-		var expectedInterfacePartitionUnit3 = ModuleUnitCompileArguments.new()
+		var expectedInterfacePartitionUnit3 = ModuleInterfaceUnitCompileArguments.new()
 		expectedInterfacePartitionUnit3.ModuleName = "Library:TestFile3"
 		expectedInterfacePartitionUnit3.SourceFile = Path.new("TestFile3.cpp")
 		expectedInterfacePartitionUnit3.TargetFile = Path.new("obj/TestFile3.mock.obj")
@@ -1786,7 +1786,7 @@ class BuildEngineUnitTests {
 		}
 		expectedInterfacePartitionUnit3.ModuleInterfaceTarget = Path.new("obj/Library-TestFile3.mock.bmi")
 
-		expectedCompileArguments.ModuleUnits = [
+		expectedCompileArguments.ModuleInterfaceUnits = [
 			expectedInterfaceUnit,
 			expectedInterfacePartitionUnit1,
 			expectedInterfacePartitionUnit2,
@@ -2046,14 +2046,14 @@ class BuildEngineUnitTests {
 			"OtherModule2": Path.new("../OtherModule2.mock.bmi"),
 		}
 
-		var expectedCompileModuleArguments = ModuleUnitCompileArguments.new()
+		var expectedCompileModuleArguments = ModuleInterfaceUnitCompileArguments.new()
 		expectedCompileModuleArguments.ModuleName = "Library"
 		expectedCompileModuleArguments.SourceFile = Path.new("Public.cpp")
 		expectedCompileModuleArguments.TargetFile = Path.new("obj/Public.mock.obj")
 		expectedCompileModuleArguments.IncludeModules = {}
 		expectedCompileModuleArguments.ModuleInterfaceTarget = Path.new("bin/Library.mock.bmi")
 
-		expectedCompileArguments.ModuleUnits = [
+		expectedCompileArguments.ModuleInterfaceUnits = [
 			expectedCompileModuleArguments,
 		]
 

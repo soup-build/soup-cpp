@@ -6,7 +6,7 @@ import "soup" for Soup
 import "./BuildResult" for BuildResult
 import "./BuildArguments" for BuildOptimizationLevel, BuildTargetType
 import "./LinkArguments" for LinkArguments, LinkTarget
-import "./CompileArguments" for ModuleUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
+import "./CompileArguments" for ModuleInterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
 import "Soup|Build.Utils:./MapExtensions" for MapExtensions
 import "Soup|Build.Utils:./Path" for Path
 import "Soup|Build.Utils:./Set" for Set
@@ -99,7 +99,7 @@ class BuildEngine {
 			var moduleDependencyLookup = {}
 			var moduleInterfaceFileLookup = {}
 			for (source in arguments.SourceFiles) {
-				if (!(source.Module is Null)) {
+				if (!(source.Module is Null) && source.IsInterface) {
 					var moduleName = source.getFullModuleName()
 
 					// TODO: Tell clang they are need to stop forcing a file naming convension when we already tell them the module name...
@@ -114,40 +114,73 @@ class BuildEngine {
 			}
 
 			// Compile the individual module interface partition translation units
-			var compileModuleUnits = []
+			var compileModuleInterfaceUnits = []
 			var compileTranslationUnits = []
 			var allPartitionInterfaces = {}
 			for (source in arguments.SourceFiles) {
 				if (!(source.Module is Null)) {
-					// Compile the module unit
-					Soup.info("Generate Compile Module Operation: %(source.File)")
+					if (source.IsInterface) {
+						// Compile the module unit
+						Soup.info("Generate Compile Module Interface Operation: %(source.File)")
 
-					var moduleName = source.getFullModuleName()
-					var objectFile = arguments.ObjectDirectory + Path.new(source.File.GetFileName())
-					objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+						var moduleName = source.getFullModuleName()
+						var objectFile = arguments.ObjectDirectory + Path.new(source.File.GetFileName())
+						objectFile.SetFileExtension(_compiler.ObjectFileExtension)
 
-					var moduleInterfaceFile = moduleInterfaceFileLookup[moduleName]
+						var moduleInterfaceFile = moduleInterfaceFileLookup[moduleName]
 
-					var dependencyClosure = Set.new()
-					this.BuildClosure(dependencyClosure, moduleName, moduleDependencyLookup)
-					if (dependencyClosure.contains(moduleName)) {
-						Fiber.abort("Circular partition references in: %(source.File)")
+						var dependencyClosure = Set.new()
+						this.BuildClosure(dependencyClosure, moduleName, moduleDependencyLookup)
+						if (dependencyClosure.contains(moduleName)) {
+							Fiber.abort("Circular partition references in: %(source.File)")
+						}
+
+						var imports = {}
+						for (dependencyModule in dependencyClosure.list) {
+							// Dependency modules will not be in the set
+							if (moduleInterfaceFileLookup.containsKey(dependencyModule)) {
+								imports[dependencyModule] = arguments.TargetRootDirectory + moduleInterfaceFileLookup[dependencyModule]
+							}
+						}
+
+						var compileFileArguments = ModuleInterfaceUnitCompileArguments.new()
+						compileFileArguments.ModuleName = moduleName
+						compileFileArguments.SourceFile = source.File
+						compileFileArguments.TargetFile = objectFile
+						compileFileArguments.IncludeModules = imports
+						compileFileArguments.ModuleInterfaceTarget = moduleInterfaceFile
+
+						compileModuleInterfaceUnits.add(compileFileArguments)
+						allPartitionInterfaces[moduleName] = arguments.TargetRootDirectory + moduleInterfaceFile
+					} else {
+						// Compile as a standard TU
+						Soup.info("Generate Compile Module Implementation Operation: %(source.File)")
+
+						var moduleName = source.getFullModuleName()
+						var objectFile = arguments.ObjectDirectory + Path.new(source.File.GetFileName())
+						objectFile.SetFileExtension(_compiler.ObjectFileExtension)
+
+						var dependencyClosure = Set.new()
+						this.BuildClosure(dependencyClosure, moduleName, moduleDependencyLookup)
+						if (dependencyClosure.contains(moduleName)) {
+							Fiber.abort("Circular partition references in: %(source.File)")
+						}
+
+						var imports = {}
+						for (dependencyModule in dependencyClosure.list) {
+							// Dependency modules will not be in the set
+							if (moduleInterfaceFileLookup.containsKey(dependencyModule)) {
+								imports[dependencyModule] = arguments.TargetRootDirectory + moduleInterfaceFileLookup[dependencyModule]
+							}
+						}
+
+						var compileFileArguments = TranslationUnitCompileArguments.new()
+						compileFileArguments.SourceFile = source.File
+						compileFileArguments.TargetFile = objectFile
+						compileFileArguments.IncludeModules = imports
+
+						compileTranslationUnits.add(compileFileArguments)
 					}
-
-					var partitionImports = {}
-					for (dependencyModule in dependencyClosure.list) {
-						partitionImports[dependencyModule] = arguments.TargetRootDirectory + moduleInterfaceFileLookup[dependencyModule]
-					}
-
-					var compileFileArguments = ModuleUnitCompileArguments.new()
-					compileFileArguments.ModuleName = moduleName
-					compileFileArguments.SourceFile = source.File
-					compileFileArguments.TargetFile = objectFile
-					compileFileArguments.IncludeModules = partitionImports
-					compileFileArguments.ModuleInterfaceTarget = moduleInterfaceFile
-
-					compileModuleUnits.add(compileFileArguments)
-					allPartitionInterfaces[moduleName] = arguments.TargetRootDirectory + moduleInterfaceFile
 				} else {
 					// Compile as a standard TU
 					Soup.info("Generate Compile Operation: %(source.File)")
@@ -167,7 +200,7 @@ class BuildEngine {
 				result.ModuleDependencies[module.key] = module.value
 			}
 
-			compileArguments.ModuleUnits = compileModuleUnits
+			compileArguments.ModuleInterfaceUnits = compileModuleInterfaceUnits
 			compileArguments.TranslationUnits = compileTranslationUnits
 
 			// Compile the individual assembly units
@@ -427,7 +460,9 @@ class BuildEngine {
 				this.BuildClosure(closure, fullChildModule, moduleDependencyLookup)
 			}
 		} else {
-			Fiber.abort("Import an unknown module %(module) %(moduleDependencyLookup)")
+			// TODO: Verify all imports are included as depencies
+			// For now assume non-internal modules are already included
+			Soup.info("Import an unknown module %(module) %(moduleDependencyLookup)")
 		}
 	}
 

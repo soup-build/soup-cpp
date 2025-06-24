@@ -54,13 +54,15 @@ class SourceFile {
 	construct new() {
 		_file = null
 		_module = null
+		_isInterface = null
 		_partition = null
 		_imports = []
 	}
 
-	construct new(file, module, partition, imports) {
+	construct new(file, module, isInterface, partition, imports) {
 		_file = file
 		_module = module
+		_isInterface = isInterface
 		_partition = partition
 		_imports = imports
 	}
@@ -70,6 +72,9 @@ class SourceFile {
 
 	Module { _module }
 	Module=(value) { _module = value }
+
+	IsInterface { _isInterface }
+	IsInterface=(value) { _isInterface = value }
 
 	Partition { _partition }
 	Partition=(value) { _partition = value }

@@ -5,7 +5,7 @@
 import "Soup|Build.Utils:./Path" for Path
 import "../clang/ClangArgumentBuilder" for ClangArgumentBuilder
 import "../../test/Assert" for Assert
-import "../core/CompileArguments" for ModuleUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
+import "../core/CompileArguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
 
 class ClangArgumentBuilderUnitTests {
 	construct new() {
@@ -289,7 +289,7 @@ class ClangArgumentBuilderUnitTests {
 	// [Fact]
 	BuildInterfaceUnitPrecompileCompilerArguments() {
 		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = ModuleUnitCompileArguments.new()
+		var arguments = ModuleInterfaceUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
 		arguments.TargetFile = Path.new("module.o")
 		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
@@ -320,7 +320,7 @@ class ClangArgumentBuilderUnitTests {
 		var sharedArguments = SharedCompileArguments.new()
 		sharedArguments.TargetRootDirectory = Path.new("C:/target/")
 
-		var interfaceArguments = ModuleUnitCompileArguments.new()
+		var interfaceArguments = ModuleInterfaceUnitCompileArguments.new()
 		interfaceArguments.SourceFile = Path.new("module.cpp")
 		interfaceArguments.TargetFile = Path.new("module.o")
 		interfaceArguments.ModuleInterfaceTarget = Path.new("module.pcm")
