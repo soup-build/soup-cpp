@@ -1,4 +1,4 @@
-﻿// <copyright file="GCCArgumentBuilder.wren" company="Soup">
+// <copyright file="GCCArgumentBuilder.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -64,6 +64,10 @@ class GCCArgumentBuilder {
 			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
 		} else if (arguments.Standard == LanguageStandard.CPP20) {
 			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+		} else if (arguments.Standard == LanguageStandard.CPP23) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23")
+		} else if (arguments.Standard == LanguageStandard.CPP26) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++26")
 		} else {
 			Fiber.abort("Unknown language standard %(arguments.Standard).")
 		}

@@ -249,12 +249,7 @@ class RecipeBuildTask is SoupTask {
 
 		build["TargetType"] = targetType
 
-		// Convert the recipe language version to the required build language
-		var languageStandard = LanguageStandard.CPP20
-		if (recipe.containsKey("LanguageVersion")) {
-			languageStandard = RecipeBuildTask.ParseLanguageStandard(recipe["LanguageVersion"])
-		}
-
+		var languageStandard = LanguageStandard.CPP23
 		build["LanguageStandard"] = languageStandard
 	}
 
@@ -303,20 +298,6 @@ class RecipeBuildTask is SoupTask {
 			return BuildTargetType.DynamicLibrary
 		} else {
 			Fiber.abort("Unknown target type value.")
-		}
-	}
-
-	static ParseLanguageStandard(value) {
-		if (value == "C++11") {
-			return LanguageStandard.CPP11
-		} else if (value == "C++14") {
-			return LanguageStandard.CPP14
-		} else if (value == "C++17") {
-			return LanguageStandard.CPP17
-		} else if (value == "C++20") {
-			return LanguageStandard.CPP20
-		} else {
-			Fiber.abort("Unknown recipe language standard value.")
 		}
 	}
 }
