@@ -20,6 +20,10 @@ class MSVCArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "/std:c++17")
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
+		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP23")
+		this.BSCA_SingleArgument_LanguageStandard_CPP23()
+		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP26")
+		this.BSCA_SingleArgument_LanguageStandard_CPP26()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
 		this.BSCA_SingleArgument_OptimizationLevel_Disabled()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Size")
@@ -89,6 +93,70 @@ class MSVCArgumentBuilderUnitTests {
 	BSCA_SingleArgument_LanguageStandard_CPP20() {
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP20
+		arguments.Optimize = OptimizationLevel.None
+
+		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+			arguments)
+
+		var expectedArguments = [
+			"/nologo",
+			"/TP",
+			"/FC",
+			"/permissive-",
+			"/Zc:__cplusplus",
+			"/Zc:externConstexpr",
+			"/Zc:inline",
+			"/Zc:throwingNew",
+			"/W4",
+			"/std:c++20",
+			"/Od",
+			"/X",
+			"/RTC1",
+			"/EHsc",
+			"/MT",
+			"/bigobj",
+			"/c",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BSCA_SingleArgument_LanguageStandard_CPP23() {
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP23
+		arguments.Optimize = OptimizationLevel.None
+
+		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(
+			arguments)
+
+		var expectedArguments = [
+			"/nologo",
+			"/TP",
+			"/FC",
+			"/permissive-",
+			"/Zc:__cplusplus",
+			"/Zc:externConstexpr",
+			"/Zc:inline",
+			"/Zc:throwingNew",
+			"/W4",
+			"/std:c++23preview",
+			"/Od",
+			"/X",
+			"/RTC1",
+			"/EHsc",
+			"/MT",
+			"/bigobj",
+			"/c",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BSCA_SingleArgument_LanguageStandard_CPP26() {
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP26
 		arguments.Optimize = OptimizationLevel.None
 
 		var actualArguments = MSVCArgumentBuilder.BuildSharedCompilerArguments(

@@ -20,6 +20,10 @@ class ClangArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "-std=c++17")
 		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP23")
+		this.BSCA_SingleArgument_LanguageStandard_CPP23()
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP26")
+		this.BSCA_SingleArgument_LanguageStandard_CPP26()
 		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
 		this.BSCA_SingleArgument_OptimizationLevel_Disabled()
 		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
@@ -88,6 +92,52 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"-fpic",
 			"-std=c++20",
+			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
+			"-c",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BSCA_SingleArgument_LanguageStandard_CPP23() {
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP23
+		arguments.Optimize = OptimizationLevel.None
+
+		var actualArguments = ClangArgumentBuilder.BuildSharedCompilerArguments(
+			arguments)
+
+		var expectedArguments = [
+			"-fpic",
+			"-std=c++23",
+			"-O0",
+			"-mpclmul",
+			"-maes",
+			"-msse4.1",
+			"-msha", 
+			"-c",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BSCA_SingleArgument_LanguageStandard_CPP26() {
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP26
+		arguments.Optimize = OptimizationLevel.None
+
+		var actualArguments = ClangArgumentBuilder.BuildSharedCompilerArguments(
+			arguments)
+
+		var expectedArguments = [
+			"-fpic",
+			"-std=c++26",
 			"-O0",
 			"-mpclmul",
 			"-maes",

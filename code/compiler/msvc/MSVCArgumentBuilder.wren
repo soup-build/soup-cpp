@@ -109,6 +109,10 @@ class MSVCArgumentBuilder {
 		} else if (arguments.Standard == LanguageStandard.CPP17) {
 			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
 		} else if (arguments.Standard == LanguageStandard.CPP20) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+		} else if (arguments.Standard == LanguageStandard.CPP23) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23preview")
+		} else if (arguments.Standard == LanguageStandard.CPP26) {
 			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++latest")
 		} else {
 			Fiber.abort("Unknown language standard %(arguments.Standard).")

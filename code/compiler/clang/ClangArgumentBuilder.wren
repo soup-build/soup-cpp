@@ -1,4 +1,4 @@
-﻿// <copyright file="ClangArgumentBuilder.wren" company="Soup">
+// <copyright file="ClangArgumentBuilder.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -71,6 +71,10 @@ class ClangArgumentBuilder {
 			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
 		} else if (arguments.Standard == LanguageStandard.CPP20) {
 			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+		} else if (arguments.Standard == LanguageStandard.CPP23) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23")
+		} else if (arguments.Standard == LanguageStandard.CPP26) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++26")
 		} else {
 			Fiber.abort("Unknown language standard %(arguments.Standard).")
 		}

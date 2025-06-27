@@ -1,4 +1,4 @@
-﻿// <copyright file="CompilerArguments.wren" company="Soup">
+// <copyright file="CompilerArguments.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -28,6 +28,16 @@ class LanguageStandard {
 	/// C++ 20
 	/// </summary>
 	static CPP20 { "CPP20" }
+
+	/// <summary>
+	/// C++ 23
+	/// </summary>
+	static CPP23 { "CPP23" }
+
+	/// <summary>
+	/// C++ 26
+	/// </summary>
+	static CPP26 { "CPP26" }
 }
 
 /// <summary>

@@ -1,4 +1,4 @@
-﻿// <copyright file="BuildEngine.wren" company="Soup">
+// <copyright file="BuildEngine.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
@@ -291,7 +291,6 @@ class BuildEngine {
 
 		linkArguments.ObjectFiles = objectFiles
 
-
 		// Only resolve link libraries if not a library ourself
 		if (arguments.TargetType != BuildTargetType.StaticLibrary) {
 			linkArguments.ExternalLibraryFiles = arguments.PlatformLinkDependencies
@@ -462,7 +461,7 @@ class BuildEngine {
 		} else {
 			// TODO: Verify all imports are included as depencies
 			// For now assume non-internal modules are already included
-			Soup.info("Import an unknown module %(module) %(moduleDependencyLookup)")
+			Soup.info("Import an unknown module %(module)")
 		}
 	}
 
