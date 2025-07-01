@@ -1,14 +1,14 @@
 Name: 'Cpp.Compiler'
 Language: 'Wren|0'
-Version: 0.13.2
+Version: 0.14.0
 Source: [
-	'BuildArguments.wren'
-	'BuildEngine.wren'
-	'BuildResult.wren'
-	'CompileArguments.wren'
-	'ICompiler.wren'
-	'LinkArguments.wren'
-	'MockCompiler.wren'
+	'build-arguments.wren'
+	'build-engine.wren'
+	'build-result.wren'
+	'compile-arguments.wren'
+	'icompiler.wren'
+	'link-arguments.wren'
+	'mock-compiler.wren'
 ]
 Dependencies: {
 	Runtime: [

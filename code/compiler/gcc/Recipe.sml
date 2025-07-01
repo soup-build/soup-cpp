@@ -1,9 +1,9 @@
 Name: 'Cpp.Compiler.GCC'
 Language: 'Wren|0'
-Version: 0.6.2
+Version: 0.7.0
 Source: [
-	'GCCArgumentBuilder.wren'
-	'GCCCompiler.wren'
+	'gcc-argument-builder.wren'
+	'gcc-compiler.wren'
 ]
 Dependencies: {
 	Runtime: [
