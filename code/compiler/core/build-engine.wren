@@ -10,7 +10,7 @@ import "./compile-arguments" for ModuleInterfaceUnitCompileArguments, Optimizati
 import "Soup|Build.Utils:./map-extensions" for MapExtensions
 import "Soup|Build.Utils:./path" for Path
 import "Soup|Build.Utils:./set" for Set
-import "Soup|Build.Utils:./shared=operations" for SharedOperations
+import "Soup|Build.Utils:./shared-operations" for SharedOperations
 
 /// <summary>
 /// The build engine
