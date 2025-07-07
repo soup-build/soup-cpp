@@ -6,7 +6,7 @@ Source: [
 	'build-engine.wren'
 	'build-result.wren'
 	'compile-arguments.wren'
-	'icompiler.wren'
+	'i-compiler.wren'
 	'link-arguments.wren'
 	'mock-compiler.wren'
 ]

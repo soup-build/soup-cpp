@@ -4,7 +4,7 @@
 
 import "Soup|Build.Utils:./build-operation" for BuildOperation
 import "Soup|Build.Utils:./path" for Path
-import "./icompiler" for ICompiler
+import "./i-compiler" for ICompiler
 
 /// <summary>
 /// A mock compiler interface implementation
