@@ -1,6 +1,6 @@
 Name: 'Cpp.Compiler.GCC'
 Language: 'Wren|0'
-Version: 0.7.0
+Version: 0.7.1
 Source: [
 	'gcc-argument-builder.wren'
 	'gcc-compiler.wren'
