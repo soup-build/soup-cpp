@@ -1,5 +1,5 @@
 import "./compiler/core-tests/build-engine-unit-tests" for BuildEngineUnitTests
-import "./compiler/clang-tests/clang-argumentBuilder-unit-tests" for ClangArgumentBuilderUnitTests
+import "./compiler/clang-tests/clang-argument-builder-unit-tests" for ClangArgumentBuilderUnitTests
 import "./compiler/clang-tests/clang-compiler-unit-tests" for ClangCompilerUnitTests
 import "./compiler/clang-tests/clang-linker-argument-builder-unit-tests" for ClangLinkerArgumentBuilderUnitTests
 import "./compiler/clang-tests/clang-resource-compile-argument-builder-unit-tests" for ClangResourceCompileArgumentBuilderUnitTests

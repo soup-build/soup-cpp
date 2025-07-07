@@ -4,7 +4,7 @@
 
 import "soup-test" for SoupTest
 import "../../extension/tasks/initialize-defaults-task" for InitializeDefaultsTask
-import "../../test/Assert" for Assert
+import "../../test/assert" for Assert
 
 class InitializeDefaultsTaskUnitTests {
 	construct new() {
