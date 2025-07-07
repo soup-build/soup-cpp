@@ -122,6 +122,7 @@ class ClangCompiler is ICompiler {
 			var compileInputFiles = [
 				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
 			]
+			compileInputFiles = compileInputFiles + sharedInputFiles
 			for (module in moduleUnitArguments.IncludeModules) {
 				compileInputFiles.add(module.value)
 			}
