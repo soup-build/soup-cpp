@@ -1,14 +1,14 @@
 Name: 'Cpp'
 Language: 'Wren|0'
-Version: 0.15.4
+Version: 0.16.0
 Source: [
-	'tasks/BuildTask.wren'
-	'tasks/ExpandSourceTask.wren'
-	'tasks/InitializeDefaultsTask.wren'
-	'tasks/ParseModulePreprocessorTask.wren'
-	'tasks/RecipeBuildTask.wren'
-	'tasks/ResolveDependenciesTask.wren'
-	'tasks/ResolveToolsTask.wren'
+	'tasks/build-task.wren'
+	'tasks/expand-source-task.wren'
+	'tasks/initialize-defaults-task.wren'
+	'tasks/parse-module-preprocessor-task.wren'
+	'tasks/recipe-build-task.wren'
+	'tasks/resolve-dependencies-task.wren'
+	'tasks/resolve-tools-task.wren'
 ]
 
 Dependencies: {

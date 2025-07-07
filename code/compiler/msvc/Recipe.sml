@@ -1,9 +1,9 @@
 Name: 'Cpp.Compiler.MSVC'
 Language: 'Wren|0'
-Version: 0.13.2
+Version: 0.14.0
 Source: [
-	'MSVCArgumentBuilder.wren'
-	'MSVCCompiler.wren'
+	'msvc-argument-builder.wren'
+	'msvc-compiler.wren'
 ]
 Dependencies: {
 	Runtime: [
