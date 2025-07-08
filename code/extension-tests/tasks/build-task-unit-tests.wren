@@ -557,6 +557,7 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "Public.cpp",
+				"IsInterface": true,
 				"Module": "Library",
 			},
 			{
@@ -613,7 +614,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -716,7 +717,7 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",
@@ -810,6 +811,7 @@ class BuildTaskUnitTests {
 			{
 				"File": "Public.cpp",
 				"Module": "Library",
+				"IsInterface": true,
 				"Imports": [
 					":TestFile1",
 					":TestFile2",
@@ -818,11 +820,13 @@ class BuildTaskUnitTests {
 			{
 				"File": "TestFile1.cpp",
 				"Module": "Library",
+				"IsInterface": true,
 				"Partition": "TestFile1",
 			},
 			{
 				"File": "TestFile2.cpp",
 				"Module": "Library",
+				"IsInterface": true,
 				"Partition": "TestFile2",
 				"Imports": [ ":TestFile1", ],
 			},
@@ -877,9 +881,9 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
@@ -995,7 +999,7 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",
@@ -1009,7 +1013,7 @@ class BuildTaskUnitTests {
 					Path.new("bin/Library.mock.bmi"),
 				]),
 			SoupTestOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",
@@ -1023,7 +1027,7 @@ class BuildTaskUnitTests {
 					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			SoupTestOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",
@@ -1104,6 +1108,7 @@ class BuildTaskUnitTests {
 			{
 				"File": "Public.cpp",
 				"Module": "Library",
+				"IsInterface": true,
 			}
 		]
 		buildTable["IncludeDirectories"] = [
@@ -1150,7 +1155,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -1233,7 +1238,7 @@ class BuildTaskUnitTests {
 					Path.new("bin/"),
 				]),
 			SoupTestOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockCompiler.exe"),
 				[
 					"Arguments",

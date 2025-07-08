@@ -77,7 +77,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile.cpp"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.LinkDependencies = [
@@ -236,7 +236,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile.cpp"), null, false, null, []),
 		]
 		arguments.ResourceFile = Path.new("Resources.rc")
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
@@ -403,7 +403,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile.cpp"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.LinkDependencies = [
@@ -570,7 +570,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile1.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), null, false, null, []),
 		]
 		arguments.PublicHeaderSets = [
 			HeaderFileSet.new(
@@ -841,9 +841,9 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile1.cpp"), null, null, []),
-			SourceFile.new(Path.new("TestFile2.cpp"), null, null, []),
-			SourceFile.new(Path.new("TestFile3.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.Size
 		arguments.IncludeDirectories = [
@@ -1076,10 +1076,10 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("Public.cpp"), "Library", null, []),
-			SourceFile.new(Path.new("TestFile1.cpp"), null, null, []),
-			SourceFile.new(Path.new("TestFile2.cpp"), null, null, []),
-			SourceFile.new(Path.new("TestFile3.cpp"), null, null, []),
+			SourceFile.new(Path.new("Public.cpp"), "Library", true, null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1105,7 +1105,7 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
 				"INFO: Generate Compile Operation: ./TestFile1.cpp",
 				"INFO: Generate Compile Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
@@ -1212,7 +1212,7 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1348,6 +1348,7 @@ class BuildEngineUnitTests {
 			SourceFile.new(
 				Path.new("Public.cpp"),
 				"Library",
+				true,
 				null,
 				[
 					":TestFile1",
@@ -1356,17 +1357,19 @@ class BuildEngineUnitTests {
 			SourceFile.new(
 				Path.new("TestFile1.cpp"),
 				"Library",
+				true,
 				"TestFile1",
 				[]),
 			SourceFile.new(
 				Path.new("TestFile2.cpp"),
 				"Library",
+				true,
 				"TestFile2",
 				[
 					":TestFile1",
 				]),
-			SourceFile.new(Path.new("TestFile3.cpp"), null, null, []),
-			SourceFile.new(Path.new("TestFile4.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile4.cpp"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1392,9 +1395,9 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile2.cpp",
 				"INFO: Generate Compile Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
@@ -1514,7 +1517,7 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1528,7 +1531,7 @@ class BuildEngineUnitTests {
 					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1542,7 +1545,7 @@ class BuildEngineUnitTests {
 					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1667,6 +1670,7 @@ class BuildEngineUnitTests {
 			SourceFile.new(
 				Path.new("Public.cpp"),
 				"Library",
+				true,
 				null,
 				[
 					":TestFile1",
@@ -1676,11 +1680,13 @@ class BuildEngineUnitTests {
 			SourceFile.new(
 				Path.new("TestFile1.cpp"),
 				"Library",
+				true,
 				"TestFile1",
 				[]),
 			SourceFile.new(
 				Path.new("TestFile2.cpp"),
 				"Library",
+				true,
 				"TestFile2",
 				[
 					":TestFile1",
@@ -1688,11 +1694,12 @@ class BuildEngineUnitTests {
 			SourceFile.new(
 				Path.new("TestFile3.cpp"),
 				"Library",
+				true,
 				"TestFile3",
 				[
 					":TestFile2",
 				]),
-			SourceFile.new(Path.new("TestFile4.cpp"), null, null, []),
+			SourceFile.new(Path.new("TestFile4.cpp"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1718,10 +1725,10 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile1.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile2.cpp",
-				"INFO: Generate Compile Module Operation: ./TestFile3.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile1.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile2.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./TestFile3.cpp",
 				"INFO: Generate Compile Operation: ./TestFile4.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
@@ -1849,7 +1856,7 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1863,7 +1870,7 @@ class BuildEngineUnitTests {
 					Path.new("bin/Library.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1877,7 +1884,7 @@ class BuildEngineUnitTests {
 					Path.new("obj/Library-TestFile1.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -1891,7 +1898,7 @@ class BuildEngineUnitTests {
 					Path.new("obj/Library-TestFile2.mock.bmi"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[
@@ -2001,7 +2008,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("Public.cpp"), "Library", null, []),
+			SourceFile.new(Path.new("Public.cpp"), "Library", true, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.Size
 		arguments.IncludeDirectories = [
@@ -2023,7 +2030,7 @@ class BuildEngineUnitTests {
 		// Verify expected logs
 		Assert.ListEqual(
 			[
-				"INFO: Generate Compile Module Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -2102,7 +2109,7 @@ class BuildEngineUnitTests {
 					Path.new("bin/"),
 				]),
 			BuildOperation.new(
-				"MockCompileModule: 1",
+				"MockCompileModuleInterface: 1",
 				Path.new("MockWorkingDirectory"),
 				Path.new("MockCompiler.exe"),
 				[

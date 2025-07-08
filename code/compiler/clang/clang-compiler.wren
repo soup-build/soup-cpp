@@ -2,7 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "Soup|Cpp.Compiler:./icompiler" for ICompiler
+import "Soup|Cpp.Compiler:./i-compiler" for ICompiler
 import "Soup|Cpp.Compiler:./link-arguments" for LinkTarget
 import "Soup|Build.Utils:./build-operation" for BuildOperation
 import "Soup|Build.Utils:./shared-operations" for SharedOperations
@@ -122,6 +122,7 @@ class ClangCompiler is ICompiler {
 			var compileInputFiles = [
 				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
 			]
+			compileInputFiles = compileInputFiles + sharedInputFiles
 			for (module in moduleUnitArguments.IncludeModules) {
 				compileInputFiles.add(module.value)
 			}
