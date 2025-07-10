@@ -251,7 +251,6 @@ class BuildTask is SoupTask {
 
 	static createClangCompiler {
 		return Fn.new { |activeState|
-			Soup.info("%(activeState)")
 			var clang = activeState["Clang"]
 			var clangToolPath = Path.new(clang["CppCompiler"])
 			var archiveToolPath = Path.new(clang["Archiver"])
