@@ -17,14 +17,13 @@ Closures: {
 	}
 	Build0: {
 		Wren: {
-			'Soup|Wren': { Version: 0.5.3 }
+			'Soup|Wren': { Version: 0.5.4 }
 		}
 	}
 	Tool0: {
 		'C++': {
 			'mwasplund|copy': { Version: 1.2.0 }
 			'mwasplund|mkdir': { Version: 1.2.0 }
-			'mwasplund|parse.modules': { Version: 1.2.0 }
 		}
 	}
 }
