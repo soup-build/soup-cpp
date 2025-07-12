@@ -1,10 +1,6 @@
 Name: 'Cpp.Compiler.GCC'
 Language: 'Wren|0'
-Version: 0.7.1
-Source: [
-	'gcc-argument-builder.wren'
-	'gcc-compiler.wren'
-]
+Version: 0.7.2
 Dependencies: {
 	Runtime: [
 		'Soup|Cpp.Compiler@0'
