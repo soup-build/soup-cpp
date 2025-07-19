@@ -198,7 +198,6 @@ class ResolveToolsTask is SoupTask {
 		var clang = MapExtensions.EnsureTable(activeState, "Clang")
 
 		// Find the Clang SDK
-			Soup.info("%(globalState)")
 		var clangSDKProperties = ResolveToolsTask.GetSDKProperties("Clang", globalState)
 
 		var cCompilerPath = Path.new(clangSDKProperties["CCompiler"])

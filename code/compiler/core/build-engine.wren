@@ -459,9 +459,9 @@ class BuildEngine {
 				this.BuildClosure(closure, fullChildModule, moduleDependencyLookup)
 			}
 		} else {
-			// TODO: Verify all imports are included as depencies
+			// TODO: Verify all imports are included as dependencies
 			// For now assume non-internal modules are already included
-			Soup.info("Import an unknown module %(module)")
+			// Soup.warning("Import an unknown module %(module)")
 		}
 	}
 

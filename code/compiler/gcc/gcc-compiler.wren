@@ -1,8 +1,8 @@
-﻿// <copyright file="gcc=compiler.wren" company="Soup">
+﻿// <copyright file="gcc-compiler.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "Soup|Cpp.Compiler:./icompiler" for ICompiler
+import "Soup|Cpp.Compiler:./i-compiler" for ICompiler
 import "Soup|Cpp.Compiler:./link-arguments" for LinkTarget
 import "Soup|Build.Utils:./build-operation" for BuildOperation
 import "Soup|Build.Utils:./shared-operations" for SharedOperations
