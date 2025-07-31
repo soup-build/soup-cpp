@@ -129,6 +129,10 @@ class BuildTask is SoupTask {
 			arguments.IncludeDirectories = ListExtensions.ConvertToPathList(buildTable["IncludeDirectories"])
 		}
 
+		if (buildTable.containsKey("PublicIncludes")) {
+			arguments.PublicIncludes = ListExtensions.ConvertToPathList(buildTable["PublicIncludes"])
+		}
+
 		if (buildTable.containsKey("PlatformLibraries")) {
 			arguments.PlatformLinkDependencies = ListExtensions.ConvertToPathList(buildTable["PlatformLibraries"])
 		}
@@ -218,8 +222,8 @@ class BuildTask is SoupTask {
 			sharedBuildTable["RunArguments"] = []
 		}
 
-		if (!(buildResult.PublicInclude is Null)) {
-			sharedBuildTable["PublicInclude"] = buildResult.PublicInclude.toString
+		if (buildResult.PublicIncludes.count > 0) {
+			sharedBuildTable["PublicIncludes"] = ListExtensions.ConvertFromPathList(buildResult.PublicIncludes)
 		}
 
 		// Register the build operations
