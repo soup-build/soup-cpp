@@ -15,6 +15,7 @@ class BuildResult {
 		_runtimeDependencies = []
 		_runtimeDependencies = []
 		_targetFile = null
+		_publicIncludes = []
 	}
 
 	/// <summary>
@@ -60,8 +61,8 @@ class BuildResult {
 	TargetFile=(value) { _targetFile = value }
 	
 	/// <summary>
-	/// Gets or sets the public include directory for the build
+	/// Gets or sets the public include directory list for the build
 	/// </summary>
-	PublicInclude { _publicInclude }
-	PublicInclude=(value) { _publicInclude = value }
+	PublicIncludes { _publicIncludes }
+	PublicIncludes=(value) { _publicIncludes = value }
 }

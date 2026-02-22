@@ -69,7 +69,7 @@ class BuildEngine {
 			compileArguments.SourceRootDirectory = arguments.SourceRootDirectory
 			compileArguments.TargetRootDirectory = arguments.TargetRootDirectory
 			compileArguments.ObjectDirectory = arguments.ObjectDirectory
-			compileArguments.IncludeDirectories = arguments.IncludeDirectories
+			compileArguments.IncludeDirectories = arguments.IncludeDirectories + arguments.PublicIncludes
 			compileArguments.IncludeModules = arguments.ModuleDependencies
 			compileArguments.PreprocessorDefinitions = arguments.PreprocessorDefinitions
 			compileArguments.GenerateSourceDebugInfo = arguments.GenerateSourceDebugInfo
@@ -405,12 +405,13 @@ class BuildEngine {
 	/// Copy public headers
 	/// </summary>
 	CopyPublicHeaders(arguments, result) {
+		// Convert header sets into public includes for downstream dependencies
 		if (arguments.PublicHeaderSets.count > 0) {
 			Soup.info("Setup Public Headers")
 			var includeDirectory = Path.new("include/")
 
 			// Pass along the output include folder
-			result.PublicInclude = arguments.TargetRootDirectory + includeDirectory
+			result.PublicIncludes.add(arguments.TargetRootDirectory + includeDirectory)
 
 			var folderSet = Set.new()
 			folderSet.add(includeDirectory)
@@ -443,6 +444,15 @@ class BuildEngine {
 					SharedOperations.CreateCreateDirectoryOperation(
 						arguments.TargetRootDirectory,
 						folder))
+			}
+		}
+
+		// Pass along our public headers to ensure chaining includes works correctly
+		if (arguments.PublicIncludes.count > 0) {
+			Soup.info("Pass Along Public Includes")
+
+			for (directory in arguments.PublicIncludes) {
+				result.PublicIncludes.add(directory)			
 			}
 		}
 	}

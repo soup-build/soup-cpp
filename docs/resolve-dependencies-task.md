@@ -18,4 +18,4 @@ None
     * **ModuleDependencies** - Adds compiled module interfaces to reference during compilation.
     * **RuntimeDependencies** - Adds any runtime dependencies that will be copied over to the output directory for runtime.
     * **LinkDependencies** - Adds to the list of libraries and object files that will be included during linking.
-    * **PublicInclude** - A list of public include folders that will be used to resolve public header files.
+    * **PublicIncludes** - A list of public include folders that will be used to resolve public header files.
