@@ -2,7 +2,8 @@ Version: 6
 Closure: {
 	Wren: {
 		Cpp: { Version: './', Build: '0', Tool: '0' }
-		'Soup|Build.Utils': { Version: 0.9.1, Digest: 'sha256:4262b242a59bd92a86c26199fcc942f8dca1abe9eb9cb152e855f728ea393312', Build: '0', Tool: '0' }
+		'Soup|Cpp': { Version: './', Build: '0', Tool: '0' }
+		'Soup|Build.Utils': { Version: 0.9.2, Digest: 'sha256:0b70e1c4392ee591b06e64b00fc3b267fad1f32ced90e7b2d61c01c2780e4096', Build: '0', Tool: '0' }
 		'Soup|Cpp.Compiler': { Version: 0.14.2, Digest: 'sha256:5cddaf168f0f73300182ae241725e0d1529b043a01dd7f4af00a3c5381641e79', Build: '0', Tool: '0' }
 		'Soup|Cpp.Compiler.Clang': { Version: 0.6.3, Digest: 'sha256:26cddf12eb7af0b854408c37948e61b6b5c44f2178308e26170c2e7cc84aafbd', Build: '0', Tool: '0' }
 		'Soup|Cpp.Compiler.GCC': { Version: 0.7.2, Digest: 'sha256:891006d5f5d888804d057225c71a71bbeadefe3f07fb689c7288affe2deea260', Build: '0', Tool: '0' }
@@ -16,7 +17,7 @@ Builds: {
 				Version: 0.5.4
 				Digest: 'sha256:11c795361ffddfb5f954cf747e69c7036d3f52fdd86e0869a40a55c03fa9bac3'
 				Artifacts: {
-					Linux: 'sha256:d2de830aacec2fe5e58291d8149dcdfa93e786a6ad6371769ac911ee78e4b547'
+					Linux: 'sha256:61028ebdd655b14bf293febc483d04c5312c3546b7890dfa104e0e1cf6121112'
 					Windows: 'sha256:a63c6fa40955a46b0e3b95a13cfceaba1e067229b9ef518b957fa7cabb6c195a'
 				}
 			}
