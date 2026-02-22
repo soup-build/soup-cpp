@@ -116,9 +116,6 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddFlag(commandArguments, "msse4.1")
 		ClangArgumentBuilder.AddFlag(commandArguments, "msha")
 
-		// Only run preprocessor, compile and assemble
-		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
-
 		// option ClangArgumentBuilder.AddParameter(commandArguments, "stdlib", "libc++")
 
 		return commandArguments
@@ -247,6 +244,9 @@ class ClangArgumentBuilder {
 
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)
+
+		// Only run preprocessor, compile and assemble
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
 		// Add the target file as outputs
 		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
