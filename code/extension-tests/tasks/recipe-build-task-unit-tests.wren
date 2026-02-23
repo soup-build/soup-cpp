@@ -11,7 +11,7 @@ class RecipeBuildTaskUnitTests {
 	}
 
 	RunTests() {
-		System.print("RecipeBuildTaskUnitTests.Build_Executable")
+		System.print("RecipeBuildTaskUnitTests.Build_Executable()")
 		this.Build_Executable()
 	}
 

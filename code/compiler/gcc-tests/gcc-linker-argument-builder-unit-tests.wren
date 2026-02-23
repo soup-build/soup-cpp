@@ -12,19 +12,19 @@ class GCCLinkerArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("GCCLinkerArgumentBuilderUnitTests.ZeroObjectFiles")
+		System.print("GCCLinkerArgumentBuilderUnitTests.ZeroObjectFiles()")
 		this.ZeroObjectFiles()
-		// System.print("GCCLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws")
+		// System.print("GCCLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws()")
 		// this.EmptyTargetFile_Throws()
-		System.print("GCCLinkerArgumentBuilderUnitTests.StaticLibrary")
+		System.print("GCCLinkerArgumentBuilderUnitTests.StaticLibrary()")
 		this.StaticLibrary()
-		System.print("GCCLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths")
+		System.print("GCCLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths()")
 		this.StaticLibrary_LibraryPaths()
-		System.print("GCCLinkerArgumentBuilderUnitTests.DynamicLibrary")
+		System.print("GCCLinkerArgumentBuilderUnitTests.DynamicLibrary()")
 		this.DynamicLibrary()
-		System.print("GCCLinkerArgumentBuilderUnitTests.Executable")
+		System.print("GCCLinkerArgumentBuilderUnitTests.Executable()")
 		this.Executable()
-		System.print("GCCLinkerArgumentBuilderUnitTests.WindowsApplication")
+		System.print("GCCLinkerArgumentBuilderUnitTests.WindowsApplication()")
 		this.WindowsApplication()
 	}
 

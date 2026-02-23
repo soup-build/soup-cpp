@@ -12,43 +12,43 @@ class ClangArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"-std=c++11\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "-std=c++11")
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"-std=c++14\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "-std=c++14")
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"-std=c++17\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "-std=c++17")
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP20()")
 		this.BSCA_SingleArgument_LanguageStandard_CPP20()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP23")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP23()")
 		this.BSCA_SingleArgument_LanguageStandard_CPP23()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP26")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard_CPP26()")
 		this.BSCA_SingleArgument_LanguageStandard_CPP26()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel_Disabled()")
 		this.BSCA_SingleArgument_OptimizationLevel_Disabled()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, \"-Os\")")
 		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Size, "-Os")
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, \"-O3\")")
 		this.BSCA_SingleArgument_OptimizationLevel(OptimizationLevel.Speed, "-O3")
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_EnableWarningsAsErrors()")
 		this.BSCA_SingleArgument_EnableWarningsAsErrors()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_GenerateDebugInformation()")
 		this.BSCA_SingleArgument_GenerateDebugInformation()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_IncludePaths")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_IncludePaths()")
 		this.BSCA_SingleArgument_IncludePaths()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_PreprocessorDefinitions")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_PreprocessorDefinitions()")
 		this.BSCA_SingleArgument_PreprocessorDefinitions()
-		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_Modules")
+		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_Modules()")
 		this.BSCA_SingleArgument_Modules()
-		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitPrecompileCompilerArguments")
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitPrecompileCompilerArguments()")
 		this.BuildInterfaceUnitPrecompileCompilerArguments()
-		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompileCompilerArguments")
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompileCompilerArguments()")
 		this.BuildInterfaceUnitCompileCompilerArguments()
-		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple")
+		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple()")
 		this.BuildTranslationUnitCompilerArguments_Simple()
-		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules")
+		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules()")
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
-		System.print("ClangArgumentBuilderUnitTests.BuildAssemblyUnitCompilerArguments_Simple")
+		System.print("ClangArgumentBuilderUnitTests.BuildAssemblyUnitCompilerArguments_Simple()")
 		this.BuildAssemblyUnitCompilerArguments_Simple()
 	}
 
@@ -73,8 +73,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -96,8 +95,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -119,8 +117,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -142,8 +139,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -165,8 +161,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -192,8 +187,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -217,8 +211,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -242,8 +235,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -271,8 +263,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -300,8 +291,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -329,8 +319,7 @@ class ClangArgumentBuilderUnitTests {
 			"-mpclmul",
 			"-maes",
 			"-msse4.1",
-			"-msha", 
-			"-c",
+			"-msha",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
@@ -411,6 +400,7 @@ class ClangArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
+			"-c",
 			"-o",
 			"C:/target/module.o",
 		]
@@ -448,6 +438,7 @@ class ClangArgumentBuilderUnitTests {
 			"-fmodule-file=Module3=./Module3.pcm",
 			"-fmodule-file=Module4=./Module4.pcm",
 			"./module.cpp",
+			"-c",
 			"-o",
 			"C:/target/module.o",
 		]

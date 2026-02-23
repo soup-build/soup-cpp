@@ -14,23 +14,23 @@ class ClangCompilerUnitTests {
 	}
 
 	RunTests() {
-		System.print("ClangCompilerUnitTests.Initialize")
+		System.print("ClangCompilerUnitTests.Initialize()")
 		this.Initialize()
-		System.print("ClangCompilerUnitTests.Compile_Simple")
+		System.print("ClangCompilerUnitTests.Compile_Simple()")
 		this.Compile_Simple()
-		System.print("ClangCompilerUnitTests.Compile_Module_Partition")
+		System.print("ClangCompilerUnitTests.Compile_Module_Partition()")
 		this.Compile_Module_Partition()
-		System.print("ClangCompilerUnitTests.Compile_Module_Interface")
+		System.print("ClangCompilerUnitTests.Compile_Module_Interface()")
 		this.Compile_Module_Interface()
-		System.print("ClangCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation")
+		System.print("ClangCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation()")
 		this.Compile_Module_PartitionInterfaceAndImplementation()
-		// System.print("ClangCompilerUnitTests.Compile_Resource")
+		// System.print("ClangCompilerUnitTests.Compile_Resource()")
 		// this.Compile_Resource()
-		System.print("ClangCompilerUnitTests.LinkStaticLibrary_Simple")
+		System.print("ClangCompilerUnitTests.LinkStaticLibrary_Simple()")
 		this.LinkStaticLibrary_Simple()
-		System.print("ClangCompilerUnitTests.LinkExecutable_Simple")
+		System.print("ClangCompilerUnitTests.LinkExecutable_Simple()")
 		this.LinkExecutable_Simple()
-		// System.print("ClangCompilerUnitTests.LinkWindowsApplication_Simple")
+		// System.print("ClangCompilerUnitTests.LinkWindowsApplication_Simple()")
 		// this.LinkWindowsApplication_Simple()
 	}
 
@@ -78,7 +78,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -91,6 +91,7 @@ class ClangCompilerUnitTests {
 				[
 					"@C:/target/ObjectDir/SharedCompileArguments.rsp",
 					"./File.cpp",
+					"-c",
 					"-o",
 					"C:/target/obj/File.o",
 				],
@@ -148,7 +149,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -246,7 +247,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -359,7 +360,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -463,6 +464,7 @@ class ClangCompilerUnitTests {
 					"-fmodule-file=Module1=C:/target/obj/File2.pcm",
 					"-fmodule-file=Module1:File1=C:/target/obj/File1.pcm",
 					"./File3.cpp",
+					"-c",
 					"-o",
 					"C:/target/obj/File3.o",
 				],
@@ -517,7 +519,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha -c",
+					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -532,6 +534,7 @@ class ClangCompilerUnitTests {
 					"-DUNICODE",
 					"-l\"0x0409\"",
 					"-I\"./Includes\"",
+					"-c",
 					"-o",
 					"C:/target/obj/Resources.res",
 					"./Resources.rc",
