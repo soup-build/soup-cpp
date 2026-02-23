@@ -16,17 +16,17 @@ class BuildTaskUnitTests {
 	}
 
 	RunTests() {
-		System.print("BuildTaskUnitTests.Build_WindowsApplication")
+		System.print("BuildTaskUnitTests.Build_WindowsApplication()")
 		this.Build_WindowsApplication()
-		System.print("BuildTaskUnitTests.Build_Executable")
+		System.print("BuildTaskUnitTests.Build_Executable()")
 		this.Build_Executable()
-		System.print("BuildTaskUnitTests.Build_Library_MultipleFiles")
+		System.print("BuildTaskUnitTests.Build_Library_MultipleFiles()")
 		this.Build_Library_MultipleFiles()
-		System.print("BuildTaskUnitTests.Build_Library_ModuleInterface")
+		System.print("BuildTaskUnitTests.Build_Library_ModuleInterface()")
 		this.Build_Library_ModuleInterface()
-		System.print("BuildTaskUnitTests.Build_Library_ModuleInterface_WithPartitions")
+		System.print("BuildTaskUnitTests.Build_Library_ModuleInterface_WithPartitions()")
 		this.Build_Library_ModuleInterface_WithPartitions()
-		System.print("BuildTaskUnitTests.Build_Library_ModuleInterfaceNoSource")
+		System.print("BuildTaskUnitTests.Build_Library_ModuleInterfaceNoSource()")
 		this.Build_Library_ModuleInterfaceNoSource()
 	}
 

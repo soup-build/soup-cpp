@@ -14,23 +14,23 @@ class MSVCCompilerUnitTests {
 	}
 
 	RunTests() {
-		System.print("MSVCCompilerUnitTests.Initialize")
+		System.print("MSVCCompilerUnitTests.Initialize()")
 		this.Initialize()
-		System.print("MSVCCompilerUnitTests.Compile_Simple")
+		System.print("MSVCCompilerUnitTests.Compile_Simple()")
 		this.Compile_Simple()
-		System.print("MSVCCompilerUnitTests.Compile_Module_Partition")
+		System.print("MSVCCompilerUnitTests.Compile_Module_Partition()")
 		this.Compile_Module_Partition()
-		System.print("MSVCCompilerUnitTests.Compile_Module_Interface")
+		System.print("MSVCCompilerUnitTests.Compile_Module_Interface()")
 		this.Compile_Module_Interface()
-		System.print("MSVCCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation")
+		System.print("MSVCCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation()")
 		this.Compile_Module_PartitionInterfaceAndImplementation()
-		System.print("MSVCCompilerUnitTests.Compile_Resource")
+		System.print("MSVCCompilerUnitTests.Compile_Resource()")
 		this.Compile_Resource()
-		System.print("MSVCCompilerUnitTests.LinkStaticLibrary_Simple")
+		System.print("MSVCCompilerUnitTests.LinkStaticLibrary_Simple()")
 		this.LinkStaticLibrary_Simple()
-		System.print("MSVCCompilerUnitTests.LinkExecutable_Simple")
+		System.print("MSVCCompilerUnitTests.LinkExecutable_Simple()")
 		this.LinkExecutable_Simple()
-		System.print("MSVCCompilerUnitTests.LinkWindowsApplication_Simple")
+		System.print("MSVCCompilerUnitTests.LinkWindowsApplication_Simple()")
 		this.LinkWindowsApplication_Simple()
 	}
 

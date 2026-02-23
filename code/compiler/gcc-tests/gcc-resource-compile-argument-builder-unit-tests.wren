@@ -13,7 +13,7 @@ class GCCResourceCompileArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("GCCResourceCompileArgumentBuilderUnitTests.BuildResourceCompilerArguments_Simple")
+		System.print("GCCResourceCompileArgumentBuilderUnitTests.BuildResourceCompilerArguments_Simple()")
 		this.BuildResourceCompilerArguments_Simple()
 	}
 

@@ -11,7 +11,7 @@ class InitializeDefaultsTaskUnitTests {
 	}
 
 	RunTests() {
-		System.print("InitializeDefaultsTaskUnitTests.Execute")
+		System.print("InitializeDefaultsTaskUnitTests.Execute()")
 		this.Execute()
 	}
 

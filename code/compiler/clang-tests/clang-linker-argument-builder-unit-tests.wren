@@ -12,19 +12,19 @@ class ClangLinkerArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("ClangLinkerArgumentBuilderUnitTests.ZeroObjectFiles")
+		System.print("ClangLinkerArgumentBuilderUnitTests.ZeroObjectFiles()")
 		this.ZeroObjectFiles()
-		// System.print("ClangLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws")
+		// System.print("ClangLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws()")
 		// this.EmptyTargetFile_Throws()
-		System.print("ClangLinkerArgumentBuilderUnitTests.StaticLibrary")
+		System.print("ClangLinkerArgumentBuilderUnitTests.StaticLibrary()")
 		this.StaticLibrary()
-		System.print("ClangLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths")
+		System.print("ClangLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths()")
 		this.StaticLibrary_LibraryPaths()
-		System.print("ClangLinkerArgumentBuilderUnitTests.DynamicLibrary")
+		System.print("ClangLinkerArgumentBuilderUnitTests.DynamicLibrary()")
 		this.DynamicLibrary()
-		System.print("ClangLinkerArgumentBuilderUnitTests.Executable")
+		System.print("ClangLinkerArgumentBuilderUnitTests.Executable()")
 		this.Executable()
-		// System.print("ClangLinkerArgumentBuilderUnitTests.WindowsApplication")
+		// System.print("ClangLinkerArgumentBuilderUnitTests.WindowsApplication()")
 		// this.WindowsApplication()
 	}
 

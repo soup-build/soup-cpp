@@ -11,7 +11,7 @@ class ResolveToolsTaskUnitTests {
 	}
 
 	RunTests() {
-		System.print("ResolveToolsTaskUnitTests.Execute")
+		System.print("ResolveToolsTaskUnitTests.Execute()")
 		this.Execute()
 	}
 
