@@ -121,6 +121,7 @@ class ResolveToolsTask is SoupTask {
 		if (!skipPlatform) {
 			platformIncludePaths = [
 				visualCompilerVersionFolder + Path.new("./include/"),
+				windows10KitVersionIncludePath + Path.new("./cppwinrt/"),
 				windows10KitVersionIncludePath + Path.new("./ucrt/"),
 				windows10KitVersionIncludePath + Path.new("./um/"),
 				windows10KitVersionIncludePath + Path.new("./winrt/"),
