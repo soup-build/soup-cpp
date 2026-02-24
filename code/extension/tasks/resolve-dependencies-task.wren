@@ -1,4 +1,4 @@
-// <copyright file="resolve-tools-task.wren" company="Soup">
+// <copyright file="resolve-dependencies-task.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 

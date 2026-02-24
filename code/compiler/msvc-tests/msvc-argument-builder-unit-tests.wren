@@ -12,9 +12,9 @@ class MSVCArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"/std:c++11\")")
+		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"/std:c++11\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
-		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"/std:c++14\")")
+		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"/std:c++14\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "/std:c++14")
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"/std:c++17\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "/std:c++17")
