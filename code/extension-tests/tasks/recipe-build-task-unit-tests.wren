@@ -58,6 +58,7 @@ class RecipeBuildTaskUnitTests {
 		var expectedActiveState = {
 			"Build": {
 				"LinkLibraries": [],
+				"PublicHeaderSets": [],
 				"TargetType": "StaticLibrary",
 				"TargetRootDirectory": "/(TARGET)/",
 				"Compiler": "MOCK",
@@ -65,21 +66,18 @@ class RecipeBuildTaskUnitTests {
 				"IncludeDirectories": [],
 				"BinaryDirectory": "./bin/",
 				"Flavor": "Debug",
-				"ModuleInterfacePartitionSourceFiles": [],
 				"TargetName": "Program",
 				"PlatformLibraries": [],
 				"LibraryPaths": [],
 				"GenerateSourceDebugInfo": true,
-				"PublicHeaders": [],
 				"SourceRootDirectory": "/(PACKAGE)/",
 				"PreprocessorDefinitions": [
 					"SOUP_BUILD",
 				],
 				"ObjectDirectory": "./obj/",
 				"OptimizationLevel": "None",
-				"Source": [],
 				"AssemblySource": [],
-				"LanguageStandard": "CPP20"
+				"LanguageStandard": "CPP23"
 			},
 		}
 
@@ -132,8 +130,9 @@ class RecipeBuildTaskUnitTests {
 		var expectedActiveState = {
 			"Build": {
 				"LinkLibraries": [
-					"/(PACKAGE)/../Direct/Library.lib"
+					"/Direct/Library.lib"
 				],
+				"PublicHeaderSets": [],
 				"TargetType": "StaticLibrary",
 				"TargetRootDirectory": "/(TARGET)/",
 				"Compiler": "MOCK",
@@ -141,21 +140,18 @@ class RecipeBuildTaskUnitTests {
 				"IncludeDirectories": [],
 				"BinaryDirectory": "./bin/",
 				"Flavor": "Debug",
-				"ModuleInterfacePartitionSourceFiles": [],
-				"TargetName": "Program",
 				"PlatformLibraries": [],
+				"TargetName": "Program",
 				"LibraryPaths": [],
 				"GenerateSourceDebugInfo": true,
-				"PublicHeaders": [],
 				"SourceRootDirectory": "/(PACKAGE)/",
 				"PreprocessorDefinitions": [
 					"SOUP_BUILD",
 				],
 				"ObjectDirectory": "./obj/",
 				"OptimizationLevel": "None",
-				"Source": [],
 				"AssemblySource": [],
-				"LanguageStandard": "CPP20"
+				"LanguageStandard": "CPP23"
 			},
 		}
 
