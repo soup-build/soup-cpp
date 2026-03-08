@@ -121,6 +121,9 @@ class ClangCompiler is ICompiler {
 			// Build up the input/output sets
 			var compileInputFiles = [
 				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
+
+				// Clang will read the original source file when compiling the PCM
+				moduleUnitArguments.SourceFile,
 			]
 			compileInputFiles = compileInputFiles + sharedInputFiles
 			for (module in moduleUnitArguments.IncludeModules) {

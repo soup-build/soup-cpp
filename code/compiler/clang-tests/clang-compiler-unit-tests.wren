@@ -193,6 +193,7 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File.pcm"),
+					Path.new("File.cpp"),
 					Path.new("./Module.pcm"),
 					Path.new("./obj/Other.pcm"),
 				],
@@ -291,6 +292,7 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File.pcm"),
+					Path.new("File.cpp"),
 					Path.new("./Module.pcm"),
 					Path.new("./obj/Other.pcm"),
 				],
@@ -404,6 +406,7 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File1.pcm"),
+					Path.new("File1.cpp"),
 					Path.new("./Module.pcm"),
 					Path.new("./obj/Other1.pcm"),
 				],
@@ -448,6 +451,7 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File2.pcm"),
+					Path.new("File2.cpp"),
 					Path.new("./Module.pcm"),
 					Path.new("./obj/Other2.pcm"),
 				],
