@@ -118,7 +118,6 @@ class ExpandSourceTask is SoupTask {
 				} else {
 					Fiber.abort("Module result must have exactly two values")
 				}
-
 			} else if (resultType == "module-interface") {
 				if (parseResult.count == 2) {
 					var module = parseResult[1].split(":")
@@ -130,7 +129,6 @@ class ExpandSourceTask is SoupTask {
 				} else {
 					Fiber.abort("Module result must have exactly two values")
 				}
-
 			} else {
 				Fiber.abort("Unknown parser result type %(resultType)")
 			}

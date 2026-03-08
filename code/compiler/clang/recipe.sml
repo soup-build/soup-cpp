@@ -1,6 +1,6 @@
 Name: 'Cpp.Compiler.Clang'
 Language: 'Wren|0'
-Version: 0.6.3
+Version: 0.6.4
 Dependencies: {
 	Runtime: [
 		'Soup|Cpp.Compiler@0'
