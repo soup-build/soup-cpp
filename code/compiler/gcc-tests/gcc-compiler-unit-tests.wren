@@ -14,23 +14,23 @@ class GCCCompilerUnitTests {
 	}
 
 	RunTests() {
-		System.print("GCCCompilerUnitTests.Initialize")
+		System.print("GCCCompilerUnitTests.Initialize()")
 		this.Initialize()
-		System.print("GCCCompilerUnitTests.Compile_Simple")
+		System.print("GCCCompilerUnitTests.Compile_Simple()")
 		this.Compile_Simple()
-		System.print("GCCCompilerUnitTests.Compile_Module_Partition")
+		System.print("GCCCompilerUnitTests.Compile_Module_Partition()")
 		this.Compile_Module_Partition()
-		System.print("GCCCompilerUnitTests.Compile_Module_Interface")
+		System.print("GCCCompilerUnitTests.Compile_Module_Interface()")
 		this.Compile_Module_Interface()
-		System.print("GCCCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation")
+		System.print("GCCCompilerUnitTests.Compile_Module_PartitionInterfaceAndImplementation()")
 		this.Compile_Module_PartitionInterfaceAndImplementation()
-		System.print("GCCCompilerUnitTests.Compile_Resource")
+		System.print("GCCCompilerUnitTests.Compile_Resource()")
 		this.Compile_Resource()
-		System.print("GCCCompilerUnitTests.LinkStaticLibrary_Simple")
+		System.print("GCCCompilerUnitTests.LinkStaticLibrary_Simple()")
 		this.LinkStaticLibrary_Simple()
-		System.print("GCCCompilerUnitTests.LinkExecutable_Simple")
+		System.print("GCCCompilerUnitTests.LinkExecutable_Simple()")
 		this.LinkExecutable_Simple()
-		System.print("GCCCompilerUnitTests.LinkWindowsApplication_Simple")
+		System.print("GCCCompilerUnitTests.LinkWindowsApplication_Simple()")
 		this.LinkWindowsApplication_Simple()
 	}
 

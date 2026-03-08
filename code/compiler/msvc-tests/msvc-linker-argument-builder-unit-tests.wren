@@ -12,19 +12,19 @@ class MSVCLinkerArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
-		System.print("MSVCLinkerArgumentBuilderUnitTests.ZeroObjectFiles")
+		System.print("MSVCLinkerArgumentBuilderUnitTests.ZeroObjectFiles()")
 		this.ZeroObjectFiles()
-		// System.print("MSVCLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws")
+		// System.print("MSVCLinkerArgumentBuilderUnitTests.EmptyTargetFile_Throws()")
 		// this.EmptyTargetFile_Throws()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.StaticLibrary")
+		System.print("MSVCLinkerArgumentBuilderUnitTests.StaticLibrary()")
 		this.StaticLibrary()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths")
+		System.print("MSVCLinkerArgumentBuilderUnitTests.StaticLibrary_LibraryPaths()")
 		this.StaticLibrary_LibraryPaths()
 		System.print("MSVCLinkerArgumentBuilderUnitTests.DynamicLibrary")
 		this.DynamicLibrary()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.Executable")
+		System.print("MSVCLinkerArgumentBuilderUnitTests.Executable()")
 		this.Executable()
-		System.print("MSVCLinkerArgumentBuilderUnitTests.WindowsApplication")
+		System.print("MSVCLinkerArgumentBuilderUnitTests.WindowsApplication()")
 		this.WindowsApplication()
 	}
 

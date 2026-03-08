@@ -1,4 +1,4 @@
-﻿// <copyright file="msvc-argument-vuilder.wren" company="Soup">
+﻿// <copyright file="msvc-argument-builder.wren" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
