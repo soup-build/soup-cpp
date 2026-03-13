@@ -3,8 +3,8 @@
 // </copyright>
 
 import "../clang/clang-compiler" for ClangCompiler
-import "Soup|Build.Utils:./path" for Path
-import "Soup|Build.Utils:./build-operation" for BuildOperation
+import "soup|build-utils:./path" for Path
+import "soup|build-utils:./build-operation" for BuildOperation
 import "../../test/assert" for Assert
 import "../core/link-arguments" for LinkArguments, LinkTarget
 import "../core/compile-arguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel,  SharedCompileArguments, ResourceCompileArguments, TranslationUnitCompileArguments

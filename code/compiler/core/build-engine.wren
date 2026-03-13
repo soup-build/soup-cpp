@@ -7,10 +7,10 @@ import "./build-result" for BuildResult
 import "./build-arguments" for BuildOptimizationLevel, BuildTargetType
 import "./link-arguments" for LinkArguments, LinkTarget
 import "./compile-arguments" for ModuleInterfaceUnitCompileArguments, OptimizationLevel, ResourceCompileArguments, SharedCompileArguments, TranslationUnitCompileArguments
-import "Soup|Build.Utils:./map-extensions" for MapExtensions
-import "Soup|Build.Utils:./path" for Path
-import "Soup|Build.Utils:./set" for Set
-import "Soup|Build.Utils:./shared-operations" for SharedOperations
+import "soup|build-utils:./map-extensions" for MapExtensions
+import "soup|build-utils:./path" for Path
+import "soup|build-utils:./set" for Set
+import "soup|build-utils:./shared-operations" for SharedOperations
 
 /// <summary>
 /// The build engine

@@ -1,13 +1,13 @@
 Version: 6
 Closure: {
 	Wren: {
-		Cpp: { Version: './', Build: '0', Tool: '0' }
-		'Soup|Build.Utils': { Version: 0.9.2, Digest: 'sha256:0b70e1c4392ee591b06e64b00fc3b267fad1f32ced90e7b2d61c01c2780e4096', Build: '0', Tool: '0' }
-		'Soup|Cpp': { Version: './', Build: '0', Tool: '0' }
-		'Soup|Cpp.Compiler': { Version: '../compiler/core/', Build: '0', Tool: '0' }
-		'Soup|Cpp.Compiler.Clang': { Version: '../compiler/clang/', Build: '0', Tool: '0' }
-		'Soup|Cpp.Compiler.GCC': { Version: '../compiler/gcc/', Build: '0', Tool: '0' }
-		'Soup|Cpp.Compiler.MSVC': { Version: '../compiler/msvc/', Build: '0', Tool: '0' }
+		cpp: { Version: './', Build: '0', Tool: '0' }
+		'soup|build-utils': { Version: 0.9.2, Digest: 'sha256:0b70e1c4392ee591b06e64b00fc3b267fad1f32ced90e7b2d61c01c2780e4096', Build: '0', Tool: '0' }
+		'soup|cpp': { Version: './', Build: '0', Tool: '0' }
+		'soup|cpp-compiler': { Version: '../compiler/core/', Build: '0', Tool: '0' }
+		'soup|cpp-compiler-clang': { Version: '../compiler/clang/', Build: '0', Tool: '0' }
+		'soup|cpp-compiler-gcc': { Version: '../compiler/gcc/', Build: '0', Tool: '0' }
+		'soup|cpp-compiler-msvc': { Version: '../compiler/msvc/', Build: '0', Tool: '0' }
 	}
 }
 Builds: {

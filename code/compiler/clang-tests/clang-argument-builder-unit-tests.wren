@@ -2,7 +2,7 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "Soup|Build.Utils:./path" for Path
+import "soup|build-utils:./path" for Path
 import "../clang/clang-argument-builder" for ClangArgumentBuilder
 import "../../test/assert" for Assert
 import "../core/compile-arguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
