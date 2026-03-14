@@ -11,7 +11,7 @@ import "soup|cpp-compiler:./build-arguments" for BuildArguments, BuildOptimizati
 import "soup|cpp-compiler:./build-engine" for BuildEngine
 import "soup|cpp-compiler-clang:./clang-compiler" for ClangCompiler
 import "soup|cpp-compiler-gcc:./gcc-compiler" for GCCCompiler
-import "soup|cpp-compiler-mscv:./msvc-compiler" for MSVCCompiler
+import "soup|cpp-compiler-msvc:./msvc-compiler" for MSVCCompiler
 
 class BuildTask is SoupTask {
 	/// <summary>

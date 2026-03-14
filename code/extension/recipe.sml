@@ -1,6 +1,6 @@
 Name: 'cpp'
 Language: 'Wren|0'
-Version: 0.16.1
+Version: 0.16.2
 Dependencies: {
 	Runtime: [
 		'soup|cpp-compiler@0'
