@@ -165,9 +165,11 @@ class ClangCompilerUnitTests {
 					"-x",
 					"c++-module",
 					"./File.cpp",
-					"--precompile",
+					"-c",
+					"-fmodules-reduced-bmi",
+					"-fmodule-output=C:/target/obj/File.pcm",
 					"-o",
-					"C:/target/obj/File.pcm",
+					"C:/target/obj/File.o"
 				],
 				[
 					Path.new("Module.pcm"),
@@ -177,27 +179,6 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File.pcm"),
-				]),
-			BuildOperation.new(
-				"./obj/File.pcm",
-				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.clang++"),
-				[
-					"-fpic",
-					"-c",
-					"-fmodule-file=Module=./Module.pcm",
-					"-fmodule-file=Other=./obj/Other.pcm",
-					"C:/target/obj/File.pcm",
-					"-o",
-					"C:/target/obj/File.o",
-				],
-				[
-					Path.new("C:/target/obj/File.pcm"),
-					Path.new("File.cpp"),
-					Path.new("./Module.pcm"),
-					Path.new("./obj/Other.pcm"),
-				],
-				[
 					Path.new("C:/target/obj/File.o"),
 				]),
 		]
@@ -264,9 +245,11 @@ class ClangCompilerUnitTests {
 					"-x",
 					"c++-module",
 					"./File.cpp",
-					"--precompile",
+					"-c",
+					"-fmodules-reduced-bmi",
+					"-fmodule-output=C:/target/obj/File.pcm",
 					"-o",
-					"C:/target/obj/File.pcm",
+					"C:/target/obj/File.o"
 				],
 				[
 					Path.new("Module.pcm"),
@@ -276,27 +259,6 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File.pcm"),
-				]),
-			BuildOperation.new(
-				"./obj/File.pcm",
-				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.clang++"),
-				[
-					"-fpic",
-					"-c",
-					"-fmodule-file=Module=./Module.pcm",
-					"-fmodule-file=Other=./obj/Other.pcm",
-					"C:/target/obj/File.pcm",
-					"-o",
-					"C:/target/obj/File.o",
-				],
-				[
-					Path.new("C:/target/obj/File.pcm"),
-					Path.new("File.cpp"),
-					Path.new("./Module.pcm"),
-					Path.new("./obj/Other.pcm"),
-				],
-				[
 					Path.new("C:/target/obj/File.o"),
 				]),
 		]
@@ -378,9 +340,11 @@ class ClangCompilerUnitTests {
 					"-x",
 					"c++-module",
 					"./File1.cpp",
-					"--precompile",
+					"-c",
+					"-fmodules-reduced-bmi",
+					"-fmodule-output=C:/target/obj/File1.pcm",
 					"-o",
-					"C:/target/obj/File1.pcm",
+					"C:/target/obj/File1.o",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -390,27 +354,6 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File1.pcm"),
-				]),
-			BuildOperation.new(
-				"./obj/File1.pcm",
-				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.clang++"),
-				[
-					"-fpic",
-					"-c",
-					"-fmodule-file=Module=./Module.pcm",
-					"-fmodule-file=Other1=./obj/Other1.pcm",
-					"C:/target/obj/File1.pcm",
-					"-o",
-					"C:/target/obj/File1.o",
-				],
-				[
-					Path.new("C:/target/obj/File1.pcm"),
-					Path.new("File1.cpp"),
-					Path.new("./Module.pcm"),
-					Path.new("./obj/Other1.pcm"),
-				],
-				[
 					Path.new("C:/target/obj/File1.o"),
 				]),
 			BuildOperation.new(
@@ -423,9 +366,11 @@ class ClangCompilerUnitTests {
 					"-x",
 					"c++-module",
 					"./File2.cpp",
-					"--precompile",
+					"-c",
+					"-fmodules-reduced-bmi",
+					"-fmodule-output=C:/target/obj/File2.pcm",
 					"-o",
-					"C:/target/obj/File2.pcm",
+					"C:/target/obj/File2.o",
 				],
 				[
 					Path.new("Module.pcm"),
@@ -435,27 +380,6 @@ class ClangCompilerUnitTests {
 				],
 				[
 					Path.new("C:/target/obj/File2.pcm"),
-				]),
-			BuildOperation.new(
-				"./obj/File2.pcm",
-				Path.new("C:/source/"),
-				Path.new("C:/bin/mock.clang++"),
-				[
-					"-fpic",
-					"-c",
-					"-fmodule-file=Module=./Module.pcm",
-					"-fmodule-file=Other2=./obj/Other2.pcm",
-					"C:/target/obj/File2.pcm",
-					"-o",
-					"C:/target/obj/File2.o",
-				],
-				[
-					Path.new("C:/target/obj/File2.pcm"),
-					Path.new("File2.cpp"),
-					Path.new("./Module.pcm"),
-					Path.new("./obj/Other2.pcm"),
-				],
-				[
 					Path.new("C:/target/obj/File2.o"),
 				]),
 			BuildOperation.new(

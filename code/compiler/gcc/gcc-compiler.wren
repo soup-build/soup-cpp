@@ -230,13 +230,13 @@ class GCCCompiler is ICompiler {
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
-		var commandarguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
+		var commandArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
 			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
-			commandarguments,
+			commandArguments,
 			inputFiles,
 			outputFiles)
 

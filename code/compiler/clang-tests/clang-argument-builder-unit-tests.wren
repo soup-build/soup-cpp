@@ -40,10 +40,8 @@ class ClangArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_PreprocessorDefinitions()
 		System.print("ClangArgumentBuilderUnitTests.BSCA_SingleArgument_Modules()")
 		this.BSCA_SingleArgument_Modules()
-		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitPrecompileCompilerArguments()")
-		this.BuildInterfaceUnitPrecompileCompilerArguments()
-		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompileCompilerArguments()")
-		this.BuildInterfaceUnitCompileCompilerArguments()
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments()")
+		this.BuildInterfaceUnitCompilerArguments()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple()")
 		this.BuildTranslationUnitCompilerArguments_Simple()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules()")
@@ -326,7 +324,7 @@ class ClangArgumentBuilderUnitTests {
 	}
 
 	// [Fact]
-	BuildInterfaceUnitPrecompileCompilerArguments() {
+	BuildInterfaceUnitCompilerArguments() {
 		var targetRootDirectory = Path.new("C:/target/")
 		var arguments = ModuleInterfaceUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
@@ -335,7 +333,7 @@ class ClangArgumentBuilderUnitTests {
 
 		var responseFile = Path.new("ResponseFile.txt")
 
-		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
+		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
 			targetRootDirectory,
 			arguments,
 			responseFile)
@@ -345,35 +343,9 @@ class ClangArgumentBuilderUnitTests {
 			"-x",
 			"c++-module",
 			"./module.cpp",
-			"--precompile",
-			"-o",
-			"C:/target/module.pcm",
-		]
-
-		Assert.ListEqual(expectedArguments, actualArguments)
-	}
-
-	// [Fact]
-	BuildInterfaceUnitCompileCompilerArguments() {
-
-		var sharedArguments = SharedCompileArguments.new()
-		sharedArguments.TargetRootDirectory = Path.new("C:/target/")
-
-		var interfaceArguments = ModuleInterfaceUnitCompileArguments.new()
-		interfaceArguments.SourceFile = Path.new("module.cpp")
-		interfaceArguments.TargetFile = Path.new("module.o")
-		interfaceArguments.ModuleInterfaceTarget = Path.new("module.pcm")
-
-		var responseFile = Path.new("ResponseFile.txt")
-
-		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
-			sharedArguments,
-			interfaceArguments)
-
-		var expectedArguments = [
-			"-fpic",
 			"-c",
-			"C:/target/module.pcm",
+			"-fmodules-reduced-bmi",
+			"-fmodule-output=C:/target/module.pcm",
 			"-o",
 			"C:/target/module.o",
 		]

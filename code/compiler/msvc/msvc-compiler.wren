@@ -237,13 +237,13 @@ class MSVCCompiler is ICompiler {
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
-		var commandarguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
+		var commandArguments = MSVCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
 			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
-			commandarguments,
+			commandArguments,
 			inputFiles,
 			outputFiles)
 

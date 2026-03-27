@@ -16,6 +16,7 @@ class ClangArgumentBuilder {
 	static Compiler_ArgumentFlag_Optimization_Speed { "O3" }
 	static Compiler_ArgumentFlag_Optimization_Size { "Os" }
 	static Compiler_ArgumentParameter_Standard { "std" }
+	static Compiler_ArgumentParameter_ModuleOutput { "fmodule-output" }
 	static Compiler_ArgumentParameter_Output { "o" }
 	static Compiler_ArgumentParameter_Include { "I" }
 	static Compiler_ArgumentParameter_PreprocessorDefine { "D" }
@@ -58,6 +59,9 @@ class ClangArgumentBuilder {
 		// Convert absolute addresses to relative addresses
 		ClangArgumentBuilder.AddFlag(commandArguments, "fpic")
 		
+		// Auto detect the machine architecture
+		// ClangArgumentBuilder.AddParameter(commandArguments, "march", "native")
+
 		// Uncomment to enable memory checks
 		// ClangArgumentBuilder.AddParameter(commandArguments, "fsanitize", "address")
 		// ClangArgumentBuilder.AddFlag(commandArguments, "fno-omit-frame-pointer")
@@ -116,12 +120,12 @@ class ClangArgumentBuilder {
 		ClangArgumentBuilder.AddFlag(commandArguments, "msse4.1")
 		ClangArgumentBuilder.AddFlag(commandArguments, "msha")
 
-		// option ClangArgumentBuilder.AddParameter(commandArguments, "stdlib", "libc++")
+		// ClangArgumentBuilder.AddParameter(commandArguments, "stdlib", "libc++")
 
 		return commandArguments
 	}
 
-	static BuildInterfaceUnitPrecompileCompilerArguments(
+	static BuildInterfaceUnitCompilerArguments(
 		targetRootDirectory,
 		arguments,
 		responseFile) {
@@ -147,62 +151,21 @@ class ClangArgumentBuilder {
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)
 
-		// Precompile the module interface
-		ClangArgumentBuilder.AddFlag(commandArguments, "-precompile")
-
-		// Add the module interface file as outputs
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddFlag(
-			commandArguments,
-			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
-		ClangArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteModuleInterfaceFile.toString)
-
-		return commandArguments
-	}
-
-	static BuildInterfaceUnitCompileCompilerArguments(
-		sharedArguments,
-		arguments) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Convert absolute addresses to relative addresses
-		ClangArgumentBuilder.AddFlag(commandArguments, "fpic")
-
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
-		// Generate source debug information
-		if (sharedArguments.GenerateSourceDebugInfo) {
-			ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_GenerateDebugInformation)
-		}
+		// Tell older clang versions to produce the small BMI, this is the default in Clang22
+		ClangArgumentBuilder.AddFlag(commandArguments, "fmodules-reduced-bmi")
 
-		// Add the shared module references as input
-		for (module in sharedArguments.IncludeModules) {
-			ClangArgumentBuilder.AddDoubleParameter(
-				commandArguments,
-				"fmodule-file",
-				module.key,
-				module.value.toString)
-		}
-
-		// Add the module references as input
-		for (module in arguments.IncludeModules) {
-			ClangArgumentBuilder.AddDoubleParameter(
-				commandArguments,
-				"fmodule-file",
-				module.key,
-				module.value.toString)
-		}
-
-		// Reference the single precompiled interface
-		var absoluteModuleInterfaceFile = sharedArguments.TargetRootDirectory + arguments.ModuleInterfaceTarget
-		ClangArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
+		// Add the module interface file as outputs
+		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
+		ClangArgumentBuilder.AddParameter(
+			commandArguments,
+			ClangArgumentBuilder.Compiler_ArgumentParameter_ModuleOutput,
+			absoluteModuleInterfaceFile.toString)
 
 		// Add the target file as outputs
-		var absoluteTargetFile = sharedArguments.TargetRootDirectory + arguments.TargetFile
+		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
 		ClangArgumentBuilder.AddFlag(
 			commandArguments,
 			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
