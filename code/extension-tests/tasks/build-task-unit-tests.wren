@@ -8,7 +8,7 @@ import "../../compiler/core/build-arguments" for BuildOptimizationLevel, BuildTa
 import "../../compiler/core/link-arguments" for LinkArguments, LinkTarget
 import "../../compiler/core/mock-compiler" for MockCompiler
 import "../../compiler/core/compile-arguments" for ModuleInterfaceUnitCompileArguments, LanguageStandard, OptimizationLevel, SharedCompileArguments, TranslationUnitCompileArguments
-import "Soup|Build.Utils:./path" for Path
+import "soup|build-utils:./path" for Path
 import "../../test/assert" for Assert
 
 class BuildTaskUnitTests {

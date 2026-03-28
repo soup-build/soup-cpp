@@ -2,8 +2,8 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "Soup|Build.Utils:./path" for Path
-import "Soup|Build.Utils:./build-operation" for BuildOperation
+import "soup|build-utils:./path" for Path
+import "soup|build-utils:./build-operation" for BuildOperation
 import "../gcc/gcc-compiler" for GCCCompiler
 import "../../test/assert" for Assert
 import "../core/link-arguments" for LinkArguments, LinkTarget

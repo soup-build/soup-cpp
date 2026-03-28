@@ -3,10 +3,10 @@
 // </copyright>
 
 import "soup" for Soup, SoupPreprocessorTask
-import "Soup|Build.Utils:./glob" for Glob
-import "Soup|Build.Utils:./path" for Path
-import "Soup|Build.Utils:./list-extensions" for ListExtensions
-import "Soup|Build.Utils:./shared-operations" for SharedOperations
+import "soup|build-utils:./glob" for Glob
+import "soup|build-utils:./path" for Path
+import "soup|build-utils:./list-extensions" for ListExtensions
+import "soup|build-utils:./shared-operations" for SharedOperations
 
 class ParseModulePreprocessorTask is SoupPreprocessorTask {
 	/// <summary>
@@ -38,7 +38,7 @@ class ParseModulePreprocessorTask is SoupPreprocessorTask {
 		var objectDirectory = Path.new("obj/")
 
 		// Discover the dependency tool
-		var parseModuleExecutable = SharedOperations.ResolveRuntimeDependencyRunExecutable("mwasplund|parse.modules")
+		var parseModuleExecutable = SharedOperations.ResolveRuntimeDependencyRunExecutable("mwasplund|parse-modules")
 
 		// Ensure the output directories exists as the first step
 		var createObjectDirectory = SharedOperations.CreateCreateDirectoryOperation(

@@ -1,9 +1,9 @@
-Name: 'Cpp.Compiler.GCC'
+Name: 'cpp-compiler-gcc'
 Language: 'Wren|0'
 Version: 0.7.2
 Dependencies: {
 	Runtime: [
-		'Soup|Cpp.Compiler@0'
-		'Soup|Build.Utils@0'
+		'soup|cpp-compiler@0'
+		'soup|build-utils@0'
 	]
 }

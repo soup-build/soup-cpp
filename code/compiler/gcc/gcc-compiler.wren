@@ -2,11 +2,11 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "Soup|Cpp.Compiler:./i-compiler" for ICompiler
-import "Soup|Cpp.Compiler:./link-arguments" for LinkTarget
-import "Soup|Build.Utils:./build-operation" for BuildOperation
-import "Soup|Build.Utils:./shared-operations" for SharedOperations
-import "Soup|Build.Utils:./path" for Path
+import "soup|cpp-compiler:./i-compiler" for ICompiler
+import "soup|cpp-compiler:./link-arguments" for LinkTarget
+import "soup|build-utils:./build-operation" for BuildOperation
+import "soup|build-utils:./shared-operations" for SharedOperations
+import "soup|build-utils:./path" for Path
 import "./gcc-argument-builder" for GCCArgumentBuilder
 
 /// <summary>
@@ -230,13 +230,13 @@ class GCCCompiler is ICompiler {
 		var outputFiles = [
 			arguments.TargetRootDirectory + arguments.TargetFile,
 		]
-		var commandarguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
+		var commandArguments = GCCArgumentBuilder.BuildLinkerArguments(arguments)
 
 		var buildOperation = BuildOperation.new(
 			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
-			commandarguments,
+			commandArguments,
 			inputFiles,
 			outputFiles)
 

@@ -2,11 +2,11 @@
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
-import "Soup|Cpp.Compiler:./i-compiler" for ICompiler
-import "Soup|Cpp.Compiler:./link-arguments" for LinkTarget
-import "Soup|Build.Utils:./build-operation" for BuildOperation
-import "Soup|Build.Utils:./shared-operations" for SharedOperations
-import "Soup|Build.Utils:./path" for Path
+import "soup|cpp-compiler:./i-compiler" for ICompiler
+import "soup|cpp-compiler:./link-arguments" for LinkTarget
+import "soup|build-utils:./build-operation" for BuildOperation
+import "soup|build-utils:./shared-operations" for SharedOperations
+import "soup|build-utils:./path" for Path
 import "./clang-argument-builder" for ClangArgumentBuilder
 
 /// <summary>
@@ -86,57 +86,27 @@ class ClangCompiler is ICompiler {
 		var internalModules = {}
 		for (moduleUnitArguments in arguments.ModuleInterfaceUnits) {
 			// Build up the input/output sets
-			var precompileInputFiles = [] + sharedInputFiles
-			precompileInputFiles.add(moduleUnitArguments.SourceFile)
-			precompileInputFiles.add(absoluteResponseFile)
-			for (module in moduleUnitArguments.IncludeModules) {
-				precompileInputFiles.add(module.value)
-			}
-
-			var precompileOutputFiles = [
-				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
-			]
-
-			// Build the unique arguments to precompile this translation unit
-			var precompileArguments = ClangArgumentBuilder.BuildInterfaceUnitPrecompileCompilerArguments(
-				arguments.TargetRootDirectory,
-				moduleUnitArguments,
-				absoluteResponseFile)
-
-			// Generate the precompile operation
-			var precompileOperation = BuildOperation.new(
-				moduleUnitArguments.SourceFile.toString,
-				arguments.SourceRootDirectory,
-				_compilerExecutable,
-				precompileArguments,
-				precompileInputFiles,
-				precompileOutputFiles)
-			operations.add(precompileOperation)
-
-			// Build the unique arguments to compile the precompiled module
-			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompileCompilerArguments(
-				arguments,
-				moduleUnitArguments)
-
-			// Build up the input/output sets
-			var compileInputFiles = [
-				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
-
-				// Clang will read the original source file when compiling the PCM
-				moduleUnitArguments.SourceFile,
-			]
-			compileInputFiles = compileInputFiles + sharedInputFiles
+			var compileInputFiles = [] + sharedInputFiles
+			compileInputFiles.add(moduleUnitArguments.SourceFile)
+			compileInputFiles.add(absoluteResponseFile)
 			for (module in moduleUnitArguments.IncludeModules) {
 				compileInputFiles.add(module.value)
 			}
 
 			var compileOutputFiles = [
+				arguments.TargetRootDirectory + moduleUnitArguments.ModuleInterfaceTarget,
 				arguments.TargetRootDirectory + moduleUnitArguments.TargetFile,
 			]
 
+			// Build the unique arguments to compile this translation unit into an object and binary interface
+			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+				arguments.TargetRootDirectory,
+				moduleUnitArguments,
+				absoluteResponseFile)
+
 			// Generate the compile operation
 			var compileOperation = BuildOperation.new(
-				moduleUnitArguments.ModuleInterfaceTarget.toString,
+				moduleUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
 				_compilerExecutable,
 				compileArguments,
@@ -219,16 +189,16 @@ class ClangCompiler is ICompiler {
 	CreateLinkOperation(arguments) {
 		// Select the correct executable for linking libraries or executables
 		var executablePath
-		var commandarguments
+		var commandArguments
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
 			executablePath = _archiveExecutable
-			commandarguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
+			commandArguments = ClangArgumentBuilder.BuildStaticLibraryLinkerArguments(arguments)
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary) {
 			executablePath = _compilerExecutable
-			commandarguments = ClangArgumentBuilder.BuildDynamicLibraryLinkerArguments(arguments)
+			commandArguments = ClangArgumentBuilder.BuildDynamicLibraryLinkerArguments(arguments)
 		} else if (arguments.TargetType == LinkTarget.Executable) {
 			executablePath = _compilerExecutable
-			commandarguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
+			commandArguments = ClangArgumentBuilder.BuildExecutableLinkerArguments(arguments)
 		} else {
 			Fiber.abort("Unknown LinkTarget: %(arguments.TargetType)")
 		}
@@ -245,7 +215,7 @@ class ClangCompiler is ICompiler {
 			arguments.TargetFile.toString,
 			arguments.TargetRootDirectory,
 			executablePath,
-			commandarguments,
+			commandArguments,
 			inputFiles,
 			outputFiles)
 

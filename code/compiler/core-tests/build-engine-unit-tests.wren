@@ -3,8 +3,8 @@
 // </copyright>
 
 import "soup-test" for SoupTest
-import "Soup|Build.Utils:./path" for Path
-import "Soup|Build.Utils:./build-operation" for BuildOperation
+import "soup|build-utils:./path" for Path
+import "soup|build-utils:./build-operation" for BuildOperation
 import "../../test/assert" for Assert
 import "../core/build-engine" for BuildEngine
 import "../core/mock-compiler" for MockCompiler
