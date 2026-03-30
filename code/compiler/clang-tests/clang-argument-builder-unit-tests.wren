@@ -42,6 +42,10 @@ class ClangArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_Modules()
 		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments()")
 		this.BuildInterfaceUnitCompilerArguments()
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments_OlderThan22_ExplicitReducedBMI()")
+		this.BIUCA_OlderThan22_ExplicitReducedBMI()
+		System.print("ClangArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments_OldVersion_NoReducedBMI()")
+		this.BIUCA_OldVersion_NoReducedBMI()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple()")
 		this.BuildTranslationUnitCompilerArguments_Simple()
 		System.print("ClangArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules()")
@@ -325,6 +329,7 @@ class ClangArgumentBuilderUnitTests {
 
 	// [Fact]
 	BuildInterfaceUnitCompilerArguments() {
+		var version = 22
 		var targetRootDirectory = Path.new("C:/target/")
 		var arguments = ModuleInterfaceUnitCompileArguments.new()
 		arguments.SourceFile = Path.new("module.cpp")
@@ -334,6 +339,38 @@ class ClangArgumentBuilderUnitTests {
 		var responseFile = Path.new("ResponseFile.txt")
 
 		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			version,
+			targetRootDirectory,
+			arguments,
+			responseFile)
+
+		var expectedArguments = [
+			"@./ResponseFile.txt",
+			"-x",
+			"c++-module",
+			"./module.cpp",
+			"-c",
+			"-fmodule-output=C:/target/module.pcm",
+			"-o",
+			"C:/target/module.o",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BIUCA_OlderThan22_ExplicitReducedBMI() {
+		var version = 20
+		var targetRootDirectory = Path.new("C:/target/")
+		var arguments = ModuleInterfaceUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("module.cpp")
+		arguments.TargetFile = Path.new("module.o")
+		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
+
+		var responseFile = Path.new("ResponseFile.txt")
+
+		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			version,
 			targetRootDirectory,
 			arguments,
 			responseFile)
@@ -345,6 +382,37 @@ class ClangArgumentBuilderUnitTests {
 			"./module.cpp",
 			"-c",
 			"-fmodules-reduced-bmi",
+			"-fmodule-output=C:/target/module.pcm",
+			"-o",
+			"C:/target/module.o",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BIUCA_OldVersion_NoReducedBMI() {
+		var version = 18
+		var targetRootDirectory = Path.new("C:/target/")
+		var arguments = ModuleInterfaceUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("module.cpp")
+		arguments.TargetFile = Path.new("module.o")
+		arguments.ModuleInterfaceTarget = Path.new("module.pcm")
+
+		var responseFile = Path.new("ResponseFile.txt")
+
+		var actualArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			version,
+			targetRootDirectory,
+			arguments,
+			responseFile)
+
+		var expectedArguments = [
+			"@./ResponseFile.txt",
+			"-x",
+			"c++-module",
+			"./module.cpp",
+			"-c",
 			"-fmodule-output=C:/target/module.pcm",
 			"-o",
 			"C:/target/module.o",

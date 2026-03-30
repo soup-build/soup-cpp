@@ -37,8 +37,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Initialize() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 		Assert.Equal("Clang", uut.Name)
 		Assert.Equal("o", uut.ObjectFileExtension)
 		Assert.Equal("pcm", uut.ModuleFileExtension)
@@ -50,8 +52,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Simple(){
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -110,8 +114,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Module_Partition() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -189,8 +195,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Module_Interface() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -269,8 +277,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Module_PartitionInterfaceAndImplementation() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -415,8 +425,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	Compile_Resource() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = SharedCompileArguments.new()
 		arguments.Standard = LanguageStandard.CPP11
@@ -483,8 +495,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	LinkStaticLibrary_Simple() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.StaticLibrary
@@ -520,8 +534,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	LinkExecutable_Simple() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.Executable
@@ -562,8 +578,10 @@ class ClangCompilerUnitTests {
 	// [Fact]
 	LinkWindowsApplication_Simple() {
 		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
 			Path.new("C:/bin/mock.clang++"),
-			Path.new("C:/bin/mock.ar"))
+			Path.new("C:/bin/mock.scan-deps"))
 
 		var arguments = LinkArguments.new()
 		arguments.TargetType = LinkTarget.WindowsApplication

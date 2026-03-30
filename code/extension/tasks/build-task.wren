@@ -256,11 +256,21 @@ class BuildTask is SoupTask {
 	static createClangCompiler {
 		return Fn.new { |activeState|
 			var clang = activeState["Clang"]
-			var clangToolPath = Path.new(clang["CppCompiler"])
-			var archiveToolPath = Path.new(clang["Archiver"])
+			var defaultVersion = clang["Default"]
+			var clangSDK = clang["SDKs"][defaultVersion]
+			var archiverToolPath = Path.new(clangSDK["Archiver"])
+			var cppCompilerToolPath = Path.new(clangSDK["CppCompiler"])
+
+			var cppScannerToolPath = null
+			if (clangSDK.containsKey("CppScanner")) {
+				partition = Path.new(clangSDK["CppScanner"])
+			}
+
 			return ClangCompiler.new(
-				clangToolPath,
-				archiveToolPath)
+				Num.fromString(defaultVersion),
+				archiverToolPath,
+				cppCompilerToolPath,
+				cppScannerToolPath)
 		}
 	}
 
