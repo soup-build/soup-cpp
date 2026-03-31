@@ -201,14 +201,22 @@ class ResolveToolsTask is SoupTask {
 		// Find the Clang SDK
 		var clangSDKProperties = ResolveToolsTask.GetSDKProperties("Clang", globalState)
 
-		var cCompilerPath = Path.new(clangSDKProperties["CCompiler"])
-		var cppCompilerPath = Path.new(clangSDKProperties["CppCompiler"])
-		var archiverPath = Path.new(clangSDKProperties["Archiver"])
+		var defaultVersion = ResolveToolsTask.CheckGet(clangSDKProperties, "Default")
+		var clangSDKs = ResolveToolsTask.CheckGet(clangSDKProperties, "SDKs")
+		var clangSDK = ResolveToolsTask.CheckGet(clangSDKs, defaultVersion)
+
+		var cCompilerPath = Path.new(ResolveToolsTask.CheckGet(clangSDK, "CCompiler"))
+		var cppCompilerPath = Path.new(ResolveToolsTask.CheckGet(clangSDK, "CppCompiler"))
+		var archiverPath = Path.new(ResolveToolsTask.CheckGet(clangSDK, "Archiver"))
 
 		// Save the build properties
+		clang["Version"] = Num.fromString(defaultVersion)
 		clang["CCompiler"] = cCompilerPath.toString
 		clang["CppCompiler"] = cppCompilerPath.toString
 		clang["Archiver"] = archiverPath.toString
+		if (clangSDK.containsKey("CppScanner")) {
+			clang["CppScanner"]  = clangSDK["CppScanner"]
+		}
 	}
 
 	static GetSDKProperties(name, globalState) {
@@ -222,5 +230,13 @@ class ResolveToolsTask is SoupTask {
 		}
 
 		Fiber.abort("Missing SDK %(name)")
+	}
+
+	static CheckGet(values, key) {
+		if (!values.containsKey(key)) {
+			Fiber.abort("Missing key: %(key) %(values)")
+		}
+
+		return values[key]
 	}
 }
