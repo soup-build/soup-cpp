@@ -59,12 +59,16 @@ class ResolveToolsTask is SoupTask {
 		// Find the MSVC SDK
 		var msvcSDKProperties = ResolveToolsTask.GetSDKProperties("MSVC", globalState)
 
+		var defaultVersion = ResolveToolsTask.CheckGet(msvcSDKProperties, "Default")
+		var msvcSDKs = ResolveToolsTask.CheckGet(msvcSDKProperties, "SDKs")
+		var msvcSDK = ResolveToolsTask.CheckGet(msvcSDKs, defaultVersion)
+
 		// Use the default version
-		var visualCompilerVersion = msvcSDKProperties["Version"]
+		var visualCompilerVersion = defaultVersion
 		Soup.info("Using VC Version: %(visualCompilerVersion)")
 
 		// Get the final VC tools folder
-		var visualCompilerVersionFolder = Path.new(msvcSDKProperties["VCToolsRoot"])
+		var visualCompilerVersionFolder = Path.new(msvcSDK["VCToolsRoot"])
 
 		// Load the Windows sdk
 		var windowsSDKProperties = ResolveToolsTask.GetSDKProperties("Windows", globalState)
