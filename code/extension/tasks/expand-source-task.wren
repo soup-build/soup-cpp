@@ -90,51 +90,22 @@ class ExpandSourceTask is SoupTask {
 	static CreateSourceInfo(file, preprocessors) {
 		Soup.info("Found Source File: %(file)")
 
+		var preprocessorResult = ExpandSourceTask.ResolvePreprocessorResult(file, preprocessors)
+		var result = preprocessorResult["Result"]
+
 		var sourceInfo = {}
 		sourceInfo["File"] = file.toString
-		var preprocessorResult = ExpandSourceTask.ResolvePreprocessorResult(file, preprocessors)
-		var imports = []
-		for (entry in preprocessorResult["Result"]) {
-			var parseResult = entry.split(" ")
-			if (parseResult.count == 0) {
-				Fiber.abort("Found empty parse result")
-			}
+		sourceInfo["Imports"] = result["Imports"]
 
-			var resultType = parseResult[0]
-			if (resultType == "import") {
-				if (parseResult.count == 2) {
-					imports.add(parseResult[1])
-				} else {
-					Fiber.abort("Import result must have exactly two values")
-				}
-			} else if (resultType == "module-implementation") {
-				if (parseResult.count == 2) {
-					var module = parseResult[1].split(":")
-					sourceInfo["IsInterface"] = false
-					sourceInfo["Module"] = module[0]
-					if (module.count == 2) {
-						sourceInfo["Partition"] = module[1]
-					}
-				} else {
-					Fiber.abort("Module result must have exactly two values")
-				}
-			} else if (resultType == "module-interface") {
-				if (parseResult.count == 2) {
-					var module = parseResult[1].split(":")
-					sourceInfo["IsInterface"] = true
-					sourceInfo["Module"] = module[0]
-					if (module.count == 2) {
-						sourceInfo["Partition"] = module[1]
-					}
-				} else {
-					Fiber.abort("Module result must have exactly two values")
-				}
-			} else {
-				Fiber.abort("Unknown parser result type %(resultType)")
+		if (result["IsModule"]) {
+			var name = result["Name"]
+			var module = name.split(":")
+			sourceInfo["IsInterface"] = result["IsInterface"]
+			sourceInfo["Module"] = module[0]
+			if (module.count == 2) {
+				sourceInfo["Partition"] = module[1]
 			}
 		}
-
-		sourceInfo["Imports"] = imports
 
 		return sourceInfo
 	}
