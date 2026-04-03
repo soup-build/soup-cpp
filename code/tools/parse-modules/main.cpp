@@ -10,19 +10,21 @@
 #include <vector>
 
 import Opal;
+import Soup.SML;
 import reflex;
 import parse.modules;
 
 using namespace Opal;
+using namespace Soup::SML;
 
 #pragma warning(disable:4996)
 
-std::vector<std::string> Parse(const Path& file)
+SMLDocument Parse(const Path& file)
 {
 	// Use the c api file so the input auto detects the format and converts to utf8 if necessary
 	auto stream = std::fopen(file.ToString().c_str(), "r");
 	if (stream == nullptr)
-		throw std::runtime_error("Faild to open file");
+		throw std::runtime_error("Failed to open file");
 
 	auto input = reflex::Input(stream);
 	auto parser = Soup::ParseModules::ModuleParser(input);
@@ -88,17 +90,9 @@ int main(int argc, char** argv)
 		auto result = Parse(sourceFilePath);
 
 		auto resultFile = std::ofstream(resultFilePath.ToString(), std::ios::binary);
-		bool isFirst = true;
-		for (auto& line : result)
-		{
-			if (!isFirst)
-			{
-				resultFile << '\n';
-			}
-
-			resultFile << line;
-			isFirst = false;
-		}
+		
+		resultFile << result << std::endl;
+		
 
 		resultFile.close();
 	}

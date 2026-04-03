@@ -126,6 +126,7 @@ class ClangArgumentBuilder {
 	}
 
 	static BuildInterfaceUnitCompilerArguments(
+		version,
 		targetRootDirectory,
 		arguments,
 		responseFile) {
@@ -154,8 +155,14 @@ class ClangArgumentBuilder {
 		// Only run preprocessor, compile and assemble
 		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
 
-		// Tell older clang versions to produce the small BMI, this is the default in Clang22
-		ClangArgumentBuilder.AddFlag(commandArguments, "fmodules-reduced-bmi")
+		if (version >= 22) {
+			// Reduced BMI is now the default
+		} else if (version <= 18) {
+			// 18 does not have the reduced bmi feature
+		} else {
+			// Tell older clang versions to produce the small BMI
+			ClangArgumentBuilder.AddFlag(commandArguments, "fmodules-reduced-bmi")
+		}
 
 		// Add the module interface file as outputs
 		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget

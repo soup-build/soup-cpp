@@ -14,10 +14,14 @@ import "./clang-argument-builder" for ClangArgumentBuilder
 /// </summary>
 class ClangCompiler is ICompiler {
 	construct new(
+		version,
+		archiveExecutable,
 		compilerExecutable,
-		archiveExecutable) {
-		_compilerExecutable = compilerExecutable
+		scannerExecutable) {
+		_version = version
 		_archiveExecutable = archiveExecutable
+		_compilerExecutable = compilerExecutable
+		_scannerExecutable = scannerExecutable
 	}
 
 	/// <summary>
@@ -100,6 +104,7 @@ class ClangCompiler is ICompiler {
 
 			// Build the unique arguments to compile this translation unit into an object and binary interface
 			var compileArguments = ClangArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+				_version,
 				arguments.TargetRootDirectory,
 				moduleUnitArguments,
 				absoluteResponseFile)

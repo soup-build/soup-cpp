@@ -59,12 +59,16 @@ class ResolveToolsTask is SoupTask {
 		// Find the MSVC SDK
 		var msvcSDKProperties = ResolveToolsTask.GetSDKProperties("MSVC", globalState)
 
+		var defaultVersion = ResolveToolsTask.CheckGet(msvcSDKProperties, "Default")
+		var msvcSDKs = ResolveToolsTask.CheckGet(msvcSDKProperties, "SDKs")
+		var msvcSDK = ResolveToolsTask.CheckGet(msvcSDKs, defaultVersion)
+
 		// Use the default version
-		var visualCompilerVersion = msvcSDKProperties["Version"]
+		var visualCompilerVersion = defaultVersion
 		Soup.info("Using VC Version: %(visualCompilerVersion)")
 
 		// Get the final VC tools folder
-		var visualCompilerVersionFolder = Path.new(msvcSDKProperties["VCToolsRoot"])
+		var visualCompilerVersionFolder = Path.new(msvcSDK["VCToolsRoot"])
 
 		// Load the Windows sdk
 		var windowsSDKProperties = ResolveToolsTask.GetSDKProperties("Windows", globalState)
@@ -201,14 +205,22 @@ class ResolveToolsTask is SoupTask {
 		// Find the Clang SDK
 		var clangSDKProperties = ResolveToolsTask.GetSDKProperties("Clang", globalState)
 
-		var cCompilerPath = Path.new(clangSDKProperties["CCompiler"])
-		var cppCompilerPath = Path.new(clangSDKProperties["CppCompiler"])
-		var archiverPath = Path.new(clangSDKProperties["Archiver"])
+		var defaultVersion = ResolveToolsTask.CheckGet(clangSDKProperties, "Default")
+		var clangSDKs = ResolveToolsTask.CheckGet(clangSDKProperties, "SDKs")
+		var clangSDK = ResolveToolsTask.CheckGet(clangSDKs, defaultVersion)
+
+		var cCompilerPath = Path.new(ResolveToolsTask.CheckGet(clangSDK, "CCompiler"))
+		var cppCompilerPath = Path.new(ResolveToolsTask.CheckGet(clangSDK, "CppCompiler"))
+		var archiverPath = Path.new(ResolveToolsTask.CheckGet(clangSDK, "Archiver"))
 
 		// Save the build properties
+		clang["Version"] = Num.fromString(defaultVersion)
 		clang["CCompiler"] = cCompilerPath.toString
 		clang["CppCompiler"] = cppCompilerPath.toString
 		clang["Archiver"] = archiverPath.toString
+		if (clangSDK.containsKey("CppScanner")) {
+			clang["CppScanner"]  = clangSDK["CppScanner"]
+		}
 	}
 
 	static GetSDKProperties(name, globalState) {
@@ -222,5 +234,13 @@ class ResolveToolsTask is SoupTask {
 		}
 
 		Fiber.abort("Missing SDK %(name)")
+	}
+
+	static CheckGet(values, key) {
+		if (!values.containsKey(key)) {
+			Fiber.abort("Missing key: %(key) %(values)")
+		}
+
+		return values[key]
 	}
 }
