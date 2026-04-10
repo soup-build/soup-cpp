@@ -161,6 +161,15 @@ class RecipeBuildTask is SoupTask {
 			}
 		}
 
+
+		var knownExcludeFiles = null
+		if (recipe.containsKey("Exclude")) {
+			knownExcludeFiles = []
+			for (file in recipe["Exclude"]) {
+				knownExcludeFiles.add(file)
+			}
+		}
+
 		// Load the assembly source files if present
 		var assemblySourceFiles = []
 		if (recipe.containsKey("AssemblySource")) {
@@ -229,6 +238,11 @@ class RecipeBuildTask is SoupTask {
 			ListExtensions.Append(
 				MapExtensions.EnsureList(build, "KnownSource"),
 				knownSourceFiles)
+		}
+		if (knownExcludeFiles != null) {
+			ListExtensions.Append(
+				MapExtensions.EnsureList(build, "KnownSourceExclude"),
+				knownExcludeFiles)
 		}
 		ListExtensions.Append(
 			MapExtensions.EnsureList(build, "AssemblySource"),
