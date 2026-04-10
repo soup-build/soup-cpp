@@ -30,8 +30,14 @@ class ResolveToolsTaskUnitTests {
 				"Name": "MSVC",
 				"Properties":
 				{
-					"Version": "1.0.0",
-					"VCToolsRoot": "C:/VCTools/Root/",
+					"Default": "1.0.0",
+					"SDKs":
+					{
+						"1.0.0":
+						{
+							"VCToolsRoot": "C:/VCTools/Root/",
+						}
+					}
 				},
 			})
 		sdks.add(

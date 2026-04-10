@@ -50,7 +50,7 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "TestFile.cpp",
+				"File": "src/TestFile.cpp",
 			},
 		]
 
@@ -77,7 +77,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Operation: ./TestFile.cpp",
+				"INFO: Generate Compile Operation: ./src/TestFile.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Program.exe",
@@ -93,8 +93,8 @@ class BuildTaskUnitTests {
 		expectedCompileArguments.ObjectDirectory = Path.new("obj/")
 
 		var expectedTranslationUnitArguments = TranslationUnitCompileArguments.new()
-		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
-		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
+		expectedTranslationUnitArguments.SourceFile = Path.new("src/TestFile.cpp")
+		expectedTranslationUnitArguments.TargetFile = Path.new("obj/src/TestFile.mock.obj")
 
 		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
@@ -106,7 +106,7 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.TargetFile = Path.new("bin/Program.exe")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/TestFile.mock.obj"),
+			Path.new("obj/src/TestFile.mock.obj"),
 		]
 
 		// Verify expected compiler calls
@@ -153,10 +153,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile.cpp"),
+					Path.new("src/TestFile.cpp"),
 				],
 				[
-					Path.new("obj/TestFile.mock.obj"),
+					Path.new("obj/src/TestFile.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockLink: 1",
