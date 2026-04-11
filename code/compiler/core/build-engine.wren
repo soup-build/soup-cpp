@@ -62,6 +62,10 @@ class BuildEngine {
 		// Ensure there are actually files to build
 		if (arguments.SourceFiles.count != 0 ||
 			arguments.AssemblySourceFiles.count != 0) {
+
+			// Track output folders
+			var objectFolderSet = Set.new()
+
 			// Setup the shared properties
 			var compileArguments = SharedCompileArguments.new()
 			compileArguments.Standard = arguments.LanguageStandard
@@ -81,6 +85,8 @@ class BuildEngine {
 			// Compile the resource file if present
 			if (arguments.ResourceFile) {
 				Soup.info("Generate Resource File Compile: %(arguments.ResourceFile)")
+
+				objectFolderSet.add(arguments.ResourceFile.GetParent())
 
 				var compiledResourceFile =
 					arguments.ObjectDirectory +
@@ -118,6 +124,8 @@ class BuildEngine {
 			var compileTranslationUnits = []
 			var allPartitionInterfaces = {}
 			for (source in arguments.SourceFiles) {
+				objectFolderSet.add(source.File.GetParent())
+
 				if (!(source.Module is Null)) {
 					if (source.IsInterface) {
 						// Compile the module unit
@@ -191,6 +199,18 @@ class BuildEngine {
 					compileFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
 
 					compileTranslationUnits.add(compileFileArguments)
+				}
+			}
+
+			// Ensure the output directories exists
+			for (folder in objectFolderSet.list) {
+				if (!(folder.IsEmpty)) {
+					var objectFolder = arguments.ObjectDirectory + folder
+					Soup.info("Ensure Object Folder: %(objectFolder)")
+					result.BuildOperations.add(
+						SharedOperations.CreateCreateDirectoryOperation(
+							arguments.TargetRootDirectory,
+							objectFolder))
 				}
 			}
 

@@ -78,6 +78,7 @@ class BuildTaskUnitTests {
 			[
 				"INFO: Using Compiler: MOCK",
 				"INFO: Generate Compile Operation: ./src/TestFile.cpp",
+				"INFO: Ensure Object Folder: ./obj/src/",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Program.exe",
@@ -144,6 +145,17 @@ class BuildTaskUnitTests {
 				[],
 				[
 					Path.new("bin/"),
+				]),
+			SoupTestOperation.new(
+				"MakeDir [./obj/src/]",
+				Path.new("/TARGET/mkdir.exe"),
+				[
+					"./obj/src/",
+				],
+				Path.new("C:/target/"),
+				[],
+				[
+					Path.new("obj/src/"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",

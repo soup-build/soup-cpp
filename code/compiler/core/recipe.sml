@@ -1,6 +1,6 @@
 Name: 'cpp-compiler'
 Language: 'Wren|0'
-Version: 0.14.2
+Version: 0.15.0
 Dependencies: {
 	Runtime: [
 		'soup|build-utils@0'

@@ -53,23 +53,17 @@ class ParseModulePreprocessorTask is SoupPreprocessorTask {
 			ListExtensions.ConvertFromPathList(createObjectDirectory.DeclaredOutput))
 
 		for (sourceFile in sourceFiles) {
-			var targetFile = targetDirectory + objectDirectory + sourceFile
-			targetFile.SetFileExtension("txt")
-
 			Soup.createOperation(
 				"Scan %(sourceFile)",
 				parseModuleExecutable,
 				[
-					targetFile.toString,
 					sourceFile.toString,
 				],
 				packageRoot.toString,
 				[
 					sourceFile.toString,
 				],
-				[
-					targetFile.toString,
-				])
+				[])
 		}
 	}
 

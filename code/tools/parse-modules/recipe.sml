@@ -1,7 +1,7 @@
 Name: 'parse-modules'
 Language: 'C++|0'
 Type: 'Executable'
-Version: 2.0.0
+Version: 3.0.0
 Defines: [
 	# 'SHOW_TOKENS'
 ]
