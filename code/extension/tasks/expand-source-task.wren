@@ -44,37 +44,59 @@ class ExpandSourceTask is SoupTask {
 			allowedPaths.add(Path.new("./**/*.cpp"))
 		}
 
+		var excludePaths = []
+		if (buildTable.containsKey("KnownSourceExclude")) {
+			// Fill in the info on existing excluded files
+			excludePaths = ListExtensions.ConvertToPathList(buildTable["KnownSourceExclude"])
+		}
+
 		// Expand the source from all discovered files
 		Soup.info("Expand Source")
 		var filesystem = globalState["FileSystem"]
 		var preprocessors = globalState["Preprocessors"]
-		var sourceFiles = ExpandSourceTask.DiscoverCompileFiles(filesystem, Path.new(), preprocessors, allowedPaths)
+		var sourceFiles = ExpandSourceTask.DiscoverCompileFiles(
+			filesystem, Path.new(), preprocessors, allowedPaths, excludePaths)
 
 		ListExtensions.Append(
 			MapExtensions.EnsureList(buildTable, "Source"),
 			sourceFiles)
 	}
 
-	static DiscoverCompileFiles(currentDirectory, workingDirectory, preprocessors, allowedPaths) {
+	static DiscoverCompileFiles(
+		currentDirectory, workingDirectory, preprocessors, allowedPaths, excludePaths) {
 		var files = []
 		for (directoryEntity in currentDirectory) {
 			if (directoryEntity is String) {
 				var file = workingDirectory + Path.new(directoryEntity)
 				Soup.info("Check File: %(file)")
-				if (ExpandSourceTask.IsMatchAny(allowedPaths, file)) {
+				if (ExpandSourceTask.ShouldInclude(allowedPaths, excludePaths, file)) {
 					files.add(ExpandSourceTask.CreateSourceInfo(file, preprocessors))
 				}
 			} else {
 				for (child in directoryEntity) {
 					var directory = workingDirectory + Path.new(child.key)
 					Soup.info("Found Directory: %(directory)")
-					var subFiles = ExpandSourceTask.DiscoverCompileFiles(child.value, directory, preprocessors, allowedPaths)
+					var subFiles = ExpandSourceTask.DiscoverCompileFiles(
+						child.value, directory, preprocessors, allowedPaths, excludePaths)
 					ListExtensions.Append(files, subFiles)
 				}
 			}
 		}
 
 		return files
+	}
+
+	static ShouldInclude(allowedPaths, excludePaths, file) {
+		if (ExpandSourceTask.IsMatchAny(allowedPaths, file)) {
+			// If we matched included, check if there is an explicit exclude
+			if (ExpandSourceTask.IsMatchAny(excludePaths, file)) {
+				return false
+			} else {
+				return true
+			}
+		} else {
+			return false
+		}
 	}
 
 	static IsMatchAny(allowedPaths, file) {

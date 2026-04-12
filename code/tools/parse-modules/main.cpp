@@ -42,12 +42,12 @@ SMLDocument Parse(const Path& file)
 
 			std::stringstream message;
 			message << "FAILED: " << line << ":" << column << " " << text;
-			Log::Info(message.str());
+			Log::Error(message.str());
 		}
 	}
 	catch (const Soup::ParseModules::EarlyExitException& ex)
 	{
-		Log::Info(ex.what());
+		Log::Error(ex.what());
 	}
 
 	return parser.GetResult();
@@ -79,22 +79,16 @@ int main(int argc, char** argv)
 		// Setup the real services
 		System::IFileSystem::Register(std::make_shared<System::STLFileSystem>());
 
-		if (argc < 3)
+		if (argc < 2)
 		{
-			Log::Error("Invalid parameters. Expected two parameter.");
+			Log::Error("Invalid parameters. Expected one parameter.");
 			return -1;
 		}
 
-		auto resultFilePath = Path::Parse(argv[1]);
-		auto sourceFilePath = Path::Parse(argv[2]);
+		auto sourceFilePath = Path::Parse(argv[1]);
 		auto result = Parse(sourceFilePath);
 
-		auto resultFile = std::ofstream(resultFilePath.ToString(), std::ios::binary);
-		
-		resultFile << result << std::endl;
-		
-
-		resultFile.close();
+		std::cout << result << std::flush;
 	}
 	catch (const std::exception& ex)
 	{

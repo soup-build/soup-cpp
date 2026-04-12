@@ -27,10 +27,17 @@ class ParseModulePreprocessorTask is SoupPreprocessorTask {
 			allowedPaths.add(Path.new("./**/*.cpp"))
 		}
 
+		var excludePaths = []
+		if (recipe.containsKey("Exclude")) {
+			// Fill in the info on existing excluded files
+			excludePaths = ListExtensions.ConvertToPathList(recipe["Exclude"])
+		}
+
 		// Expand the source from all discovered files
 		Soup.info("Expand Source")
 		var filesystem = globalState["FileSystem"]
-		var sourceFiles = ParseModulePreprocessorTask.DiscoverCompileFiles(filesystem, Path.new(), allowedPaths)
+		var sourceFiles = ParseModulePreprocessorTask.DiscoverCompileFiles(
+			filesystem, Path.new(), allowedPaths, excludePaths)
 
 		var context = globalState["Context"]
 		var packageRoot = Path.new(context["PackageDirectory"])
@@ -53,46 +60,53 @@ class ParseModulePreprocessorTask is SoupPreprocessorTask {
 			ListExtensions.ConvertFromPathList(createObjectDirectory.DeclaredOutput))
 
 		for (sourceFile in sourceFiles) {
-			var targetFile = targetDirectory + objectDirectory + Path.new(sourceFile.GetFileName())
-			targetFile.SetFileExtension("txt")
-
 			Soup.createOperation(
 				"Scan %(sourceFile)",
 				parseModuleExecutable,
 				[
-					targetFile.toString,
 					sourceFile.toString,
 				],
 				packageRoot.toString,
 				[
 					sourceFile.toString,
 				],
-				[
-					targetFile.toString,
-				])
+				[])
 		}
 	}
 
-	static DiscoverCompileFiles(currentDirectory, workingDirectory, allowedPaths) {
+	static DiscoverCompileFiles(currentDirectory, workingDirectory, allowedPaths, excludePaths) {
 		var files = []
 		for (directoryEntity in currentDirectory) {
 			if (directoryEntity is String) {
 				var file = workingDirectory + Path.new(directoryEntity)
 				Soup.info("Check File: %(file)")
-				if (ParseModulePreprocessorTask.IsMatchAny(allowedPaths, file)) {
+				if (ParseModulePreprocessorTask.ShouldInclude(allowedPaths, excludePaths, file)) {
 					files.add(file)
 				}
 			} else {
 				for (child in directoryEntity) {
 					var directory = workingDirectory + Path.new(child.key)
 					Soup.info("Found Directory: %(directory)")
-					var subFiles = ParseModulePreprocessorTask.DiscoverCompileFiles(child.value, directory, allowedPaths)
+					var subFiles = ParseModulePreprocessorTask.DiscoverCompileFiles(child.value, directory, allowedPaths, excludePaths)
 					ListExtensions.Append(files, subFiles)
 				}
 			}
 		}
 
 		return files
+	}
+
+	static ShouldInclude(allowedPaths, excludePaths, file) {
+		if (ParseModulePreprocessorTask.IsMatchAny(allowedPaths, file)) {
+			// If we matched included, check if there is an explicit exclude
+			if (ParseModulePreprocessorTask.IsMatchAny(excludePaths, file)) {
+				return false
+			} else {
+				return true
+			}
+		} else {
+			return false
+		}
 	}
 
 	static IsMatchAny(allowedPaths, file) {
