@@ -77,7 +77,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.LinkDependencies = [
@@ -236,7 +236,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.ResourceFile = Path.new("Resources.rc")
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
@@ -403,7 +403,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.LinkDependencies = [
@@ -570,7 +570,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile1.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.PublicHeaderSets = [
 			HeaderFileSet.new(
@@ -841,9 +841,9 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("TestFile1.cpp"), null, false, null, []),
-			SourceFile.new(Path.new("TestFile2.cpp"), null, false, null, []),
-			SourceFile.new(Path.new("TestFile3.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.Size
 		arguments.IncludeDirectories = [
@@ -1076,10 +1076,10 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("Public.cpp"), "Library", true, null, []),
-			SourceFile.new(Path.new("TestFile1.cpp"), null, false, null, []),
-			SourceFile.new(Path.new("TestFile2.cpp"), null, false, null, []),
-			SourceFile.new(Path.new("TestFile3.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("Public.cpp"), Path.new("./"), "Library", true, null, []),
+			SourceFile.new(Path.new("TestFile1.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1347,6 +1347,7 @@ class BuildEngineUnitTests {
 		arguments.SourceFiles = [
 			SourceFile.new(
 				Path.new("Public.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				null,
@@ -1356,20 +1357,22 @@ class BuildEngineUnitTests {
 				]),
 			SourceFile.new(
 				Path.new("TestFile1.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				"TestFile1",
 				[]),
 			SourceFile.new(
 				Path.new("TestFile2.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				"TestFile2",
 				[
 					":TestFile1",
 				]),
-			SourceFile.new(Path.new("TestFile3.cpp"), null, false, null, []),
-			SourceFile.new(Path.new("TestFile4.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile4.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -1669,6 +1672,7 @@ class BuildEngineUnitTests {
 		arguments.SourceFiles = [
 			SourceFile.new(
 				Path.new("Public.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				null,
@@ -1679,12 +1683,14 @@ class BuildEngineUnitTests {
 				]),
 			SourceFile.new(
 				Path.new("TestFile1.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				"TestFile1",
 				[]),
 			SourceFile.new(
 				Path.new("TestFile2.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				"TestFile2",
@@ -1693,13 +1699,14 @@ class BuildEngineUnitTests {
 				]),
 			SourceFile.new(
 				Path.new("TestFile3.cpp"),
+				Path.new("./"),
 				"Library",
 				true,
 				"TestFile3",
 				[
 					":TestFile2",
 				]),
-			SourceFile.new(Path.new("TestFile4.cpp"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile4.cpp"), Path.new("./"), null, false, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.None
 		arguments.IncludeDirectories = [
@@ -2008,7 +2015,7 @@ class BuildEngineUnitTests {
 		arguments.ObjectDirectory = Path.new("obj/")
 		arguments.BinaryDirectory = Path.new("bin/")
 		arguments.SourceFiles = [
-			SourceFile.new(Path.new("Public.cpp"), "Library", true, null, []),
+			SourceFile.new(Path.new("Public.cpp"), Path.new("./"), "Library", true, null, []),
 		]
 		arguments.OptimizationLevel = BuildOptimizationLevel.Size
 		arguments.IncludeDirectories = [
