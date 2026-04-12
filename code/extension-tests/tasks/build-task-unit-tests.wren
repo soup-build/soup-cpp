@@ -51,6 +51,7 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "src/TestFile.cpp",
+				"Root": "./",
 			},
 		]
 
@@ -211,6 +212,7 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "TestFile.cpp",
+				"Root": "./",
 			},
 		]
 
@@ -359,12 +361,15 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "TestFile1.cpp",
+				"Root": "./",
 			},
 			{
 				"File": "TestFile2.cpp",
+				"Root": "./",
 			},
 			{
 				"File": "TestFile3.cpp",
+				"Root": "./",
 			},
 		]
 		buildTable["IncludeDirectories"] = [
@@ -569,17 +574,21 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "Public.cpp",
+				"Root": "./",
 				"IsInterface": true,
 				"Module": "Library",
 			},
 			{
 				"File": "TestFile1.cpp",
+				"Root": "./",
 			},
 			{
 				"File": "TestFile2.cpp",
+				"Root": "./",
 			},
 			{
 				"File": "TestFile3.cpp",
+				"Root": "./",
 			},
 		]
 		buildTable["IncludeDirectories"] = [
@@ -822,6 +831,7 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "Public.cpp",
+				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
 				"Imports": [
@@ -831,12 +841,14 @@ class BuildTaskUnitTests {
 			},
 			{
 				"File": "TestFile1.cpp",
+				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
 				"Partition": "TestFile1",
 			},
 			{
 				"File": "TestFile2.cpp",
+				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
 				"Partition": "TestFile2",
@@ -844,9 +856,11 @@ class BuildTaskUnitTests {
 			},
 			{
 				"File": "TestFile3.cpp",
+				"Root": "./",
 			},
 			{
 				"File": "TestFile4.cpp",
+				"Root": "./",
 			},
 		]
 		buildTable["IncludeDirectories"] = [
@@ -1119,6 +1133,7 @@ class BuildTaskUnitTests {
 		buildTable["Source"] = [
 			{
 				"File": "Public.cpp",
+				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
 			}

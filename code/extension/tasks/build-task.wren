@@ -72,6 +72,7 @@ class BuildTask is SoupTask {
 			var sourceFiles = []
 			for (source in buildTable["Source"]) {
 				var file = Path.new(source["File"])
+				var root = Path.new(source["Root"])
 
 				var module = null
 				if (source.containsKey("Module")) {
@@ -95,6 +96,7 @@ class BuildTask is SoupTask {
 
 				sourceFiles.add(SourceFile.new(
 					file,
+					root,
 					module,
 					isInterface,
 					partition,

@@ -53,22 +53,30 @@ class BuildTargetType {
 class SourceFile {
 	construct new() {
 		_file = null
+		_root = null
 		_module = null
 		_isInterface = null
 		_partition = null
 		_imports = []
 	}
 
-	construct new(file, module, isInterface, partition, imports) {
+	construct new(file, root, module, isInterface, partition, imports) {
 		_file = file
+		_root = root
 		_module = module
 		_isInterface = isInterface
 		_partition = partition
 		_imports = imports
 	}
 
+	// The relative path to the source file
 	File { _file }
 	File=(value) { _file = value }
+
+	// The file root that allows for separation between the relative path of the file
+	// and the source directory. This allows for unique output folders from multiple roots to merge.
+	Root { _root }
+	Root=(value) { _root = value }
 
 	Module { _module }
 	Module=(value) { _module = value }
