@@ -153,7 +153,7 @@ class BuildEngine {
 
 						var compileFileArguments = ModuleInterfaceUnitCompileArguments.new()
 						compileFileArguments.ModuleName = moduleName
-						compileFileArguments.SourceFile = source.File
+						compileFileArguments.SourceFile = source.Root + source.File
 						compileFileArguments.TargetFile = objectFile
 						compileFileArguments.IncludeModules = imports
 						compileFileArguments.ModuleInterfaceTarget = moduleInterfaceFile
@@ -183,7 +183,7 @@ class BuildEngine {
 						}
 
 						var compileFileArguments = TranslationUnitCompileArguments.new()
-						compileFileArguments.SourceFile = source.File
+						compileFileArguments.SourceFile = source.Root + source.File
 						compileFileArguments.TargetFile = objectFile
 						compileFileArguments.IncludeModules = imports
 
