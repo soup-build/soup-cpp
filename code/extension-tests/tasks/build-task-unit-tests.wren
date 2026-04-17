@@ -41,7 +41,7 @@ class BuildTaskUnitTests {
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
 		buildTable["Compiler"] = "MOCK"
-		buildTable["TargetName"] = "Program"
+		buildTable["TargetName"] = "my-program"
 		buildTable["TargetType"] = BuildTargetType.WindowsApplication
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
 		buildTable["SourceRootDirectory"] = "C:/source/"
@@ -50,7 +50,7 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "src/TestFile.cpp",
+				"File": "src/test-file.cpp",
 				"Root": "./",
 			},
 		]
@@ -78,11 +78,11 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Operation: ./src/TestFile.cpp",
+				"INFO: Generate Compile Operation: ./src/test-file.cpp",
 				"INFO: Ensure Object Folder: ./obj/src/",
 				"INFO: CoreLink",
 				"INFO: Linking target",
-				"INFO: Generate Link Operation: ./bin/Program.exe",
+				"INFO: Generate Link Operation: ./bin/my-program.exe",
 				"INFO: Build Generate Done",
 			],
 			SoupTest.logs)
@@ -95,8 +95,8 @@ class BuildTaskUnitTests {
 		expectedCompileArguments.ObjectDirectory = Path.new("obj/")
 
 		var expectedTranslationUnitArguments = TranslationUnitCompileArguments.new()
-		expectedTranslationUnitArguments.SourceFile = Path.new("src/TestFile.cpp")
-		expectedTranslationUnitArguments.TargetFile = Path.new("obj/src/TestFile.mock.obj")
+		expectedTranslationUnitArguments.SourceFile = Path.new("src/test-file.cpp")
+		expectedTranslationUnitArguments.TargetFile = Path.new("obj/src/test-file.mock.obj")
 
 		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
@@ -105,10 +105,10 @@ class BuildTaskUnitTests {
 		var expectedLinkArguments = LinkArguments.new()
 		expectedLinkArguments.TargetType = LinkTarget.WindowsApplication
 		expectedLinkArguments.TargetArchitecture = "x64"
-		expectedLinkArguments.TargetFile = Path.new("bin/Program.exe")
+		expectedLinkArguments.TargetFile = Path.new("bin/my-program.exe")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/src/TestFile.mock.obj"),
+			Path.new("obj/src/test-file.mock.obj"),
 		]
 
 		// Verify expected compiler calls
@@ -166,10 +166,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("src/TestFile.cpp"),
+					Path.new("src/test-file.cpp"),
 				],
 				[
-					Path.new("obj/src/TestFile.mock.obj"),
+					Path.new("obj/src/test-file.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockLink: 1",
@@ -189,6 +189,24 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			expectedBuildOperations,
 			SoupTest.operations)
+
+		var expectedSharedState = {
+			"Language": "C++",
+			"Version": "1.0",
+			"Build": {
+				"RunArguments": [],
+				"LinkDependencies": [],
+				"ModuleDependencies": {},
+				"RuntimeDependencies": [
+					"C:/target/bin/my-program.exe"
+				],
+				"RunExecutable": "C:/target/bin/my-program.exe",
+				"TargetFile": "C:/target/bin/my-program.exe",
+			}
+		}
+		Assert.MapEqual(
+			expectedSharedState,
+			SoupTest.sharedState)
 	}
 
 	Build_Executable() {
@@ -202,7 +220,7 @@ class BuildTaskUnitTests {
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
 		buildTable["Compiler"] = "MOCK"
-		buildTable["TargetName"] = "Program"
+		buildTable["TargetName"] = "my-program"
 		buildTable["TargetType"] = BuildTargetType.Executable
 		buildTable["LanguageStandard"] = LanguageStandard.CPP20
 		buildTable["SourceRootDirectory"] = "C:/source/"
@@ -211,7 +229,7 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "TestFile.cpp",
+				"File": "test-file.cpp",
 				"Root": "./",
 			},
 		]
@@ -239,10 +257,10 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Operation: ./TestFile.cpp",
+				"INFO: Generate Compile Operation: ./test-file.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
-				"INFO: Generate Link Operation: ./bin/Program.exe",
+				"INFO: Generate Link Operation: ./bin/my-program.exe",
 				"INFO: Build Generate Done",
 			],
 			SoupTest.logs)
@@ -255,8 +273,8 @@ class BuildTaskUnitTests {
 		expectedCompileArguments.ObjectDirectory = Path.new("obj/")
 
 		var expectedTranslationUnitArguments = TranslationUnitCompileArguments.new()
-		expectedTranslationUnitArguments.SourceFile = Path.new("TestFile.cpp")
-		expectedTranslationUnitArguments.TargetFile = Path.new("obj/TestFile.mock.obj")
+		expectedTranslationUnitArguments.SourceFile = Path.new("test-file.cpp")
+		expectedTranslationUnitArguments.TargetFile = Path.new("obj/test-file.mock.obj")
 
 		expectedCompileArguments.TranslationUnits = [
 			expectedTranslationUnitArguments,
@@ -265,10 +283,10 @@ class BuildTaskUnitTests {
 		var expectedLinkArguments = LinkArguments.new()
 		expectedLinkArguments.TargetType = LinkTarget.Executable
 		expectedLinkArguments.TargetArchitecture = "x64"
-		expectedLinkArguments.TargetFile = Path.new("bin/Program.exe")
+		expectedLinkArguments.TargetFile = Path.new("bin/my-program.exe")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/TestFile.mock.obj"),
+			Path.new("obj/test-file.mock.obj"),
 		]
 
 		// Verify expected compiler calls
@@ -315,10 +333,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile.cpp"),
+					Path.new("test-file.cpp"),
 				],
 				[
-					Path.new("obj/TestFile.mock.obj"),
+					Path.new("obj/test-file.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockLink: 1",
@@ -338,6 +356,24 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			expectedBuildOperations,
 			SoupTest.operations)
+
+		var expectedSharedState = {
+			"Language": "C++",
+			"Version": "1.0",
+			"Build": {
+				"RunArguments": [],
+				"LinkDependencies": [],
+				"ModuleDependencies": {},
+				"RuntimeDependencies": [
+					"C:/target/bin/my-program.exe"
+				],
+				"RunExecutable": "C:/target/bin/my-program.exe",
+				"TargetFile": "C:/target/bin/my-program.exe",
+			}
+		}
+		Assert.MapEqual(
+			expectedSharedState,
+			SoupTest.sharedState)
 	}
 
 	Build_Library_MultipleFiles() {
@@ -360,15 +396,15 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "TestFile1.cpp",
+				"File": "test-file1.cpp",
 				"Root": "./",
 			},
 			{
-				"File": "TestFile2.cpp",
+				"File": "test-file2.cpp",
 				"Root": "./",
 			},
 			{
-				"File": "TestFile3.cpp",
+				"File": "test-file3.cpp",
 				"Root": "./",
 			},
 		]
@@ -405,9 +441,9 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Operation: ./TestFile1.cpp",
-				"INFO: Generate Compile Operation: ./TestFile2.cpp",
-				"INFO: Generate Compile Operation: ./TestFile3.cpp",
+				"INFO: Generate Compile Operation: ./test-file1.cpp",
+				"INFO: Generate Compile Operation: ./test-file2.cpp",
+				"INFO: Generate Compile Operation: ./test-file3.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -433,16 +469,16 @@ class BuildTaskUnitTests {
 
 		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile1.cpp"),
-				Path.new("obj/TestFile1.mock.obj"),
+				Path.new("test-file1.cpp"),
+				Path.new("obj/test-file1.mock.obj"),
 				{}),
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile2.cpp"),
-				Path.new("obj/TestFile2.mock.obj"),
+				Path.new("test-file2.cpp"),
+				Path.new("obj/test-file2.mock.obj"),
 				{}),
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile3.cpp"),
-				Path.new("obj/TestFile3.mock.obj"),
+				Path.new("test-file3.cpp"),
+				Path.new("obj/test-file3.mock.obj"),
 				{}),
 		]
 
@@ -452,9 +488,9 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.TargetArchitecture = "x64"
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/TestFile1.mock.obj"),
-			Path.new("obj/TestFile2.mock.obj"),
-			Path.new("obj/TestFile3.mock.obj"),
+			Path.new("obj/test-file1.mock.obj"),
+			Path.new("obj/test-file2.mock.obj"),
+			Path.new("obj/test-file3.mock.obj"),
 		]
 		expectedLinkArguments.LibraryFiles = []
 
@@ -502,10 +538,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile1.cpp"),
+					Path.new("test-file1.cpp"),
 				],
 				[
-					Path.new("obj/TestFile1.mock.obj"),
+					Path.new("obj/test-file1.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -515,10 +551,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile2.cpp"),
+					Path.new("test-file2.cpp"),
 				],
 				[
-					Path.new("obj/TestFile2.mock.obj"),
+					Path.new("obj/test-file2.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -528,10 +564,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile3.cpp"),
+					Path.new("test-file3.cpp"),
 				],
 				[
-					Path.new("obj/TestFile3.mock.obj"),
+					Path.new("obj/test-file3.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockLink: 1",
@@ -551,6 +587,24 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			expectedBuildOperations,
 			SoupTest.operations)
+
+		var expectedSharedState = {
+			"Language": "C++",
+			"Version": "1.0",
+			"Build": {
+				"LinkDependencies": [
+					"C:/target/bin/Library.mock.lib",
+				],
+				"ModuleDependencies": {
+					"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+					"OtherModule2": "../OtherModule2.mock.bmi",
+				},
+				"RuntimeDependencies": [],
+			}
+		}
+		Assert.MapEqual(
+			expectedSharedState,
+			SoupTest.sharedState)
 	}
 
 	Build_Library_ModuleInterface() {
@@ -573,21 +627,21 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "Public.cpp",
+				"File": "public.cpp",
 				"Root": "./",
 				"IsInterface": true,
 				"Module": "Library",
 			},
 			{
-				"File": "TestFile1.cpp",
+				"File": "test-file1.cpp",
 				"Root": "./",
 			},
 			{
-				"File": "TestFile2.cpp",
+				"File": "test-file2.cpp",
 				"Root": "./",
 			},
 			{
-				"File": "TestFile3.cpp",
+				"File": "test-file3.cpp",
 				"Root": "./",
 			},
 		]
@@ -635,10 +689,10 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
-				"INFO: Generate Compile Operation: ./TestFile1.cpp",
-				"INFO: Generate Compile Operation: ./TestFile2.cpp",
-				"INFO: Generate Compile Operation: ./TestFile3.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./public.cpp",
+				"INFO: Generate Compile Operation: ./test-file1.cpp",
+				"INFO: Generate Compile Operation: ./test-file2.cpp",
+				"INFO: Generate Compile Operation: ./test-file3.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -667,24 +721,24 @@ class BuildTaskUnitTests {
 		]
 		expectedCompileArguments.ModuleInterfaceUnits = [
 			ModuleInterfaceUnitCompileArguments.new(
-				Path.new("Public.cpp"),
-				Path.new("obj/Public.mock.obj"),
+				Path.new("public.cpp"),
+				Path.new("obj/public.mock.obj"),
 				{},
 				"Library",
 				Path.new("bin/Library.mock.bmi")),
 		]
 		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile1.cpp"),
-				Path.new("obj/TestFile1.mock.obj"),
+				Path.new("test-file1.cpp"),
+				Path.new("obj/test-file1.mock.obj"),
 				{}),
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile2.cpp"),
-				Path.new("obj/TestFile2.mock.obj"),
+				Path.new("test-file2.cpp"),
+				Path.new("obj/test-file2.mock.obj"),
 				{}),
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile3.cpp"),
-				Path.new("obj/TestFile3.mock.obj"),
+				Path.new("test-file3.cpp"),
+				Path.new("obj/test-file3.mock.obj"),
 				{}),
 		]
 
@@ -694,10 +748,10 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.TargetArchitecture = "x64"
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/Public.mock.obj"),
-			Path.new("obj/TestFile1.mock.obj"),
-			Path.new("obj/TestFile2.mock.obj"),
-			Path.new("obj/TestFile3.mock.obj"),
+			Path.new("obj/public.mock.obj"),
+			Path.new("obj/test-file1.mock.obj"),
+			Path.new("obj/test-file2.mock.obj"),
+			Path.new("obj/test-file3.mock.obj"),
 		]
 		expectedLinkArguments.LibraryFiles = []
 
@@ -745,10 +799,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("Public.cpp"),
+					Path.new("public.cpp"),
 				],
 				[
-					Path.new("obj/Public.mock.obj"),
+					Path.new("obj/public.mock.obj"),
 					Path.new("bin/Library.mock.bmi"),
 				]),
 			SoupTestOperation.new(
@@ -759,10 +813,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile1.cpp"),
+					Path.new("test-file1.cpp"),
 				],
 				[
-					Path.new("obj/TestFile1.mock.obj"),
+					Path.new("obj/test-file1.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -772,10 +826,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile2.cpp"),
+					Path.new("test-file2.cpp"),
 				],
 				[
-					Path.new("obj/TestFile2.mock.obj"),
+					Path.new("obj/test-file2.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -785,10 +839,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile3.cpp"),
+					Path.new("test-file3.cpp"),
 				],
 				[
-					Path.new("obj/TestFile3.mock.obj"),
+					Path.new("obj/test-file3.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockLink: 1",
@@ -808,6 +862,25 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			expectedBuildOperations,
 			SoupTest.operations)
+
+		var expectedSharedState = {
+			"Language": "C++",
+			"Version": "1.0",
+			"Build": {
+				"LinkDependencies": [
+					"C:/target/bin/Library.mock.lib",
+				],
+				"ModuleDependencies": {
+					"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+					"OtherModule2": "../OtherModule2.mock.bmi",
+					"Library": "C:/target/bin/Library.mock.bmi",
+				},
+				"RuntimeDependencies": [],
+			}
+		}
+		Assert.MapEqual(
+			expectedSharedState,
+			SoupTest.sharedState)
 	}
 
 	Build_Library_ModuleInterface_WithPartitions() {
@@ -830,36 +903,36 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "Public.cpp",
+				"File": "public.cpp",
 				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
 				"Imports": [
-					":TestFile1",
-					":TestFile2",
+					":test-file1",
+					":test-file2",
 				],
 			},
 			{
-				"File": "TestFile1.cpp",
+				"File": "test-file1.cpp",
 				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
-				"Partition": "TestFile1",
+				"Partition": "test-file1",
 			},
 			{
-				"File": "TestFile2.cpp",
+				"File": "test-file2.cpp",
 				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
-				"Partition": "TestFile2",
-				"Imports": [ ":TestFile1", ],
+				"Partition": "test-file2",
+				"Imports": [ ":test-file1", ],
 			},
 			{
-				"File": "TestFile3.cpp",
+				"File": "test-file3.cpp",
 				"Root": "./",
 			},
 			{
-				"File": "TestFile4.cpp",
+				"File": "test-file4.cpp",
 				"Root": "./",
 			},
 		]
@@ -907,11 +980,11 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
-				"INFO: Generate Compile Module Interface Operation: ./TestFile1.cpp",
-				"INFO: Generate Compile Module Interface Operation: ./TestFile2.cpp",
-				"INFO: Generate Compile Operation: ./TestFile3.cpp",
-				"INFO: Generate Compile Operation: ./TestFile4.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./test-file1.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./test-file2.cpp",
+				"INFO: Generate Compile Operation: ./test-file3.cpp",
+				"INFO: Generate Compile Operation: ./test-file4.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -940,37 +1013,37 @@ class BuildTaskUnitTests {
 		]
 		expectedCompileArguments.ModuleInterfaceUnits = [
 			ModuleInterfaceUnitCompileArguments.new(
-				Path.new("Public.cpp"),
-				Path.new("obj/Public.mock.obj"),
+				Path.new("public.cpp"),
+				Path.new("obj/public.mock.obj"),
 				{
-					"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
-					"Library:TestFile2": Path.new("C:/target/obj/Library-TestFile2.mock.bmi"),
+					"Library:test-file1": Path.new("C:/target/obj/Library-test-file1.mock.bmi"),
+					"Library:test-file2": Path.new("C:/target/obj/Library-test-file2.mock.bmi"),
 				},
 				"Library",
 				Path.new("bin/Library.mock.bmi")),
 			ModuleInterfaceUnitCompileArguments.new(
-				Path.new("TestFile1.cpp"),
-				Path.new("obj/TestFile1.mock.obj"),
+				Path.new("test-file1.cpp"),
+				Path.new("obj/test-file1.mock.obj"),
 				{},
-				"Library:TestFile1",
-				Path.new("obj/Library-TestFile1.mock.bmi")),
+				"Library:test-file1",
+				Path.new("obj/Library-test-file1.mock.bmi")),
 			ModuleInterfaceUnitCompileArguments.new(
-				Path.new("TestFile2.cpp"),
-				Path.new("obj/TestFile2.mock.obj"),
+				Path.new("test-file2.cpp"),
+				Path.new("obj/test-file2.mock.obj"),
 				{
-					"Library:TestFile1": Path.new("C:/target/obj/Library-TestFile1.mock.bmi"),
+					"Library:test-file1": Path.new("C:/target/obj/Library-test-file1.mock.bmi"),
 				},
-				"Library:TestFile2",
-				Path.new("obj/Library-TestFile2.mock.bmi")),
+				"Library:test-file2",
+				Path.new("obj/Library-test-file2.mock.bmi")),
 		]
 		expectedCompileArguments.TranslationUnits = [
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile3.cpp"),
-				Path.new("obj/TestFile3.mock.obj"),
+				Path.new("test-file3.cpp"),
+				Path.new("obj/test-file3.mock.obj"),
 				{}),
 			TranslationUnitCompileArguments.new(
-				Path.new("TestFile4.cpp"),
-				Path.new("obj/TestFile4.mock.obj"),
+				Path.new("test-file4.cpp"),
+				Path.new("obj/test-file4.mock.obj"),
 				{}),
 		]
 
@@ -980,11 +1053,11 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.TargetArchitecture = "x64"
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/Public.mock.obj"),
-			Path.new("obj/TestFile1.mock.obj"),
-			Path.new("obj/TestFile2.mock.obj"),
-			Path.new("obj/TestFile3.mock.obj"),
-			Path.new("obj/TestFile4.mock.obj"),
+			Path.new("obj/public.mock.obj"),
+			Path.new("obj/test-file1.mock.obj"),
+			Path.new("obj/test-file2.mock.obj"),
+			Path.new("obj/test-file3.mock.obj"),
+			Path.new("obj/test-file4.mock.obj"),
 		]
 		expectedLinkArguments.LibraryFiles = []
 
@@ -1032,10 +1105,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("Public.cpp"),
+					Path.new("public.cpp"),
 				],
 				[
-					Path.new("obj/Public.mock.obj"),
+					Path.new("obj/public.mock.obj"),
 					Path.new("bin/Library.mock.bmi"),
 				]),
 			SoupTestOperation.new(
@@ -1046,11 +1119,11 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile1.cpp"),
+					Path.new("test-file1.cpp"),
 				],
 				[
-					Path.new("obj/TestFile1.mock.obj"),
-					Path.new("obj/Library-TestFile1.mock.bmi"),
+					Path.new("obj/test-file1.mock.obj"),
+					Path.new("obj/Library-test-file1.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompileModuleInterface: 1",
@@ -1060,11 +1133,11 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile2.cpp"),
+					Path.new("test-file2.cpp"),
 				],
 				[
-					Path.new("obj/TestFile2.mock.obj"),
-					Path.new("obj/Library-TestFile2.mock.bmi"),
+					Path.new("obj/test-file2.mock.obj"),
+					Path.new("obj/Library-test-file2.mock.bmi"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -1074,10 +1147,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile3.cpp"),
+					Path.new("test-file3.cpp"),
 				],
 				[
-					Path.new("obj/TestFile3.mock.obj"),
+					Path.new("obj/test-file3.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockCompile: 1",
@@ -1087,10 +1160,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("TestFile4.cpp"),
+					Path.new("test-file4.cpp"),
 				],
 				[
-					Path.new("obj/TestFile4.mock.obj"),
+					Path.new("obj/test-file4.mock.obj"),
 				]),
 			SoupTestOperation.new(
 				"MockLink: 1",
@@ -1110,6 +1183,27 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			expectedBuildOperations,
 			SoupTest.operations)
+
+		var expectedSharedState = {
+			"Language": "C++",
+			"Version": "1.0",
+			"Build": {
+				"LinkDependencies": [
+					"C:/target/bin/Library.mock.lib",
+				],
+				"ModuleDependencies": {
+					"Library": "C:/target/bin/Library.mock.bmi",
+					"Library:test-file1": "C:/target/obj/Library-test-file1.mock.bmi",
+					"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+					"OtherModule2": "../OtherModule2.mock.bmi",
+					"Library:test-file2": "C:/target/obj/Library-test-file2.mock.bmi",
+				},
+				"RuntimeDependencies": [],
+			}
+		}
+		Assert.MapEqual(
+			expectedSharedState,
+			SoupTest.sharedState)
 	}
 
 	Build_Library_ModuleInterfaceNoSource() {
@@ -1132,7 +1226,7 @@ class BuildTaskUnitTests {
 		buildTable["BinaryDirectory"] = "bin/"
 		buildTable["Source"] = [
 			{
-				"File": "Public.cpp",
+				"File": "public.cpp",
 				"Root": "./",
 				"Module": "Library",
 				"IsInterface": true,
@@ -1182,7 +1276,7 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			[
 				"INFO: Using Compiler: MOCK",
-				"INFO: Generate Compile Module Interface Operation: ./Public.cpp",
+				"INFO: Generate Compile Module Interface Operation: ./public.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
 				"INFO: Generate Link Operation: ./bin/Library.mock.lib",
@@ -1211,8 +1305,8 @@ class BuildTaskUnitTests {
 		]
 		expectedCompileArguments.ModuleInterfaceUnits = [
 			ModuleInterfaceUnitCompileArguments.new(
-				Path.new("./Public.cpp"),
-				Path.new("./obj/Public.mock.obj"),
+				Path.new("./public.cpp"),
+				Path.new("./obj/public.mock.obj"),
 				{},
 				"Library",
 				Path.new("./bin/Library.mock.bmi")),
@@ -1224,7 +1318,7 @@ class BuildTaskUnitTests {
 		expectedLinkArguments.TargetArchitecture = "x64"
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
-			Path.new("obj/Public.mock.obj"),
+			Path.new("obj/public.mock.obj"),
 		]
 		expectedLinkArguments.LibraryFiles = []
 
@@ -1272,10 +1366,10 @@ class BuildTaskUnitTests {
 				],
 				Path.new("MockWorkingDirectory"),
 				[
-					Path.new("Public.cpp"),
+					Path.new("public.cpp"),
 				],
 				[
-					Path.new("obj/Public.mock.obj"),
+					Path.new("obj/public.mock.obj"),
 					Path.new("bin/Library.mock.bmi"),
 				]),
 				SoupTestOperation.new(
@@ -1296,5 +1390,24 @@ class BuildTaskUnitTests {
 		Assert.ListEqual(
 			expectedBuildOperations,
 			SoupTest.operations)
+
+		var expectedSharedState = {
+			"Language": "C++",
+			"Version": "1.0",
+			"Build": {
+				"LinkDependencies": [
+					"C:/target/bin/Library.mock.lib",
+				],
+				"ModuleDependencies": {
+					"Library": "C:/target/bin/Library.mock.bmi",
+					"OtherModule1": "../Other/bin/OtherModule1.mock.bmi",
+					"OtherModule2": "../OtherModule2.mock.bmi",
+				},
+				"RuntimeDependencies": [],
+			}
+		}
+		Assert.MapEqual(
+			expectedSharedState,
+			SoupTest.sharedState)
 	}
 }

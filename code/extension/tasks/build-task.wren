@@ -7,6 +7,7 @@ import "soup|build-utils:./path" for Path
 import "soup|build-utils:./set" for Set
 import "soup|build-utils:./list-extensions" for ListExtensions
 import "soup|build-utils:./map-extensions" for MapExtensions
+import "soup|build-utils:./semantic-version" for SemanticVersion
 import "soup|cpp-compiler:./build-arguments" for BuildArguments, BuildOptimizationLevel, SourceFile, HeaderFileSet
 import "soup|cpp-compiler:./build-engine" for BuildEngine
 import "soup|cpp-compiler-clang:./clang-compiler" for ClangCompiler
@@ -211,6 +212,10 @@ class BuildTask is SoupTask {
 
 		// Pass along internal state for other stages to gain access
 		buildTable["InternalLinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.InternalLinkDependencies)
+
+		// Set the language and version so consumers can process this shared state
+		sharedState["Language"] = "C++"
+		sharedState["Version"] = SemanticVersion.new(1, 0).toString
 
 		// Always pass along required input to shared build tasks
 		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
