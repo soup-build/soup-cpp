@@ -139,6 +139,10 @@ class MSVCArgumentBuilder {
 			MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
 		}
 
+		// Unicode character set
+		MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "_UNICODE")
+		MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "UNICODE")
+
 		// Ignore Standard Include Paths to prevent pulling in accidental headers
 		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_IgnoreStandardIncludePaths)
 
