@@ -44,6 +44,10 @@ class BuildTask is SoupTask {
 
 		var buildTable = activeState["Build"]
 
+		// Set the language and version so consumers can process this shared state
+		sharedState["Language"] = "C++"
+		sharedState["Version"] = SemanticVersion.new(1, 0).toString
+
 		// Check if this build should skip this system
 		if (buildTable.containsKey("TargetSystems")) {
 			var targetSystems = buildTable["TargetSystems"]
@@ -212,10 +216,6 @@ class BuildTask is SoupTask {
 
 		// Pass along internal state for other stages to gain access
 		buildTable["InternalLinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.InternalLinkDependencies)
-
-		// Set the language and version so consumers can process this shared state
-		sharedState["Language"] = "C++"
-		sharedState["Version"] = SemanticVersion.new(1, 0).toString
 
 		// Always pass along required input to shared build tasks
 		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")

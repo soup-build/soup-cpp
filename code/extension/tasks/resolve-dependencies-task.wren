@@ -79,13 +79,14 @@ class ResolveDependenciesTask is SoupTask {
 
 	static resolveCPPRuntimeDependency(
 		dependencyName, version, dependencySharedState, moduleDependencies, publicIncludes, runtimeDependencies, linkDependencies) {
-		if (!(dependencySharedState.containsKey("Build"))) {
-			Fiber.abort("C++ dependency missing Build table %(dependencyName)")
-		}
-
 		var requiredLanguageVersion = SemanticVersion.new(1, 0, 0)
 		if (!(SemanticVersion.IsUpCompatible(version, requiredLanguageVersion))) {
 			Fiber.abort("Incompatible C++ version %(version)")
+		}
+
+		if (!(dependencySharedState.containsKey("Build"))) {
+			Soup.warning("C++ dependency missing Build table %(dependencyName)")
+			return
 		}
 
 		var dependencyBuildTable = dependencySharedState["Build"]
@@ -113,7 +114,7 @@ class ResolveDependenciesTask is SoupTask {
 
 		if (dependencyBuildTable.containsKey("PublicIncludes")) {
 			var dependencyPublicIncludes = dependencyBuildTable["PublicIncludes"]
-			MapExtensions.Append(
+			ListExtensions.Append(
 				publicIncludes,
 				dependencyPublicIncludes)
 		}
@@ -121,13 +122,14 @@ class ResolveDependenciesTask is SoupTask {
 
 	static resolveCRuntimeDependency(
 		dependencyName, version, dependencySharedState, publicIncludes, runtimeDependencies, linkDependencies) {
-		if (!(dependencySharedState.containsKey("Build"))) {
-			Fiber.abort("C dependency missing Build table %(dependencyName)")
-		}
-
 		var requiredLanguageVersion = SemanticVersion.new(1, 0, 0)
 		if (!(SemanticVersion.IsUpCompatible(version, requiredLanguageVersion))) {
 			Fiber.abort("Incompatible C version %(version)")
+		}
+
+		if (!(dependencySharedState.containsKey("Build"))) {
+			Soup.warning("C dependency missing Build table %(dependencyName)")
+			return
 		}
 
 		var dependencyBuildTable = dependencySharedState["Build"]
