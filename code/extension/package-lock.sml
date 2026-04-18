@@ -2,7 +2,7 @@ Version: 6
 Closure: {
 	Wren: {
 		cpp: { Version: './', Build: '0', Tool: '0' }
-		'soup|build-utils': { Version: 0.9.2, Digest: 'sha256:0b70e1c4392ee591b06e64b00fc3b267fad1f32ced90e7b2d61c01c2780e4096', Build: '0', Tool: '0' }
+		'soup|build-utils': { Version: 0.9.3, Digest: 'sha256:640456fb5c985c2ff460c9b00197811c273d6f093f1fb6695baa3a7bea78d521', Build: '0', Tool: '0' }
 		'soup|cpp': { Version: './', Build: '0', Tool: '0' }
 		'soup|cpp-compiler': { Version: '../compiler/core/', Build: '0', Tool: '0' }
 		'soup|cpp-compiler-clang': { Version: '../compiler/clang/', Build: '0', Tool: '0' }

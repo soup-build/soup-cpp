@@ -7,6 +7,7 @@ import "soup|build-utils:./path" for Path
 import "soup|build-utils:./set" for Set
 import "soup|build-utils:./list-extensions" for ListExtensions
 import "soup|build-utils:./map-extensions" for MapExtensions
+import "soup|build-utils:./semantic-version" for SemanticVersion
 import "soup|cpp-compiler:./build-arguments" for BuildArguments, BuildOptimizationLevel, SourceFile, HeaderFileSet
 import "soup|cpp-compiler:./build-engine" for BuildEngine
 import "soup|cpp-compiler-clang:./clang-compiler" for ClangCompiler
@@ -42,6 +43,10 @@ class BuildTask is SoupTask {
 		var sharedState = Soup.sharedState
 
 		var buildTable = activeState["Build"]
+
+		// Set the language and version so consumers can process this shared state
+		sharedState["Language"] = "C++"
+		sharedState["Version"] = SemanticVersion.new(1, 0).toString
 
 		// Check if this build should skip this system
 		if (buildTable.containsKey("TargetSystems")) {
