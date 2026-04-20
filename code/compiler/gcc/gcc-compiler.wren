@@ -123,7 +123,7 @@ class GCCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = GCCArgumentBuilder.BuildPartitionUnitCompilerArguments(
+			var commandArguments = GCCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				moduleUnitArguments,
 				absoluteResponseFile)

@@ -85,7 +85,7 @@ class BuildTask is SoupTask {
 					module = source["Module"]
 				}
 
-				var isInterface = null
+				var isInterface = false
 				if (source.containsKey("IsInterface")) {
 					isInterface = source["IsInterface"]
 				}
