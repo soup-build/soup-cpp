@@ -170,46 +170,6 @@ class GCCArgumentBuilder {
 			commandArguments,
 			absoluteTargetFile.toString)
 
-		// Add the unique arguments for an interface unit
-		GCCArgumentBuilder.AddFlag(commandArguments, "fmodules-ts")
-
-		// Specify the module interface file output
-		// GCCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
-
-		// var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		// GCCArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
-
-		return commandArguments
-	}
-
-	static BuildPartitionUnitCompilerArguments(
-		targetRootDirectory,
-		arguments,
-		responseFile) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Add the response file
-		commandArguments.add("@" + responseFile.toString)
-
-		// Add the module references as input
-		for (module in arguments.IncludeModules) {
-			GCCArgumentBuilder.AddFlag(commandArguments, "reference")
-			GCCArgumentBuilder.AddValue(commandArguments, module.value.toString)
-		}
-
-		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.toString)
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		GCCArgumentBuilder.AddFlag(
-			commandArguments,
-			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
-		GCCArgumentBuilder.AddValue(
-			commandArguments,
-			absoluteTargetFile.toString)
-
 		// Add the unique arguments for an partition unit
 		GCCArgumentBuilder.AddFlag(commandArguments, "interface")
 

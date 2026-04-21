@@ -40,8 +40,6 @@ class MSVCArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_PreprocessorDefinitions()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_Modules()")
 		this.BSCA_SingleArgument_Modules()
-		System.print("MSVCArgumentBuilderUnitTests.BuildPartitionUnitCompilerArguments()")
-		this.BuildPartitionUnitCompilerArguments()
 		System.print("MSVCArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments()")
 		this.BuildInterfaceUnitCompilerArguments()
 		System.print("MSVCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple()")
@@ -483,33 +481,6 @@ class MSVCArgumentBuilderUnitTests {
 			"./Module.pcm",
 			"/bigobj",
 			"/c",
-		]
-
-		Assert.ListEqual(expectedArguments, actualArguments)
-	}
-
-	// [Fact]
-	BuildPartitionUnitCompilerArguments() {
-		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = ModuleInterfaceUnitCompileArguments.new()
-		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.obj")
-		arguments.ModuleInterfaceTarget = Path.new("module.ifc")
-
-		var responseFile = Path.new("ResponseFile.txt")
-
-		var actualArguments = MSVCArgumentBuilder.BuildPartitionUnitCompilerArguments(
-			targetRootDirectory,
-			arguments,
-			responseFile)
-
-		var expectedArguments = [
-			"@./ResponseFile.txt",
-			"./module.cpp",
-			"/Fo\"C:/target/module.obj\"",
-			"/interface",
-			"/ifcOutput",
-			"C:/target/module.ifc",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)
