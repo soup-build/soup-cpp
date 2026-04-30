@@ -43,6 +43,7 @@ class BuildTask is SoupTask {
 		var sharedState = Soup.sharedState
 
 		var buildTable = activeState["Build"]
+		var system = buildTable["System"]
 
 		// Set the language and version so consumers can process this shared state
 		sharedState["Language"] = "C++"
@@ -51,7 +52,6 @@ class BuildTask is SoupTask {
 		// Check if this build should skip this system
 		if (buildTable.containsKey("TargetSystems")) {
 			var targetSystems = buildTable["TargetSystems"]
-			var system = buildTable["System"]
 
 			if (!targetSystems.contains(system)) {
 				Soup.info("Target System is not supported: %(system)")
@@ -61,6 +61,7 @@ class BuildTask is SoupTask {
 
 		var arguments = BuildArguments.new()
 		arguments.TargetArchitecture = buildTable["Architecture"]
+		arguments.TargetSystem = system
 		arguments.TargetName = buildTable["TargetName"]
 		arguments.TargetType = buildTable["TargetType"]
 		arguments.LanguageStandard = buildTable["LanguageStandard"]
@@ -84,7 +85,7 @@ class BuildTask is SoupTask {
 					module = source["Module"]
 				}
 
-				var isInterface = null
+				var isInterface = false
 				if (source.containsKey("IsInterface")) {
 					isInterface = source["IsInterface"]
 				}

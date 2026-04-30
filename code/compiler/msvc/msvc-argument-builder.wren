@@ -240,44 +240,6 @@ class MSVCArgumentBuilder {
 			MSVCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
 			absoluteTargetFile.toString)
 
-		// Add the unique arguments for an interface unit
-		MSVCArgumentBuilder.AddFlag(commandArguments, "interface")
-
-		// Specify the module interface file output
-		MSVCArgumentBuilder.AddFlag(commandArguments, "ifcOutput")
-
-		var absoluteModuleInterfaceFile = targetRootDirectory + arguments.ModuleInterfaceTarget
-		MSVCArgumentBuilder.AddValue(commandArguments, absoluteModuleInterfaceFile.toString)
-
-		return commandArguments
-	}
-
-	static BuildPartitionUnitCompilerArguments(
-		targetRootDirectory,
-		arguments,
-		responseFile) {
-		// Build the arguments for a standard translation unit
-		var commandArguments = []
-
-		// Add the response file
-		commandArguments.add("@" + responseFile.toString)
-
-		// Add the module references as input
-		for (module in arguments.IncludeModules) {
-			MSVCArgumentBuilder.AddFlag(commandArguments, "reference")
-			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
-		}
-
-		// Add the source file as input
-		commandArguments.add(arguments.SourceFile.toString)
-
-		// Add the target file as outputs
-		var absoluteTargetFile = targetRootDirectory + arguments.TargetFile
-		MSVCArgumentBuilder.AddFlagValueWithQuotes(
-			commandArguments,
-			MSVCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
-			absoluteTargetFile.toString)
-
 		// Add the unique arguments for an partition unit
 		MSVCArgumentBuilder.AddFlag(commandArguments, "interface")
 

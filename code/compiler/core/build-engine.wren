@@ -266,8 +266,10 @@ class BuildEngine {
 				Path.new(arguments.TargetName + "." + _compiler.DynamicLibraryLinkFileExtension)
 		} else if (arguments.TargetType == BuildTargetType.Executable ||
 			arguments.TargetType == BuildTargetType.WindowsApplication) {
-			targetFile = arguments.BinaryDirectory + 
-				Path.new(arguments.TargetName + ".exe")
+			targetFile = arguments.BinaryDirectory + Path.new(arguments.TargetName)
+			if (arguments.TargetSystem == "Win32") {
+				targetFile.SetFileExtension("exe")
+			}
 		} else {
 			Fiber.abort("Unknown build target type.")
 		}

@@ -40,8 +40,6 @@ class GCCArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_PreprocessorDefinitions()
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_Modules()")
 		this.BSCA_SingleArgument_Modules()
-		System.print("GCCArgumentBuilderUnitTests.BuildPartitionUnitCompilerArguments()")
-		this.BuildPartitionUnitCompilerArguments()
 		System.print("GCCArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments()")
 		this.BuildInterfaceUnitCompilerArguments()
 		System.print("GCCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple()")
@@ -278,34 +276,6 @@ class GCCArgumentBuilderUnitTests {
 			"-reference",
 			"./Module.pcm",
 			"-c",
-		]
-
-		Assert.ListEqual(expectedArguments, actualArguments)
-	}
-
-	// [Fact]
-	BuildPartitionUnitCompilerArguments() {
-		var targetRootDirectory = Path.new("C:/target/")
-		var arguments = ModuleInterfaceUnitCompileArguments.new()
-		arguments.SourceFile = Path.new("module.cpp")
-		arguments.TargetFile = Path.new("module.obj")
-		arguments.ModuleInterfaceTarget = Path.new("module.ifc")
-
-		var responseFile = Path.new("ResponseFile.txt")
-
-		var actualArguments = GCCArgumentBuilder.BuildPartitionUnitCompilerArguments(
-			targetRootDirectory,
-			arguments,
-			responseFile)
-
-		var expectedArguments = [
-			"@./ResponseFile.txt",
-			"./module.cpp",
-			"-o",
-			"C:/target/module.obj",
-			"-interface",
-			"-ifcOutput",
-			"C:/target/module.ifc",
 		]
 
 		Assert.ListEqual(expectedArguments, actualArguments)

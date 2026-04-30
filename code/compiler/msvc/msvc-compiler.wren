@@ -130,7 +130,7 @@ class MSVCCompiler is ICompiler {
 			]
 
 			// Build the unique arguments for this translation unit
-			var commandArguments = MSVCArgumentBuilder.BuildPartitionUnitCompilerArguments(
+			var commandArguments = MSVCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
 				arguments.TargetRootDirectory,
 				moduleUnitArguments,
 				absoluteResponseFile)

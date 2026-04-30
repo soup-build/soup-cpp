@@ -40,6 +40,7 @@ class BuildTaskUnitTests {
 		var buildTable = {}
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Win32"
 		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "my-program"
 		buildTable["TargetType"] = BuildTargetType.WindowsApplication
@@ -219,6 +220,7 @@ class BuildTaskUnitTests {
 		var buildTable = {}
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Unix"
 		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "my-program"
 		buildTable["TargetType"] = BuildTargetType.Executable
@@ -260,7 +262,7 @@ class BuildTaskUnitTests {
 				"INFO: Generate Compile Operation: ./test-file.cpp",
 				"INFO: CoreLink",
 				"INFO: Linking target",
-				"INFO: Generate Link Operation: ./bin/my-program.exe",
+				"INFO: Generate Link Operation: ./bin/my-program",
 				"INFO: Build Generate Done",
 			],
 			SoupTest.logs)
@@ -283,7 +285,7 @@ class BuildTaskUnitTests {
 		var expectedLinkArguments = LinkArguments.new()
 		expectedLinkArguments.TargetType = LinkTarget.Executable
 		expectedLinkArguments.TargetArchitecture = "x64"
-		expectedLinkArguments.TargetFile = Path.new("bin/my-program.exe")
+		expectedLinkArguments.TargetFile = Path.new("bin/my-program")
 		expectedLinkArguments.TargetRootDirectory = Path.new("C:/target/")
 		expectedLinkArguments.ObjectFiles = [
 			Path.new("obj/test-file.mock.obj"),
@@ -365,10 +367,10 @@ class BuildTaskUnitTests {
 				"LinkDependencies": [],
 				"ModuleDependencies": {},
 				"RuntimeDependencies": [
-					"C:/target/bin/my-program.exe"
+					"C:/target/bin/my-program"
 				],
-				"RunExecutable": "C:/target/bin/my-program.exe",
-				"TargetFile": "C:/target/bin/my-program.exe",
+				"RunExecutable": "C:/target/bin/my-program",
+				"TargetFile": "C:/target/bin/my-program",
 			}
 		}
 		Assert.MapEqual(
@@ -386,6 +388,7 @@ class BuildTaskUnitTests {
 		var buildTable = {}
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Win32"
 		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
@@ -617,6 +620,7 @@ class BuildTaskUnitTests {
 		var buildTable = {}
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Win32"
 		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
@@ -893,6 +897,7 @@ class BuildTaskUnitTests {
 		var buildTable = {}
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Win32"
 		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
@@ -1216,6 +1221,7 @@ class BuildTaskUnitTests {
 		var buildTable = {}
 		activeState["Build"] = buildTable
 		buildTable["Architecture"] = "x64"
+		buildTable["System"] = "Win32"
 		buildTable["Compiler"] = "MOCK"
 		buildTable["TargetName"] = "Library"
 		buildTable["TargetType"] = BuildTargetType.StaticLibrary
