@@ -58,7 +58,7 @@ class RecipeBuildTaskUnitTests {
 		var expectedActiveState = {
 			"Build": {
 				"LinkLibraries": [],
-				"PublicHeaderSets": [],
+				"KnownPublicHeaderSets": [],
 				"TargetType": "StaticLibrary",
 				"TargetRootDirectory": "/(TARGET)/",
 				"Compiler": "MOCK",
@@ -132,7 +132,7 @@ class RecipeBuildTaskUnitTests {
 				"LinkLibraries": [
 					"/Direct/Library.lib"
 				],
-				"PublicHeaderSets": [],
+				"KnownPublicHeaderSets": [],
 				"TargetType": "StaticLibrary",
 				"TargetRootDirectory": "/(TARGET)/",
 				"Compiler": "MOCK",

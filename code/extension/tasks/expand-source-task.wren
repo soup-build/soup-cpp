@@ -34,7 +34,11 @@ class ExpandSourceTask is SoupTask {
 		var activeState = Soup.activeState
 
 		var buildTable = activeState["Build"]
+		ExpandSourceTask.expandSource(globalState, buildTable)
+		ExpandSourceTask.expandPublicHeaderSets(globalState, buildTable)
+	}
 
+	static expandSource(globalState, buildTable) {
 		var allowedPaths = []
 		if (buildTable.containsKey("KnownSource")) {
 			// Fill in the info on existing source files
@@ -62,22 +66,91 @@ class ExpandSourceTask is SoupTask {
 			sourceFiles)
 	}
 
+	static expandPublicHeaderSets(globalState, buildTable) {
+		if (buildTable.containsKey("KnownPublicHeaderSets")) {
+			// Expand the source from all discovered files
+			Soup.info("Expand Public Header Sets")
+			var filesystem = globalState["FileSystem"]
+
+			var publicHeaderSets = []
+			for (value in buildTable["KnownPublicHeaderSets"]) {
+				var packageHeaderSet = {}
+				var root = Path.new(value["Root"])
+				packageHeaderSet["Root"] = root.toString
+				if (value.containsKey("Target")) {
+					packageHeaderSet["Target"] = value["Target"]
+				}
+
+				var allowedPaths = []
+				if (value.containsKey("Files")) {
+					// Fill in the info on existing files
+					for (file in ListExtensions.ConvertToPathList(value["Files"])) {
+						allowedPaths.add(root + file)
+					}
+				} else {
+					// Default to matching all header files under the root
+					allowedPaths.add(root + Path.new("./**/*.h"))
+				}
+
+				var headerFiles = ExpandSourceTask.DiscoverHeaderFiles(
+					filesystem, Path.new(), allowedPaths)
+
+				// Strip out the root so we can still resolve the final file path correctly
+				var relativeHeaderFiles = []
+				for (file in headerFiles) {
+					relativeHeaderFiles.add(file.GetRelativeTo(root))
+				}
+
+				packageHeaderSet["Files"] = ListExtensions.ConvertFromPathList(relativeHeaderFiles)
+
+				publicHeaderSets.add(packageHeaderSet)
+			}
+
+			ListExtensions.Append(
+				MapExtensions.EnsureList(buildTable, "PublicHeaderSets"),
+				publicHeaderSets)
+		}
+	}
+
 	static DiscoverCompileFiles(
 		currentDirectory, workingDirectory, preprocessors, allowedPaths, excludePaths) {
 		var files = []
 		for (directoryEntity in currentDirectory) {
 			if (directoryEntity is String) {
 				var file = workingDirectory + Path.new(directoryEntity)
-				Soup.info("Check File: %(file)")
+				// Soup.info("Check File: %(file)")
 				if (ExpandSourceTask.ShouldInclude(allowedPaths, excludePaths, file)) {
 					files.add(ExpandSourceTask.CreateSourceInfo(file, preprocessors))
 				}
 			} else {
 				for (child in directoryEntity) {
 					var directory = workingDirectory + Path.new(child.key)
-					Soup.info("Found Directory: %(directory)")
+					// Soup.info("Found Directory: %(directory)")
 					var subFiles = ExpandSourceTask.DiscoverCompileFiles(
 						child.value, directory, preprocessors, allowedPaths, excludePaths)
+					ListExtensions.Append(files, subFiles)
+				}
+			}
+		}
+
+		return files
+	}
+
+	static DiscoverHeaderFiles(currentDirectory, workingDirectory, allowedPaths) {
+		var files = []
+		for (directoryEntity in currentDirectory) {
+			if (directoryEntity is String) {
+				var file = workingDirectory + Path.new(directoryEntity)
+				// Soup.info("Check File: %(file)")
+				if (ExpandSourceTask.IsMatchAny(allowedPaths, file)) {
+					files.add(file)
+				}
+			} else {
+				for (child in directoryEntity) {
+					var directory = workingDirectory + Path.new(child.key)
+					// Soup.info("Found Directory: %(directory)")
+					var subFiles = ExpandSourceTask.DiscoverHeaderFiles(
+						child.value, directory, allowedPaths)
 					ListExtensions.Append(files, subFiles)
 				}
 			}
