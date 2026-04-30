@@ -472,7 +472,7 @@ class BuildEngine {
 			Soup.info("Pass Along Public Includes")
 
 			for (directory in arguments.PublicIncludes) {
-				result.PublicIncludes.add(directory)			
+				result.PublicIncludes.add(directory)
 			}
 		}
 	}
