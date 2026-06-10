@@ -185,21 +185,23 @@ class ExpandSourceTask is SoupTask {
 	static CreateSourceInfo(file, preprocessors) {
 		Soup.info("Found Source File: %(file)")
 
-		var preprocessorResult = ExpandSourceTask.ResolvePreprocessorResult(file, preprocessors)
-		var result = preprocessorResult["Result"]
-
 		var sourceInfo = {}
 		sourceInfo["Root"] = "./"
 		sourceInfo["File"] = file.toString
-		sourceInfo["Imports"] = result["Imports"]
 
-		if (result["IsModule"]) {
-			var name = result["Name"]
-			var module = name.split(":")
-			sourceInfo["IsInterface"] = result["IsInterface"]
-			sourceInfo["Module"] = module[0]
-			if (module.count == 2) {
-				sourceInfo["Partition"] = module[1]
+		if (preprocessors) {
+			var preprocessorResult = ExpandSourceTask.ResolvePreprocessorResult(file, preprocessors)
+			var result = preprocessorResult["Result"]
+
+			sourceInfo["Imports"] = result["Imports"]
+			if (result["IsModule"]) {
+				var name = result["Name"]
+				var module = name.split(":")
+				sourceInfo["IsInterface"] = result["IsInterface"]
+				sourceInfo["Module"] = module[0]
+				if (module.count == 2) {
+					sourceInfo["Partition"] = module[1]
+				}
 			}
 		}
 

@@ -10,6 +10,7 @@ import "./compile-arguments" for ModuleInterfaceUnitCompileArguments, Optimizati
 import "soup|build-utils:./map-extensions" for MapExtensions
 import "soup|build-utils:./path" for Path
 import "soup|build-utils:./set" for Set
+import "soup|build-utils:./build-operation" for BuildOperation
 import "soup|build-utils:./shared-operations" for SharedOperations
 
 /// <summary>
@@ -21,9 +22,69 @@ class BuildEngine {
 	}
 
 	/// <summary>
-	/// Generate the required build operations for the requested build
+	/// Generate the required preprocessor operations during pass 1 to scan the 
+	/// input translation units and build up the module dependencies
 	/// </summary>
-	Execute(arguments) {
+	ExecutePass1(arguments) {
+		var result = []
+
+		// Ensure there are actually files to build
+		if (arguments.SourceFiles.count != 0) {
+			// Setup the shared properties
+			var compileArguments = SharedCompileArguments.new()
+			compileArguments.Standard = arguments.LanguageStandard
+			compileArguments.SourceRootDirectory = arguments.SourceRootDirectory
+			compileArguments.TargetRootDirectory = arguments.TargetRootDirectory
+			compileArguments.ObjectDirectory = arguments.ObjectDirectory
+			compileArguments.IncludeDirectories = arguments.IncludeDirectories + arguments.PublicIncludes
+			compileArguments.PreprocessorDefinitions = arguments.PreprocessorDefinitions
+
+			// Compile the individual module interface partition translation units
+			var scanDependenciesUnits = []
+			for (source in arguments.SourceFiles) {
+				// Scan as a standard TU
+				Soup.info("Generate Scan Dependencies Operation: %(source.File)")
+
+				var scanDependenciesFileArguments = TranslationUnitCompileArguments.new()
+				scanDependenciesFileArguments.SourceFile = source.File
+				scanDependenciesFileArguments.TargetFile = arguments.ObjectDirectory + source.File
+				scanDependenciesFileArguments.TargetFile.SetFileExtension(_compiler.ObjectFileExtension)
+
+				scanDependenciesUnits.add(scanDependenciesFileArguments)
+			}
+
+			compileArguments.TranslationUnits = scanDependenciesUnits
+
+			// Compile all source files as a single call
+			var scanDependenciesOperations = _compiler.CreateScanDependenciesOperations(compileArguments) 
+
+			// Discover the dependency tool
+			var parseModuleExecutable = SharedOperations.ResolveRuntimeDependencyRunExecutable("mwasplund|parse-modules")
+
+			// Convert all direct scans to use wrapper
+			for (operation in scanDependenciesOperations) {
+				var arguments = [
+					operation.Executable.toString,
+				] + operation.Arguments
+				var wrappedOperation = BuildOperation.new(
+					operation.Title,
+					operation.WorkingDirectory,
+					parseModuleExecutable,
+					arguments,
+					operation.DeclaredInput,
+					operation.DeclaredOutput)
+				result.add(wrappedOperation)
+			}
+		}
+
+		return result
+	}
+
+	/// <summary>
+	/// Generate the required build operations for the requested build on pass 2
+	/// The full scan of input translation units will be complete and ready to use
+	/// </summary>
+	ExecutePass2(arguments) {
 		var result = BuildResult.new()
 
 		// All dependencies must include the entire interface dependency closure

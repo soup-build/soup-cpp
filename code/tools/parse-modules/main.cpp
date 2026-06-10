@@ -1,58 +1,103 @@
-// <copyright file="Main.cpp" company="Soup">
+// <copyright file="main.cpp" company="Soup">
 // Copyright (c) Soup. All rights reserved.
 // </copyright>
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #include <iostream>
 #include <memory>
 #include <vector>
 
 import Opal;
+import json11;
 import Soup.SML;
-import reflex;
-import parse.modules;
 
 using namespace Opal;
 using namespace Soup::SML;
 
 #pragma warning(disable:4996)
 
-SMLDocument Parse(const Path& file)
-{
-	// Use the c api file so the input auto detects the format and converts to utf8 if necessary
-	auto stream = std::fopen(file.ToString().c_str(), "r");
-	if (stream == nullptr)
-		throw std::runtime_error("Failed to open file");
-
-	auto input = reflex::Input(stream);
-	auto parser = Soup::ParseModules::ModuleParser(input);
-	try
-	{
-		if (parser.TryParse())
-		{
-			return parser.GetResult();
-		}
-		else
-		{
-			auto line = parser.lineno();
-			auto column = parser.columno();
-			auto text = parser.text();
-
-			std::stringstream message;
-			message << "FAILED: " << line << ":" << column << " " << text;
-			Log::Error(message.str());
-		}
+void SplitArguments(
+	std::vector<std::string> &unusedArgs,
+	std::vector<std::string> &splitArgs) {
+	auto flagValue = std::string("--");
+	auto flagLocation = std::find(unusedArgs.begin(), unusedArgs.end(), flagValue);
+	if (flagLocation != unusedArgs.end()) {
+		// Consume the flag value
+		auto argsStart = std::next(flagLocation);
+		std::move(argsStart, unusedArgs.end(), std::back_inserter(splitArgs));
+		unusedArgs.erase(flagLocation, unusedArgs.end());
 	}
-	catch (const Soup::ParseModules::EarlyExitException& ex)
-	{
-		Log::Error(ex.what());
-	}
-
-	return parser.GetResult();
 }
 
+json11::Json RunChild(const Path& executable, const std::vector<std::string>& arguments)
+{
+	Log::Info("Running Child");
+	Log::Diag(executable.ToString());
+
+	// Execute the requested target
+	auto process = System::IProcessManager::Current().CreateProcess(
+		executable, arguments, Path(), true);
+	process->Start();
+	process->WaitForExit();
+
+	auto exitCode = process->GetExitCode();
+
+	if (exitCode != 0) {
+		Log::Error("Child Failed: {}", exitCode);
+		throw std::runtime_error("child failed");
+	}
+
+	Log::Info("Parse child result {}", process->GetStandardOutput());
+	std::string error;
+	auto result = json11::Json::parse(process->GetStandardOutput(), error);
+
+	if (!error.empty()) {
+		Log::Error("Failed to parse child json: {}", error);
+		throw std::runtime_error("child result invalid");
+	}
+
+	return result;
+}
+
+SMLDocument ConvertResult(const json11::Json::object& root)
+{
+	Log::Info("Convert result");
+	auto version = root.at("version").int_value();
+	auto revision = root.at("revision").int_value();
+
+	if (version != 1)
+		throw std::runtime_error("Unknown result version");
+
+	bool isModule;
+	bool isInterface;
+	std::string moduleName;
+	std::vector<SMLValue> imports;
+
+	auto rules = root.at("rules").array_items();
+	if (rules.size() != 1)
+		throw std::runtime_error("Expected exactly one rule since we invoked directly");
+
+	auto rule = rules.at(0).object_items();
+
+	auto result = SequenceMap<std::string, SMLValue>();
+	result.Insert("IsModule", SMLValue(isModule));
+	if (isModule)
+	{
+		result.Insert("IsInterface", SMLValue(isInterface));
+		result.Insert("Name", SMLValue(moduleName));
+	}
+
+	result.Insert("Imports", SMLValue(SMLArray(imports)));
+
+	return SMLDocument(SMLTable(result));
+}
+
+// Adapter layer for child process that conforms to the describe dependencies standard
+// https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html
 int main(int argc, char** argv)
 {
 	try
@@ -74,20 +119,47 @@ int main(int argc, char** argv)
 				"Log",
 				filter,
 				false,
+				false,
 				false));
 
 		// Setup the real services
 		System::IFileSystem::Register(std::make_shared<System::STLFileSystem>());
 
-		if (argc < 2)
+#if defined(_WIN32)
+		System::IProcessManager::Register(
+			std::make_shared<System::WindowsProcessManager>());
+#elif defined(__linux__)
+		System::IProcessManager::Register(std::make_shared<System::LinuxProcessManager>());
+#else
+#error "Unknown Platform"
+#endif
+
+		std::vector<std::string> arguments;
+		for (int i = 1; i < argc; i++) {
+			arguments.push_back(argv[i]);
+		}
+
+		std::vector<std::string> childArguments;
+		SplitArguments(arguments, childArguments);
+
+		if (arguments.size() > 0)
 		{
-			Log::Error("Invalid parameters. Expected one parameter.");
+			Log::Error("Invalid parameters. Expected only child arguments.");
 			return -1;
 		}
 
-		auto sourceFilePath = Path::Parse(argv[1]);
-		auto result = Parse(sourceFilePath);
+		if (childArguments.size() < 2)
+		{
+			Log::Error("Invalid parameters. Child must have at least an executable.");
+			return -1;
+		}
 
+		auto childExecutable = Path::Parse(childArguments[0]);
+		childArguments.erase(childArguments.begin());
+		auto scanResult = RunChild(childExecutable, childArguments);
+		auto result = ConvertResult(scanResult.object_items());
+
+		Log::Info("Send to std out");
 		std::cout << result << std::flush;
 	}
 	catch (const std::exception& ex)

@@ -40,6 +40,11 @@ class ICompiler {
 	ResourceFileExtension {}
 
 	/// <summary>
+	/// Scan Dependencies
+	/// </summary>
+	CreateScanDependenciesOperation(arguments) {}
+
+	/// <summary>
 	/// Compile
 	/// </summary>
 	CreateCompileOperations(arguments) {}

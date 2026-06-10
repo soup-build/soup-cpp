@@ -29,6 +29,61 @@ class ClangArgumentBuilder {
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
 
+	static BuildScanDependenciesArguments(sharedArguments, arguments) {
+		// Calculate object output file
+		var commandArguments = []
+
+		// Print json output to stdout
+		ClangArgumentBuilder.AddParameter(commandArguments, "format", "p1689")
+
+		// Send in compile flags from command line
+		commandArguments.add("--")
+
+		// Set the language standard
+		if (sharedArguments.Standard == LanguageStandard.CPP11) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP14) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++14")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP17) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP20) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP23) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP26) {
+			ClangArgumentBuilder.AddParameter(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++26")
+		} else {
+			Fiber.abort("Unknown language standard %(sharedArguments.Standard).")
+		}
+
+		// Set the include paths
+		for (directory in sharedArguments.IncludeDirectories) {
+			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+		}
+
+		// Set the preprocessor definitions
+		for (definition in sharedArguments.PreprocessorDefinitions) {
+			ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
+		}
+
+		// Add the source file as input
+		commandArguments.add(arguments.SourceFile.toString)
+
+		// Only run preprocessor, compile and assemble
+		ClangArgumentBuilder.AddFlag(commandArguments, ClangArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// Add the target file as outputs
+		var absoluteTargetFile = sharedArguments.TargetRootDirectory + arguments.TargetFile
+		ClangArgumentBuilder.AddFlag(
+			commandArguments,
+			ClangArgumentBuilder.Compiler_ArgumentParameter_Output)
+		ClangArgumentBuilder.AddValue(
+			commandArguments,
+			absoluteTargetFile.toString)
+
+		return commandArguments
+	}
+
 	static BuildSharedCompilerArguments(arguments) {
 		// Calculate object output file
 		var commandArguments = []
