@@ -29,7 +29,7 @@ class ClangArgumentBuilder {
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
 
-	static BuildScanDependenciesArguments(sharedArguments, arguments) {
+	static BuildScanDependenciesArguments(sharedArguments, arguments, compilerExecutable) {
 		// Calculate object output file
 		var commandArguments = []
 
@@ -38,6 +38,9 @@ class ClangArgumentBuilder {
 
 		// Send in compile flags from command line
 		commandArguments.add("--")
+
+		// Pass in the compiler
+		commandArguments.add(compilerExecutable.toString)
 
 		// Set the language standard
 		if (sharedArguments.Standard == LanguageStandard.CPP11) {

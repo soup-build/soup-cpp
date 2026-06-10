@@ -2,7 +2,7 @@ Version: 6
 Closure: {
 	'C++': {
 		'mwasplund|json11': { Version: 1.1.6, Digest: 'sha256:c6b0981921f926b73e9512d068efde6eb2c5183f6b3a8442bddc67f847d2bfc4', Build: '0', Tool: '0' }
-		'mwasplund|opal': { Version: 0.13.2, Digest: 'sha256:6126b93d04d91786b0c98bbda540b309dfe79251137587cb6d3c4ea60b1d9803', Build: '0', Tool: '0' }
+		'mwasplund|opal': { Version: 0.13.3, Digest: 'sha256:34d0f0339a47458534df5171591e96a5bbacd5b41d441158265f7883d35d9adc', Build: '0', Tool: '0' }
 		'mwasplund|reflex': { Version: 5.5.4, Digest: 'sha256:09e879b8c200c6415543686cf81c710712d07286753cdcd77cec08eab8e81bbe', Build: '0', Tool: '0' }
 		'mwasplund|sml': { Version: 1.0.2, Digest: 'sha256:a107d6045502e4c439117d33ceb64d2aa246ec462ee335bec731600db1c70235', Build: '0', Tool: '0' }
 		'mwasplund|parse-modules': { Version: './', Build: '0', Tool: '0' }

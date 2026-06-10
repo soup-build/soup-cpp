@@ -75,7 +75,8 @@ class ClangCompiler is ICompiler {
 			// Build the unique arguments for this translation unit
 			var commandArguments = ClangArgumentBuilder.BuildScanDependenciesArguments(
 				arguments,
-				translationUnitArguments)
+				translationUnitArguments,
+				_compilerExecutable)
 
 			// Generate the operation
 			var preprocessorOperation = BuildOperation.new(

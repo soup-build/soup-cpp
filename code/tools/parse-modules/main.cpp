@@ -83,6 +83,30 @@ SMLDocument ConvertResult(const json11::Json::object& root)
 
 	auto rule = rules.at(0).object_items();
 
+	// Check for optional provides
+	auto providesResult = rule.find("provides");
+	if (providesResult != rule.end()) {
+		auto provides = providesResult->second.array_items();
+		if (provides.size() != 1) 
+			throw std::runtime_error("Provides must have exactly one item");
+
+		auto providesItem = provides.at(0).object_items();
+		isModule = true;
+		isInterface = providesItem["is-interface"].bool_value();
+		moduleName = providesItem["logical-name"].string_value();
+	}
+
+	// Check for optional requires
+	auto requiresResult = rule.find("requires");
+	if (requiresResult != rule.end()) {
+		auto requiresList = requiresResult->second.array_items();
+		for (auto& requiredItem : requiresList) {
+			auto& requiredObject = requiredItem.object_items();
+			auto requiredModule = requiredObject.at("logical-name").string_value();
+			imports.push_back(SMLValue(std::move(requiredModule)));
+		}
+	}
+
 	auto result = SequenceMap<std::string, SMLValue>();
 	result.Insert("IsModule", SMLValue(isModule));
 	if (isModule)
@@ -104,8 +128,8 @@ int main(int argc, char** argv)
 	{
 		// Setup the filter
 		auto defaultTypes =
-			static_cast<uint32_t>(TraceEventFlag::Diagnostic) |
-			static_cast<uint32_t>(TraceEventFlag::Information) |
+			// static_cast<uint32_t>(TraceEventFlag::Diagnostic) |
+			// static_cast<uint32_t>(TraceEventFlag::Information) |
 			static_cast<uint32_t>(TraceEventFlag::HighPriority) |
 			static_cast<uint32_t>(TraceEventFlag::Warning) |
 			static_cast<uint32_t>(TraceEventFlag::Error) |
