@@ -41,18 +41,12 @@ class MSVCArgumentBuilder {
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
 
-	static BuildScanDependenciesArguments(sharedArguments, arguments, compilerExecutable) {
+	static BuildScanDependenciesArguments(sharedArguments, arguments) {
 		// Calculate object output file
 		var commandArguments = []
 
 		// Print json output to stdout
-		MSVCArgumentBuilder.AddParameter(commandArguments, "format", "p1689")
-
-		// Send in compile flags from command line
-		commandArguments.add("--")
-
-		// Pass in the compiler
-		commandArguments.add(compilerExecutable.toString)
+		MSVCArgumentBuilder.AddFlag(commandArguments, "sourceDependencies-")
 
 		// Set the language standard
 		if (sharedArguments.Standard == LanguageStandard.CPP11) {

@@ -78,8 +78,7 @@ class MSVCCompiler is ICompiler {
 			// Build the unique arguments for this translation unit
 			var commandArguments = MSVCArgumentBuilder.BuildScanDependenciesArguments(
 				arguments,
-				translationUnitArguments,
-				_compilerExecutable)
+				translationUnitArguments)
 
 			// Generate the operation
 			var preprocessorOperation = BuildOperation.new(

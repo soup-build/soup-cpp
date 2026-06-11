@@ -71,14 +71,11 @@ class MSVCArgumentBuilderUnitTests {
 		arguments.SourceFile = Path.new("file1.cpp")
 		arguments.TargetFile = Path.new("file1.o")
 
-		var compilerExecutable = Path.new("MockCompiler.exe")
 		var actualArguments = MSVCArgumentBuilder.BuildScanDependenciesArguments(
-			sharedArguments, arguments, compilerExecutable)
+			sharedArguments, arguments)
 
 		var expectedArguments = [
-			"/format:p1689",
-			"--",
-			"./MockCompiler.exe",
+			"/sourceDependencies-",
 			expectedFlag,
 			"/c",
 			"./file1.cpp",
