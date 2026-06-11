@@ -64,10 +64,11 @@ class BuildEngine {
 			// Convert all direct scans to use wrapper
 			for (operation in scanDependenciesOperations) {
 				var arguments = [
+					"--",
 					operation.Executable.toString,
 				] + operation.Arguments
 				var wrappedOperation = BuildOperation.new(
-					operation.Title,
+					"Scan " + operation.Title,
 					operation.WorkingDirectory,
 					parseModuleExecutable,
 					arguments,

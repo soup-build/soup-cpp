@@ -72,10 +72,10 @@ SMLDocument ConvertResult(const json11::Json::object& root)
 	if (version != 1)
 		throw std::runtime_error("Unknown result version");
 
-	bool isModule;
-	bool isInterface;
-	std::string moduleName;
-	std::vector<SMLValue> imports;
+	bool isModule = false;
+	bool isInterface = false;
+	std::string moduleName = "";
+	std::vector<SMLValue> imports = {};
 
 	auto rules = root.at("rules").array_items();
 	if (rules.size() != 1)

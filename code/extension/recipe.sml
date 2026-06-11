@@ -12,6 +12,6 @@ Dependencies: {
 	Tool: [
 		'[C++]mwasplund|copy@1'
 		'[C++]mwasplund|mkdir@1'
-		'[C++]mwasplund|parse-modules@3'
+		'[C++]mwasplund|parse-modules@4'
 	]
 }
