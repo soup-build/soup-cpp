@@ -14,8 +14,10 @@ import "./gcc-argument-builder" for GCCArgumentBuilder
 /// </summary>
 class GCCCompiler is ICompiler {
 	construct new(
-		gccExecutable) {
-		_gccExecutable = gccExecutable
+		compilerExecutable,
+		scannerExecutable) {
+		_compilerExecutable = compilerExecutable
+		_scannerExecutable = scannerExecutable
 	}
 
 	/// <summary>
@@ -52,6 +54,39 @@ class GCCCompiler is ICompiler {
 	/// Gets the resource file extension for the compiler
 	/// </summary>
 	ResourceFileExtension { "res" }
+
+	/// <summary>
+	/// Scan Dependencies
+	/// </summary>
+	CreateScanDependenciesOperations(arguments) {
+		var operations = []
+
+		for (translationUnitArguments in arguments.TranslationUnits) {
+			// Build up the input/output sets
+			var inputFiles = []
+			inputFiles.add(translationUnitArguments.SourceFile)
+
+			var outputFiles = []
+
+			// Build the unique arguments for this translation unit
+			var commandArguments = GCCArgumentBuilder.BuildScanDependenciesArguments(
+				arguments,
+				translationUnitArguments,
+				_compilerExecutable)
+
+			// Generate the operation
+			var preprocessorOperation = BuildOperation.new(
+				translationUnitArguments.SourceFile.toString,
+				arguments.SourceRootDirectory,
+				_scannerExecutable,
+				commandArguments,
+				inputFiles,
+				outputFiles)
+			operations.add(preprocessorOperation)
+		}
+
+		return operations
+	}
 
 	/// <summary>
 	/// Compile
@@ -99,7 +134,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				resourceFileArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_gccExecutable,
+				_compilerExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -132,7 +167,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				moduleUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_gccExecutable,
+				_compilerExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -171,7 +206,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				translationUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_gccExecutable,
+				_compilerExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -197,7 +232,7 @@ class GCCCompiler is ICompiler {
 			var buildOperation = BuildOperation.new(
 				assemblyUnitArguments.SourceFile.toString,
 				arguments.SourceRootDirectory,
-				_gccExecutable,
+				_compilerExecutable,
 				commandArguments,
 				inputFiles,
 				outputFiles)
@@ -214,11 +249,11 @@ class GCCCompiler is ICompiler {
 		// Select the correct executable for linking libraries or executables
 		var executablePath
 		if (arguments.TargetType == LinkTarget.StaticLibrary) {
-			executablePath = _gccExecutable
+			executablePath = _compilerExecutable
 		} else if (arguments.TargetType == LinkTarget.DynamicLibrary ||
 			arguments.TargetType == LinkTarget.Executable ||
 			arguments.TargetType == LinkTarget.WindowsApplication) {
-			executablePath = _gccExecutable
+			executablePath = _compilerExecutable
 		} else {
 			Fiber.abort("Unknown LinkTarget.")
 		}

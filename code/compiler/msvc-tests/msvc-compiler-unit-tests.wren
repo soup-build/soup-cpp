@@ -16,6 +16,8 @@ class MSVCCompilerUnitTests {
 	RunTests() {
 		System.print("MSVCCompilerUnitTests.Initialize()")
 		this.Initialize()
+		System.print("MSVCCompilerUnitTests.ScanDependencies_Simple()")
+		this.ScanDependencies_Simple()
 		System.print("MSVCCompilerUnitTests.Compile_Simple()")
 		this.Compile_Simple()
 		System.print("MSVCCompilerUnitTests.Compile_Module_Partition()")
@@ -48,6 +50,56 @@ class MSVCCompilerUnitTests {
 		Assert.Equal(Path.new("Test.lib"), uut.CreateStaticLibraryFileName("Test"))
 		Assert.Equal("dll", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
+	}
+
+	// [Fact]
+	ScanDependencies_Simple(){
+		var uut = MSVCCompiler.new(
+			Path.new("C:/bin/mock.cl.exe"),
+			Path.new("C:/bin/mock.link.exe"),
+			Path.new("C:/bin/mock.lib.exe"),
+			Path.new("C:/bin/mock.rc.exe"),
+			Path.new("C:/bin/mock.ml.exe"))
+
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.SourceRootDirectory = Path.new("C:/source/")
+		arguments.TargetRootDirectory = Path.new("C:/target/")
+		arguments.ObjectDirectory = Path.new("ObjectDir/")
+
+		var translationUnitArguments = TranslationUnitCompileArguments.new()
+		translationUnitArguments.SourceFile = Path.new("File.cpp")
+		translationUnitArguments.TargetFile = Path.new("obj/File.o")
+
+		arguments.TranslationUnits = [
+			translationUnitArguments,
+		]
+
+		var result = uut.CreateScanDependenciesOperations(arguments)
+
+		// Verify result
+		var expected = [
+			BuildOperation.new(
+				"./File.cpp",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.cl.exe"),
+				[
+					"/format:p1689",
+					"--",
+					"C:/bin/mock.cl.exe",
+					"/std:c++11",
+					"/c",
+					"./File.cpp",
+					"/Fo\"C:/target/obj/File.o\"",
+				],
+				[
+					Path.new("File.cpp"),
+				],
+				[
+				]),
+		]
+
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]

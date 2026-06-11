@@ -71,6 +71,8 @@ SMLDocument ConvertResult(const json11::Json::object& root)
 
 	if (version != 1)
 		throw std::runtime_error("Unknown result version");
+	if (revision < 0)
+		throw std::runtime_error("Unknown result revision");
 
 	bool isModule = false;
 	bool isInterface = false;

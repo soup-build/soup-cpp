@@ -28,6 +28,64 @@ class GCCArgumentBuilder {
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
 
+	static BuildScanDependenciesArguments(sharedArguments, arguments, compilerExecutable) {
+		// Calculate object output file
+		var commandArguments = []
+
+		// Print json output to stdout
+		GCCArgumentBuilder.AddParameter(commandArguments, "format", "p1689")
+
+		// Send in compile flags from command line
+		commandArguments.add("--")
+
+		// Pass in the compiler
+		commandArguments.add(compilerExecutable.toString)
+
+		// Set the language standard
+		if (sharedArguments.Standard == LanguageStandard.CPP11) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP14) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++14")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP17) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP20) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP23) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP26) {
+			GCCArgumentBuilder.AddParameter(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++26")
+		} else {
+			Fiber.abort("Unknown language standard %(sharedArguments.Standard).")
+		}
+
+		// Set the include paths
+		for (directory in sharedArguments.IncludeDirectories) {
+			GCCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+		}
+
+		// Set the preprocessor definitions
+		for (definition in sharedArguments.PreprocessorDefinitions) {
+			GCCArgumentBuilder.AddFlagValue(commandArguments, GCCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
+		}
+
+		// Add the source file as input
+		commandArguments.add(arguments.SourceFile.toString)
+
+		// Only run preprocessor, compile and assemble
+		GCCArgumentBuilder.AddFlag(commandArguments, GCCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// Add the target file as outputs
+		var absoluteTargetFile = sharedArguments.TargetRootDirectory + arguments.TargetFile
+		GCCArgumentBuilder.AddFlag(
+			commandArguments,
+			GCCArgumentBuilder.Compiler_ArgumentParameter_Output)
+		GCCArgumentBuilder.AddValue(
+			commandArguments,
+			absoluteTargetFile.toString)
+
+		return commandArguments
+	}
+
 	static BuildSharedCompilerArguments(arguments) {
 		// Calculate object output file
 		var commandArguments = []

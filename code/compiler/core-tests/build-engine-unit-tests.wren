@@ -138,10 +138,11 @@ class BuildEngineUnitTests {
 		// Verify build state
 		var expectedPreprocessorOperations = [
 			BuildOperation.new(
-				"MockScanDeps: 0",
+				"Scan MockScanDeps: 0",
 				Path.new("MockWorkingDirectory"),
 				Path.new("/TARGET/parse-modules.exe"),
 				[
+					"--",
 					"./MockScanDeps.exe",
 					"Arguments",
 				],
@@ -151,10 +152,11 @@ class BuildEngineUnitTests {
 				[
 				]),
 			BuildOperation.new(
-				"MockScanDeps: 0",
+				"Scan MockScanDeps: 0",
 				Path.new("MockWorkingDirectory"),
 				Path.new("/TARGET/parse-modules.exe"),
 				[
+					"--",
 					"./MockScanDeps.exe",
 					"Arguments",
 				],
@@ -164,10 +166,11 @@ class BuildEngineUnitTests {
 				[
 				]),
 			BuildOperation.new(
-				"MockScanDeps: 0",
+				"Scan MockScanDeps: 0",
 				Path.new("MockWorkingDirectory"),
 				Path.new("/TARGET/parse-modules.exe"),
 				[
+					"--",
 					"./MockScanDeps.exe",
 					"Arguments",
 				],
