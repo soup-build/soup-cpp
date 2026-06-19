@@ -130,8 +130,8 @@ int main(int argc, char** argv)
 	{
 		// Setup the filter
 		auto defaultTypes =
-			// static_cast<uint32_t>(TraceEventFlag::Diagnostic) |
-			// static_cast<uint32_t>(TraceEventFlag::Information) |
+			static_cast<uint32_t>(TraceEventFlag::Diagnostic) |
+			static_cast<uint32_t>(TraceEventFlag::Information) |
 			static_cast<uint32_t>(TraceEventFlag::HighPriority) |
 			static_cast<uint32_t>(TraceEventFlag::Warning) |
 			static_cast<uint32_t>(TraceEventFlag::Error) |

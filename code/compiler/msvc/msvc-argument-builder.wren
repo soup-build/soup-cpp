@@ -474,6 +474,10 @@ class MSVCArgumentBuilder {
 		arguments.add("%(value)")
 	}
 
+	static AddValueWithQuotes(arguments, value) {
+		arguments.add("\"%(value)\"")
+	}
+
 	static AddFlag(arguments, flag) {
 		arguments.add("/%(flag)")
 	}
