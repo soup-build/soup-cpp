@@ -45,8 +45,11 @@ class MSVCArgumentBuilder {
 		// Calculate object output file
 		var commandArguments = []
 
+		// Disable the logo
+		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
+
 		// Print json output to stdout
-		MSVCArgumentBuilder.AddFlag(commandArguments, "sourceDependencies-")
+		MSVCArgumentBuilder.AddFlag(commandArguments, "scanDependencies-")
 
 		// Set the language standard
 		if (sharedArguments.Standard == LanguageStandard.CPP11) {
@@ -58,9 +61,9 @@ class MSVCArgumentBuilder {
 		} else if (sharedArguments.Standard == LanguageStandard.CPP20) {
 			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
 		} else if (sharedArguments.Standard == LanguageStandard.CPP23) {
-			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23")
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23preview")
 		} else if (sharedArguments.Standard == LanguageStandard.CPP26) {
-			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++26")
+			Fiber.abort("C++ 26 not supported by MSVC yet.")
 		} else {
 			Fiber.abort("Unknown language standard %(sharedArguments.Standard).")
 		}

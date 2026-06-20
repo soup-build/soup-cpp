@@ -44,6 +44,8 @@ json11::Json RunChild(const Path& executable, const std::vector<std::string>& ar
 	process->Start();
 	process->WaitForExit();
 
+	Log::Diag("Child StdOut: {}", process->GetStandardOutput());
+	Log::Diag("Child StdErr {}", process->GetStandardError());
 	auto exitCode = process->GetExitCode();
 
 	if (exitCode != 0) {
@@ -51,7 +53,6 @@ json11::Json RunChild(const Path& executable, const std::vector<std::string>& ar
 		throw std::runtime_error("child failed");
 	}
 
-	Log::Info("Parse child result {}", process->GetStandardOutput());
 	std::string error;
 	auto result = json11::Json::parse(process->GetStandardOutput(), error);
 
@@ -130,8 +131,8 @@ int main(int argc, char** argv)
 	{
 		// Setup the filter
 		auto defaultTypes =
-			static_cast<uint32_t>(TraceEventFlag::Diagnostic) |
-			static_cast<uint32_t>(TraceEventFlag::Information) |
+			// static_cast<uint32_t>(TraceEventFlag::Diagnostic) |
+			// static_cast<uint32_t>(TraceEventFlag::Information) |
 			static_cast<uint32_t>(TraceEventFlag::HighPriority) |
 			static_cast<uint32_t>(TraceEventFlag::Warning) |
 			static_cast<uint32_t>(TraceEventFlag::Error) |
