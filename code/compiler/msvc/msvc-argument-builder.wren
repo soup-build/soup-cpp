@@ -41,6 +41,59 @@ class MSVCArgumentBuilder {
 	static Linker_ArgumentValue_X64 { "X64" }
 	static Linker_ArgumentValue_X86 { "X86" }
 
+	static BuildScanDependenciesArguments(sharedArguments, arguments) {
+		// Calculate object output file
+		var commandArguments = []
+
+		// Disable the logo
+		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.ArgumentFlag_NoLogo)
+
+		// Print json output to stdout
+		MSVCArgumentBuilder.AddFlag(commandArguments, "scanDependencies-")
+
+		// Set the language standard
+		if (sharedArguments.Standard == LanguageStandard.CPP11) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++11")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP14) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++14")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP17) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++17")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP20) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++20")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP23) {
+			MSVCArgumentBuilder.AddParameter(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Standard, "c++23preview")
+		} else if (sharedArguments.Standard == LanguageStandard.CPP26) {
+			Fiber.abort("C++ 26 not supported by MSVC yet.")
+		} else {
+			Fiber.abort("Unknown language standard %(sharedArguments.Standard).")
+		}
+
+		// Set the include paths
+		for (directory in sharedArguments.IncludeDirectories) {
+			MSVCArgumentBuilder.AddFlagValueWithQuotes(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+		}
+
+		// Set the preprocessor definitions
+		for (definition in sharedArguments.PreprocessorDefinitions) {
+			MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
+		}
+
+		// Only run preprocessor, compile and assemble
+		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		// Add the source file as input
+		commandArguments.add(arguments.SourceFile.toString)
+
+		// Add the target file as outputs
+		var absoluteTargetFile = sharedArguments.TargetRootDirectory + arguments.TargetFile
+		MSVCArgumentBuilder.AddFlagValueWithQuotes(
+			commandArguments,
+			MSVCArgumentBuilder.Compiler_ArgumentParameter_ObjectFile,
+			absoluteTargetFile.toString)
+
+		return commandArguments
+	}
+
 	static BuildSharedCompilerArguments(arguments) {
 		// Calculate object output file
 		var commandArguments = []
@@ -422,6 +475,10 @@ class MSVCArgumentBuilder {
 
 	static AddValue(arguments, value) {
 		arguments.add("%(value)")
+	}
+
+	static AddValueWithQuotes(arguments, value) {
+		arguments.add("\"%(value)\"")
 	}
 
 	static AddFlag(arguments, flag) {

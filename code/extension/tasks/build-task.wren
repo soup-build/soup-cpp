@@ -41,6 +41,9 @@ class BuildTask is SoupTask {
 
 		var activeState = Soup.activeState
 		var sharedState = Soup.sharedState
+		var globalState = Soup.globalState
+
+		var isPass1 = !(globalState.containsKey("Preprocessors"))
 
 		var buildTable = activeState["Build"]
 		var system = buildTable["System"]
@@ -211,51 +214,52 @@ class BuildTask is SoupTask {
 		}
 
 		var compiler = __compilerFactory[compilerName].call(activeState)
-
 		var buildEngine = BuildEngine.new(compiler)
-		var buildResult = buildEngine.Execute(arguments)
 
-		// Pass along internal state for other stages to gain access
-		buildTable["InternalLinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.InternalLinkDependencies)
+		if (isPass1) {
+			var preprocessorOperations = buildEngine.ExecutePass1(arguments)
 
-		// Always pass along required input to shared build tasks
-		var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
-		sharedBuildTable["ModuleDependencies"] = MapExtensions.ConvertFromPathMap(buildResult.ModuleDependencies)
-		sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
-		sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
+			// Register the build operations
+			for (operation in preprocessorOperations) {
+				Soup.createPreprocessorOperation(
+					operation.Title,
+					operation.Executable.toString,
+					operation.Arguments,
+					operation.WorkingDirectory.toString,
+					ListExtensions.ConvertFromPathList(operation.DeclaredInput))
+			}
+		} else {
+			var buildResult = buildEngine.ExecutePass2(arguments)
 
-		if (!(buildResult.TargetFile is Null)) {
-			sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
-			sharedBuildTable["RunExecutable"] = buildResult.TargetFile.toString
-			sharedBuildTable["RunArguments"] = []
-		}
+			// Pass along internal state for other stages to gain access
+			buildTable["InternalLinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.InternalLinkDependencies)
 
-		if (buildResult.PublicIncludes.count > 0) {
-			sharedBuildTable["PublicIncludes"] = ListExtensions.ConvertFromPathList(buildResult.PublicIncludes)
-		}
+			// Always pass along required input to shared build tasks
+			var sharedBuildTable = MapExtensions.EnsureTable(sharedState, "Build")
+			sharedBuildTable["ModuleDependencies"] = MapExtensions.ConvertFromPathMap(buildResult.ModuleDependencies)
+			sharedBuildTable["RuntimeDependencies"] = ListExtensions.ConvertFromPathList(buildResult.RuntimeDependencies)
+			sharedBuildTable["LinkDependencies"] = ListExtensions.ConvertFromPathList(buildResult.LinkDependencies)
 
-		// Register the build operations
-		for (operation in buildResult.BuildOperations) {
-			Soup.createOperation(
-				operation.Title,
-				operation.Executable.toString,
-				operation.Arguments,
-				operation.WorkingDirectory.toString,
-				ListExtensions.ConvertFromPathList(operation.DeclaredInput),
-				ListExtensions.ConvertFromPathList(operation.DeclaredOutput))
-		}
-		
-		// Register the operation proxies
-		for (operation in buildResult.OperationProxies) {
-			Soup.createOperationProxy(
-				operation.Title,
-				operation.Executable.toString,
-				operation.Arguments,
-				operation.WorkingDirectory.toString,
-				ListExtensions.ConvertFromPathList(operation.DeclaredInput),
-				operation.ResultFile.toString,
-				operation.FinalizerTask,
-				operation.FinalizerState)
+			if (!(buildResult.TargetFile is Null)) {
+				sharedBuildTable["TargetFile"] = buildResult.TargetFile.toString
+				sharedBuildTable["RunExecutable"] = buildResult.TargetFile.toString
+				sharedBuildTable["RunArguments"] = []
+			}
+
+			if (buildResult.PublicIncludes.count > 0) {
+				sharedBuildTable["PublicIncludes"] = ListExtensions.ConvertFromPathList(buildResult.PublicIncludes)
+			}
+
+			// Register the build operations
+			for (operation in buildResult.BuildOperations) {
+				Soup.createOperation(
+					operation.Title,
+					operation.Executable.toString,
+					operation.Arguments,
+					operation.WorkingDirectory.toString,
+					ListExtensions.ConvertFromPathList(operation.DeclaredInput),
+					ListExtensions.ConvertFromPathList(operation.DeclaredOutput))
+			}
 		}
 
 		Soup.info("Build Generate Done")

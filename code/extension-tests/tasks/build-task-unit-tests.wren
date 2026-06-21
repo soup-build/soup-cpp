@@ -69,6 +69,9 @@ class BuildTaskUnitTests {
 			}
 		}
 
+		// Pass 2 Build
+		globalState["Preprocessors"] = {}
+
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
 		BuildTask.registerCompiler("MOCK", Fn.new { |activeState| compiler })
@@ -248,6 +251,9 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
+
+		// Pass 2 Build
+		globalState["Preprocessors"] = {}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -433,6 +439,9 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
+
+		// Pass 2 Build
+		globalState["Preprocessors"] = {}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -682,6 +691,9 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
+
+		// Pass 2 Build
+		globalState["Preprocessors"] = {}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -974,6 +986,9 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
+
+		// Pass 2 Build
+		globalState["Preprocessors"] = {}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()
@@ -1271,6 +1286,9 @@ class BuildTaskUnitTests {
 				}
 			}
 		}
+
+		// Pass 2 Build
+		globalState["Preprocessors"] = {}
 
 		// Register the mock compiler
 		var compiler = MockCompiler.new()

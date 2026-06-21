@@ -12,6 +12,12 @@ class GCCArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
+		System.print("GCCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"-std=c++11\")")
+		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "-std=c++11")
+		System.print("GCCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"-std=c++14\")")
+		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "-std=c++14")
+		System.print("GCCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"-std=c++17\")")
+		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "-std=c++17")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"-std=c++11\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "-std=c++11")
 		System.print("GCCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"-std=c++14\")")
@@ -48,6 +54,39 @@ class GCCArgumentBuilderUnitTests {
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
 		System.print("GCCArgumentBuilderUnitTests.BuildAssemblyUnitCompilerArguments_Simple()")
 		this.BuildAssemblyUnitCompilerArguments_Simple()
+	}
+
+	// [Theory]
+	// [InlineData(LanguageStandard.CPP11, "-std=c++11")]
+	// [InlineData(LanguageStandard.CPP14, "-std=c++14")]
+	// [InlineData(LanguageStandard.CPP17, "-std=c++17")]
+	BSDA_SingleArgument_LanguageStandard(
+		standard,
+		expectedFlag) {
+		var sharedArguments = SharedCompileArguments.new()
+		sharedArguments.Standard = standard
+		sharedArguments.TargetRootDirectory = Path.new("C:/target/")
+
+		var arguments = TranslationUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("file1.cpp")
+		arguments.TargetFile = Path.new("file1.o")
+
+		var compilerExecutable = Path.new("MockCompiler.exe")
+		var actualArguments = GCCArgumentBuilder.BuildScanDependenciesArguments(
+			sharedArguments, arguments, compilerExecutable)
+
+		var expectedArguments = [
+			"-format=p1689",
+			"--",
+			"./MockCompiler.exe",
+			expectedFlag,
+			"./file1.cpp",
+			"-c",
+			"-o",
+			"C:/target/file1.o",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Theory]

@@ -15,8 +15,16 @@ class MockCompiler is ICompiler {
 	/// Initializes a new instance of the <see cref='Compiler'/> class.
 	/// </summary>
 	construct new() {
+		_scanDependenciesRequests = []
 		_compileRequests = []
 		_linkRequests = []
+	}
+
+	/// <summary>
+	/// Get the scan dependencies requests
+	/// </summary>
+	GetScanDependenciesRequests() {
+		return _scanDependenciesRequests
 	}
 
 	/// <summary>
@@ -67,6 +75,32 @@ class MockCompiler is ICompiler {
 	/// Gets the resource file extension for the compiler
 	/// </summary>
 	ResourceFileExtension { "mock.res" }
+
+	/// <summary>
+	/// Scan Dependencies
+	/// </summary>
+	CreateScanDependenciesOperations(arguments) {
+		_scanDependenciesRequests.add(arguments)
+		var result = []
+
+		for (translationUnitArguments in arguments.TranslationUnits) {
+			result.add(
+				BuildOperation.new(
+					"MockScanDeps: %(_compileRequests.count)",
+					Path.new("MockWorkingDirectory"),
+					Path.new("MockScanDeps.exe"),
+					[
+						"Arguments",
+					],
+					[
+						translationUnitArguments.SourceFile,
+					],
+					[
+					]))
+		}
+
+		return result
+	}
 
 	/// <summary>
 	/// Compile

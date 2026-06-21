@@ -1,6 +1,6 @@
 Name: 'cpp'
 Language: 'Wren|0'
-Version: 0.19.4
+Version: 0.20.0
 Dependencies: {
 	Runtime: [
 		'soup|cpp-compiler@0'
@@ -12,6 +12,6 @@ Dependencies: {
 	Tool: [
 		'[C++]mwasplund|copy@1'
 		'[C++]mwasplund|mkdir@1'
-		'[C++]mwasplund|parse-modules@3'
+		'[C++]mwasplund|parse-modules@4'
 	]
 }

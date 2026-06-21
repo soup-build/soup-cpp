@@ -12,6 +12,12 @@ class MSVCArgumentBuilderUnitTests {
 	}
 
 	RunTests() {
+		System.print("MSVCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"-std=c++11\")")
+		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
+		System.print("MSVCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"-std=c++14\")")
+		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "/std:c++14")
+		System.print("MSVCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"-std=c++17\")")
+		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "/std:c++17")
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"/std:c++11\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"/std:c++14\")")
@@ -48,6 +54,35 @@ class MSVCArgumentBuilderUnitTests {
 		this.BuildTranslationUnitCompilerArguments_InternalModules()
 		System.print("MSVCArgumentBuilderUnitTests.BuildAssemblyUnitCompilerArguments_Simple()")
 		this.BuildAssemblyUnitCompilerArguments_Simple()
+	}
+
+	// [Theory]
+	// [InlineData(LanguageStandard.CPP11, "/std:c++11")]
+	// [InlineData(LanguageStandard.CPP14, "/std:c++14")]
+	// [InlineData(LanguageStandard.CPP17, "/std:c++17")]
+	BSDA_SingleArgument_LanguageStandard(
+		standard,
+		expectedFlag) {
+		var sharedArguments = SharedCompileArguments.new()
+		sharedArguments.Standard = standard
+		sharedArguments.TargetRootDirectory = Path.new("C:/target/")
+
+		var arguments = TranslationUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("file1.cpp")
+		arguments.TargetFile = Path.new("file1.o")
+
+		var actualArguments = MSVCArgumentBuilder.BuildScanDependenciesArguments(
+			sharedArguments, arguments)
+
+		var expectedArguments = [
+			"/sourceDependencies-",
+			expectedFlag,
+			"/c",
+			"./file1.cpp",
+			"/Fo\"C:/target/file1.o\"",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
 	}
 
 	// [Theory]

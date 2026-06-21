@@ -16,6 +16,8 @@ class ClangCompilerUnitTests {
 	RunTests() {
 		System.print("ClangCompilerUnitTests.Initialize()")
 		this.Initialize()
+		System.print("ClangCompilerUnitTests.ScanDependencies_Simple()")
+		this.ScanDependencies_Simple()
 		System.print("ClangCompilerUnitTests.Compile_Simple()")
 		this.Compile_Simple()
 		System.print("ClangCompilerUnitTests.Compile_Module_Partition()")
@@ -47,6 +49,56 @@ class ClangCompilerUnitTests {
 		Assert.Equal(Path.new("libTest.a"), uut.CreateStaticLibraryFileName("Test"))
 		Assert.Equal("so", uut.DynamicLibraryFileExtension)
 		Assert.Equal("res", uut.ResourceFileExtension)
+	}
+
+	// [Fact]
+	ScanDependencies_Simple(){
+		var uut = ClangCompiler.new(
+			20,
+			Path.new("C:/bin/mock.ar"),
+			Path.new("C:/bin/mock.clang++"),
+			Path.new("C:/bin/mock.scan-deps"))
+
+		var arguments = SharedCompileArguments.new()
+		arguments.Standard = LanguageStandard.CPP11
+		arguments.SourceRootDirectory = Path.new("C:/source/")
+		arguments.TargetRootDirectory = Path.new("C:/target/")
+		arguments.ObjectDirectory = Path.new("ObjectDir/")
+
+		var translationUnitArguments = TranslationUnitCompileArguments.new()
+		translationUnitArguments.SourceFile = Path.new("File.cpp")
+		translationUnitArguments.TargetFile = Path.new("obj/File.o")
+
+		arguments.TranslationUnits = [
+			translationUnitArguments,
+		]
+
+		var result = uut.CreateScanDependenciesOperations(arguments)
+
+		// Verify result
+		var expected = [
+			BuildOperation.new(
+				"./File.cpp",
+				Path.new("C:/source/"),
+				Path.new("C:/bin/mock.scan-deps"),
+				[
+					"-format=p1689",
+					"--",
+					"C:/bin/mock.clang++",
+					"-std=c++11",
+					"./File.cpp",
+					"-c",
+					"-o",
+					"C:/target/obj/File.o",
+				],
+				[
+					Path.new("File.cpp"),
+				],
+				[
+				]),
+		]
+
+		Assert.ListEqual(expected, result)
 	}
 
 	// [Fact]

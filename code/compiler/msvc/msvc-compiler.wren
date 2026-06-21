@@ -20,6 +20,7 @@ class MSVCCompiler is ICompiler {
 		rcExecutable,
 		mlExecutable) {
 		_compilerExecutable = compilerExecutable
+		_scannerExecutable = compilerExecutable
 		_linkerExecutable = linkerExecutable
 		_libraryExecutable = libraryExecutable
 		_rcExecutable = rcExecutable
@@ -60,6 +61,38 @@ class MSVCCompiler is ICompiler {
 	/// Gets the resource file extension for the compiler
 	/// </summary>
 	ResourceFileExtension { "res" }
+
+	/// <summary>
+	/// Scan Dependencies
+	/// </summary>
+	CreateScanDependenciesOperations(arguments) {
+		var operations = []
+
+		for (translationUnitArguments in arguments.TranslationUnits) {
+			// Build up the input/output sets
+			var inputFiles = []
+			inputFiles.add(translationUnitArguments.SourceFile)
+
+			var outputFiles = []
+
+			// Build the unique arguments for this translation unit
+			var commandArguments = MSVCArgumentBuilder.BuildScanDependenciesArguments(
+				arguments,
+				translationUnitArguments)
+
+			// Generate the operation
+			var preprocessorOperation = BuildOperation.new(
+				translationUnitArguments.SourceFile.toString,
+				arguments.SourceRootDirectory,
+				_scannerExecutable,
+				commandArguments,
+				inputFiles,
+				outputFiles)
+			operations.add(preprocessorOperation)
+		}
+
+		return operations
+	}
 
 	/// <summary>
 	/// Compile

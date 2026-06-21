@@ -19,24 +19,26 @@ class BuildEngineUnitTests {
 	RunTests() {
 		System.print("BuildEngineUnitTests.Initialize_Success()")
 		this.Initialize_Success()
-		System.print("BuildEngineUnitTests.Build_WindowsApplication()")
-		this.Build_WindowsApplication()
-		System.print("BuildEngineUnitTests.Build_WindowsApplicationWithResource()")
-		this.Build_WindowsApplicationWithResource()
-		System.print("BuildEngineUnitTests.Build_Executable()")
-		this.Build_Executable()
-		System.print("BuildEngineUnitTests.Build_Library_PublicHeaderFiles()")
-		this.Build_Library_PublicHeaderFiles()
-		System.print("BuildEngineUnitTests.Build_Library_MultipleFiles()")
-		this.Build_Library_MultipleFiles()
-		System.print("BuildEngineUnitTests.Build_Library_ModuleInterface()")
-		this.Build_Library_ModuleInterface()
-		System.print("BuildEngineUnitTests.Build_Library_ModuleInterface_WithPartitions()")
-		this.Build_Library_ModuleInterface_WithPartitions()
-		System.print("BuildEngineUnitTests.Build_Library_ModuleInterface_WithPartitions_TransitiveImport()")
-		this.Build_Library_ModuleInterface_WithPartitions_TransitiveImport()
-		System.print("BuildEngineUnitTests.Build_Library_ModuleInterfaceNoSource()")
-		this.Build_Library_ModuleInterfaceNoSource()
+		System.print("BuildEngineUnitTests.Pass1_Library_MultipleFiles()")
+		this.Pass1_Library_MultipleFiles()
+		System.print("BuildEngineUnitTests.Pass2_WindowsApplication()")
+		this.Pass2_WindowsApplication()
+		System.print("BuildEngineUnitTests.Pass2_WindowsApplicationWithResource()")
+		this.Pass2_WindowsApplicationWithResource()
+		System.print("BuildEngineUnitTests.Pass2_Executable()")
+		this.Pass2_Executable()
+		System.print("BuildEngineUnitTests.Pass2_Library_PublicHeaderFiles()")
+		this.Pass2_Library_PublicHeaderFiles()
+		System.print("BuildEngineUnitTests.Pass2_Library_MultipleFiles()")
+		this.Pass2_Library_MultipleFiles()
+		System.print("BuildEngineUnitTests.Pass2_Library_ModuleInterface()")
+		this.Pass2_Library_ModuleInterface()
+		System.print("BuildEngineUnitTests.Pass2_Library_ModuleInterface_WithPartitions()")
+		this.Pass2_Library_ModuleInterface_WithPartitions()
+		System.print("BuildEngineUnitTests.Pass2_Library_ModuleInterface_WithPartitions_TransitiveImport()")
+		this.Pass2_Library_ModuleInterface_WithPartitions_TransitiveImport()
+		System.print("BuildEngineUnitTests.Pass2_Library_ModuleInterfaceNoSource()")
+		this.Pass2_Library_ModuleInterfaceNoSource()
 	}
 
 	Initialize_Success() {
@@ -46,7 +48,145 @@ class BuildEngineUnitTests {
 		var uut = BuildEngine.new(compiler)
 	}
 
-	Build_WindowsApplication() {
+	Pass1_Library_MultipleFiles() {
+		SoupTest.initialize()
+		var globalState = SoupTest.globalState
+
+		// Setup dependencies table
+		var dependenciesTable = {}
+		globalState["Dependencies"] = dependenciesTable
+		dependenciesTable["Tool"] = {
+			"mwasplund|parse-modules": {
+				"SharedState": {
+					"Build": {
+						"RunExecutable": "/TARGET/parse-modules.exe"
+					}
+				}
+			}
+		}
+
+		// Register the mock compiler
+		var compiler = MockCompiler.new()
+
+		// Setup the build arguments
+		var arguments = BuildArguments.new()
+		arguments.TargetName = "Library"
+		arguments.TargetSystem = "Unix"
+		arguments.LanguageStandard = LanguageStandard.CPP20
+		arguments.SourceRootDirectory = Path.new("C:/source/")
+		arguments.TargetRootDirectory = Path.new("C:/target/")
+		arguments.ObjectDirectory = Path.new("obj/")
+		arguments.BinaryDirectory = Path.new("bin/")
+		arguments.SourceFiles = [
+			SourceFile.new(Path.new("TestFile1.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile2.cpp"), Path.new("./"), null, false, null, []),
+			SourceFile.new(Path.new("TestFile3.cpp"), Path.new("./"), null, false, null, []),
+		]
+		arguments.IncludeDirectories = [
+			Path.new("Folder"),
+			Path.new("AnotherFolder/Sub"),
+		]
+
+		var uut = BuildEngine.new(compiler)
+		var result = uut.ExecutePass1(arguments)
+
+		// Verify expected logs
+		Assert.ListEqual(
+			[
+				"INFO: Generate Scan Dependencies Operation: ./TestFile1.cpp",
+				"INFO: Generate Scan Dependencies Operation: ./TestFile2.cpp",
+				"INFO: Generate Scan Dependencies Operation: ./TestFile3.cpp",
+			],
+			SoupTest.logs)
+
+		// Setup the shared arguments
+		var expectedScanDependenciesArguments = SharedCompileArguments.new()
+		expectedScanDependenciesArguments.Standard = LanguageStandard.CPP20
+		expectedScanDependenciesArguments.ObjectDirectory = Path.new("obj/")
+		expectedScanDependenciesArguments.SourceRootDirectory = Path.new("C:/source/")
+		expectedScanDependenciesArguments.TargetRootDirectory = Path.new("C:/target/")
+		expectedScanDependenciesArguments.IncludeDirectories = [
+			Path.new("Folder"),
+			Path.new("AnotherFolder/Sub"),
+		]
+
+		var expectedTranslationUnit1Arguments = TranslationUnitCompileArguments.new()
+		expectedTranslationUnit1Arguments.SourceFile = Path.new("TestFile1.cpp")
+		expectedTranslationUnit1Arguments.TargetFile = Path.new("obj/TestFile1.mock.obj")
+
+		var expectedTranslationUnit2Arguments = TranslationUnitCompileArguments.new()
+		expectedTranslationUnit2Arguments.SourceFile = Path.new("TestFile2.cpp")
+		expectedTranslationUnit2Arguments.TargetFile = Path.new("obj/TestFile2.mock.obj")
+
+		var expectedTranslationUnit3Arguments = TranslationUnitCompileArguments.new()
+		expectedTranslationUnit3Arguments.SourceFile = Path.new("TestFile3.cpp")
+		expectedTranslationUnit3Arguments.TargetFile = Path.new("obj/TestFile3.mock.obj")
+
+		expectedScanDependenciesArguments.TranslationUnits = [
+			expectedTranslationUnit1Arguments,
+			expectedTranslationUnit2Arguments,
+			expectedTranslationUnit3Arguments,
+		]
+
+		// Verify expected compiler calls
+		Assert.ListEqual(
+			[
+				expectedScanDependenciesArguments,
+			],
+			compiler.GetScanDependenciesRequests())
+
+		// Verify build state
+		var expectedPreprocessorOperations = [
+			BuildOperation.new(
+				"Scan MockScanDeps: 0",
+				Path.new("MockWorkingDirectory"),
+				Path.new("/TARGET/parse-modules.exe"),
+				[
+					"--",
+					"\"./MockScanDeps.exe\"",
+					"Arguments",
+				],
+				[
+					Path.new("TestFile1.cpp"),
+				],
+				[
+				]),
+			BuildOperation.new(
+				"Scan MockScanDeps: 0",
+				Path.new("MockWorkingDirectory"),
+				Path.new("/TARGET/parse-modules.exe"),
+				[
+					"--",
+					"\"./MockScanDeps.exe\"",
+					"Arguments",
+				],
+				[
+					Path.new("TestFile2.cpp"),
+				],
+				[
+				]),
+			BuildOperation.new(
+				"Scan MockScanDeps: 0",
+				Path.new("MockWorkingDirectory"),
+				Path.new("/TARGET/parse-modules.exe"),
+				[
+					"--",
+					"\"./MockScanDeps.exe\"",
+					"Arguments",
+				],
+				[
+					Path.new("TestFile3.cpp"),
+				],
+				[
+				]),
+		]
+
+		Assert.ListEqual(
+			expectedPreprocessorOperations,
+			result)
+	}
+
+	Pass2_WindowsApplication() {
 		// Setup the input build state
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
@@ -88,7 +228,7 @@ class BuildEngineUnitTests {
 
 		var uut = BuildEngine.new(compiler)
 
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -207,7 +347,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 	}
 
-	Build_WindowsApplicationWithResource() {
+	Pass2_WindowsApplicationWithResource() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -248,7 +388,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -375,7 +515,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 	}
 
-	Build_Executable() {
+	Pass2_Executable() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -415,7 +555,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -536,7 +676,7 @@ class BuildEngineUnitTests {
 			result.RuntimeDependencies)
 	}
 
-	Build_Library_PublicHeaderFiles() {
+	Pass2_Library_PublicHeaderFiles() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -606,7 +746,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -815,7 +955,7 @@ class BuildEngineUnitTests {
 			result.TargetFile)
 	}
 
-	Build_Library_MultipleFiles() {
+	Pass2_Library_MultipleFiles() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -865,7 +1005,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -1044,7 +1184,7 @@ class BuildEngineUnitTests {
 			result.TargetFile)
 	}
 
-	Build_Library_ModuleInterface() {
+	Pass2_Library_ModuleInterface() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -1106,7 +1246,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -1314,7 +1454,7 @@ class BuildEngineUnitTests {
 			result.TargetFile)
 	}
 
-	Build_Library_ModuleInterface_WithPartitions() {
+	Pass2_Library_ModuleInterface_WithPartitions() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -1400,7 +1540,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -1640,7 +1780,7 @@ class BuildEngineUnitTests {
 			result.TargetFile)
 	}
 
-	Build_Library_ModuleInterface_WithPartitions_TransitiveImport() {
+	Pass2_Library_ModuleInterface_WithPartitions_TransitiveImport() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -1735,7 +1875,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
@@ -1986,7 +2126,7 @@ class BuildEngineUnitTests {
 			result.TargetFile)
 	}
 
-	Build_Library_ModuleInterfaceNoSource() {
+	Pass2_Library_ModuleInterfaceNoSource() {
 		SoupTest.initialize()
 		var globalState = SoupTest.globalState
 
@@ -2041,7 +2181,7 @@ class BuildEngineUnitTests {
 		]
 
 		var uut = BuildEngine.new(compiler)
-		var result = uut.Execute(arguments)
+		var result = uut.ExecutePass2(arguments)
 
 		// Verify expected logs
 		Assert.ListEqual(
