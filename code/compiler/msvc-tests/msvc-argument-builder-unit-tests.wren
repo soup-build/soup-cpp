@@ -75,7 +75,8 @@ class MSVCArgumentBuilderUnitTests {
 			sharedArguments, arguments)
 
 		var expectedArguments = [
-			"/sourceDependencies-",
+			"/nologo",
+			"/scanDependencies-",
 			expectedFlag,
 			"/c",
 			"./file1.cpp",
