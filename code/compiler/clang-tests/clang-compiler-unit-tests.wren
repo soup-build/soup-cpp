@@ -207,7 +207,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
+					"-fpic -std=c++11 -O0 -I./Includes -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -289,7 +289,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
+					"-fpic -std=c++11 -O0 -I./Includes -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -386,7 +386,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-fpic -std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
+					"-fpic -std=c++11 -O0 -I./Includes -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -511,7 +511,7 @@ class ClangCompilerUnitTests {
 				Path.new("./writefile.exe"),
 				[
 					"./ObjectDir/SharedCompileArguments.rsp",
-					"-std=c++11 -O0 -I\"./Includes\" -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
+					"-std=c++11 -O0 -I./Includes -DDEBUG -fmodule-file=Module=./Module.pcm -mpclmul -maes -msse4.1 -msha",
 				],
 				[],
 				[
@@ -524,8 +524,8 @@ class ClangCompilerUnitTests {
 				[
 					"-D_UNICODE",
 					"-DUNICODE",
-					"-l\"0x0409\"",
-					"-I\"./Includes\"",
+					"-l0x0409",
+					"-I./Includes",
 					"-c",
 					"-o",
 					"C:/target/obj/Resources.res",
