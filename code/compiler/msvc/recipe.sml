@@ -1,6 +1,6 @@
 Name: 'cpp-compiler-msvc'
 Language: 'Wren|0'
-Version: 0.15.0
+Version: 0.15.1
 Dependencies: {
 	Runtime: [
 		'soup|cpp-compiler@0'
