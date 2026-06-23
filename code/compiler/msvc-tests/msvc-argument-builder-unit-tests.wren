@@ -18,6 +18,8 @@ class MSVCArgumentBuilderUnitTests {
 		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, "/std:c++14")
 		System.print("MSVCArgumentBuilderUnitTests.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, \"-std=c++17\")")
 		this.BSDA_SingleArgument_LanguageStandard(LanguageStandard.CPP17, "/std:c++17")
+		System.print("MSVCArgumentBuilderUnitTests.BSDA_SingleArgument_CustomExtension()")
+		this.BSDA_SingleArgument_CustomExtension()
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, \"/std:c++11\")")
 		this.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP11, "/std:c++11")
 		System.print("MSVCArgumentBuilderUnitTests.BSCA_SingleArgument_LanguageStandard(LanguageStandard.CPP14, \"/std:c++14\")")
@@ -48,6 +50,8 @@ class MSVCArgumentBuilderUnitTests {
 		this.BSCA_SingleArgument_Modules()
 		System.print("MSVCArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments()")
 		this.BuildInterfaceUnitCompilerArguments()
+		System.print("MSVCArgumentBuilderUnitTests.BuildInterfaceUnitCompilerArguments_CustomExtension()")
+		this.BuildInterfaceUnitCompilerArguments_CustomExtension()
 		System.print("MSVCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_Simple()")
 		this.BuildTranslationUnitCompilerArguments_Simple()
 		System.print("MSVCArgumentBuilderUnitTests.BuildTranslationUnitCompilerArguments_InternalModules()")
@@ -78,6 +82,8 @@ class MSVCArgumentBuilderUnitTests {
 			"/nologo",
 			"/scanDependencies-",
 			expectedFlag,
+			"/D_UNICODE",
+			"/DUNICODE",
 			"/c",
 			"./file1.cpp",
 			"/Fo\"C:/target/file1.o\"",
@@ -85,6 +91,34 @@ class MSVCArgumentBuilderUnitTests {
 
 		Assert.ListEqual(expectedArguments, actualArguments)
 	}
+
+	BSDA_SingleArgument_CustomExtension() {
+		var sharedArguments = SharedCompileArguments.new()
+		sharedArguments.Standard = LanguageStandard.CPP20
+		sharedArguments.TargetRootDirectory = Path.new("C:/target/")
+
+		var arguments = TranslationUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("file1.cppm")
+		arguments.TargetFile = Path.new("file1.o")
+
+		var actualArguments = MSVCArgumentBuilder.BuildScanDependenciesArguments(
+			sharedArguments, arguments)
+
+		var expectedArguments = [
+			"/nologo",
+			"/scanDependencies-",
+			"/std:c++20",
+			"/D_UNICODE",
+			"/DUNICODE",
+			"/c",
+			"/Tp",
+			"./file1.cppm",
+			"/Fo\"C:/target/file1.o\"",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
 
 	// [Theory]
 	// [InlineData(LanguageStandard.CPP11, "/std:c++11")]
@@ -540,6 +574,34 @@ class MSVCArgumentBuilderUnitTests {
 		var expectedArguments = [
 			"@./ResponseFile.txt",
 			"./module.cpp",
+			"/Fo\"C:/target/module.obj\"",
+			"/interface",
+			"/ifcOutput",
+			"C:/target/module.ifc",
+		]
+
+		Assert.ListEqual(expectedArguments, actualArguments)
+	}
+
+	// [Fact]
+	BuildInterfaceUnitCompilerArguments_CustomExtension() {
+		var targetRootDirectory = Path.new("C:/target/")
+		var arguments = ModuleInterfaceUnitCompileArguments.new()
+		arguments.SourceFile = Path.new("module.cppm")
+		arguments.TargetFile = Path.new("module.obj")
+		arguments.ModuleInterfaceTarget = Path.new("module.ifc")
+
+		var responseFile = Path.new("ResponseFile.txt")
+
+		var actualArguments = MSVCArgumentBuilder.BuildInterfaceUnitCompilerArguments(
+			targetRootDirectory,
+			arguments,
+			responseFile)
+
+		var expectedArguments = [
+			"@./ResponseFile.txt",
+			"/Tp",
+			"./module.cppm",
 			"/Fo\"C:/target/module.obj\"",
 			"/interface",
 			"/ifcOutput",
