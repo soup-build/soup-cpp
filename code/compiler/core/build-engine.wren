@@ -65,7 +65,7 @@ class BuildEngine {
 			for (operation in scanDependenciesOperations) {
 				var arguments = [
 					"--",
-					"\"%(operation.Executable)\"",
+					"%(operation.Executable)",
 				] + operation.Arguments
 				var wrappedOperation = BuildOperation.new(
 					"Scan " + operation.Title,

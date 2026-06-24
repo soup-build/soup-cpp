@@ -143,7 +143,7 @@ class BuildEngineUnitTests {
 				Path.new("/TARGET/parse-modules.exe"),
 				[
 					"--",
-					"\"./MockScanDeps.exe\"",
+					"./MockScanDeps.exe",
 					"Arguments",
 				],
 				[
@@ -157,7 +157,7 @@ class BuildEngineUnitTests {
 				Path.new("/TARGET/parse-modules.exe"),
 				[
 					"--",
-					"\"./MockScanDeps.exe\"",
+					"./MockScanDeps.exe",
 					"Arguments",
 				],
 				[
@@ -171,7 +171,7 @@ class BuildEngineUnitTests {
 				Path.new("/TARGET/parse-modules.exe"),
 				[
 					"--",
-					"\"./MockScanDeps.exe\"",
+					"./MockScanDeps.exe",
 					"Arguments",
 				],
 				[

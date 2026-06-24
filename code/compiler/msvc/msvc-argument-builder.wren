@@ -78,8 +78,14 @@ class MSVCArgumentBuilder {
 			MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, definition)
 		}
 
+		// Unicode character set
+		MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "_UNICODE")
+		MSVCArgumentBuilder.AddFlagValue(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentParameter_PreprocessorDefine, "UNICODE")
+
 		// Only run preprocessor, compile and assemble
 		MSVCArgumentBuilder.AddFlag(commandArguments, MSVCArgumentBuilder.Compiler_ArgumentFlag_CompileOnly)
+
+		MSVCArgumentBuilder.EnsureExtraFileTypes(commandArguments, arguments.SourceFile)
 
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)
@@ -283,6 +289,8 @@ class MSVCArgumentBuilder {
 			MSVCArgumentBuilder.AddValue(commandArguments, module.value.toString)
 		}
 
+		MSVCArgumentBuilder.EnsureExtraFileTypes(commandArguments, arguments.SourceFile)
+
 		// Add the source file as input
 		commandArguments.add(arguments.SourceFile.toString)
 
@@ -471,6 +479,13 @@ class MSVCArgumentBuilder {
 		}
 
 		return commandArguments
+	}
+
+	static EnsureExtraFileTypes(arguments, file) {
+		if (file.GetFileExtension() == ".cppm") {
+			// Force C++ file type
+			MSVCArgumentBuilder.AddFlag(arguments, "Tp")
+		}
 	}
 
 	static AddValue(arguments, value) {

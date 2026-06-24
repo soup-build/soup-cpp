@@ -216,19 +216,29 @@ class BuildTask is SoupTask {
 		var compiler = __compilerFactory[compilerName].call(activeState)
 		var buildEngine = BuildEngine.new(compiler)
 
+
+		// Attempt to run any required preprocessor operations
+		var runOperations = !isPass1
 		if (isPass1) {
 			var preprocessorOperations = buildEngine.ExecutePass1(arguments)
 
-			// Register the build operations
-			for (operation in preprocessorOperations) {
-				Soup.createPreprocessorOperation(
-					operation.Title,
-					operation.Executable.toString,
-					operation.Arguments,
-					operation.WorkingDirectory.toString,
-					ListExtensions.ConvertFromPathList(operation.DeclaredInput))
+			if (preprocessorOperations.count > 0) {
+				// Register the build operations
+				for (operation in preprocessorOperations) {
+					Soup.createPreprocessorOperation(
+						operation.Title,
+						operation.Executable.toString,
+						operation.Arguments,
+						operation.WorkingDirectory.toString,
+						ListExtensions.ConvertFromPathList(operation.DeclaredInput))
+				}
+			} else {
+				// Since there are no preprocessor operations we can skip to the real build
+				runOperations = true
 			}
-		} else {
+		}
+
+		if (runOperations) {
 			var buildResult = buildEngine.ExecutePass2(arguments)
 
 			// Pass along internal state for other stages to gain access

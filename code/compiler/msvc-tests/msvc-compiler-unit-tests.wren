@@ -84,8 +84,11 @@ class MSVCCompilerUnitTests {
 				Path.new("C:/source/"),
 				Path.new("C:/bin/mock.cl.exe"),
 				[
-					"/sourceDependencies-",
+					"/nologo",
+					"/scanDependencies-",
 					"/std:c++11",
+					"/D_UNICODE",
+					"/DUNICODE",
 					"/c",
 					"./File.cpp",
 					"/Fo\"C:/target/obj/File.o\"",

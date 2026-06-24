@@ -50,6 +50,8 @@ json11::Json RunChild(const Path& executable, const std::vector<std::string>& ar
 
 	if (exitCode != 0) {
 		Log::Error("Child Failed: {}", exitCode);
+		Log::Error("Child StdOut: {}", process->GetStandardOutput());
+		Log::Error("Child StdErr {}", process->GetStandardError());
 		throw std::runtime_error("child failed");
 	}
 

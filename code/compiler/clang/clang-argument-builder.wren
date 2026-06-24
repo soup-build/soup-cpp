@@ -61,7 +61,7 @@ class ClangArgumentBuilder {
 
 		// Set the include paths
 		for (directory in sharedArguments.IncludeDirectories) {
-			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Set the preprocessor definitions
@@ -154,7 +154,7 @@ class ClangArgumentBuilder {
 
 		// Set the include paths
 		for (directory in arguments.IncludeDirectories) {
-			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Set the preprocessor definitions
@@ -309,7 +309,7 @@ class ClangArgumentBuilder {
 
 		// Set the include paths
 		for (directory in sharedArguments.IncludeDirectories) {
-			ClangArgumentBuilder.AddFlagValueWithQuotes(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
+			ClangArgumentBuilder.AddFlagValue(commandArguments, ClangArgumentBuilder.Compiler_ArgumentParameter_Include, directory.toString)
 		}
 
 		// Add the source file as input
@@ -357,7 +357,7 @@ class ClangArgumentBuilder {
 
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			ClangArgumentBuilder.AddParameterWithQuotes(
+			ClangArgumentBuilder.AddParameter(
 				commandArguments,
 				ClangArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
 				directory.toString)
@@ -413,7 +413,7 @@ class ClangArgumentBuilder {
 		
 		// Set the library paths
 		for (directory in arguments.LibraryPaths) {
-			ClangArgumentBuilder.AddParameterWithQuotes(
+			ClangArgumentBuilder.AddParameter(
 				commandArguments,
 				ClangArgumentBuilder.Linker_ArgumentParameter_LibraryPath,
 				directory.toString)
@@ -464,16 +464,8 @@ class ClangArgumentBuilder {
 		arguments.add("-%(flag)%(value)")
 	}
 
-	static AddFlagValueWithQuotes(arguments, flag, value) {
-		arguments.add("-%(flag)\"%(value)\"")
-	}
-
 	static AddParameter(arguments, name, value) {
 		arguments.add("-%(name)=%(value)")
-	}
-
-	static AddParameterWithQuotes(arguments, name, value) {
-		arguments.add("-%(name)=\"%(value)\"")
 	}
 
 	static AddDoubleParameter(arguments, name, value1, value2) {

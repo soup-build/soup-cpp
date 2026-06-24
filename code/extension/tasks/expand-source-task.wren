@@ -188,7 +188,6 @@ class ExpandSourceTask is SoupTask {
 		var sourceInfo = {}
 		sourceInfo["Root"] = "./"
 		sourceInfo["File"] = file.toString
-
 		if (preprocessors) {
 			var preprocessorResult = ExpandSourceTask.ResolvePreprocessorResult(file, preprocessors)
 			var result = preprocessorResult["Result"]
