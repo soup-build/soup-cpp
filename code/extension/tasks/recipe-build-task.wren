@@ -187,6 +187,12 @@ class RecipeBuildTask is SoupTask {
 			enableWarningsAsErrors = recipe["EnableWarningsAsErrors"]
 		}
 
+		// Load the assembly source files if present
+		var disabledWarnings = []
+		if (recipe.containsKey("DisabledWarnings")) {
+			disabledWarnings = recipe["DisabledWarnings"]
+		}
+
 		// Set the correct optimization level for the requested flavor
 		var optimizationLevel = BuildOptimizationLevel.None
 		var generateSourceDebugInfo = false
@@ -251,6 +257,9 @@ class RecipeBuildTask is SoupTask {
 			knownPublicHeaderSets)
 
 		build["EnableWarningsAsErrors"] = enableWarningsAsErrors
+		ListExtensions.Append(
+			MapExtensions.EnsureList(build, "DisabledWarnings"),
+			disabledWarnings)
 
 		// Convert the recipe type to the required build type
 		var targetType = BuildTargetType.StaticLibrary
