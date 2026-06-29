@@ -15,6 +15,8 @@ class RecipeBuildTaskUnitTests {
 		this.Build_Executable()
 		System.print("RecipeBuildTaskUnitTests.Build_Executable_LinkLibraries")
 		this.Build_Executable_LinkLibraries()
+		System.print("RecipeBuildTaskUnitTests.Build_Executable_DisableWarnings")
+		this.Build_Executable_DisableWarnings()
 	}
 
 	Build_Executable() {
@@ -63,6 +65,7 @@ class RecipeBuildTaskUnitTests {
 				"TargetRootDirectory": "/(TARGET)/",
 				"Compiler": "MOCK",
 				"EnableWarningsAsErrors": true,
+				"DisabledWarnings": [],
 				"IncludeDirectories": [],
 				"BinaryDirectory": "./bin/",
 				"Flavor": "Debug",
@@ -137,6 +140,84 @@ class RecipeBuildTaskUnitTests {
 				"TargetRootDirectory": "/(TARGET)/",
 				"Compiler": "MOCK",
 				"EnableWarningsAsErrors": true,
+				"DisabledWarnings": [],
+				"IncludeDirectories": [],
+				"BinaryDirectory": "./bin/",
+				"Flavor": "Debug",
+				"PlatformLibraries": [],
+				"TargetName": "Program",
+				"LibraryPaths": [],
+				"GenerateSourceDebugInfo": true,
+				"SourceRootDirectory": "/(PACKAGE)/",
+				"PreprocessorDefinitions": [
+					"SOUP_BUILD",
+				],
+				"ObjectDirectory": "./obj/",
+				"OptimizationLevel": "None",
+				"AssemblySource": [],
+				"LanguageStandard": "CPP23"
+			},
+		}
+
+		Assert.MapEqual(
+			expectedActiveState,
+			SoupTest.activeState)
+	}
+
+	Build_Executable_DisableWarnings() {
+		SoupTest.initialize()
+
+		// Setup the input build state
+		var activeState = SoupTest.activeState
+		var globalState = SoupTest.globalState
+
+		// Setup build table
+		var buildTable = {}
+		activeState["Build"] = buildTable
+		buildTable["Compiler"] = "MOCK"
+		buildTable["Flavor"] = "Debug"
+
+		// Setup recipe table
+		var recipeTable = {}
+		globalState["Recipe"] = recipeTable
+		recipeTable["Name"] = "Program"
+		recipeTable["DisabledWarnings"] = [
+			"4250",
+			"4265",
+		]
+
+		// Setup context table
+		var contextTable = {}
+		globalState["Context"] = contextTable
+		contextTable["TargetDirectory"] = "/(TARGET)/"
+		contextTable["PackageDirectory"] = "/(PACKAGE)/"
+
+		RecipeBuildTask.evaluate()
+
+		// Verify expected logs
+		Assert.ListEqual(
+			[],
+			SoupTest.logs)
+
+		// Verify build state
+		var expectedBuildOperations = []
+
+		Assert.ListEqual(
+			expectedBuildOperations,
+			SoupTest.operations)
+
+		var expectedActiveState = {
+			"Build": {
+				"LinkLibraries": [],
+				"KnownPublicHeaderSets": [],
+				"TargetType": "StaticLibrary",
+				"TargetRootDirectory": "/(TARGET)/",
+				"Compiler": "MOCK",
+				"EnableWarningsAsErrors": true,
+				"DisabledWarnings": [
+					"4250",
+					"4265",
+				],
 				"IncludeDirectories": [],
 				"BinaryDirectory": "./bin/",
 				"Flavor": "Debug",
