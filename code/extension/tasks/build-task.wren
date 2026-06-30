@@ -43,14 +43,20 @@ class BuildTask is SoupTask {
 		var sharedState = Soup.sharedState
 		var globalState = Soup.globalState
 
-		var isPass1 = !(globalState.containsKey("Preprocessors"))
-
 		var buildTable = activeState["Build"]
 		var system = buildTable["System"]
+
+		var isPass1 = !(globalState.containsKey("Preprocessors"))
 
 		// Set the language and version so consumers can process this shared state
 		sharedState["Language"] = "C++"
 		sharedState["Version"] = SemanticVersion.new(1, 0).toString
+
+		// Skip dependencies scanner if explicitly disabled
+		var scanDependencies = isPass1
+		if (buildTable.containsKey("EnableScanDependencies") && !buildTable["EnableScanDependencies"]) {
+			scanDependencies = false
+		}
 
 		// Check if this build should skip this system
 		if (buildTable.containsKey("TargetSystems")) {
@@ -193,7 +199,7 @@ class BuildTask is SoupTask {
 		if (buildTable.containsKey("EnableWarningsAsErrors")) {
 			arguments.EnableWarningsAsErrors = buildTable["EnableWarningsAsErrors"]
 		} else {
-			arguments.GenerateSourceDebugInfo = false
+			arguments.EnableWarningsAsErrors = true
 		}
 
 		// Load the list of disabled warnings
@@ -218,8 +224,8 @@ class BuildTask is SoupTask {
 
 
 		// Attempt to run any required preprocessor operations
-		var runOperations = !isPass1
-		if (isPass1) {
+		var runOperations = !scanDependencies
+		if (scanDependencies) {
 			var preprocessorOperations = buildEngine.ExecutePass1(arguments)
 
 			if (preprocessorOperations.count > 0) {
