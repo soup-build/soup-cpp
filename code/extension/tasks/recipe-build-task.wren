@@ -181,6 +181,12 @@ class RecipeBuildTask is SoupTask {
 			knownPublicHeaderSets = recipe["PublicHeaders"]
 		}
 
+		// Check for explicit disable scans
+		var enableScanDependencies = true
+		if (recipe.containsKey("EnableScanDependencies")) {
+			enableScanDependencies = recipe["EnableScanDependencies"]
+		}
+
 		// Check for warning settings
 		var enableWarningsAsErrors = true
 		if (recipe.containsKey("EnableWarningsAsErrors")) {
@@ -255,6 +261,8 @@ class RecipeBuildTask is SoupTask {
 		ListExtensions.Append(
 			MapExtensions.EnsureList(build, "KnownPublicHeaderSets"),
 			knownPublicHeaderSets)
+
+		build["EnableScanDependencies"] = enableScanDependencies
 
 		build["EnableWarningsAsErrors"] = enableWarningsAsErrors
 		ListExtensions.Append(
